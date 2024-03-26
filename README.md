@@ -10,7 +10,7 @@ King of Roses
 - Au début de la partie les 24 cartes sont mélangées et chaque joueur en reçoit 5, face visible, qu'il doit placer avec **le chiffre vers lui**. La direction indiquée est donc celle vue par le joueur. Les joueurs pourront éventuellement en repiocher au cours de la partie.
 - L'état du plateau en début de partie est illustré par la figure 1 ci-dessous
 
-![img.png](img.png)
+![img](https://github.com/FlorianHegele/KingOfRoses/assets/144370530/6a7be335-0137-42eb-94cd-f3583b394e58)
 
 # **2°/ Régles**
 
@@ -75,7 +75,7 @@ King of Roses
 - Si ce nombre de pions est égale, la partie est nulle et il n'y a pas de gagnants.
 
 Exemple : On suppose que la plateau final se trouve dans l'état de la figure 2, ci dessous
-![img_1.png](img_1.png)
+![img_1](https://github.com/FlorianHegele/KingOfRoses/assets/144370530/89409ab6-a1e0-45ee-9509-a1e4d5e21339)
 
 - Le joueur bleu marque 69 points, grâce à :
     - une zone de 8, soit 64 points,
