@@ -5,6 +5,8 @@ import boardifier.view.GameStageView;
 
 import model.KoRStageModel;
 
+// TODO : Adapt to the new game, the UI won't look like this
+
 /**
  * KoRStageView has to create all the looks for all game elements created by the KoRStageFactory.
  * The desired UI is the following:
