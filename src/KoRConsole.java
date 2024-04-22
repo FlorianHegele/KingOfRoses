@@ -26,4 +26,3 @@ public class KoRConsole {
         // TODO : start the stage loop.
     }
 }
-}
