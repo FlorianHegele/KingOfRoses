@@ -10,7 +10,7 @@ public class KoRStageFactory extends StageElementsFactory {
 
     public KoRStageFactory(GameStageModel gameStageModel) {
         super(gameStageModel);
-        stageModel = (HoleStageModel) gameStageModel;
+        stageModel = (KoRStageModel) gameStageModel;
     }
 
     @Override
