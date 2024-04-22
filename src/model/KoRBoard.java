@@ -15,10 +15,9 @@ import java.awt.*;
  * pawn with a given value.
  */
 public class KoRBoard extends ContainerElement {
-    // TODO : Modify this method to create the board with the right size and name (9x9 grid)
     public KoRBoard(int x, int y, GameStageModel gameStageModel) {
-        // call the super-constructor to create a 3x3 grid, named "holeboard", and in x,y in space
-        super("holeboard", x, y, 3 , 3, gameStageModel);
+        // call the super-constructor to create a 9x9 grid, named "holeboard", and in x,y in space
+        super("holeboard", x, y, 9 , 9, gameStageModel);
     }
 
     // TODO : check if this method works with the new board size
