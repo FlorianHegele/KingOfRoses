@@ -19,7 +19,7 @@ public class KoRConsole {
         }
         Model model = new Model();
         // TODO : add both players to model taking mode value into account
-        // TODO : register the model and view class names (i.e model.KoRStageModel & view.KoRStageView
+        // TODO : register the model and view class names (i.e model.KoRStageModel & view.KoRStageView)
         // TODO : create the controller
         // TODO : set the name of the first stage to use when starting the game
         // TODO : start the game
