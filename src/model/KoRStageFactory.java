@@ -82,14 +82,14 @@ public class KoRStageFactory extends StageElementsFactory {
         ///create red hero cards
         HeroCard[] redHeroCards = new HeroCard[4];
         for(int i=0; i<4; i++) {
-            redHeroCards[i] = new HeroCard(stageModel);
+            redHeroCards[i] = new HeroCard(HeroCard.Status.RED_CARD, stageModel);
         }
         stageModel.setRedHeroCards(redHeroCards);
 
         ///create blue hero cards
         HeroCard[] blueHeroCards = new HeroCard[4];
         for(int i=0; i<4; i++) {
-            blueHeroCards[i] = new HeroCard(stageModel);
+            blueHeroCards[i] = new HeroCard(HeroCard.Status.BLUE_CARD, stageModel);
         }
         stageModel.setBlueHeroCards(blueHeroCards);
 
