@@ -3,20 +3,19 @@ package view;
 import boardifier.model.GameElement;
 import boardifier.view.ConsoleColor;
 import boardifier.view.ElementLook;
-import model.Pawn;
+import model.HeroCard;
 
-public class PawnLook extends ElementLook {
+public class HeroCardLook extends ElementLook {
 
-    public PawnLook(GameElement element) {
+    public HeroCardLook(GameElement element) {
         // Pawn look is constituted of a single character, so shape size = 1x1
         super(element, 1, 1);
     }
 
     protected void render() {
-        Pawn pawn = (Pawn)element;
-        Pawn.Status status = pawn.getStatus();
+        HeroCard card = (HeroCard)element;
 
-        shape[0][0] = status.getBackgroundColor() + ConsoleColor.RESET;
+        shape[0][0] = card.getStatus().getBackgroundColor() + ConsoleColor.RESET;
     }
 
 }
