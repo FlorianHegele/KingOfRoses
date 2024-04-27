@@ -2,7 +2,7 @@ package model;
 
 import boardifier.model.*;
 
-// TODO : Adapt this class to the new game
+import java.util.Random;
 
 /**
  * KoRStageModel defines the model for the single stage in "The KoR". Indeed,
@@ -32,117 +32,227 @@ import boardifier.model.*;
 public class KoRStageModel extends GameStageModel {
 
     // define stage state variables
+    private int blackHeroCardToPlay;
+    private int redHeroCardToPlay;
+
     private int blackPawnsToPlay;
     private int redPawnsToPlay;
 
+
     // define stage game elements
     private KoRBoard board;
-    private KoRPawnPot blackPot;
-    private KoRPawnPot redPot;
+
+    private CardStack blackHeroCardsStack;
+    private HeroCard[] blackHeroCards;
+    private CardStack redHeroCardsStack;
+    private HeroCard[] redHeroCards;
+
+    private CardStack movementCardStack;
+    private MovementCard[] movementCardDeck;
+
+    private MovementCardSpread blackMovementCardsSpread;
+    private MovementCard[] blackMovementCards;
+    private MovementCardSpread redMovementCardsSpread;
+    private MovementCard[] redMovementCards;
+
+    private PawnPot blackPot;
     private Pawn[] blackPawns;
+    private PawnPot redPot;
     private Pawn[] redPawns;
+
+    private Pawn kingPawn;
+
     private TextElement playerName;
+
     // Uncomment next line if the example with a main container is used. see end of KoRStageFactory and KoRStageView
     //private ContainerElement mainContainer;
 
     public KoRStageModel(String name, Model model) {
         super(name, model);
-        blackPawnsToPlay = 4;
-        redPawnsToPlay = 4;
+
+        blackHeroCardToPlay = 4;
+        redHeroCardToPlay = 4;
+
+        blackPawnsToPlay = 52;
+        redPawnsToPlay = 52;
+
         setupCallbacks();
     }
 
     public KoRBoard getBoard() {
         return board;
     }
+    public void setBoard(KoRBoard board) {
+        this.board = board;
+        addContainer(board);
+    }
 
-    public KoRPawnPot getBlackPot() {
+    public CardStack getBlackHeroCardsStack() {
+        return blackHeroCardsStack;
+    }
+    public void setBlackHeroCardsStack(CardStack blackHeroCardsStack) {
+        this.blackHeroCardsStack = blackHeroCardsStack;
+        addContainer(blackHeroCardsStack);
+    }
+
+    public CardStack getRedHeroCardsStack() {
+        return redHeroCardsStack;
+    }
+    public void setRedHeroCardsStack(CardStack redHeroCardsStack) {
+        this.redHeroCardsStack = redHeroCardsStack;
+        addContainer(redHeroCardsStack);
+    }
+
+    public HeroCard[] getBlackHeroCards() {
+        return blackHeroCards;
+    }
+    public void setBlackHeroCards(HeroCard[] blackHeroCards) {
+        this.blackHeroCards = blackHeroCards;
+        for (HeroCard blackHeroCard : blackHeroCards) {
+            addElement(blackHeroCard);
+        }
+    }
+
+    public HeroCard[] getRedHeroCards() {
+        return redHeroCards;
+    }
+    public void setRedHeroCards(HeroCard[] redHeroCards) {
+        this.redHeroCards = redHeroCards;
+        for (HeroCard redHeroCard : redHeroCards) {
+            addElement(redHeroCard);
+        }
+    }
+
+    public CardStack getMovementCardStack() {
+        return movementCardStack;
+    }
+    public void setMovementCardStack(CardStack movementCardStack) {
+        this.movementCardStack = movementCardStack;
+        addElement(movementCardStack);
+    }
+
+    public MovementCard[] getMovementCardDeck() {
+        return movementCardDeck;
+    }
+    public void setMovementCardDeck(MovementCard[] movementCardDeck) {
+        this.movementCardDeck = movementCardDeck;
+        for (MovementCard movementCard : movementCardDeck) {
+            addElement(movementCard);
+        }
+    }
+
+    public MovementCardSpread getBlackMovementCardsSpread() {
+        return blackMovementCardsSpread;
+    }
+    public void setBlackMovementCardsSpread(MovementCardSpread blackMovementCardsSpread) {
+        this.blackMovementCardsSpread = blackMovementCardsSpread;
+        addContainer(blackMovementCardsSpread);
+    }
+    
+    public MovementCardSpread getRedMovementCardsSpread() {
+        return redMovementCardsSpread;
+    }
+    public void setRedMovementCardsSpread(MovementCardSpread redMovementCardsSpread) {
+        this.redMovementCardsSpread = redMovementCardsSpread;
+        addContainer(redMovementCardsSpread);
+    }
+    
+    public MovementCard[] getBlackMovementCards() {
+        return blackMovementCards;
+    }
+    public void setBlackMovementCards(MovementCard[] blackMovementCards) {
+        this.blackMovementCards = blackMovementCards;
+        for (MovementCard blackMovementCard : blackMovementCards) {
+            addElement(blackMovementCard);
+        }
+    }
+
+    public MovementCard[] getRedMovementCards() {
+        return redMovementCards;
+    }
+    public void setRedMovementCards(MovementCard[] redMovementCards) {
+        this.redMovementCards = redMovementCards;
+        for (MovementCard redMovementCard : redMovementCards) {
+            addElement(redMovementCard);
+        }
+    }
+
+    public PawnPot getBlackPot() {
         return blackPot;
     }
-
-    public KoRPawnPot getRedPot() {
-        return redPot;
+    public void setBlackPot(PawnPot blackPot) {
+        this.blackPot = blackPot;
+        addContainer(blackPot);
     }
 
+    public PawnPot getRedPot() {
+        return redPot;
+    }
+    public void setRedPot(PawnPot redPot) {
+        this.redPot = redPot;
+        addContainer(redPot);
+    }
+    
     public Pawn[] getBlackPawns() {
         return blackPawns;
+    }
+    public void setBlackPawns(Pawn[] blackPawns) {
+        this.blackPawns = blackPawns;
+        for (Pawn blackPawn : blackPawns) {
+            addElement(blackPawn);
+        }
     }
 
     public Pawn[] getRedPawns() {
         return redPawns;
     }
+    public void setRedPawns(Pawn[] redPawns) {
+        this.redPawns = redPawns;
+        for (Pawn redPawn : redPawns) {
+            addElement(redPawn);
+        }
+    }
+
+    public Pawn getKingPawn() {
+        return kingPawn;
+    }
+    public void setKingPawn(Pawn kingPawn) {
+        this.kingPawn = kingPawn;
+        addElement(kingPawn);
+    }
 
     public TextElement getPlayerName() {
         return playerName;
     }
-    /*
-    TO FULFILL:
-        - create setters for all attributes. NB: in setters, do not forget to add elements to the stage (see addGrid() & addElement())
-     */
-
-    private void setupCallbacks() {
-
-    /*
-    TO FULFILL:
-        - setup the onPutInGrid callback in order to decrease the number of pawns to play, and eventually to get the party result
-     */
+    public void setPlayerName(TextElement playerName) {
+        this.playerName = playerName;
+        addElement(playerName);
     }
 
-    private void computePartyResult() {
-        int idWinner = -1;
-        // get the empty cell, which should be in 2D at [0,0], [0,2], [1,1], [2,0] or [2,2]
-        // i.e. or in 1D at index 0, 2, 4, 6 or 8
-        int i = 0;
-        int nbBlack = 0;
-        int nbRed = 0;
-        int countBlack = 0;
-        int countRed = 0;
-        Pawn p = null;
-        int row, col;
-        for (i = 0; i < 9; i+=2) {
-            if (board.isEmptyAt(i / 3, i % 3)) break;
-        }
-        // get the 4 adjacent cells (if they exist) starting by the upper one
-        row = (i / 3) - 1;
-        col = i % 3;
-        for (int j = 0; j < 4; j++) {
-            // skip invalid cells
-            if ((row >= 0) && (row <= 2) && (col >= 0) && (col <= 2)) {
-                p = (Pawn) (board.getElement(row, col));
-                if (p.getColor() == Pawn.PAWN_BLACK) {
-                    nbBlack++;
-                    countBlack += p.getNumber();
-                } else {
-                    nbRed++;
-                    countRed += p.getNumber();
-                }
-            }
-            // change row & col to set them at the correct value for the next iteration
-            if ((j==0) || (j==2)) {
-                row++;
-                col--;
-            }
-            else if (j==1) {
-                col += 2;
-            }
-        }
 
-        // decide whose winning
-        if (nbBlack < nbRed) {
-            idWinner = 0;
-        }
-        else if (nbBlack > nbRed) {
-            idWinner = 1;
-        }
-        else {
-            if (countBlack < countRed) {
-                idWinner = 0;
+    // TODO : REWRITE THE ENTIER CODE OF THIS FUNCTION
+    private void setupCallbacks() {
+        onPutInContainer((element, gridDest, rowDest, colDest) -> {
+            // just check when pawns are put in 9x9 board
+            if (gridDest != board) return;
+            Pawn p = (Pawn) element;
+            if (p.getStatus() == Pawn.Status.BLACK_PAWN) {
+                blackPawnsToPlay--;
+            } else if (p.getStatus() == Pawn.Status.RED_PAWN) {
+                redPawnsToPlay--;
             }
-            else if (countBlack > countRed) {
-                idWinner = 1;
+            if ((blackPawnsToPlay == 0) && (redPawnsToPlay == 0)) {
+                computePartyResult();
             }
-        }
-        System.out.println("nb black: "+nbBlack+", nb red: "+nbRed+", count black: "+countBlack+", count red: "+countRed+", winner is player "+idWinner);
+        });
+    }
+
+    // TODO : REWRITE THE ENTIER CODE OF THIS FUNCTION
+    private void computePartyResult() {
+        int idWinner = new Random().nextInt(2);
+
+        System.out.println("end of game");
+
         // set the winner
         model.setIdWinner(idWinner);
         // stop de the game
