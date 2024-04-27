@@ -3,8 +3,7 @@ package model;
 import boardifier.model.ElementTypes;
 import boardifier.model.GameElement;
 import boardifier.model.GameStageModel;
-
-import java.awt.*;
+import boardifier.view.ConsoleColor;
 
 
 public class Pawn extends GameElement {
@@ -31,18 +30,18 @@ public class Pawn extends GameElement {
 
     public enum Status {
 
-        BLUE_PAWN(Color.BLUE),
-        RED_PAWN(Color.RED),
-        KING_PAWN(Color.YELLOW);
+        BLUE_PAWN(ConsoleColor.BLUE_BACKGROUND),
+        RED_PAWN(ConsoleColor.RED_BACKGROUND),
+        KING_PAWN(ConsoleColor.YELLOW_BACKGROUND);
 
-        private final Color color;
+        private final String backgroundColor;
 
-        Status(Color color) {
-            this.color = color;
+        Status(String backgroundColor) {
+            this.backgroundColor = backgroundColor;
         }
 
-        public Color getColor() {
-            return color;
+        public String getBackgroundColor() {
+            return backgroundColor;
         }
 
         public Status getOpposite() {
