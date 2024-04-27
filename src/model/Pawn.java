@@ -31,7 +31,7 @@ public class Pawn extends GameElement {
 
     public enum Status {
 
-        BLACK_PAWN(Color.BLACK),
+        BLUE_PAWN(Color.BLUE),
         RED_PAWN(Color.RED),
         KING_PAWN(Color.YELLOW);
 
@@ -46,7 +46,7 @@ public class Pawn extends GameElement {
         }
 
         public Status getOpposite() {
-            return (this == BLACK_PAWN) ? RED_PAWN : BLACK_PAWN;
+            return (this == BLUE_PAWN) ? RED_PAWN : BLUE_PAWN;
         }
 
     }

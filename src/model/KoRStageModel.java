@@ -32,32 +32,32 @@ import java.util.Random;
 public class KoRStageModel extends GameStageModel {
 
     // define stage state variables
-    private int blackHeroCardToPlay;
+    private int blueHeroCardToPlay;
     private int redHeroCardToPlay;
 
-    private int blackPawnsToPlay;
+    private int bluePawnsToPlay;
     private int redPawnsToPlay;
 
 
     // define stage game elements
     private KoRBoard board;
 
-    private CardStack blackHeroCardsStack;
-    private HeroCard[] blackHeroCards;
+    private CardStack blueHeroCardsStack;
     private CardStack redHeroCardsStack;
+    private HeroCard[] blueHeroCards;
     private HeroCard[] redHeroCards;
 
     private CardStack movementCardStack;
     private MovementCard[] movementCardDeck;
 
-    private MovementCardSpread blackMovementCardsSpread;
-    private MovementCard[] blackMovementCards;
+    private MovementCardSpread blueMovementCardsSpread;
     private MovementCardSpread redMovementCardsSpread;
+    private MovementCard[] blueMovementCards;
     private MovementCard[] redMovementCards;
 
-    private PawnPot blackPot;
-    private Pawn[] blackPawns;
+    private PawnPot bluePot;
     private PawnPot redPot;
+    private Pawn[] bluePawns;
     private Pawn[] redPawns;
 
     private Pawn kingPawn;
@@ -70,10 +70,10 @@ public class KoRStageModel extends GameStageModel {
     public KoRStageModel(String name, Model model) {
         super(name, model);
 
-        blackHeroCardToPlay = 4;
+        blueHeroCardToPlay = 4;
         redHeroCardToPlay = 4;
 
-        blackPawnsToPlay = 52;
+        bluePawnsToPlay = 52;
         redPawnsToPlay = 52;
 
         setupCallbacks();
@@ -87,12 +87,12 @@ public class KoRStageModel extends GameStageModel {
         addContainer(board);
     }
 
-    public CardStack getBlackHeroCardsStack() {
-        return blackHeroCardsStack;
+    public CardStack getBlueHeroCardsStack() {
+        return blueHeroCardsStack;
     }
-    public void setBlackHeroCardsStack(CardStack blackHeroCardsStack) {
-        this.blackHeroCardsStack = blackHeroCardsStack;
-        addContainer(blackHeroCardsStack);
+    public void setBlueHeroCardsStack(CardStack blueHeroCardsStack) {
+        this.blueHeroCardsStack = blueHeroCardsStack;
+        addContainer(blueHeroCardsStack);
     }
 
     public CardStack getRedHeroCardsStack() {
@@ -103,13 +103,13 @@ public class KoRStageModel extends GameStageModel {
         addContainer(redHeroCardsStack);
     }
 
-    public HeroCard[] getBlackHeroCards() {
-        return blackHeroCards;
+    public HeroCard[] getBlueHeroCards() {
+        return blueHeroCards;
     }
-    public void setBlackHeroCards(HeroCard[] blackHeroCards) {
-        this.blackHeroCards = blackHeroCards;
-        for (HeroCard blackHeroCard : blackHeroCards) {
-            addElement(blackHeroCard);
+    public void setBlueHeroCards(HeroCard[] blueHeroCards) {
+        this.blueHeroCards = blueHeroCards;
+        for (HeroCard blueHeroCard : blueHeroCards) {
+            addElement(blueHeroCard);
         }
     }
 
@@ -141,12 +141,12 @@ public class KoRStageModel extends GameStageModel {
         }
     }
 
-    public MovementCardSpread getBlackMovementCardsSpread() {
-        return blackMovementCardsSpread;
+    public MovementCardSpread getBlueMovementCardsSpread() {
+        return blueMovementCardsSpread;
     }
-    public void setBlackMovementCardsSpread(MovementCardSpread blackMovementCardsSpread) {
-        this.blackMovementCardsSpread = blackMovementCardsSpread;
-        addContainer(blackMovementCardsSpread);
+    public void setBlueMovementCardsSpread(MovementCardSpread blueMovementCardsSpread) {
+        this.blueMovementCardsSpread = blueMovementCardsSpread;
+        addContainer(blueMovementCardsSpread);
     }
     
     public MovementCardSpread getRedMovementCardsSpread() {
@@ -157,13 +157,13 @@ public class KoRStageModel extends GameStageModel {
         addContainer(redMovementCardsSpread);
     }
     
-    public MovementCard[] getBlackMovementCards() {
-        return blackMovementCards;
+    public MovementCard[] getBlueMovementCards() {
+        return blueMovementCards;
     }
-    public void setBlackMovementCards(MovementCard[] blackMovementCards) {
-        this.blackMovementCards = blackMovementCards;
-        for (MovementCard blackMovementCard : blackMovementCards) {
-            addElement(blackMovementCard);
+    public void setBlueMovementCards(MovementCard[] blueMovementCards) {
+        this.blueMovementCards = blueMovementCards;
+        for (MovementCard blueMovementCard : blueMovementCards) {
+            addElement(blueMovementCard);
         }
     }
 
@@ -177,12 +177,12 @@ public class KoRStageModel extends GameStageModel {
         }
     }
 
-    public PawnPot getBlackPot() {
-        return blackPot;
+    public PawnPot getBluePot() {
+        return bluePot;
     }
-    public void setBlackPot(PawnPot blackPot) {
-        this.blackPot = blackPot;
-        addContainer(blackPot);
+    public void setBluePot(PawnPot bluePot) {
+        this.bluePot = bluePot;
+        addContainer(bluePot);
     }
 
     public PawnPot getRedPot() {
@@ -193,13 +193,13 @@ public class KoRStageModel extends GameStageModel {
         addContainer(redPot);
     }
     
-    public Pawn[] getBlackPawns() {
-        return blackPawns;
+    public Pawn[] getBluePawns() {
+        return bluePawns;
     }
-    public void setBlackPawns(Pawn[] blackPawns) {
-        this.blackPawns = blackPawns;
-        for (Pawn blackPawn : blackPawns) {
-            addElement(blackPawn);
+    public void setBluePawns(Pawn[] bluePawns) {
+        this.bluePawns = bluePawns;
+        for (Pawn bluePawn : bluePawns) {
+            addElement(bluePawn);
         }
     }
 
@@ -236,12 +236,12 @@ public class KoRStageModel extends GameStageModel {
             // just check when pawns are put in 9x9 board
             if (gridDest != board) return;
             Pawn p = (Pawn) element;
-            if (p.getStatus() == Pawn.Status.BLACK_PAWN) {
-                blackPawnsToPlay--;
+            if (p.getStatus() == Pawn.Status.BLUE_PAWN) {
+                bluePawnsToPlay--;
             } else if (p.getStatus() == Pawn.Status.RED_PAWN) {
                 redPawnsToPlay--;
             }
-            if ((blackPawnsToPlay == 0) && (redPawnsToPlay == 0)) {
+            if ((bluePawnsToPlay == 0) && (redPawnsToPlay == 0)) {
                 computePartyResult();
             }
         });
