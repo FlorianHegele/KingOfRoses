@@ -29,6 +29,23 @@ public class MovementCard extends GameElement {
     }
 
     public enum Direction {
-        NORTH, NORTHEAST, EAST, SOUTHEAST, SOUTH, SOUTHWEST, WEST, NORTHWEST
+        NORTH("\u2191"),
+        NORTHEAST("\u2197"),
+        EAST("\u2192"),
+        SOUTHEAST("\u2198"),
+        SOUTH("\u2193"),
+        SOUTHWEST("\u2199"),
+        WEST("\u2190"),
+        NORTHWEST("\u2196");
+
+        private final String symbole;
+
+        Direction(String symbole) {
+            this.symbole = symbole;
+        }
+
+        public String getSymbole() {
+            return symbole;
+        }
     }
 }
