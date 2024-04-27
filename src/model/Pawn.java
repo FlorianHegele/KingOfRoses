@@ -4,27 +4,51 @@ import boardifier.model.ElementTypes;
 import boardifier.model.GameElement;
 import boardifier.model.GameStageModel;
 
-/**
- * A basic pawn element, with only 2 fixed parameters : number and color
- * There are no setters because the state of a Hole pawn is fixed.
- */
+import java.awt.*;
+
+
 public class Pawn extends GameElement {
 
-    private int number;
-    private int color;
-    public static int PAWN_BLACK = 0;
-    public static int PAWN_RED = 1;
+    private Status status;
 
-    public Pawn(int number, int color, GameStageModel gameStageModel) {
+    public Pawn(Status status, GameStageModel gameStageModel) {
         super(gameStageModel);
-        // TODO : register a new type of element for the pawns
-        // TODO : initialize attributes
+
+        // REGISTER NEW ELEMENT TYPE
+        ElementTypes.register("pawn",50);
+        this.type = ElementTypes.getType("pawn");
+
+        this.status = status;
     }
 
-    public int getNumber() {
-        return number;
+    public void flipStatus() {
+        this.status = this.status.getOpposite();
     }
-    public int getColor() {
-        return color;
+
+    public Status getStatus() {
+        return status;
     }
+
+    public enum Status {
+
+        BLACK_PAWN(Color.BLACK),
+        RED_PAWN(Color.RED),
+        KING_PAWN(Color.YELLOW);
+
+        private final Color color;
+
+        Status(Color color) {
+            this.color = color;
+        }
+
+        public Color getColor() {
+            return color;
+        }
+
+        public Status getOpposite() {
+            return (this == BLACK_PAWN) ? RED_PAWN : BLACK_PAWN;
+        }
+
+    }
+
 }
