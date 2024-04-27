@@ -2,6 +2,7 @@ package model;
 
 import boardifier.model.*;
 
+import java.util.Deque;
 import java.util.Random;
 
 /**
@@ -48,7 +49,7 @@ public class KoRStageModel extends GameStageModel {
     private HeroCard[] redHeroCards;
 
     private CardStack movementCardStack;
-    private MovementCard[] movementCardDeck;
+    private Deque<MovementCard> movementCardDeck;
 
     private MovementCardSpread blueMovementCardsSpread;
     private MovementCardSpread redMovementCardsSpread;
@@ -131,10 +132,10 @@ public class KoRStageModel extends GameStageModel {
         addElement(movementCardStack);
     }
 
-    public MovementCard[] getMovementCardDeck() {
+    public Deque<MovementCard> getMovementCardDeck() {
         return movementCardDeck;
     }
-    public void setMovementCardDeck(MovementCard[] movementCardDeck) {
+    public void setMovementCardDeck(Deque<MovementCard> movementCardDeck) {
         this.movementCardDeck = movementCardDeck;
         for (MovementCard movementCard : movementCardDeck) {
             addElement(movementCard);
