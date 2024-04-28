@@ -47,5 +47,43 @@ public class MovementCard extends GameElement {
         public String getSymbole() {
             return symbole;
         }
+
+        public Direction getOpposite() {
+            switch (this) {
+                case NORTH -> {
+                    return SOUTH;
+                }
+
+                case NORTHEAST -> {
+                    return SOUTHWEST;
+                }
+
+                case EAST -> {
+                    return WEST;
+                }
+
+                case SOUTHEAST -> {
+                    return NORTHWEST;
+                }
+
+                case SOUTH -> {
+                    return NORTH;
+                }
+
+                case SOUTHWEST -> {
+                    return NORTHEAST;
+                }
+
+                case WEST -> {
+                    return EAST;
+                }
+
+                case NORTHWEST -> {
+                    return SOUTHEAST;
+                }
+
+                default -> throw new IllegalCallerException("Illegal direction");
+            }
+        }
     }
 }
