@@ -2,6 +2,7 @@ package model.container;
 
 import boardifier.model.GameStageModel;
 import boardifier.model.ContainerElement;
+import model.element.Pawn;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,21 +17,21 @@ import java.awt.*;
  */
 public class KoRBoard extends ContainerElement {
     public KoRBoard(int x, int y, GameStageModel gameStageModel) {
-        // call the super-constructor to create a 9x9 grid, named "holeboard", and in x,y in space
-        super("holeboard", x, y, 9 , 9, gameStageModel);
+        // call the super-constructor to create a 9x9 grid, named "KoR", and in x,y in space
+        super("KoRboard", x, y, 9 , 9, gameStageModel);
     }
 
     // TODO : check if this method works with the new board size
-    public void setValidCells(int number) {
+    public void setValidCells(Pawn pawn) {
         resetReachableCells(false);
-        List<Point> valid = computeValidCells(number);
+        List<Point> valid = computeValidCells(pawn);
         if (valid != null) {
             for(Point p : valid) {
                 reachableCells[p.y][p.x] = true;
             }
         }
     }
-    public List<Point> computeValidCells(int number) {
+    public List<Point> computeValidCells(Pawn pawn) {
         List<Point> lst = new ArrayList<>();
          /*
         TODO:
