@@ -1,4 +1,4 @@
-package view;
+package view.container;
 
 import boardifier.control.Logger;
 import boardifier.model.ContainerElement;
@@ -7,7 +7,7 @@ import boardifier.view.GridLook;
 // TODO: Adapt to the new game
 
 /**
- * Red pot inherits from GridLook but overrides the renderBorders() method
+ * Pot inherits from GridLook but overrides the renderBorders() method
  * so that a special look is given to borders copared to the default look defined
  * in GridLook. Moreover, cells have a fixed size, meaning that if an element is
  * too big to fit within a cell, it will overlap neighbors cells.
