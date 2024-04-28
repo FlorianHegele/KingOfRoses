@@ -30,14 +30,16 @@ public class Pawn extends GameElement {
 
     public enum Status {
 
-        BLUE_PAWN(ConsoleColor.BLUE_BACKGROUND),
-        RED_PAWN(ConsoleColor.RED_BACKGROUND),
-        KING_PAWN(ConsoleColor.YELLOW_BACKGROUND);
+        RED_PAWN(ConsoleColor.RED_BACKGROUND, 0),
+        BLUE_PAWN(ConsoleColor.BLUE_BACKGROUND, 1),
+        KING_PAWN(ConsoleColor.YELLOW_BACKGROUND, 2);
 
         private final String backgroundColor;
+        private final int id;
 
-        Status(String backgroundColor) {
+        Status(String backgroundColor, int id) {
             this.backgroundColor = backgroundColor;
+            this.id = id;
         }
 
         public String getBackgroundColor() {
@@ -48,6 +50,9 @@ public class Pawn extends GameElement {
             return (this == BLUE_PAWN) ? RED_PAWN : BLUE_PAWN;
         }
 
+        public int getID() {
+            return id;
+        }
     }
 
 }
