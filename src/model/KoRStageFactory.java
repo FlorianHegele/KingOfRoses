@@ -5,8 +5,9 @@ import boardifier.model.StageElementsFactory;
 import boardifier.model.TextElement;
 import model.container.KoRBoard;
 import model.container.PawnPot;
-import model.container.card.CardStack;
+import model.container.card.HeroCardSpread;
 import model.container.card.MovementCardSpread;
+import model.container.card.MovementCardStack;
 import model.element.Pawn;
 import model.element.card.HeroCard;
 import model.element.card.MovementCard;
@@ -34,44 +35,44 @@ public class KoRStageFactory extends StageElementsFactory {
          CREATE ELEMENT CONTAINERS
          */
 
-        // RED ELEMENT (without pawn)
-        //create the red hero cards stack in 1,1 in the virtual space
-        CardStack redHeroCardsStack = new CardStack(12, 2, stageModel);
-        stageModel.setRedHeroCardsStack(redHeroCardsStack);
-
-        //create the red movements cards spread in 2,1 in the virtual space
-        MovementCardSpread redMovementCardsSpread = new MovementCardSpread(16,2, stageModel);
-        stageModel.setRedMovementCardsSpread(redMovementCardsSpread);
-
-
-        // MOVEMENT CARD STACK AND BOARD
-        // create the movement cards stack in 0, 2
-        CardStack movementCardStack = new CardStack(2, 15, stageModel);
-        stageModel.setMovementCardStack(movementCardStack);
-
+        // BOARD
         // create the board, in 1,2 in the virtual space
         KoRBoard board = new KoRBoard(10, 5, stageModel);
         stageModel.setBoard(board);
 
 
-        // PAWN POT
-        //create the blue pot in 25,2 in the virtual space
-        PawnPot bluePot = new PawnPot(55,17, stageModel);
-        stageModel.setBluePot(bluePot);
+        // MOVEMENT CARD STACK
+        // create the movement cards stack in 0, 2
+        MovementCardStack movementCardStack = new MovementCardStack(130, 2, stageModel);
+        stageModel.setMovementCardStack(movementCardStack);
+
+
+        // RED ELEMENT
+        //create the red hero cards stack in 1,1 in the virtual space
+        HeroCardSpread redHeroCardSpread = new HeroCardSpread(93, 6, stageModel);
+        stageModel.setRedHeroCardSpread(redHeroCardSpread);
+
+        //create the red movements cards spread in 2,1 in the virtual space
+        MovementCardSpread redMovementCardsSpread = new MovementCardSpread(53,9, stageModel);
+        stageModel.setRedMovementCardsSpread(redMovementCardsSpread);
 
         //create the red pot in 19,2 in the virtual space
-        PawnPot redPot = new PawnPot(55,12, stageModel);
+        PawnPot redPot = new PawnPot(44,25, stageModel);
         stageModel.setRedPot(redPot);
 
 
-        // BLUE ELEMENT (without pawn)
+        // BLUE ELEMENT
         //create the blue hero cards stack in 1,3 in the virtual space
-        CardStack blueHeroCardsStack = new CardStack(45, 25, stageModel);
-        stageModel.setBlueHeroCardsStack(blueHeroCardsStack);
+        HeroCardSpread blueHeroCardSpread = new HeroCardSpread(72, 6, stageModel);
+        stageModel.setBlueHeroCardSpread(blueHeroCardSpread);
 
         //create the blue movements cards spread in 2,3 in the virtual space
-        MovementCardSpread blueMovementCardsSpread = new MovementCardSpread(25,25, stageModel);
+        MovementCardSpread blueMovementCardsSpread = new MovementCardSpread(2,9, stageModel);
         stageModel.setBlueMovementCardsSpread(blueMovementCardsSpread);
+
+        //create the blue pot in 25,2 in the virtual space
+        PawnPot bluePot = new PawnPot(12,25, stageModel);
+        stageModel.setBluePot(bluePot);
 
 
         /*
@@ -95,8 +96,8 @@ public class KoRStageFactory extends StageElementsFactory {
 
         // put hero card in stack
         for (int i=0;i<4;i++) {
-            redHeroCardsStack.addElement(redHeroCards[i], i,0);
-            blueHeroCardsStack.addElement(blueHeroCards[i], i,0);
+            redHeroCardSpread.addElement(redHeroCards[i], i,0);
+            blueHeroCardSpread.addElement(blueHeroCards[i], i,0);
         }
 
 
@@ -143,13 +144,15 @@ public class KoRStageFactory extends StageElementsFactory {
 
         //create the real movement cards deck
         Deque<MovementCard> movementCardDeck = new ArrayDeque<>(tempMovementCardDeck);
-        stageModel.setMovementCardDeck(movementCardDeck);
 
         //create red movement cards
         MovementCard[] redMovementCards = new MovementCard[5];
         for(int i=0; i<5; i++) {
             //get card from the stack
-            redMovementCards[i] = movementCardDeck.pop();
+            final MovementCard movementCard = movementCardDeck.pop();
+            movementCard.setInStack(false);
+            redMovementCards[i] = movementCard;
+            redMovementCardsSpread.addElement(movementCard, i,0);
         }
         stageModel.setRedMovementCards(redMovementCards);
 
@@ -157,9 +160,19 @@ public class KoRStageFactory extends StageElementsFactory {
         MovementCard[] blueMovementCards = new MovementCard[5];
         for(int i=0; i<5; i++) {
             //get card from the stack
-            blueMovementCards[i] = movementCardDeck.pop();
+            final MovementCard movementCard = movementCardDeck.pop();
+            movementCard.setInStack(false);
+            blueMovementCards[i] = movementCard;
+            blueMovementCardsSpread.addElement(movementCard, i,0);
         }
         stageModel.setBlueMovementCards(blueMovementCards);
+
+        int i =0;
+        for(MovementCard movementCard : movementCardDeck) {
+            movementCardStack.addElement(movementCard, i, 0);
+            i++;
+        }
+        stageModel.setMovementCardDeck(movementCardDeck);
     }
 
 }

@@ -9,8 +9,9 @@ import boardifier.view.TextLook;
 import model.KoRStageModel;
 import model.element.card.MovementCard;
 import view.container.PawnPotLook;
-import view.container.card.CardStackLook;
+import view.container.card.HeroCardSpreadLook;
 import view.container.card.MovementCardSpreadLook;
+import view.container.card.MovementCardStackLook;
 import view.element.PawnLook;
 import view.element.card.HeroCardLook;
 import view.element.card.MovementCardLook;
@@ -69,11 +70,12 @@ public class KoRStageView extends GameStageView {
         addLook(new ClassicBoardLook(2, 4, model.getBoard(), 1, 1, true));
 
         // create look for the hero cards
-        addLook(new CardStackLook(model.getRedHeroCardsStack()));
-        addLook(new CardStackLook(model.getBlueHeroCardsStack()));
+        addLook(new HeroCardSpreadLook(model.getRedHeroCardSpread()));
+        addLook(new HeroCardSpreadLook(model.getBlueHeroCardSpread()));
 
+        // TODO : create deck
         // create look for the movement deck cards
-        addLook(new CardStackLook(model.getMovementCardStack()));
+        addLook(new MovementCardStackLook(model.getMovementCardStack()));
 
         // create look for the movement spread cards
         addLook(new MovementCardSpreadLook(model.getRedMovementCardsSpread()));
@@ -96,6 +98,7 @@ public class KoRStageView extends GameStageView {
 
         // create look for the movement cards
         for(int i=0; i<5; i++) {
+            Logger.trace(model.getRedMovementCards()[i].toString() + " | " + model.getBlueMovementCards()[i].toString() + " | HERE ");
             addLook(new MovementCardLook(model.getRedMovementCards()[i]));
             addLook(new MovementCardLook(model.getBlueMovementCards()[i]));
         }
@@ -107,6 +110,7 @@ public class KoRStageView extends GameStageView {
         }
         addLook(new PawnLook(model.getKingPawn()));
 
+        // TODO : create deck
         // create look for the movement deck card
         for(MovementCard movementCard : model.getMovementCardDeck()) {
             addLook(new MovementCardLook(movementCard));

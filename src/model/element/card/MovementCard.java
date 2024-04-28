@@ -8,6 +8,7 @@ public class MovementCard extends GameElement {
 
     private final int step;
     private final Direction direction;
+    private boolean isInStack;
 
     public MovementCard(int step, Direction direction, GameStageModel gameStageModel) {
         super(gameStageModel);
@@ -18,6 +19,15 @@ public class MovementCard extends GameElement {
 
         this.step = step;
         this.direction = direction;
+        this.isInStack = true;
+    }
+
+    public boolean isInStack() {
+        return isInStack;
+    }
+
+    public void setInStack(boolean isInStack) {
+        this.isInStack = isInStack;
     }
 
     public int getStep() {
@@ -34,6 +44,15 @@ public class MovementCard extends GameElement {
 
     public Direction getDirection() {
         return direction;
+    }
+
+    @Override
+    public String toString() {
+        return "MovementCard{" +
+                "step=" + step +
+                ", direction=" + direction +
+                ", isInStack=" + isInStack +
+                '}';
     }
 
     public enum Direction {

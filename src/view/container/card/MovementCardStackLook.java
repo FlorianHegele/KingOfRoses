@@ -1,4 +1,4 @@
-package view.container;
+package view.container.card;
 
 import boardifier.control.Logger;
 import boardifier.model.ContainerElement;
@@ -6,16 +6,10 @@ import boardifier.view.GridLook;
 
 // TODO: Adapt to the new game
 
-/**
- * Pot inherits from GridLook but overrides the renderBorders() method
- * so that a special look is given to borders copared to the default look defined
- * in GridLook. Moreover, cells have a fixed size, meaning that if an element is
- * too big to fit within a cell, it will overlap neighbors cells.
- * The default alignment is also changed and set to the middle of the cells.
- */
-public class PawnPotLook extends GridLook {
 
-    public PawnPotLook(ContainerElement containerElement) {
+public class MovementCardStackLook extends GridLook {
+
+    public MovementCardStackLook(ContainerElement containerElement) {
         super(2, 2, containerElement, -1, 1);
         setVerticalAlignment(ALIGN_MIDDLE);
         setHorizontalAlignment(ALIGN_CENTER);

@@ -7,10 +7,10 @@ import boardifier.view.GridLook;
 // TODO: Adapt to the new game
 
 
-public class CardStackLook extends GridLook {
+public class HeroCardSpreadLook extends GridLook {
 
-    public CardStackLook(ContainerElement containerElement) {
-        super(1, 1, containerElement, -1, 1);
+    public HeroCardSpreadLook(ContainerElement containerElement) {
+        super(2, 2, containerElement, -1, 1);
         setVerticalAlignment(ALIGN_MIDDLE);
         setHorizontalAlignment(ALIGN_CENTER);
     }

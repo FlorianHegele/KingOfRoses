@@ -3,7 +3,8 @@ package model;
 import boardifier.model.*;
 import model.container.KoRBoard;
 import model.container.PawnPot;
-import model.container.card.CardStack;
+import model.container.card.MovementCardStack;
+import model.container.card.HeroCardSpread;
 import model.container.card.MovementCardSpread;
 import model.element.Pawn;
 import model.element.card.HeroCard;
@@ -50,12 +51,12 @@ public class KoRStageModel extends GameStageModel {
     // define stage game elements
     private KoRBoard board;
 
-    private CardStack blueHeroCardsStack;
-    private CardStack redHeroCardsStack;
+    private HeroCardSpread blueHeroCardSpread;
+    private HeroCardSpread redHeroCardSpread;
     private HeroCard[] blueHeroCards;
     private HeroCard[] redHeroCards;
 
-    private CardStack movementCardStack;
+    private MovementCardStack movementCardStack;
     private Deque<MovementCard> movementCardDeck;
 
     private MovementCardSpread blueMovementCardsSpread;
@@ -95,20 +96,20 @@ public class KoRStageModel extends GameStageModel {
         addContainer(board);
     }
 
-    public CardStack getBlueHeroCardsStack() {
-        return blueHeroCardsStack;
+    public HeroCardSpread getBlueHeroCardSpread() {
+        return blueHeroCardSpread;
     }
-    public void setBlueHeroCardsStack(CardStack blueHeroCardsStack) {
-        this.blueHeroCardsStack = blueHeroCardsStack;
-        addContainer(blueHeroCardsStack);
+    public void setBlueHeroCardSpread(HeroCardSpread blueHeroCardSpread) {
+        this.blueHeroCardSpread = blueHeroCardSpread;
+        addContainer(blueHeroCardSpread);
     }
 
-    public CardStack getRedHeroCardsStack() {
-        return redHeroCardsStack;
+    public HeroCardSpread getRedHeroCardSpread() {
+        return redHeroCardSpread;
     }
-    public void setRedHeroCardsStack(CardStack redHeroCardsStack) {
-        this.redHeroCardsStack = redHeroCardsStack;
-        addContainer(redHeroCardsStack);
+    public void setRedHeroCardSpread(HeroCardSpread redHeroCardSpread) {
+        this.redHeroCardSpread = redHeroCardSpread;
+        addContainer(redHeroCardSpread);
     }
 
     public HeroCard[] getBlueHeroCards() {
@@ -131,10 +132,10 @@ public class KoRStageModel extends GameStageModel {
         }
     }
 
-    public CardStack getMovementCardStack() {
+    public MovementCardStack getMovementCardStack() {
         return movementCardStack;
     }
-    public void setMovementCardStack(CardStack movementCardStack) {
+    public void setMovementCardStack(MovementCardStack movementCardStack) {
         this.movementCardStack = movementCardStack;
         addElement(movementCardStack);
     }
