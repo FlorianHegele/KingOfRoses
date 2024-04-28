@@ -1,9 +1,19 @@
 package view;
 
+import boardifier.control.Logger;
 import boardifier.model.GameStageModel;
+import boardifier.view.ClassicBoardLook;
 import boardifier.view.GameStageView;
 
+import boardifier.view.TextLook;
 import model.KoRStageModel;
+import model.element.card.MovementCard;
+import view.container.PawnPotLook;
+import view.container.card.CardStackLook;
+import view.container.card.MovementCardSpreadLook;
+import view.element.PawnLook;
+import view.element.card.HeroCardLook;
+import view.element.card.MovementCardLook;
 
 // TODO : Adapt to the new game, the UI won't look like this
 
@@ -46,5 +56,66 @@ public class KoRStageView extends GameStageView {
             - create & add the look of the two pots using instances of PawnPotLook with cells of size 4x2
             - crate & add the look of the 8 pawns
          */
+
+        // create look for the text element
+        addLook(new TextLook(model.getPlayerName()));
+
+
+        /*
+         CREATE ELEMENT CONTAINERS LOOK
+         */
+
+        // create look for the main board
+        addLook(new ClassicBoardLook(2, 4, model.getBoard(), 1, 1, true));
+
+        // create look for the hero cards
+        addLook(new CardStackLook(model.getRedHeroCardsStack()));
+        addLook(new CardStackLook(model.getBlueHeroCardsStack()));
+
+        // create look for the movement deck cards
+        addLook(new CardStackLook(model.getMovementCardStack()));
+
+        // create look for the movement spread cards
+        addLook(new MovementCardSpreadLook(model.getRedMovementCardsSpread()));
+        addLook(new MovementCardSpreadLook(model.getBlueMovementCardsSpread()));
+
+        // create look for the pawn pots
+        addLook(new PawnPotLook(model.getRedPot()));
+        addLook(new PawnPotLook(model.getBluePot()));
+
+        // create look for the pawn pots
+        addLook(new PawnPotLook(model.getRedPot()));
+        addLook(new MovementCardSpreadLook(model.getBluePot()));
+
+
+        /*
+         CREATE ELEMENT LOOK
+         */
+
+        // create look for the hero cards
+        for(int i=0; i<4; i++) {
+            addLook(new HeroCardLook(model.getRedHeroCards()[i]));
+            addLook(new HeroCardLook(model.getBlueHeroCards()[i]));
+        }
+
+        // create look for the movement cards
+        for(int i=0; i<5; i++) {
+            addLook(new MovementCardLook(model.getRedMovementCards()[i]));
+            addLook(new MovementCardLook(model.getBlueMovementCards()[i]));
+        }
+
+        // create look for the pawns
+        for(int i=0; i<52; i++) {
+            addLook(new PawnLook(model.getRedPawns()[i]));
+            addLook(new PawnLook(model.getBluePawns()[i]));
+        }
+        addLook(new PawnLook(model.getKingPawn()));
+
+        // create look for the movement deck card
+        for(MovementCard movementCard : model.getMovementCardDeck()) {
+            addLook(new MovementCardLook(movementCard));
+        }
+
+        Logger.debug("finished creating game stage looks", this);
     }
 }
