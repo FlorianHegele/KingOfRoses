@@ -34,8 +34,8 @@ public class KoRConsole {
         }
 
         StageFactory.registerModelAndView("kor", "model.KoRStageModel", "view.KoRStageView");
-        View holeView = new View(model);
-        KoRController control = new KoRController(model, holeView);
+        View korView = new View(model);
+        KoRController control = new KoRController(model, korView);
         control.setFirstStageName("kor");
         try {
             control.startGame();
