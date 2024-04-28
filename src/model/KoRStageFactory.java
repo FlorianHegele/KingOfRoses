@@ -39,9 +39,8 @@ public class KoRStageFactory extends StageElementsFactory {
         CardStack redHeroCardsStack = new CardStack(12, 2, stageModel);
         stageModel.setRedHeroCardsStack(redHeroCardsStack);
 
-        // TODO : FIX VISUAL
         //create the red movements cards spread in 2,1 in the virtual space
-        MovementCardSpread redMovementCardsSpread = new MovementCardSpread(30,5, stageModel);
+        MovementCardSpread redMovementCardsSpread = new MovementCardSpread(16,2, stageModel);
         stageModel.setRedMovementCardsSpread(redMovementCardsSpread);
 
 
@@ -70,9 +69,8 @@ public class KoRStageFactory extends StageElementsFactory {
         CardStack blueHeroCardsStack = new CardStack(45, 25, stageModel);
         stageModel.setBlueHeroCardsStack(blueHeroCardsStack);
 
-        // TODO : FIX VISUAL
         //create the blue movements cards spread in 2,3 in the virtual space
-        MovementCardSpread blueMovementCardsSpread = new MovementCardSpread(30,20, stageModel);
+        MovementCardSpread blueMovementCardsSpread = new MovementCardSpread(25,25, stageModel);
         stageModel.setBlueMovementCardsSpread(blueMovementCardsSpread);
 
 
