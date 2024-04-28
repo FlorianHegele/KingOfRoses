@@ -83,10 +83,6 @@ public class KoRStageView extends GameStageView {
         addLook(new PawnPotLook(model.getRedPot()));
         addLook(new PawnPotLook(model.getBluePot()));
 
-        // create look for the pawn pots
-        addLook(new PawnPotLook(model.getRedPot()));
-        addLook(new MovementCardSpreadLook(model.getBluePot()));
-
 
         /*
          CREATE ELEMENT LOOK

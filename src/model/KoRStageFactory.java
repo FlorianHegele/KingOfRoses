@@ -26,7 +26,7 @@ public class KoRStageFactory extends StageElementsFactory {
 
         // create the text that displays the player name and put it in 0,0 in the virtual space
         TextElement text = new TextElement(stageModel.getCurrentPlayerName(), stageModel);
-        text.setLocation(0,0);
+        text.setLocation(20,0);
         stageModel.setPlayerName(text);
 
 
@@ -36,41 +36,43 @@ public class KoRStageFactory extends StageElementsFactory {
 
         // RED ELEMENT (without pawn)
         //create the red hero cards stack in 1,1 in the virtual space
-        CardStack redHeroCardsStack = new CardStack(1, 1, stageModel);
+        CardStack redHeroCardsStack = new CardStack(12, 2, stageModel);
         stageModel.setRedHeroCardsStack(redHeroCardsStack);
 
+        // TODO : FIX VISUAL
         //create the red movements cards spread in 2,1 in the virtual space
-        MovementCardSpread redMovementCardsSpread = new MovementCardSpread(2,1, stageModel);
+        MovementCardSpread redMovementCardsSpread = new MovementCardSpread(30,5, stageModel);
         stageModel.setRedMovementCardsSpread(redMovementCardsSpread);
 
 
         // MOVEMENT CARD STACK AND BOARD
         // create the movement cards stack in 0, 2
-        CardStack movementCardStack = new CardStack(0, 2, stageModel);
+        CardStack movementCardStack = new CardStack(2, 15, stageModel);
         stageModel.setMovementCardStack(movementCardStack);
 
         // create the board, in 1,2 in the virtual space
-        KoRBoard board = new KoRBoard(1, 2, stageModel);
+        KoRBoard board = new KoRBoard(10, 5, stageModel);
         stageModel.setBoard(board);
 
 
         // PAWN POT
         //create the blue pot in 25,2 in the virtual space
-        PawnPot bluePot = new PawnPot(25,2, stageModel);
+        PawnPot bluePot = new PawnPot(55,17, stageModel);
         stageModel.setBluePot(bluePot);
 
         //create the red pot in 19,2 in the virtual space
-        PawnPot redPot = new PawnPot(29,2, stageModel);
+        PawnPot redPot = new PawnPot(55,12, stageModel);
         stageModel.setRedPot(redPot);
 
 
         // BLUE ELEMENT (without pawn)
         //create the blue hero cards stack in 1,3 in the virtual space
-        CardStack blueHeroCardsStack = new CardStack(1, 3, stageModel);
+        CardStack blueHeroCardsStack = new CardStack(45, 25, stageModel);
         stageModel.setBlueHeroCardsStack(blueHeroCardsStack);
 
-        //create the red movements cards spread in 2,3 in the virtual space
-        MovementCardSpread blueMovementCardsSpread = new MovementCardSpread(2,3, stageModel);
+        // TODO : FIX VISUAL
+        //create the blue movements cards spread in 2,3 in the virtual space
+        MovementCardSpread blueMovementCardsSpread = new MovementCardSpread(30,20, stageModel);
         stageModel.setBlueMovementCardsSpread(blueMovementCardsSpread);
 
 
@@ -104,7 +106,7 @@ public class KoRStageFactory extends StageElementsFactory {
         //create red pawns
         Pawn[] redPawns = new Pawn[52];
         for(int i=0; i<52; i++) {
-            redPawns[i] = new Pawn(Pawn.Status.BLUE_PAWN, stageModel);
+            redPawns[i] = new Pawn(Pawn.Status.RED_PAWN, stageModel);
         }
         stageModel.setRedPawns(redPawns);
 

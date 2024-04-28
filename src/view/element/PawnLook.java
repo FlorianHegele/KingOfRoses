@@ -1,5 +1,6 @@
 package view.element;
 
+import boardifier.control.Logger;
 import boardifier.model.GameElement;
 import boardifier.view.ConsoleColor;
 import boardifier.view.ElementLook;
@@ -16,7 +17,7 @@ public class PawnLook extends ElementLook {
         Pawn pawn = (Pawn)element;
         Pawn.Status status = pawn.getStatus();
 
-        shape[0][0] = status.getBackgroundColor() + ConsoleColor.RESET;
+        shape[0][0] = ConsoleColor.BLACK + status.getBackgroundColor() + "P" + ConsoleColor.RESET;
     }
 
 }
