@@ -1,6 +1,13 @@
 package model;
 
 import boardifier.model.*;
+import model.container.KoRBoard;
+import model.container.PawnPot;
+import model.container.card.CardStack;
+import model.container.card.MovementCardSpread;
+import model.element.Pawn;
+import model.element.card.HeroCard;
+import model.element.card.MovementCard;
 
 import java.util.Deque;
 import java.util.Random;

@@ -3,6 +3,13 @@ package model;
 import boardifier.model.GameStageModel;
 import boardifier.model.StageElementsFactory;
 import boardifier.model.TextElement;
+import model.container.KoRBoard;
+import model.container.PawnPot;
+import model.container.card.CardStack;
+import model.container.card.MovementCardSpread;
+import model.element.Pawn;
+import model.element.card.HeroCard;
+import model.element.card.MovementCard;
 
 import java.util.*;
 
@@ -16,13 +23,6 @@ public class KoRStageFactory extends StageElementsFactory {
 
     @Override
     public void setup() {
-
-        /*
-        TODO:
-            - complete this list
-            - create the board, pots, pawns, cards and set them in the stage model
-            - assign the pawns to their cells in the pots
-         */
 
         // create the text that displays the player name and put it in 0,0 in the virtual space
         TextElement text = new TextElement(stageModel.getCurrentPlayerName(), stageModel);

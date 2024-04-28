@@ -1,4 +1,4 @@
-package model;
+package model.element.card;
 
 import boardifier.model.ElementTypes;
 import boardifier.model.GameElement;

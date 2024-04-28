@@ -1,9 +1,9 @@
-package view;
+package view.element.card;
 
 import boardifier.model.GameElement;
 import boardifier.view.ConsoleColor;
 import boardifier.view.ElementLook;
-import model.HeroCard;
+import model.element.card.HeroCard;
 
 public class HeroCardLook extends ElementLook {
 

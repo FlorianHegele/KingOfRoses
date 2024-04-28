@@ -1,4 +1,4 @@
-package model;
+package model.element.card;
 
 import boardifier.model.ElementTypes;
 import boardifier.model.GameElement;
@@ -6,22 +6,18 @@ import boardifier.model.GameStageModel;
 import boardifier.view.ConsoleColor;
 
 
-public class Pawn extends GameElement {
+public class HeroCard extends GameElement {
 
-    private Status status;
+    private final Status status;
 
-    public Pawn(Status status, GameStageModel gameStageModel) {
+    public HeroCard(Status status, GameStageModel gameStageModel) {
         super(gameStageModel);
 
         // REGISTER NEW ELEMENT TYPE
-        ElementTypes.register("pawn",50);
-        this.type = ElementTypes.getType("pawn");
+        ElementTypes.register("hero_card",52);
+        this.type = ElementTypes.getType("hero_card");
 
         this.status = status;
-    }
-
-    public void flipStatus() {
-        this.status = this.status.getOpposite();
     }
 
     public Status getStatus() {
@@ -30,9 +26,8 @@ public class Pawn extends GameElement {
 
     public enum Status {
 
-        BLUE_PAWN(ConsoleColor.BLUE_BACKGROUND),
-        RED_PAWN(ConsoleColor.RED_BACKGROUND),
-        KING_PAWN(ConsoleColor.YELLOW_BACKGROUND);
+        BLUE_CARD(ConsoleColor.BLUE_BACKGROUND),
+        RED_CARD(ConsoleColor.RED_BACKGROUND);
 
         private final String backgroundColor;
 
@@ -42,10 +37,6 @@ public class Pawn extends GameElement {
 
         public String getBackgroundColor() {
             return backgroundColor;
-        }
-
-        public Status getOpposite() {
-            return (this == BLUE_PAWN) ? RED_PAWN : BLUE_PAWN;
         }
 
     }

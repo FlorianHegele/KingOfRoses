@@ -1,9 +1,9 @@
-package view;
+package view.element;
 
 import boardifier.model.GameElement;
 import boardifier.view.ConsoleColor;
 import boardifier.view.ElementLook;
-import model.Pawn;
+import model.element.Pawn;
 
 public class PawnLook extends ElementLook {
 

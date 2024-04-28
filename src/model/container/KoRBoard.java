@@ -1,4 +1,4 @@
-package model;
+package model.container;
 
 import boardifier.model.GameStageModel;
 import boardifier.model.ContainerElement;
