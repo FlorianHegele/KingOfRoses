@@ -15,7 +15,7 @@ public class MovementCardLook extends ElementLook {
     protected void render() {
         MovementCard card = (MovementCard)element;
 
-        shape[0][0] = ConsoleColor.BLACK + ConsoleColor.WHITE_BACKGROUND + card.getDirection().getSymbole() + card.getStep() + ConsoleColor.RESET;
+        shape[0][0] = ConsoleColor.BLACK + ConsoleColor.WHITE_BACKGROUND + card.getDirection().getSymbole() + card.getStepRepresentation() + ConsoleColor.RESET;
     }
 
 }

@@ -24,6 +24,14 @@ public class MovementCard extends GameElement {
         return step;
     }
 
+    public char getStepRepresentation() {
+        final int startPoint = 8543;
+        if (step < 1 || step > 3) {
+            throw new IllegalArgumentException("Invalid step");
+        }
+        return (char) (startPoint + step);
+    }
+
     public Direction getDirection() {
         return direction;
     }
