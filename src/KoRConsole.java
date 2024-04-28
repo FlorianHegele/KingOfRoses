@@ -1,3 +1,4 @@
+import boardifier.control.Logger;
 import boardifier.model.GameException;
 import boardifier.view.View;
 import control.KoRController;
@@ -6,8 +7,11 @@ import boardifier.control.StageFactory;
 import boardifier.model.Model;
 
 public class KoRConsole {
+
     public static void main(String[] args) {
 
+        Logger.setLevel(Logger.LOGGER_TRACE);
+        Logger.setVerbosity(Logger.VERBOSE_HIGH);
         int mode = 0;
         if (args.length == 1) {
             try {
@@ -18,11 +22,27 @@ public class KoRConsole {
             }
         }
         Model model = new Model();
-        // TODO : add both players to model taking mode value into account
-        // TODO : register the model and view class names (i.e model.KoRStageModel & view.KoRStageView)
-        // TODO : create the controller
-        // TODO : set the name of the first stage to use when starting the game
-        // TODO : start the game
-        // TODO : start the stage loop.
+        if (mode == 0) {
+            model.addHumanPlayer("player1");
+            model.addHumanPlayer("player2");
+        } else if (mode == 1) {
+            model.addHumanPlayer("player");
+            model.addComputerPlayer("computer");
+        } else if (mode == 2) {
+            model.addComputerPlayer("computer1");
+            model.addComputerPlayer("computer2");
+        }
+
+        StageFactory.registerModelAndView("kor", "model.KoRStageModel", "view.KoRStageView");
+        View holeView = new View(model);
+        KoRController control = new KoRController(model, holeView);
+        control.setFirstStageName("kor");
+        try {
+            control.startGame();
+            control.stageLoop();
+        } catch (GameException e) {
+            System.out.println("Cannot start the game. Abort");
+        }
     }
+
 }
