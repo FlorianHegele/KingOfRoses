@@ -7,7 +7,6 @@ SOURCE_DIR="./src/"
 
 echo "Compiling KoRConsole"
 javac $MODULES -d $OUT_DIR --source-path $SOURCE_DIR $(find $SOURCE_DIR -name "*.java")
-
 if [ $? -ne 0 ]; then
     echo "Compilation failed"
     exit 1
