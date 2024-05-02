@@ -131,8 +131,8 @@ public class KoRStageFactory extends StageElementsFactory {
 
         // put hero card in stack
         for (int i=0;i<4;i++) {
-            redHeroCardSpread.addElement(redHeroCards[i], i,0);
-            blueHeroCardSpread.addElement(blueHeroCards[i], i,0);
+            redHeroCardSpread.addElement(redHeroCards[i], 0,0);
+            blueHeroCardSpread.addElement(blueHeroCards[i], 0,0);
         }
 
 
@@ -153,8 +153,8 @@ public class KoRStageFactory extends StageElementsFactory {
 
         // put pawn in pot
         for (int i=0;i<26;i++) {
-            redPot.addElement(redPawns[i], i,0);
-            bluePot.addElement(bluePawns[i], i,0);
+            redPot.addElement(redPawns[i], 0,0);
+            bluePot.addElement(bluePawns[i], 0,0);
         }
 
         //create king pawn
@@ -202,10 +202,8 @@ public class KoRStageFactory extends StageElementsFactory {
         }
         stageModel.setBlueMovementCards(blueMovementCards);
 
-        int i =0;
         for(MovementCard movementCard : movementCardDeck) {
-            movementCardStack.addElement(movementCard, i, 0);
-            i++;
+            movementCardStack.addElement(movementCard, 0, 0);
         }
         stageModel.setMovementCardDeck(movementCardDeck);
     }

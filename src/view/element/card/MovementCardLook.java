@@ -7,11 +7,10 @@ import model.element.card.MovementCard;
 
 public class MovementCardLook extends ElementLook {
 
-    // TODO : BUG HERE
-
     public MovementCardLook(GameElement element) {
         // Pawn look is constituted of a single character, so shape size = 1x1
         super(element, 1, 2);
+        setAnchorType(ElementLook.ANCHOR_TOPLEFT);
     }
 
     protected void render() {
