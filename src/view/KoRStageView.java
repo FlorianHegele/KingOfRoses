@@ -58,6 +58,10 @@ public class KoRStageView extends GameStageView {
 
         // create look for the text element
         addLook(new TextLook(model.getPlayerName()));
+        addLook(new TextLook(model.getActionDescription1()));
+        addLook(new TextLook(model.getActionDescription2()));
+        addLook(new TextLook(model.getActionDescription3()));
+        addLook(new TextLook(model.getActionDescription4()));
         addLook(new TextLook(model.getMovementCardStackText()));
         addLook(new TextLook(model.getBlueHeroCardText()));
         addLook(new TextLook(model.getRedHeroCardText()));

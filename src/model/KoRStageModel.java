@@ -73,7 +73,14 @@ public class KoRStageModel extends GameStageModel {
 
     private Pawn kingPawn;
 
+    // TEXT
     private TextElement playerName;
+
+    private TextElement actionDescription1;
+    private TextElement actionDescription2;
+    private TextElement actionDescription3;
+    private TextElement actionDescription4;
+
     private TextElement movementCardStackText;
     private TextElement bluePawnText;
     private TextElement redPawnText;
@@ -244,6 +251,38 @@ public class KoRStageModel extends GameStageModel {
     public void setPlayerName(TextElement playerName) {
         this.playerName = playerName;
         addElement(playerName);
+    }
+
+    public TextElement getActionDescription1() {
+        return actionDescription1;
+    }
+    public void setActionDescription1(TextElement actionDescription1) {
+        this.actionDescription1 = actionDescription1;
+        addElement(actionDescription1);
+    }
+
+    public TextElement getActionDescription2() {
+        return actionDescription2;
+    }
+    public void setActionDescription2(TextElement actionDescription2) {
+        this.actionDescription2 = actionDescription2;
+        addElement(actionDescription2);
+    }
+
+    public TextElement getActionDescription3() {
+        return actionDescription3;
+    }
+    public void setActionDescription3(TextElement actionDescription3) {
+        this.actionDescription3 = actionDescription3;
+        addElement(actionDescription3);
+    }
+
+    public TextElement getActionDescription4() {
+        return actionDescription4;
+    }
+    public void setActionDescription4(TextElement actionDescription4) {
+        this.actionDescription4 = actionDescription4;
+        addElement(actionDescription4);
     }
 
     public TextElement getMovementCardStackText() {

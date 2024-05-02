@@ -25,9 +25,26 @@ public class KoRStageFactory extends StageElementsFactory {
     @Override
     public void setup() {
         // create the text that displays the player name and put it in 0,0 in the virtual space
-        TextElement text = new TextElement(stageModel.getCurrentPlayerName(), stageModel);
-        text.setLocation(0,1);
-        stageModel.setPlayerName(text);
+        TextElement playerText = new TextElement(stageModel.getCurrentPlayerName(), stageModel);
+        playerText.setLocation(0,1);
+        stageModel.setPlayerName(playerText);
+
+        // ACTION DESCRIPTION
+        TextElement actionDescriptionText1 = new TextElement("Liste des actions", stageModel);
+        actionDescriptionText1.setLocation(63,6);
+        stageModel.setActionDescription1(actionDescriptionText1);
+
+        TextElement actionDescriptionText2 = new TextElement("Piocher une carte Déplacement -> P", stageModel);
+        actionDescriptionText2.setLocation(63,8);
+        stageModel.setActionDescription2(actionDescriptionText2);
+
+        TextElement actionDescriptionText3 = new TextElement("Utiliser une carte Déplacement -> D", stageModel);
+        actionDescriptionText3.setLocation(63,10);
+        stageModel.setActionDescription3(actionDescriptionText3);
+
+        TextElement actionDescriptionText4 = new TextElement("Utiliser une carte Héro & Déplacement -> H", stageModel);
+        actionDescriptionText4.setLocation(63,12);
+        stageModel.setActionDescription4(actionDescriptionText4);
 
         TextElement movementCardStackText = new TextElement(String.valueOf(stageModel.getMovementCardStackToPlay()), stageModel);
         movementCardStackText.setLocation(28,1);
