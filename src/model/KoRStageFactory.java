@@ -24,12 +24,30 @@ public class KoRStageFactory extends StageElementsFactory {
 
     @Override
     public void setup() {
-
         // create the text that displays the player name and put it in 0,0 in the virtual space
         TextElement text = new TextElement(stageModel.getCurrentPlayerName(), stageModel);
-        text.setLocation(20,0);
+        text.setLocation(0,1);
         stageModel.setPlayerName(text);
 
+        TextElement movementCardStackText = new TextElement(String.valueOf(stageModel.getMovementCardStackToPlay()), stageModel);
+        movementCardStackText.setLocation(28,1);
+        stageModel.setMovementCardStackText(movementCardStackText);
+
+        TextElement textBluePawn = new TextElement(String.valueOf(stageModel.getBluePawnsToPlay()), stageModel);
+        textBluePawn.setLocation(12,28);
+        stageModel.setBluePawnText(textBluePawn);
+
+        TextElement textRedPawn = new TextElement(String.valueOf(stageModel.getRedPawnsToPlay()), stageModel);
+        textRedPawn.setLocation(44,28);
+        stageModel.setRedPawnText(textRedPawn);
+
+        TextElement textBlueCardHero = new TextElement(String.valueOf(stageModel.getBlueHeroCardToPlay()), stageModel);
+        textBlueCardHero.setLocation(3,5);
+        stageModel.setBlueHeroCardText(textBlueCardHero);
+
+        TextElement textRedCardHero = new TextElement(String.valueOf(stageModel.getRedHeroCardToPlay()), stageModel);
+        textRedCardHero.setLocation(54,5);
+        stageModel.setRedHeroCardText(textRedCardHero);
 
         /*
          CREATE ELEMENT CONTAINERS
@@ -103,21 +121,21 @@ public class KoRStageFactory extends StageElementsFactory {
 
         // PAWN
         //create red pawns
-        Pawn[] redPawns = new Pawn[52];
-        for(int i=0; i<52; i++) {
+        Pawn[] redPawns = new Pawn[26];
+        for(int i=0; i<26; i++) {
             redPawns[i] = new Pawn(Pawn.Status.RED_PAWN, stageModel);
         }
         stageModel.setRedPawns(redPawns);
 
         //create blue pawns
-        Pawn[] bluePawns = new Pawn[52];
-        for(int i=0; i<52; i++) {
+        Pawn[] bluePawns = new Pawn[26];
+        for(int i=0; i<26; i++) {
             bluePawns[i] = new Pawn(Pawn.Status.BLUE_PAWN, stageModel);
         }
         stageModel.setBluePawns(bluePawns);
 
         // put pawn in pot
-        for (int i=0;i<52;i++) {
+        for (int i=0;i<26;i++) {
             redPot.addElement(redPawns[i], i,0);
             bluePot.addElement(bluePawns[i], i,0);
         }

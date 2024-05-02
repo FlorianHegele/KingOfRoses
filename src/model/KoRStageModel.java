@@ -41,6 +41,8 @@ import java.util.Random;
 public class KoRStageModel extends GameStageModel {
 
     // define stage state variables
+    private int movementCardStackToPlay;
+
     private int blueHeroCardToPlay;
     private int redHeroCardToPlay;
 
@@ -72,18 +74,24 @@ public class KoRStageModel extends GameStageModel {
     private Pawn kingPawn;
 
     private TextElement playerName;
+    private TextElement movementCardStackText;
+    private TextElement bluePawnText;
+    private TextElement redPawnText;
+    private TextElement blueHeroCardText;
+    private TextElement redHeroCardText;
 
     // Uncomment next line if the example with a main container is used. see end of KoRStageFactory and KoRStageView
     //private ContainerElement mainContainer;
 
     public KoRStageModel(String name, Model model) {
         super(name, model);
+        movementCardStackToPlay = 24;
 
         blueHeroCardToPlay = 4;
         redHeroCardToPlay = 4;
 
-        bluePawnsToPlay = 52;
-        redPawnsToPlay = 52;
+        bluePawnsToPlay = 26;
+        redPawnsToPlay = 26;
 
         setupCallbacks();
     }
@@ -238,6 +246,45 @@ public class KoRStageModel extends GameStageModel {
         addElement(playerName);
     }
 
+    public TextElement getMovementCardStackText() {
+        return movementCardStackText;
+    }
+    public void setMovementCardStackText(TextElement movementCardStackText) {
+        this.movementCardStackText = movementCardStackText;
+        addElement(movementCardStackText);
+    }
+
+    public TextElement getBluePawnText() {
+        return bluePawnText;
+    }
+    public void setBluePawnText(TextElement bluePawnText) {
+        this.bluePawnText = bluePawnText;
+        addElement(bluePawnText);
+    }
+
+    public TextElement getRedPawnText() {
+        return redPawnText;
+    }
+    public void setRedPawnText(TextElement redPawnText) {
+        this.redPawnText = redPawnText;
+        addElement(redPawnText);
+    }
+
+    public TextElement getBlueHeroCardText() {
+        return blueHeroCardText;
+    }
+    public void setBlueHeroCardText(TextElement blueHeroCardText) {
+        this.blueHeroCardText = blueHeroCardText;
+        addElement(blueHeroCardText);
+    }
+
+    public TextElement getRedHeroCardText() {
+        return redHeroCardText;
+    }
+    public void setRedHeroCardText(TextElement redHeroCardText) {
+        this.redHeroCardText = redHeroCardText;
+        addElement(redHeroCardText);
+    }
 
     // TODO : REWRITE THE ENTIER CODE OF THIS FUNCTION
     private void setupCallbacks() {
@@ -266,6 +313,30 @@ public class KoRStageModel extends GameStageModel {
         model.setIdWinner(idWinner);
         // stop de the game
         model.stopStage();
+    }
+
+    public int getMovementCardStackToPlay() {
+        return movementCardStackToPlay;
+    }
+
+    public void setMovementCardStackToPlay(int movementCardStackToPlay) {
+        this.movementCardStackToPlay = movementCardStackToPlay;
+    }
+
+    public int getBlueHeroCardToPlay() {
+        return blueHeroCardToPlay;
+    }
+
+    public int getBluePawnsToPlay() {
+        return bluePawnsToPlay;
+    }
+
+    public int getRedHeroCardToPlay() {
+        return redHeroCardToPlay;
+    }
+
+    public int getRedPawnsToPlay() {
+        return redPawnsToPlay;
     }
 
     @Override

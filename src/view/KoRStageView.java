@@ -16,8 +16,6 @@ import view.element.PawnLook;
 import view.element.card.HeroCardLook;
 import view.element.card.MovementCardLook;
 
-// TODO : Adapt to the new game, the UI won't look like this
-
 /**
  * KoRStageView has to create all the looks for all game elements created by the KoRStageFactory.
  * The desired UI is the following:
@@ -60,6 +58,11 @@ public class KoRStageView extends GameStageView {
 
         // create look for the text element
         addLook(new TextLook(model.getPlayerName()));
+        addLook(new TextLook(model.getMovementCardStackText()));
+        addLook(new TextLook(model.getBlueHeroCardText()));
+        addLook(new TextLook(model.getRedHeroCardText()));
+        addLook(new TextLook(model.getRedPawnText()));
+        addLook(new TextLook(model.getBluePawnText()));
 
 
         /*
@@ -73,7 +76,6 @@ public class KoRStageView extends GameStageView {
         addLook(new HeroCardSpreadLook(model.getRedHeroCardSpread()));
         addLook(new HeroCardSpreadLook(model.getBlueHeroCardSpread()));
 
-        // TODO : create deck
         // create look for the movement deck cards
         addLook(new MovementCardStackLook(model.getMovementCardStack()));
 
@@ -104,13 +106,12 @@ public class KoRStageView extends GameStageView {
         }
 
         // create look for the pawns
-        for(int i=0; i<52; i++) {
+        for(int i=0; i<26; i++) {
             addLook(new PawnLook(model.getRedPawns()[i]));
             addLook(new PawnLook(model.getBluePawns()[i]));
         }
         addLook(new PawnLook(model.getKingPawn()));
 
-        // TODO : create deck
         // create look for the movement deck card
         for(MovementCard movementCard : model.getMovementCardDeck()) {
             addLook(new MovementCardLook(movementCard));
