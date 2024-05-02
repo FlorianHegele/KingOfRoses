@@ -43,13 +43,13 @@ public class KoRStageFactory extends StageElementsFactory {
 
         // MOVEMENT CARD STACK
         // create the movement cards stack in 0, 2
-        MovementCardStack movementCardStack = new MovementCardStack(130, 2, stageModel);
+        MovementCardStack movementCardStack = new MovementCardStack(28, 2, stageModel);
         stageModel.setMovementCardStack(movementCardStack);
 
 
         // RED ELEMENT
         //create the red hero cards stack in 1,1 in the virtual space
-        HeroCardSpread redHeroCardSpread = new HeroCardSpread(93, 6, stageModel);
+        HeroCardSpread redHeroCardSpread = new HeroCardSpread(53, 6, stageModel);
         stageModel.setRedHeroCardSpread(redHeroCardSpread);
 
         //create the red movements cards spread in 2,1 in the virtual space
@@ -63,7 +63,7 @@ public class KoRStageFactory extends StageElementsFactory {
 
         // BLUE ELEMENT
         //create the blue hero cards stack in 1,3 in the virtual space
-        HeroCardSpread blueHeroCardSpread = new HeroCardSpread(72, 6, stageModel);
+        HeroCardSpread blueHeroCardSpread = new HeroCardSpread(2, 6, stageModel);
         stageModel.setBlueHeroCardSpread(blueHeroCardSpread);
 
         //create the blue movements cards spread in 2,3 in the virtual space
