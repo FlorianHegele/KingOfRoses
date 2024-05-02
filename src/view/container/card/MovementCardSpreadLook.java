@@ -4,15 +4,15 @@ import boardifier.control.Logger;
 import boardifier.model.ContainerElement;
 import boardifier.view.GridLook;
 
-// TODO: Adapt to the new game
+// FIXME : Bug décalage élément
+// Element décalé de 1
 
 
 public class MovementCardSpreadLook extends GridLook {
 
     public MovementCardSpreadLook(ContainerElement containerElement) {
-        super(3, 2, containerElement, 2, 2);
-        setVerticalAlignment(ALIGN_MIDDLE);
-        setHorizontalAlignment(ALIGN_CENTER);
+        super(4, 2, containerElement, 2, 1);
+        setVerticalAlignment(ALIGN_TOP);
     }
 
 }
