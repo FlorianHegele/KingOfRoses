@@ -3,6 +3,7 @@ package control;
 import boardifier.control.ActionFactory;
 import boardifier.control.ActionPlayer;
 import boardifier.control.Controller;
+import boardifier.control.Logger;
 import boardifier.model.GameElement;
 import boardifier.model.ContainerElement;
 import boardifier.model.Model;
@@ -57,7 +58,7 @@ public class KoRController extends Controller {
                 System.out.print(p.getName() + " > ");
                 try {
                     String line = consoleIn.readLine();
-                    if (line.length() == 3) {
+                    if (!line.isEmpty() && line.length() <= 2) {
                         ok = analyseAndPlay(line);
                     }
                     if (!ok) {
@@ -79,6 +80,8 @@ public class KoRController extends Controller {
 
     private boolean analyseAndPlay(String line) {
         KoRStageModel gameStage = (KoRStageModel) model.getGameStage();
+
+        /*
         // get the pawn value from the first char
         int pawnIndex = (int) (line.charAt(0) - '1');
         if ((pawnIndex < 0) || (pawnIndex > 3)) return false;
@@ -100,12 +103,47 @@ public class KoRController extends Controller {
         // compute valid cells for the chosen pawn
         gameStage.getBoard().setValidCells(null);
         if (!gameStage.getBoard().canReachCell(row, col)) return false;
+        */
 
-        ActionList actions = ActionFactory.generatePutInContainer(model, pawn, "KoRboard", row, col);
+        final char action = line.charAt(0);
+        final int length = line.length();
+        if(action == 'P') {
+            // TODO : CHECK TOTAL PLAYER CARD IF < 5
+            if(length != 1) return false;
+            // TODO : TAKE A CARD FROM THE DECK
+        } else if (action == 'D') {
+            // TODO : CHECK TOTAL PLAYER CARD IF > 0
+            if(length != 2) return false;
+            final int posCard = getIntFromString(line.substring(1));
+
+            if(posCard == -1) return false;
+        } else if (action == 'H') {
+            // TODO : CHECK TOTAL PLAYER CARD IF > 0 ??
+            // TODO : CHECK TOTAL HERO PLAYER CARD IF > 0
+            if(length != 2) return false;
+            final int posCard = getIntFromString(line.substring(1));
+
+            if(posCard == -1) return false;
+        } else {
+            return false;
+        }
+        Logger.trace("action : " + line);
+
+        ActionList actions = ActionFactory.generatePutInContainer(model, null, "KoRboard", -1, -1);
         actions.setDoEndOfTurn(true); // after playing this action list, it will be the end of turn for current player.
         ActionPlayer play = new ActionPlayer(model, this, actions);
         play.start();
         return true;
+    }
+
+    public static int getIntFromString(String str) {
+        int resultat;
+        try {
+            resultat = Integer.parseInt(str);
+        } catch (NumberFormatException e) {
+            resultat = -1;
+        }
+        return resultat;
     }
 
 }
