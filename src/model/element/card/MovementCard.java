@@ -47,14 +47,27 @@ public class MovementCard extends GameElement {
         return direction;
     }
 
+    public Coord2D getDirectionVector() {
+        return direction.getVecteur().multiply(step);
+    }
+
+    @Override
+    public String toString() {
+        return "MovementCard{" +
+                "step=" + step +
+                ", direction=" + direction +
+                ", isInStack=" + isInStack +
+                '}';
+    }
+
     public enum Direction {
-        NORTH(1, 0, "\u2191"),
-        NORTHEAST(1, 1, "\u2197"),
-        EAST(0, 1, "\u2192"),
-        SOUTHEAST(1, -1, "\u2198"),
-        SOUTH(0, -1, "\u2193"),
-        SOUTHWEST(-1, -1, "\u2199"),
-        WEST(-1, 1, "\u2190"),
+        NORTH(0, -1, "\u2191"),
+        NORTHEAST(1, -1, "\u2197"),
+        EAST(1, 0, "\u2192"),
+        SOUTHEAST(1, 1, "\u2198"),
+        SOUTH(0, 1, "\u2193"),
+        SOUTHWEST(-1, 1, "\u2199"),
+        WEST(-1, 0, "\u2190"),
         NORTHWEST(-1, -1, "\u2196");
 
         private final Coord2D vecteur;
