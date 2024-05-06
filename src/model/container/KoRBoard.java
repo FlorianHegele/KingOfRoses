@@ -1,5 +1,6 @@
 package model.container;
 
+import boardifier.model.GameElement;
 import boardifier.model.GameStageModel;
 import boardifier.model.ContainerElement;
 import model.element.Pawn;
@@ -20,8 +21,7 @@ public class KoRBoard extends ContainerElement {
         // call the super-constructor to create a 9x9 grid, named "KoR", and in x,y in space
         super("KoRboard", x, y, 9 , 9, gameStageModel);
     }
-
-    // TODO : check if this method works with the new board size
+    // TODO : REWRITE CODE HERE
     public void setValidCells(Pawn pawn) {
         resetReachableCells(false);
         List<Point> valid = computeValidCells(pawn);
