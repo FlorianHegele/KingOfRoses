@@ -4,6 +4,7 @@ import boardifier.model.ElementTypes;
 import boardifier.model.GameElement;
 import boardifier.model.GameStageModel;
 import boardifier.view.ConsoleColor;
+import model.PlayerData;
 
 
 public class HeroCard extends GameElement {
@@ -26,13 +27,23 @@ public class HeroCard extends GameElement {
 
     public enum Status {
 
-        BLUE_CARD(ConsoleColor.BLUE_BACKGROUND),
-        RED_CARD(ConsoleColor.RED_BACKGROUND);
+        BLUE_CARD(PlayerData.PLAYER_BLUE),
+        RED_CARD(PlayerData.PLAYER_RED);
 
+        private final int id;
         private final String backgroundColor;
 
-        Status(String backgroundColor) {
+        Status(PlayerData playerData) {
+            this(playerData.getId(), playerData.getBackgroundColor());
+        }
+
+        Status(int id, String backgroundColor) {
+            this.id = id;
             this.backgroundColor = backgroundColor;
+        }
+
+        public int getId() {
+            return id;
         }
 
         public String getBackgroundColor() {

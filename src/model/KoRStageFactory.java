@@ -1,6 +1,7 @@
 package model;
 
 import boardifier.model.GameStageModel;
+import boardifier.model.Player;
 import boardifier.model.StageElementsFactory;
 import boardifier.model.TextElement;
 import model.container.KoRBoard;
@@ -88,7 +89,7 @@ public class KoRStageFactory extends StageElementsFactory {
         stageModel.setRedHeroCardSpread(redHeroCardSpread);
 
         //create the red movements cards spread in 2,1 in the virtual space
-        MovementCardSpread redMovementCardsSpread = new MovementCardSpread(53,9, stageModel);
+        MovementCardSpread redMovementCardsSpread = new MovementCardSpread(PlayerData.PLAYER_RED, 53,9, stageModel);
         stageModel.setRedMovementCardsSpread(redMovementCardsSpread);
 
         //create the red pot in 19,2 in the virtual space
@@ -102,7 +103,7 @@ public class KoRStageFactory extends StageElementsFactory {
         stageModel.setBlueHeroCardSpread(blueHeroCardSpread);
 
         //create the blue movements cards spread in 2,3 in the virtual space
-        MovementCardSpread blueMovementCardsSpread = new MovementCardSpread(2,9, stageModel);
+        MovementCardSpread blueMovementCardsSpread = new MovementCardSpread(PlayerData.PLAYER_BLUE, 2,9, stageModel);
         stageModel.setBlueMovementCardsSpread(blueMovementCardsSpread);
 
         //create the blue pot in 25,2 in the virtual space
