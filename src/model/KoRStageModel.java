@@ -43,6 +43,9 @@ public class KoRStageModel extends GameStageModel {
     // define stage state variables
     private int movementCardStackToPlay;
 
+    private int blueMovementCardToPlay;
+    private int redMovementCardToPlay;
+
     private int blueHeroCardToPlay;
     private int redHeroCardToPlay;
 
@@ -93,6 +96,9 @@ public class KoRStageModel extends GameStageModel {
     public KoRStageModel(String name, Model model) {
         super(name, model);
         movementCardStackToPlay = 24;
+
+        blueMovementCardToPlay = 5;
+        redMovementCardToPlay = 5;
 
         blueHeroCardToPlay = 4;
         redHeroCardToPlay = 4;
@@ -378,8 +384,35 @@ public class KoRStageModel extends GameStageModel {
         return redPawnsToPlay;
     }
 
+    public int getBlueMovementCardToPlay() {
+        return blueMovementCardToPlay;
+    }
+
+    public int getRedMovementCardToPlay() {
+        return redMovementCardToPlay;
+    }
+
     @Override
     public StageElementsFactory getDefaultElementFactory() {
         return new KoRStageFactory(this);
+    }
+
+    public Coord2D getElementPosition(GameElement gameElement, ContainerElement containerElement) {
+        for(int x=0; x<containerElement.getNbRows(); x++) {
+            for(int y=0; y<containerElement.getNbCols(); y++) {
+                if(containerElement.isEmptyAt(x, y)) continue;
+                if(containerElement.getElement(x ,y).getType() == gameElement.getType()) return new Coord2D(x, y);
+            }
+        }
+        return null;
+    }
+
+    public Coord2D geEmptyPosition(ContainerElement containerElement) {
+        for(int x=0; x<containerElement.getNbRows(); x++) {
+            for(int y=0; y<containerElement.getNbCols(); y++) {
+                if(containerElement.isEmptyAt(x, y)) return new Coord2D(x, y);
+            }
+        }
+        return null;
     }
 }
