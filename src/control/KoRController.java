@@ -63,7 +63,7 @@ public class KoRController extends Controller {
                     if (!ok) {
                         System.out.println("incorrect instruction. retry !");
                     }
-                } catch (IOException e) {
+                } catch (IOException ignored) {
                 }
             }
         }
@@ -79,30 +79,6 @@ public class KoRController extends Controller {
 
     private boolean analyseAndPlay(String line) {
         KoRStageModel gameStage = (KoRStageModel) model.getGameStage();
-
-        /*
-        // get the pawn value from the first char
-        int pawnIndex = (int) (line.charAt(0) - '1');
-        if ((pawnIndex < 0) || (pawnIndex > 3)) return false;
-        // get the ccords in the board
-        int col = (int) (line.charAt(1) - 'A');
-        int row = (int) (line.charAt(2) - '1');
-        // check coords validity
-        if ((row < 0) || (row > 2)) return false;
-        if ((col < 0) || (col > 2)) return false;
-        // check if the pawn is still in its pot
-        ContainerElement pot = null;
-        if (model.getIdPlayer() == Pawn.Status.BLUE_PAWN.getID()) {
-            pot = gameStage.getBluePot();
-        } else {
-            pot = gameStage.getRedPot();
-        }
-        if (pot.isEmptyAt(pawnIndex, 0)) return false;
-        GameElement pawn = pot.getElement(pawnIndex, 0);
-        // compute valid cells for the chosen pawn
-        gameStage.getBoard().setValidCells(null);
-        if (!gameStage.getBoard().canReachCell(row, col)) return false;
-        */
 
         final char action = line.charAt(0);
         final int length = line.length();
@@ -126,56 +102,51 @@ public class KoRController extends Controller {
             actions = ActionFactory.generatePutInContainer(model, gameStage.getMovementCardStack(), container.getName(), (int) coord2D.getX(), (int) coord2D.getY());
 
         } else if (action == 'D') {
-            // TODO : CHECK TOTAL PLAYER CARD IF > 0
             if(length != 2) return false;
-            final int posCard = getIntFromString(line.substring(1));
+            final int indexCard = getIntFromString(line.substring(1));
 
-            if(posCard == -1) return false;
+            if(indexCard == -1) return false;
 
-            final int pawnToPlay;
-            final int cardToPlay;
             final PawnPot pawnPot;
             final MovementCardSpread movementCardSpread;
             if (model.getIdPlayer() == PlayerData.PLAYER_BLUE.getId()) {
-                pawnToPlay = gameStage.getBluePawnsToPlay();
-                cardToPlay = gameStage.getBlueMovementCardToPlay();
-
                 pawnPot = gameStage.getBluePot();
                 movementCardSpread = gameStage.getBlueMovementCardsSpread();
             } else {
-                pawnToPlay = gameStage.getRedPawnsToPlay();
-                cardToPlay = gameStage.getRedMovementCardToPlay();
-
                 pawnPot = gameStage.getRedPot();
                 movementCardSpread = gameStage.getRedMovementCardsSpread();
             }
 
-            // IMPOSSIBLE TECHNIQUEMENT
-            if(pawnToPlay == 0) {
+            // SI N'A PLUS DE PION (IMPOSSIBLE TECHNIQUEMENT)
+            if(pawnPot.isEmptyAt(0, 0)) {
+                Logger.trace("Bug ICI, normalement le joueur est obligé de passer son tour.");
                 System.out.println("Vous n'avez plus de pion à jouer!");
             }
 
-            if(cardToPlay == 0) {
+            // SI N'A PLUS DE CARTE MOUVEMENT
+            if(movementCardSpread.isEmpty()) {
                 System.out.println("Vous n'avez pas de carte mouvement à jouer.\nPiocher une carte!");
                 return false;
             }
 
-            if (pawnPot.isEmptyAt(0,0)) {
-                Logger.trace("Bug ICI, normalement le joueur est obligé de passer son tour.");
-                return false;
-            }
-
-            if(movementCardSpread.isEmptyAt(0, posCard-1)) {
+            if(movementCardSpread.isEmptyAt(indexCard-1, 0)) {
                 System.out.println("Sélectionner une carte que vous possédez.");
                 return false;
             }
 
             final KoRBoard board = gameStage.getBoard();
-            final MovementCard movementCard = (MovementCard) movementCardSpread.getElement(0, posCard-1);
+            final MovementCard movementCard = (MovementCard) movementCardSpread.getElement(indexCard-1, 0);
             final GameElement pawn = pawnPot.getElement(0, 0);
 
             final GameElement king = gameStage.getKingPawn();
-            final Coord2D newKingPos = gameStage.getElementPosition(king, board).add(movementCard.getDirection().getVecteur(), movementCard.getStep());
+            final Coord2D kingPos = gameStage.getElementPosition(king, board);
+            final Coord2D vector = movementCard.getDirectionVector();
+            final Coord2D newKingPos = kingPos.add(vector);
+
+            System.out.println("king pos " + kingPos);
+            System.out.println("vector " + vector);
+            System.out.println("new king pos " + newKingPos);
+
             final int newX = (int) newKingPos.getX();
             final int newY = (int) newKingPos.getY();
 
@@ -185,12 +156,17 @@ public class KoRController extends Controller {
                 return false;
             }
 
-            // Move King Pawn
-            actions = ActionFactory.generateMoveWithinContainer(model, king, newX, newY);
-            // Move Player Pawn
-            actions.addAll(ActionFactory.generatePutInContainer(model, pawn, board.getName(), newX, newY));
+            Logger.trace("Initial coord -> x " + gameStage.getElementPosition(king, board).getX() + " , y " + gameStage.getElementPosition(king, board).getY());
+            Logger.trace("x : " + newX + ", y : " + newY + " | " + (model.getIdPlayer() == PlayerData.PLAYER_BLUE.getId() ? "blue" : "red"));
+            Logger.trace(movementCard.toString());
+
             // Remove Player Movement Card from his deck
-            actions.addAll(ActionFactory.generateRemoveFromContainer(model, movementCard));
+            actions = ActionFactory.generateRemoveFromStage(model, movementCard);
+            // Move Player Pawn
+            //actions.addAll(ActionFactory.generatePutInContainer(model, pawn, board.getName(), newX, newY));
+            // Move King Pawn
+            actions.addAll(ActionFactory.generateMoveWithinContainer(model, king, newX, newY));
+
         } else if (action == 'H') {
             // TODO : CHECK TOTAL PLAYER CARD IF > 0 ??
             // TODO : CHECK TOTAL HERO PLAYER CARD IF > 0
