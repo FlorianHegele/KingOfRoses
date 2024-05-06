@@ -1,5 +1,6 @@
 package model.element.card;
 
+import boardifier.model.Coord2D;
 import boardifier.model.ElementTypes;
 import boardifier.model.GameElement;
 import boardifier.model.GameStageModel;
@@ -46,29 +47,30 @@ public class MovementCard extends GameElement {
         return direction;
     }
 
-    @Override
-    public String toString() {
-        return "MovementCard{" +
-                "step=" + step +
-                ", direction=" + direction +
-                ", isInStack=" + isInStack +
-                '}';
-    }
-
     public enum Direction {
-        NORTH("\u2191"),
-        NORTHEAST("\u2197"),
-        EAST("\u2192"),
-        SOUTHEAST("\u2198"),
-        SOUTH("\u2193"),
-        SOUTHWEST("\u2199"),
-        WEST("\u2190"),
-        NORTHWEST("\u2196");
+        NORTH(1, 0, "\u2191"),
+        NORTHEAST(1, 1, "\u2197"),
+        EAST(0, 1, "\u2192"),
+        SOUTHEAST(1, -1, "\u2198"),
+        SOUTH(0, -1, "\u2193"),
+        SOUTHWEST(-1, -1, "\u2199"),
+        WEST(-1, 1, "\u2190"),
+        NORTHWEST(-1, -1, "\u2196");
 
+        private final Coord2D vecteur;
         private final String symbole;
 
-        Direction(String symbole) {
+        Direction(int dx, int dy, String symbole) {
+            this(new Coord2D(dx, dy), symbole);
+        }
+
+        Direction(Coord2D vecteur, String symbole) {
             this.symbole = symbole;
+            this.vecteur = vecteur;
+        }
+
+        public Coord2D getVecteur() {
+            return vecteur;
         }
 
         public String getSymbole() {
