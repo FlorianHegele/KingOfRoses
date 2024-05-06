@@ -33,6 +33,18 @@ public class Coord2D {
         return new Coord2D(this.x+x, this.y+y);
     }
 
+    public Coord2D add (Coord2D other) {
+        return add(other.getX(), other.getY());
+    }
+
+    public Coord2D add (Coord2D other, double scale) {
+        return add(other.getX() * scale, other.getY() * scale);
+    }
+
+    public Coord2D add (Coord2D other, Coord2D scale) {
+        return add(other.getX() * scale.getX(), other.getY() * scale.getY());
+    }
+
     public Coord2D subtract (double x, double y) {
         return new Coord2D(this.x-x, this.y-y);
     }
