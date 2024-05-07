@@ -156,7 +156,7 @@ public class KoRController extends Controller {
             final int row = (int) pos.getY();
 
             // SI ON NE PEUT PAS ATTEINDRE LA CASE AVEC LA CARTE
-            if(!board.canReachCell(row, col)) {
+            if(!board.canReachCell(row, col) || !board.isEmptyAt(row, col)) {
                 System.out.println("Vous ne pouvez pas jouer cette carte!");
                 Logger.info("Sortie de tableau");
                 return false;
