@@ -386,38 +386,89 @@ public class KoRStageModel extends GameStageModel {
         if(countMovementCards < 5) {
             // RAJOUTER L'ACTION DE PIOCHER
             actions.add("P");
-
-            // SI LE JOUEUR POSSÈDE NE POSSÈDE PAS DE CARTE MOUVEMENT ALORS RENVOYER L'ACTION DE PIOCHER UNIQUEMENT
-            if(countMovementCards == 0) return actions;
-
-            final boolean hasHeroCard = ContainerElements.countElements(heroCardStack) > 0;
-            final Coord2D kingPos = ContainerElements.getElementPosition(kingPawn, board);
-            final int cardCol = 0;
-            for(int cardRow = 0; cardRow < countMovementCards; cardRow++) {
-                if(movementCardSpread.isEmptyAt(cardRow, cardCol)) continue;
-
-                // REGARDE POUR CHAQUE CARTE DU JOUEUR S'IL PEUT LA JOUER SEUL
-                final MovementCard movementCard = (MovementCard) movementCardSpread.getElement(cardRow, cardCol);
-                final Coord2D potentialPos = movementCard.getDirectionVector().add(kingPos);
-                final int col = (int) potentialPos.getX();
-                final int row = (int) potentialPos.getY();
-
-                // SI ON NE PEUT PAS ATTEINDRE LA POSITION POTENTIEL, ALORS ON PASSE À LA CARTE SUIVANTE
-                if(!board.canReachCell(row, col)) continue;
-
-                // SI L'EMPLACEMENT EST VIDE, ALORS RAJOUTER L'ACTION DU DÉPLACEMENT SIMPLE
-                // SINON SI LE JOUEUR POSSÈDE AU MOINS UNE CARTE HERO ET QUE LE PION N'EST PAS
-                // LE SIEN ALORS RAJOUTER L'ACTION DE LA CARTE DÉPLACEMENT + HÉRO
-                if(board.isEmptyAt(row, col)) {
-                    actions.add("D"+(cardRow+1));
-                } else if(hasHeroCard && !((Pawn)board.getElement(row, col)).getStatus().isOwnedBy(playerData)) {
-                    actions.add("H"+(cardRow+1));
-                }
-            }
         }
 
+        // SI LE JOUEUR NE POSSÈDE PAS DE CARTE MOUVEMENT ALORS RENVOYER L'ACTION DE PIOCHER UNIQUEMENT
+        if(countMovementCards == 0) return actions;
+
+        final boolean hasHeroCard = ContainerElements.countElements(heroCardStack) > 0;
+        final Coord2D kingPos = ContainerElements.getElementPosition(kingPawn, board);
+        final int cardCol = 0;
+        for(int cardRow = 0; cardRow < countMovementCards; cardRow++) {
+            if(movementCardSpread.isEmptyAt(cardRow, cardCol)) continue;
+
+            // RÉCUPÈRE CHAQUE CARTE DIRECTION DU JOUEUR
+            final MovementCard movementCard = (MovementCard) movementCardSpread.getElement(cardRow, cardCol);
+            // RÉCUPÈRE L'EMPLACEMENT POTENTIEL DU ROI AVEC LA CARTE DIRECTION JOUÉE
+            final Coord2D potentialPos = movementCard.getDirectionVector().add(kingPos);
+            final int col = (int) potentialPos.getX();
+            final int row = (int) potentialPos.getY();
+
+            // SI ON NE PEUT PAS ATTEINDRE LA POSITION POTENTIEL, ALORS ON PASSE À LA CARTE SUIVANTE
+            if(!board.canReachCell(row, col)) continue;
+
+            // SI L'EMPLACEMENT EST VIDE, ALORS RAJOUTER L'ACTION DU DÉPLACEMENT SIMPLE
+            // SINON SI LE JOUEUR POSSÈDE AU MOINS UNE CARTE HERO ET QUE LE PION N'EST PAS
+            // LE SIEN ALORS RAJOUTER L'ACTION DE LA CARTE DÉPLACEMENT + HÉRO
+            if(board.isEmptyAt(row, col)) {
+                actions.add("D"+(cardRow+1));
+            } else if(hasHeroCard && !((Pawn)board.getElement(row, col)).getStatus().isOwnedBy(playerData)) {
+                actions.add("H"+(cardRow+1));
+            }
+        }
         return actions;
     }
+
+    public boolean playerCanPlay(PlayerData playerData) {
+        final PawnPot pawnPot;
+        final MovementCardSpread movementCardSpread;
+        final HeroCardStack heroCardStack;
+
+        if(playerData == PlayerData.PLAYER_BLUE) {
+            pawnPot = bluePot;
+            movementCardSpread = blueMovementCardsSpread;
+            heroCardStack = blueHeroCardStack;
+        } else {
+            pawnPot = redPot;
+            movementCardSpread = redMovementCardsSpread;
+            heroCardStack = redHeroCardStack;
+        }
+
+        // SI LE JOUEUR N'A PLUS DE PION, ALORS IL NE PEUT RIEN FAIRE
+        if(pawnPot.isEmpty()) return false;
+
+        // SI LE JOUEUR PEUT PIOCHER UNE CARTE DE MOUVEMENT
+        final int countMovementCards = ContainerElements.countElements(movementCardSpread);
+        if(countMovementCards < 5) {
+            // RAJOUTER L'ACTION DE PIOCHER
+            return true;
+        }
+
+        final boolean hasHeroCard = ContainerElements.countElements(heroCardStack) > 0;
+        final Coord2D kingPos = ContainerElements.getElementPosition(kingPawn, board);
+        final int cardCol = 0;
+        for(int cardRow = 0; cardRow < countMovementCards; cardRow++) {
+            if(movementCardSpread.isEmptyAt(cardRow, cardCol)) continue;
+
+            // RÉCUPÈRE CHAQUE CARTE DIRECTION DU JOUEUR
+            final MovementCard movementCard = (MovementCard) movementCardSpread.getElement(cardRow, cardCol);
+            // RÉCUPÈRE L'EMPLACEMENT POTENTIEL DU ROI AVEC LA CARTE DIRECTION JOUÉE
+            final Coord2D potentialPos = movementCard.getDirectionVector().add(kingPos);
+            final int col = (int) potentialPos.getX();
+            final int row = (int) potentialPos.getY();
+
+            // SI ON NE PEUT PAS ATTEINDRE LA POSITION POTENTIEL, ALORS ON PASSE À LA CARTE SUIVANTE
+            if(!board.canReachCell(row, col)) continue;
+
+            // RENVOIE VRAI SI LE JOUEUR PEUT JOUER UNE CARTE MOUVEMENT
+            // OU SI IL PEUT LA JOUER AVEC UNE CARTE HÉRO
+            if(board.isEmptyAt(row, col) || (hasHeroCard && !((Pawn)board.getElement(row, col)).getStatus().isOwnedBy(playerData))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     // TODO : REWRITE THE ENTIER CODE OF THIS FUNCTION
     private void computePartyResult() {
