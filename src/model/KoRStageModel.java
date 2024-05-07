@@ -4,12 +4,13 @@ import boardifier.model.*;
 import model.container.KoRBoard;
 import model.container.PawnPot;
 import model.container.card.MovementCardStack;
-import model.container.card.HeroCardSpread;
+import model.container.card.HeroCardStack;
 import model.container.card.MovementCardSpread;
 import model.element.Pawn;
 import model.element.card.HeroCard;
 import model.element.card.MovementCard;
 import utils.ContainerElements;
+import utils.Elements;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -46,8 +47,8 @@ public class KoRStageModel extends GameStageModel {
     // define stage game elements
     private KoRBoard board;
 
-    private HeroCardSpread blueHeroCardSpread;
-    private HeroCardSpread redHeroCardSpread;
+    private HeroCardStack blueHeroCardStack;
+    private HeroCardStack redHeroCardStack;
     private HeroCard[] blueHeroCards;
     private HeroCard[] redHeroCards;
 
@@ -94,20 +95,20 @@ public class KoRStageModel extends GameStageModel {
         addContainer(board);
     }
 
-    public HeroCardSpread getBlueHeroCardSpread() {
-        return blueHeroCardSpread;
+    public HeroCardStack getBlueHeroCardStack() {
+        return blueHeroCardStack;
     }
-    public void setBlueHeroCardSpread(HeroCardSpread blueHeroCardSpread) {
-        this.blueHeroCardSpread = blueHeroCardSpread;
-        addContainer(blueHeroCardSpread);
+    public void setBlueHeroCardStack(HeroCardStack blueHeroCardStack) {
+        this.blueHeroCardStack = blueHeroCardStack;
+        addContainer(blueHeroCardStack);
     }
 
-    public HeroCardSpread getRedHeroCardSpread() {
-        return redHeroCardSpread;
+    public HeroCardStack getRedHeroCardStack() {
+        return redHeroCardStack;
     }
-    public void setRedHeroCardSpread(HeroCardSpread redHeroCardSpread) {
-        this.redHeroCardSpread = redHeroCardSpread;
-        addContainer(redHeroCardSpread);
+    public void setRedHeroCardStack(HeroCardStack redHeroCardStack) {
+        this.redHeroCardStack = redHeroCardStack;
+        addContainer(redHeroCardStack);
     }
 
     public HeroCard[] getBlueHeroCards() {
@@ -295,7 +296,8 @@ public class KoRStageModel extends GameStageModel {
         addElement(redHeroCardText);
     }
 
-    // TODO : REWRITE THE ENTIER CODE OF THIS FUNCTION
+
+    // READ EVENT
     private void setupCallbacks() {
         onRemoveFromContainer((element, containerFrom, rowDest, colDest) -> {
             // ACTION : Joue une carte déplacement
@@ -303,6 +305,18 @@ public class KoRStageModel extends GameStageModel {
                 // CHANGE LE STATUS DE LA CARTE DÉPLACEMENT
                 movementCard.setOwner(MovementCard.Owner.OUT);
                 return;
+            }
+
+            // ACTION : Joue une carte héro
+            if(element instanceof HeroCard heroCard) {
+                // MET À JOUR LE COMPTEUR DE CARTE HÉRO
+                final TextElement textElement;
+                if(heroCard.getStatus() == HeroCard.Status.BLUE_CARD) {
+                    textElement = blueHeroCardText;
+                } else {
+                    textElement = redHeroCardText;
+                }
+                Elements.updateText(textElement, ContainerElements.countElements(containerFrom));
             }
         });
 
@@ -344,6 +358,16 @@ public class KoRStageModel extends GameStageModel {
                 textElement.setText(String.valueOf(ContainerElements.countElements(pawnPot)));
             }
         });
+    }
+
+    public List<String> getPlayerPossibleActions(PlayerData playerData) {
+        final List<String> actions = new ArrayList<>();
+
+        final PawnPot pawnPot;
+        final MovementCardSpread movementCardSpread;
+        final HeroCardStack heroCardStack;
+
+        return actions;
     }
 
     // TODO : REWRITE THE ENTIER CODE OF THIS FUNCTION

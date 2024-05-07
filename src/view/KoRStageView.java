@@ -9,7 +9,7 @@ import boardifier.view.TextLook;
 import model.KoRStageModel;
 import model.element.card.MovementCard;
 import view.container.PawnPotLook;
-import view.container.card.HeroCardSpreadLook;
+import view.container.card.HeroCardStackLook;
 import view.container.card.MovementCardSpreadLook;
 import view.container.card.MovementCardStackLook;
 import view.element.PawnLook;
@@ -77,8 +77,8 @@ public class KoRStageView extends GameStageView {
         addLook(new ClassicBoardLook(2, 4, model.getBoard(), 1, 1, true));
 
         // create look for the hero cards
-        addLook(new HeroCardSpreadLook(model.getRedHeroCardSpread()));
-        addLook(new HeroCardSpreadLook(model.getBlueHeroCardSpread()));
+        addLook(new HeroCardStackLook(model.getRedHeroCardStack()));
+        addLook(new HeroCardStackLook(model.getBlueHeroCardStack()));
 
         // create look for the movement deck cards
         addLook(new MovementCardStackLook(model.getMovementCardStack()));

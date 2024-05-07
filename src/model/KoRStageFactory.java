@@ -5,14 +5,13 @@ import boardifier.model.StageElementsFactory;
 import boardifier.model.TextElement;
 import model.container.KoRBoard;
 import model.container.PawnPot;
-import model.container.card.HeroCardSpread;
+import model.container.card.HeroCardStack;
 import model.container.card.MovementCardSpread;
 import model.container.card.MovementCardStack;
 import model.element.Pawn;
 import model.element.card.HeroCard;
 import model.element.card.MovementCard;
 import utils.Arrays;
-import utils.ContainerElements;
 
 public class KoRStageFactory extends StageElementsFactory {
     private KoRStageModel stageModel;
@@ -90,8 +89,8 @@ public class KoRStageFactory extends StageElementsFactory {
 
         // RED ELEMENT
         //create the red hero cards stack in 1,1 in the virtual space
-        HeroCardSpread redHeroCardSpread = new HeroCardSpread(53, 6, stageModel);
-        stageModel.setRedHeroCardSpread(redHeroCardSpread);
+        HeroCardStack redHeroCardStack = new HeroCardStack(53, 6, stageModel);
+        stageModel.setRedHeroCardStack(redHeroCardStack);
 
         //create the red movements cards spread in 2,1 in the virtual space
         MovementCardSpread redMovementCardsSpread = new MovementCardSpread(PlayerData.PLAYER_RED, 53,9, stageModel);
@@ -104,8 +103,8 @@ public class KoRStageFactory extends StageElementsFactory {
 
         // BLUE ELEMENT
         //create the blue hero cards stack in 1,3 in the virtual space
-        HeroCardSpread blueHeroCardSpread = new HeroCardSpread(2, 6, stageModel);
-        stageModel.setBlueHeroCardSpread(blueHeroCardSpread);
+        HeroCardStack blueHeroCardStack = new HeroCardStack(2, 6, stageModel);
+        stageModel.setBlueHeroCardStack(blueHeroCardStack);
 
         //create the blue movements cards spread in 2,3 in the virtual space
         MovementCardSpread blueMovementCardsSpread = new MovementCardSpread(PlayerData.PLAYER_BLUE, 2,9, stageModel);
@@ -137,8 +136,8 @@ public class KoRStageFactory extends StageElementsFactory {
 
         // put hero card in stack
         for (int i=0;i<4;i++) {
-            redHeroCardSpread.addElement(redHeroCards[i], 0,0);
-            blueHeroCardSpread.addElement(blueHeroCards[i], 0,0);
+            redHeroCardStack.addElement(redHeroCards[i], 0,0);
+            blueHeroCardStack.addElement(blueHeroCards[i], 0,0);
         }
 
 
