@@ -149,7 +149,7 @@ public class KoRController extends Controller {
             final GameElement king = gameStage.getKingPawn();
 
             // RÉCUPÈRE LA POSITION DU PION DU ROI QU'ON ADDITIONNE AU VECTEUR DE LA CARTE DÉPLACEMENT
-            final Coord2D pos = ContainerElements.getPawnPosition(Pawn.Status.KING_PAWN, board)
+            final Coord2D pos = ContainerElements.getElementPosition(king, board)
                     .add(movementCard.getDirectionVector());
 
             final int col = (int) pos.getX();
@@ -162,11 +162,16 @@ public class KoRController extends Controller {
                 return false;
             }
 
+
             // BOUGE LE PION DU ROI SUR LE PLATEAU
             actions = ActionFactory.generateMoveWithinContainer(model, king, row, col);
+
             // METTRE LE PION DU JOUEUR À LA MEME POSITION QUE LE ROI SUR LE PLATEAU
             actions.addAll(ActionFactory.generatePutInContainer(model, pawn, board.getName(), row, col));
+
             // ENLEVER LA CARTE DÉPLACEMENT DU JOUEUR
+            // Note: Joue l'événement removeFromContainer pour lire l'event dans le Model
+            //       et joue ensuite l'event removeFromStage pour enlever la carte de l'affichage
             actions.addAll(ActionFactory.generateRemoveFromContainer(model, movementCard));
             actions.addAll(ActionFactory.generateRemoveFromStage(model, movementCard));
 

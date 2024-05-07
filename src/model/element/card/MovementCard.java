@@ -125,6 +125,6 @@ public class MovementCard extends GameElement {
         PLAYER_RED,
         PLAYER_BLUE,
         STACK,
-        OUT;
+        OUT; // (OUT SIGNIFIE QUE LA CARTE N'EST PAS À UN JOUEUR ET N'EST PAS DANS LA PILE)
     }
 }

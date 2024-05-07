@@ -297,26 +297,25 @@ public class KoRStageModel extends GameStageModel {
 
     // TODO : REWRITE THE ENTIER CODE OF THIS FUNCTION
     private void setupCallbacks() {
-        onRemoveFromContainer((element, containerDest, rowDest, colDest) -> {
+        onRemoveFromContainer((element, containerFrom, rowDest, colDest) -> {
+            // ACTION : Joue une carte déplacement
             if(element instanceof MovementCard movementCard) {
-                if(model.getIdPlayer() == PlayerData.PLAYER_RED.getId()) {
-                    System.out.println("movement card red");
-                } else if (model.getIdPlayer() == PlayerData.PLAYER_BLUE.getId()){
-                    System.out.println("movement card blue");
-                }
+                // CHANGE LE STATUS DE LA CARTE DÉPLACEMENT
+                movementCard.setOwner(MovementCard.Owner.OUT);
+                return;
             }
         });
 
-        onPutInContainer((element, gridDest, rowDest, colDest) -> {
+        onPutInContainer((element, containerDest, rowDest, colDest) -> {
             // ACTION : Prendre une carte mouvement de la pile
-            if(gridDest instanceof MovementCardSpread) {
+            if(containerDest instanceof MovementCardSpread) {
                 // CHANGE LE POSSESSEUR DE LA CARTE
-                final MovementCard.Owner owner = (gridDest == blueMovementCardsSpread)
+                final MovementCard.Owner owner = (containerDest == blueMovementCardsSpread)
                         ? MovementCard.Owner.PLAYER_BLUE : MovementCard.Owner.PLAYER_RED;
                 ((MovementCard)element).setOwner(owner);
 
                 // SI IL N'Y A PLUS DE CARTE DANS LA PILE ALORS LA REFAIRE
-                if(movementCardStack.isEmpty()) redoMovementCardStack();
+                if(getMovementCards(MovementCard.Owner.STACK).isEmpty()) redoMovementCardStack();
 
                 // MET À JOUR LE COMPTEUR DE LA PILE
                 movementCardStackText.setText(String.valueOf(getMovementCards(MovementCard.Owner.STACK).size()));
@@ -324,7 +323,7 @@ public class KoRStageModel extends GameStageModel {
             }
 
             // ACTION : Placer un pion sur le plateau
-            if(gridDest == board) {
+            if(containerDest == board) {
                 Pawn pawn = (Pawn) element;
 
                 // RÉCUPÈRE LES ÉLÉMENTS POUR METTRE À JOUR LE COMPTEUR DES PIONS DU JOUEUR
