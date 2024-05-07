@@ -407,10 +407,24 @@ public class KoRStageModel extends GameStageModel {
         return null;
     }
 
+    public Coord2D getPawnPosition(Pawn.Status pawnStatus, ContainerElement containerElement) {
+        for(int row=0; row<containerElement.getNbRows(); row++) {
+            for(int col=0; col<containerElement.getNbCols(); col++) {
+                if(containerElement.isEmptyAt(row, col)) continue;
+                if(containerElement.getElement(row ,col) instanceof Pawn pawnElement) {
+                    if(pawnElement.getStatus() == pawnStatus)
+                        return new Coord2D(col, row);
+                }
+            }
+        }
+        return null;
+    }
+
     public Coord2D geEmptyPosition(ContainerElement containerElement) {
-        for(int x=0; x<containerElement.getNbRows(); x++) {
-            for(int y=0; y<containerElement.getNbCols(); y++) {
-                if(containerElement.isEmptyAt(x, y)) return new Coord2D(x, y);
+        for(int row=0; row<containerElement.getNbRows(); row++) {
+            for(int col=0; col<containerElement.getNbCols(); col++) {
+                if(containerElement.isEmptyAt(row, col))
+                    return new Coord2D(row, col);
             }
         }
         return null;

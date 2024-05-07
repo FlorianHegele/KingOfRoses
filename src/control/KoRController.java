@@ -12,6 +12,7 @@ import model.PlayerData;
 import model.container.KoRBoard;
 import model.container.PawnPot;
 import model.container.card.MovementCardSpread;
+import model.element.Pawn;
 import model.element.card.MovementCard;
 
 import java.io.BufferedReader;
@@ -139,7 +140,7 @@ public class KoRController extends Controller {
             final GameElement pawn = pawnPot.getElement(0, 0);
 
             final GameElement king = gameStage.getKingPawn();
-            final Coord2D kingPos = gameStage.getElementPosition(king, board);
+            final Coord2D kingPos = gameStage.getPawnPosition(Pawn.Status.KING_PAWN, board);
             final Coord2D vector = movementCard.getDirectionVector();
             final Coord2D newKingPos = kingPos.add(vector);
 
@@ -147,25 +148,26 @@ public class KoRController extends Controller {
             System.out.println("vector " + vector);
             System.out.println("new king pos " + newKingPos);
 
-            final int newX = (int) newKingPos.getX();
-            final int newY = (int) newKingPos.getY();
+            final int newCol = (int) newKingPos.getX();
+            final int newRow = (int) newKingPos.getY();
 
-            if(!board.canReachCell(newX, newY)) {
+            if(!board.canReachCell(newRow, newCol)) {
                 System.out.println("Vous ne pouvez pas jouer cette carte!");
                 Logger.info("Sortie de tableau");
                 return false;
             }
 
             Logger.trace("Initial coord -> x " + gameStage.getElementPosition(king, board).getX() + " , y " + gameStage.getElementPosition(king, board).getY());
-            Logger.trace("x : " + newX + ", y : " + newY + " | " + (model.getIdPlayer() == PlayerData.PLAYER_BLUE.getId() ? "blue" : "red"));
+            Logger.trace("raw : " + newRow + ", col : " + newCol + " | " + (model.getIdPlayer() == PlayerData.PLAYER_BLUE.getId() ? "blue" : "red"));
             Logger.trace(movementCard.toString());
 
-            // Remove Player Movement Card from his deck
-            actions = ActionFactory.generateRemoveFromStage(model, movementCard);
-            // Move Player Pawn
-            //actions.addAll(ActionFactory.generatePutInContainer(model, pawn, board.getName(), newX, newY));
             // Move King Pawn
-            actions.addAll(ActionFactory.generateMoveWithinContainer(model, king, newX, newY));
+            actions = ActionFactory.generateMoveWithinContainer(model, king, newRow, newCol);
+            // Move Player Pawn
+            actions.addAll(ActionFactory.generatePutInContainer(model, pawn, board.getName(), newRow, newCol));
+            // Remove Player Movement Card from his deck
+            actions.addAll(ActionFactory.generateRemoveFromStage(model, movementCard));
+            Logger.trace("row : " + newRow + ", col : " + newCol + " | " + (model.getIdPlayer() == PlayerData.PLAYER_BLUE.getId() ? "blue" : "red"));
 
         } else if (action == 'H') {
             // TODO : CHECK TOTAL PLAYER CARD IF > 0 ??

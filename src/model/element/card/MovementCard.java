@@ -61,20 +61,20 @@ public class MovementCard extends GameElement {
     }
 
     public enum Direction {
-        NORTH(0, -1, "\u2191"),
-        NORTHEAST(1, -1, "\u2197"),
-        EAST(1, 0, "\u2192"),
+        NORTH(-1, 0, "\u2191"),
+        NORTHEAST(-1, 1, "\u2197"),
+        EAST(0, 1, "\u2192"),
         SOUTHEAST(1, 1, "\u2198"),
-        SOUTH(0, 1, "\u2193"),
-        SOUTHWEST(-1, 1, "\u2199"),
-        WEST(-1, 0, "\u2190"),
+        SOUTH(1, 0, "\u2193"),
+        SOUTHWEST(1, -1, "\u2199"),
+        WEST(0, -1, "\u2190"),
         NORTHWEST(-1, -1, "\u2196");
 
         private final Coord2D vecteur;
         private final String symbole;
 
-        Direction(int dx, int dy, String symbole) {
-            this(new Coord2D(dx, dy), symbole);
+        Direction(int col, int raw, String symbole) {
+            this(new Coord2D(raw, col), symbole);
         }
 
         Direction(Coord2D vecteur, String symbole) {
