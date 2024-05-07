@@ -58,6 +58,10 @@ public class Pawn extends GameElement {
         public int getID() {
             return id;
         }
+
+        public boolean isOwnedBy(PlayerData playerData) {
+            return playerData.getId() == id;
+        }
     }
 
 }
