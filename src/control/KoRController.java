@@ -86,21 +86,25 @@ public class KoRController extends Controller {
         final ActionList actions;
         if(action == 'P') {
             if(length != 1) return false;
-            final int cardToPlay;
+
             final ContainerElement container;
             if (model.getIdPlayer() == PlayerData.PLAYER_BLUE.getId()) {
-                cardToPlay = gameStage.getBlueMovementCardToPlay();
                 container = gameStage.getBlueMovementCardsSpread();
             } else {
-                cardToPlay = gameStage.getRedMovementCardToPlay();
                 container = gameStage.getRedMovementCardsSpread();
             }
-            if(cardToPlay >= 0) {
+            final Coord2D coord2D = gameStage.geEmptyPosition(container);
+
+            if(coord2D == null) {
                 System.out.println("Vous avez déjà plus de 5 cartes mouvement");
                 return false;
             }
-            final Coord2D coord2D = gameStage.geEmptyPosition(container);
-            actions = ActionFactory.generatePutInContainer(model, gameStage.getMovementCardStack(), container.getName(), (int) coord2D.getX(), (int) coord2D.getY());
+
+            // TODO : CHECK IF THE STACK IS EMPTY
+            final MovementCard movementCard = (MovementCard) gameStage.getMovementCardStack().getElement(0, 0);
+            movementCard.setInStack(false);
+
+            actions = ActionFactory.generatePutInContainer(model, movementCard, container.getName(), (int) coord2D.getX(), (int) coord2D.getY());
 
         } else if (action == 'D') {
             if(length != 2) return false;
@@ -140,34 +144,25 @@ public class KoRController extends Controller {
             final GameElement pawn = pawnPot.getElement(0, 0);
 
             final GameElement king = gameStage.getKingPawn();
-            final Coord2D kingPos = gameStage.getPawnPosition(Pawn.Status.KING_PAWN, board);
-            final Coord2D vector = movementCard.getDirectionVector();
-            final Coord2D newKingPos = kingPos.add(vector);
+            final Coord2D pos = gameStage.getPawnPosition(Pawn.Status.KING_PAWN, board)
+                    .add(movementCard.getDirectionVector());
 
-            System.out.println("king pos " + kingPos);
-            System.out.println("vector " + vector);
-            System.out.println("new king pos " + newKingPos);
+            final int col = (int) pos.getX();
+            final int row = (int) pos.getY();
 
-            final int newCol = (int) newKingPos.getX();
-            final int newRow = (int) newKingPos.getY();
-
-            if(!board.canReachCell(newRow, newCol)) {
+            if(!board.canReachCell(row, col)) {
                 System.out.println("Vous ne pouvez pas jouer cette carte!");
                 Logger.info("Sortie de tableau");
                 return false;
             }
 
-            Logger.trace("Initial coord -> x " + gameStage.getElementPosition(king, board).getX() + " , y " + gameStage.getElementPosition(king, board).getY());
-            Logger.trace("raw : " + newRow + ", col : " + newCol + " | " + (model.getIdPlayer() == PlayerData.PLAYER_BLUE.getId() ? "blue" : "red"));
-            Logger.trace(movementCard.toString());
-
             // Move King Pawn
-            actions = ActionFactory.generateMoveWithinContainer(model, king, newRow, newCol);
+            actions = ActionFactory.generateMoveWithinContainer(model, king, row, col);
             // Move Player Pawn
-            actions.addAll(ActionFactory.generatePutInContainer(model, pawn, board.getName(), newRow, newCol));
+            actions.addAll(ActionFactory.generatePutInContainer(model, pawn, board.getName(), row, col));
             // Remove Player Movement Card from his deck
+            actions.addAll(ActionFactory.generateRemoveFromContainer(model, movementCard));
             actions.addAll(ActionFactory.generateRemoveFromStage(model, movementCard));
-            Logger.trace("row : " + newRow + ", col : " + newCol + " | " + (model.getIdPlayer() == PlayerData.PLAYER_BLUE.getId() ? "blue" : "red"));
 
         } else if (action == 'H') {
             // TODO : CHECK TOTAL PLAYER CARD IF > 0 ??

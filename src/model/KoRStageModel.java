@@ -43,9 +43,6 @@ public class KoRStageModel extends GameStageModel {
     // define stage state variables
     private int movementCardStackToPlay;
 
-    private int blueMovementCardToPlay;
-    private int redMovementCardToPlay;
-
     private int blueHeroCardToPlay;
     private int redHeroCardToPlay;
 
@@ -96,9 +93,6 @@ public class KoRStageModel extends GameStageModel {
     public KoRStageModel(String name, Model model) {
         super(name, model);
         movementCardStackToPlay = 24;
-
-        blueMovementCardToPlay = 5;
-        redMovementCardToPlay = 5;
 
         blueHeroCardToPlay = 4;
         redHeroCardToPlay = 4;
@@ -333,6 +327,15 @@ public class KoRStageModel extends GameStageModel {
 
     // TODO : REWRITE THE ENTIER CODE OF THIS FUNCTION
     private void setupCallbacks() {
+        onRemoveFromContainer((element, containerDest, rowDest, colDest) -> {
+            if(element instanceof MovementCard movementCard) {
+                if(model.getIdPlayer() == PlayerData.PLAYER_RED.getId()) {
+                    System.out.println("movement card red");
+                } else if (model.getIdPlayer() == PlayerData.PLAYER_BLUE.getId()){
+                    System.out.println("movement card blue");
+                }
+            }
+        });
         onPutInContainer((element, gridDest, rowDest, colDest) -> {
             // just check when pawns are put in 9x9 board
             if (gridDest != board) return;
@@ -382,14 +385,6 @@ public class KoRStageModel extends GameStageModel {
 
     public int getRedPawnsToPlay() {
         return redPawnsToPlay;
-    }
-
-    public int getBlueMovementCardToPlay() {
-        return blueMovementCardToPlay;
-    }
-
-    public int getRedMovementCardToPlay() {
-        return redMovementCardToPlay;
     }
 
     @Override
