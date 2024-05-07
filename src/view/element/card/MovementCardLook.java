@@ -16,7 +16,7 @@ public class MovementCardLook extends ElementLook {
     protected void render() {
         MovementCard card = (MovementCard)element;
 
-        if(card.isInStack()) {
+        if(card.getOwner() == MovementCard.Owner.STACK) {
             shape[0][0] = ConsoleColor.BLACK + ConsoleColor.WHITE_BACKGROUND + "M" + ConsoleColor.RESET;
         } else {
             shape[0][0] = ConsoleColor.BLACK + ConsoleColor.WHITE_BACKGROUND + card.getDirection().getSymbole() + ConsoleColor.RESET;
