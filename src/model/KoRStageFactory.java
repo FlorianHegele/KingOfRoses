@@ -43,11 +43,11 @@ public class KoRStageFactory extends StageElementsFactory {
         actionDescriptionText2.setLocation(63,8);
         stageModel.setActionDescription2(actionDescriptionText2);
 
-        TextElement actionDescriptionText3 = new TextElement("Utiliser une carte Déplacement -> D", stageModel);
+        TextElement actionDescriptionText3 = new TextElement("Utiliser une carte Déplacement -> D (Ex: D1)", stageModel);
         actionDescriptionText3.setLocation(63,10);
         stageModel.setActionDescription3(actionDescriptionText3);
 
-        TextElement actionDescriptionText4 = new TextElement("Utiliser une carte Héro & Déplacement -> H", stageModel);
+        TextElement actionDescriptionText4 = new TextElement("Utiliser une carte Héro & Déplacement -> H (Ex: H1)", stageModel);
         actionDescriptionText4.setLocation(63,12);
         stageModel.setActionDescription4(actionDescriptionText4);
 
@@ -170,7 +170,6 @@ public class KoRStageFactory extends StageElementsFactory {
         board.addElement(kingPawn, 4, 4);
 
 
-
         // MOVEMENT CARD
         // create movement cards deck
         MovementCard[] movementCardDeck = new MovementCard[24];
@@ -197,6 +196,7 @@ public class KoRStageFactory extends StageElementsFactory {
             blueMovementCardsSpread.addElement(blueMovementCard, i,0);
         }
 
+        //put the rest of the cards in the pile
         for(MovementCard movementCard : movementCardDeck) {
             if(movementCard.getOwner() == MovementCard.Owner.STACK)
                 movementCardStack.addElement(movementCard, 0, 0);
