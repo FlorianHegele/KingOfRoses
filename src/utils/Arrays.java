@@ -6,6 +6,10 @@ public class Arrays {
 
     private static final Random random = new Random();
 
+    private Arrays() {
+        throw new IllegalStateException("Utility class");
+    }
+
     private static <T> void swapArrayIndex(T[] array, int i, int j) {
         final T temp = array[i];
         array[i] = array[j];

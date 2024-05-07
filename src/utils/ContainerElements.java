@@ -7,6 +7,10 @@ import model.element.Pawn;
 
 public class ContainerElements {
 
+    private ContainerElements() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static Coord2D getElementPosition(GameElement gameElement, ContainerElement containerElement) {
         for(int x=0; x<containerElement.getNbRows(); x++) {
             for(int y=0; y<containerElement.getNbCols(); y++) {
