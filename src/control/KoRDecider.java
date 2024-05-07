@@ -12,6 +12,7 @@ import model.KoRStageModel;
 import model.element.Pawn;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
@@ -47,7 +48,7 @@ public class KoRDecider extends Decider {
             // if there is a pawn in i.
             if (p != null) {
                 // get the valid cells
-                List<Point> valid = board.computeValidCells(p);
+                List<Point> valid = new ArrayList<>();
                 if (!valid.isEmpty()) {
                     // choose at random one of the valid cells
                     int id = loto.nextInt(valid.size());
