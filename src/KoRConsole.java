@@ -10,10 +10,10 @@ public class KoRConsole {
 
     public static void main(String[] args) {
 
-        Logger.setLevel(Logger.LOGGER_TRACE);
-        Logger.setVerbosity(Logger.VERBOSE_HIGH);
+
         int mode = 0;
-        if (args.length == 1) {
+        int loggerMode = 0;
+        if (args.length >= 1) {
             try {
                 mode = Integer.parseInt(args[0]);
                 if ((mode < 0) || (mode > 2)) mode = 0;
@@ -21,6 +21,25 @@ public class KoRConsole {
                 mode = 0;
             }
         }
+
+        if (args.length == 2) {
+            try {
+                loggerMode = Integer.parseInt(args[1]);
+                if ((loggerMode < 0) || (loggerMode > 1)) loggerMode = 0;
+            } catch (NumberFormatException e) {
+                loggerMode = 0;
+            }
+        }
+
+        if(loggerMode == 0) {
+            Logger.setLevel(Logger.LOGGER_NONE);
+            Logger.setVerbosity(Logger.VERBOSE_NONE);
+        } else if(loggerMode == 1) {
+            Logger.setLevel(Logger.LOGGER_TRACE);
+            Logger.setVerbosity(Logger.VERBOSE_HIGH);
+        }
+
+
         Model model = new Model();
         if (mode == 0) {
             model.addHumanPlayer("player1");
