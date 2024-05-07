@@ -24,6 +24,11 @@ public class KoRStageFactory extends StageElementsFactory {
 
     @Override
     public void setup() {
+
+        /*
+         CREATE TEXT ELEMENTS
+         */
+
         // create the text that displays the player name and put it in 0,0 in the virtual space
         TextElement playerText = new TextElement(stageModel.getCurrentPlayerName(), stageModel);
         playerText.setLocation(0,1);
@@ -46,25 +51,26 @@ public class KoRStageFactory extends StageElementsFactory {
         actionDescriptionText4.setLocation(63,12);
         stageModel.setActionDescription4(actionDescriptionText4);
 
-        TextElement movementCardStackText = new TextElement("", stageModel);
+        TextElement movementCardStackText = new TextElement("14", stageModel);
         movementCardStackText.setLocation(28,1);
         stageModel.setMovementCardStackText(movementCardStackText);
 
-        TextElement textBluePawn = new TextElement("", stageModel);
+        TextElement textBluePawn = new TextElement("26", stageModel);
         textBluePawn.setLocation(12,28);
         stageModel.setBluePawnText(textBluePawn);
 
-        TextElement textRedPawn = new TextElement("", stageModel);
+        TextElement textRedPawn = new TextElement("26", stageModel);
         textRedPawn.setLocation(44,28);
         stageModel.setRedPawnText(textRedPawn);
 
-        TextElement textBlueCardHero = new TextElement(String.valueOf(stageModel.getBlueHeroCardToPlay()), stageModel);
+        TextElement textBlueCardHero = new TextElement("4", stageModel);
         textBlueCardHero.setLocation(3,5);
         stageModel.setBlueHeroCardText(textBlueCardHero);
 
-        TextElement textRedCardHero = new TextElement(String.valueOf(stageModel.getRedHeroCardToPlay()), stageModel);
+        TextElement textRedCardHero = new TextElement("4", stageModel);
         textRedCardHero.setLocation(54,5);
         stageModel.setRedHeroCardText(textRedCardHero);
+
 
         /*
          CREATE ELEMENT CONTAINERS

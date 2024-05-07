@@ -43,10 +43,6 @@ import java.util.Random;
  */
 public class KoRStageModel extends GameStageModel {
 
-    // define stage state variables
-    private int blueHeroCardToPlay;
-    private int redHeroCardToPlay;
-
     // define stage game elements
     private KoRBoard board;
 
@@ -86,9 +82,6 @@ public class KoRStageModel extends GameStageModel {
 
     public KoRStageModel(String name, Model model) {
         super(name, model);
-
-        blueHeroCardToPlay = 4;
-        redHeroCardToPlay = 4;
 
         setupCallbacks();
     }
@@ -324,6 +317,9 @@ public class KoRStageModel extends GameStageModel {
 
                 // SI IL N'Y A PLUS DE CARTE DANS LA PILE ALORS LA REFAIRE
                 if(movementCardStack.isEmpty()) redoMovementCardStack();
+
+                // MET À JOUR LE COMPTEUR DE LA PILE
+                movementCardStackText.setText(String.valueOf(getMovementCards(MovementCard.Owner.STACK).size()));
                 return;
             }
 
@@ -361,14 +357,6 @@ public class KoRStageModel extends GameStageModel {
         model.setIdWinner(idWinner);
         // stop de the game
         model.stopStage();
-    }
-
-    public int getBlueHeroCardToPlay() {
-        return blueHeroCardToPlay;
-    }
-
-    public int getRedHeroCardToPlay() {
-        return redHeroCardToPlay;
     }
 
     @Override
