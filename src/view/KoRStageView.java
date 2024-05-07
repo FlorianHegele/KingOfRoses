@@ -102,13 +102,6 @@ public class KoRStageView extends GameStageView {
             addLook(new HeroCardLook(model.getBlueHeroCards()[i]));
         }
 
-        // create look for the movement cards
-        for(int i=0; i<5; i++) {
-            Logger.trace(model.getRedMovementCards()[i].toString() + " | " + model.getBlueMovementCards()[i].toString() + " | HERE ");
-            addLook(new MovementCardLook(model.getRedMovementCards()[i]));
-            addLook(new MovementCardLook(model.getBlueMovementCards()[i]));
-        }
-
         // create look for the pawns
         for(int i=0; i<26; i++) {
             addLook(new PawnLook(model.getRedPawns()[i]));
@@ -116,8 +109,8 @@ public class KoRStageView extends GameStageView {
         }
         addLook(new PawnLook(model.getKingPawn()));
 
-        // create look for the movement deck card
-        for(MovementCard movementCard : model.getMovementCardDeck()) {
+        // create look for the movement card
+        for(MovementCard movementCard : model.getMovementCards()) {
             addLook(new MovementCardLook(movementCard));
         }
 

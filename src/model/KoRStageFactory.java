@@ -1,7 +1,6 @@
 package model;
 
 import boardifier.model.GameStageModel;
-import boardifier.model.Player;
 import boardifier.model.StageElementsFactory;
 import boardifier.model.TextElement;
 import model.container.KoRBoard;
@@ -12,8 +11,8 @@ import model.container.card.MovementCardStack;
 import model.element.Pawn;
 import model.element.card.HeroCard;
 import model.element.card.MovementCard;
-
-import java.util.*;
+import utils.Arrays;
+import utils.ContainerElements;
 
 public class KoRStageFactory extends StageElementsFactory {
     private KoRStageModel stageModel;
@@ -47,15 +46,15 @@ public class KoRStageFactory extends StageElementsFactory {
         actionDescriptionText4.setLocation(63,12);
         stageModel.setActionDescription4(actionDescriptionText4);
 
-        TextElement movementCardStackText = new TextElement(String.valueOf(stageModel.getMovementCardStackToPlay()), stageModel);
+        TextElement movementCardStackText = new TextElement("", stageModel);
         movementCardStackText.setLocation(28,1);
         stageModel.setMovementCardStackText(movementCardStackText);
 
-        TextElement textBluePawn = new TextElement(String.valueOf(stageModel.getBluePawnsToPlay()), stageModel);
+        TextElement textBluePawn = new TextElement("", stageModel);
         textBluePawn.setLocation(12,28);
         stageModel.setBluePawnText(textBluePawn);
 
-        TextElement textRedPawn = new TextElement(String.valueOf(stageModel.getRedPawnsToPlay()), stageModel);
+        TextElement textRedPawn = new TextElement("", stageModel);
         textRedPawn.setLocation(44,28);
         stageModel.setRedPawnText(textRedPawn);
 
@@ -167,46 +166,35 @@ public class KoRStageFactory extends StageElementsFactory {
 
 
         // MOVEMENT CARD
-        //create temp movement cards deck (to shuffle it)
-        List<MovementCard> tempMovementCardDeck = new ArrayList<>();
+        // create movement cards deck
+        MovementCard[] movementCardDeck = new MovementCard[24];
         MovementCard.Direction[] directions = MovementCard.Direction.values();
         for(int i=0; i<24; i++) {
             final MovementCard.Direction direction = directions[i%8];
             final int step = i/8 + 1;
-            tempMovementCardDeck.add(new MovementCard(step, direction, stageModel));
+            movementCardDeck[i] = new MovementCard(step, direction, stageModel);
         }
-        //shuffle stack
-        Collections.shuffle(tempMovementCardDeck);
+        stageModel.setMovementCards(movementCardDeck);
 
-        //create the real movement cards deck
-        Deque<MovementCard> movementCardDeck = new ArrayDeque<>(tempMovementCardDeck);
+        //shuffle deck
+        Arrays.shuffleArray(movementCardDeck);
 
-        //create red movement cards
-        MovementCard[] redMovementCards = new MovementCard[5];
+        //distributes the cards to the players
         for(int i=0; i<5; i++) {
             //get card from the stack
-            final MovementCard movementCard = movementCardDeck.pop();
-            movementCard.setInStack(false);
-            redMovementCards[i] = movementCard;
-            redMovementCardsSpread.addElement(movementCard, i,0);
-        }
-        stageModel.setRedMovementCards(redMovementCards);
+            final MovementCard redMovementCard = movementCardDeck[i];
+            redMovementCard.setOwner(MovementCard.Owner.PLAYER_RED);
+            redMovementCardsSpread.addElement(redMovementCard, i,0);
 
-        //create blue movement cards
-        MovementCard[] blueMovementCards = new MovementCard[5];
-        for(int i=0; i<5; i++) {
-            //get card from the stack
-            final MovementCard movementCard = movementCardDeck.pop();
-            movementCard.setInStack(false);
-            blueMovementCards[i] = movementCard;
-            blueMovementCardsSpread.addElement(movementCard, i,0);
+            final MovementCard blueMovementCard = movementCardDeck[i+5];
+            blueMovementCard.setOwner(MovementCard.Owner.PLAYER_BLUE);
+            blueMovementCardsSpread.addElement(blueMovementCard, i,0);
         }
-        stageModel.setBlueMovementCards(blueMovementCards);
 
         for(MovementCard movementCard : movementCardDeck) {
-            movementCardStack.addElement(movementCard, 0, 0);
+            if(movementCard.getOwner() == MovementCard.Owner.STACK)
+                movementCardStack.addElement(movementCard, 0, 0);
         }
-        stageModel.setMovementCardDeck(movementCardDeck);
     }
 
 }

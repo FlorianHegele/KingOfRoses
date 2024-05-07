@@ -14,6 +14,7 @@ import model.container.PawnPot;
 import model.container.card.MovementCardSpread;
 import model.element.Pawn;
 import model.element.card.MovementCard;
+import utils.ContainerElements;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -93,24 +94,25 @@ public class KoRController extends Controller {
             } else {
                 container = gameStage.getRedMovementCardsSpread();
             }
-            final Coord2D coord2D = gameStage.geEmptyPosition(container);
+            // RÉCUPÈRE LA PREMIERE CASE VIDE DU JOUEUR DANS CA GRILLE DE CARTE DE DÉPLACEMENT
+            final Coord2D coord2D = ContainerElements.geEmptyPosition(container);
 
             if(coord2D == null) {
                 System.out.println("Vous avez déjà plus de 5 cartes mouvement");
                 return false;
             }
 
-            // TODO : CHECK IF THE STACK IS EMPTY
+            // RÉCUPÈRE LA 1ÈRE CARTE MOUVEMENT DE LA PILE
             final MovementCard movementCard = (MovementCard) gameStage.getMovementCardStack().getElement(0, 0);
-            movementCard.setInStack(false);
-
             actions = ActionFactory.generatePutInContainer(model, movementCard, container.getName(), (int) coord2D.getX(), (int) coord2D.getY());
-
         } else if (action == 'D') {
             if(length != 2) return false;
-            final int indexCard = getIntFromString(line.substring(1));
 
-            if(indexCard == -1) return false;
+            // SI L'INDEX DE L'ACTION RENVOIE -1 ALORS CE N'EST PAS UN NOMBRE QUI SUIT LA LETTRE 'D'
+            // note : on vérifie si l'index fait -2 (et pas -1) car on fait -1 sur la variable pour avoir le vrai index
+            //        par exemple l'index de la carte 3 est 2 (donc 3-1)
+            final int indexCard = getIntFromString(line.substring(1))-1;
+            if(indexCard == -2) return false;
 
             final PawnPot pawnPot;
             final MovementCardSpread movementCardSpread;
@@ -134,33 +136,37 @@ public class KoRController extends Controller {
                 return false;
             }
 
-            if(movementCardSpread.isEmptyAt(indexCard-1, 0)) {
+            // SI LA CARTE MOUVEMENT SELECTIONNÉ N'EXISTE PAS
+            if(movementCardSpread.isEmptyAt(indexCard, 0)) {
                 System.out.println("Sélectionner une carte que vous possédez.");
                 return false;
             }
 
+            // RÉCUPÈRE LES ÉLÉMENTS ESSENTIELS
             final KoRBoard board = gameStage.getBoard();
-            final MovementCard movementCard = (MovementCard) movementCardSpread.getElement(indexCard-1, 0);
-            final GameElement pawn = pawnPot.getElement(0, 0);
-
+            final MovementCard movementCard = (MovementCard) movementCardSpread.getElement(indexCard, 0);
+            final Pawn pawn = (Pawn) pawnPot.getElement(0, 0);
             final GameElement king = gameStage.getKingPawn();
-            final Coord2D pos = gameStage.getPawnPosition(Pawn.Status.KING_PAWN, board)
+
+            // RÉCUPÈRE LA POSITION DU PION DU ROI QU'ON ADDITIONNE AU VECTEUR DE LA CARTE DÉPLACEMENT
+            final Coord2D pos = ContainerElements.getPawnPosition(Pawn.Status.KING_PAWN, board)
                     .add(movementCard.getDirectionVector());
 
             final int col = (int) pos.getX();
             final int row = (int) pos.getY();
 
+            // SI ON NE PEUT PAS ATTEINDRE LA CASE AVEC LA CARTE
             if(!board.canReachCell(row, col)) {
                 System.out.println("Vous ne pouvez pas jouer cette carte!");
                 Logger.info("Sortie de tableau");
                 return false;
             }
 
-            // Move King Pawn
+            // BOUGE LE PION DU ROI SUR LE PLATEAU
             actions = ActionFactory.generateMoveWithinContainer(model, king, row, col);
-            // Move Player Pawn
+            // METTRE LE PION DU JOUEUR À LA MEME POSITION QUE LE ROI SUR LE PLATEAU
             actions.addAll(ActionFactory.generatePutInContainer(model, pawn, board.getName(), row, col));
-            // Remove Player Movement Card from his deck
+            // ENLEVER LA CARTE DÉPLACEMENT DU JOUEUR
             actions.addAll(ActionFactory.generateRemoveFromContainer(model, movementCard));
             actions.addAll(ActionFactory.generateRemoveFromStage(model, movementCard));
 
@@ -176,7 +182,6 @@ public class KoRController extends Controller {
         } else {
             return false;
         }
-        Logger.trace("action : " + line);
 
         actions.setDoEndOfTurn(true); // after playing this action list, it will be the end of turn for current player.
         ActionPlayer play = new ActionPlayer(model, this, actions);

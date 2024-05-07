@@ -9,8 +9,11 @@ import model.container.card.MovementCardSpread;
 import model.element.Pawn;
 import model.element.card.HeroCard;
 import model.element.card.MovementCard;
+import utils.ContainerElements;
 
-import java.util.Deque;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -41,14 +44,8 @@ import java.util.Random;
 public class KoRStageModel extends GameStageModel {
 
     // define stage state variables
-    private int movementCardStackToPlay;
-
     private int blueHeroCardToPlay;
     private int redHeroCardToPlay;
-
-    private int bluePawnsToPlay;
-    private int redPawnsToPlay;
-
 
     // define stage game elements
     private KoRBoard board;
@@ -59,12 +56,9 @@ public class KoRStageModel extends GameStageModel {
     private HeroCard[] redHeroCards;
 
     private MovementCardStack movementCardStack;
-    private Deque<MovementCard> movementCardDeck;
-
     private MovementCardSpread blueMovementCardsSpread;
     private MovementCardSpread redMovementCardsSpread;
-    private MovementCard[] blueMovementCards;
-    private MovementCard[] redMovementCards;
+    private MovementCard[] movementCards;
 
     private PawnPot bluePot;
     private PawnPot redPot;
@@ -92,13 +86,9 @@ public class KoRStageModel extends GameStageModel {
 
     public KoRStageModel(String name, Model model) {
         super(name, model);
-        movementCardStackToPlay = 24;
 
         blueHeroCardToPlay = 4;
         redHeroCardToPlay = 4;
-
-        bluePawnsToPlay = 26;
-        redPawnsToPlay = 26;
 
         setupCallbacks();
     }
@@ -155,12 +145,19 @@ public class KoRStageModel extends GameStageModel {
         addElement(movementCardStack);
     }
 
-    public Deque<MovementCard> getMovementCardDeck() {
-        return movementCardDeck;
+    public List<MovementCard> getMovementCards(MovementCard.Owner owner) {
+        final List<MovementCard> movementCardList = new ArrayList<>();
+        for(MovementCard movementCard : movementCards) {
+            if(movementCard.getOwner() == owner) movementCardList.add(movementCard);
+        }
+        return movementCardList;
     }
-    public void setMovementCardDeck(Deque<MovementCard> movementCardDeck) {
-        this.movementCardDeck = movementCardDeck;
-        for (MovementCard movementCard : movementCardDeck) {
+    public MovementCard[] getMovementCards() {
+        return movementCards;
+    }
+    public void setMovementCards(MovementCard[] movementCards) {
+        this.movementCards = movementCards;
+        for (MovementCard movementCard : movementCards) {
             addElement(movementCard);
         }
     }
@@ -179,26 +176,6 @@ public class KoRStageModel extends GameStageModel {
     public void setRedMovementCardsSpread(MovementCardSpread redMovementCardsSpread) {
         this.redMovementCardsSpread = redMovementCardsSpread;
         addContainer(redMovementCardsSpread);
-    }
-    
-    public MovementCard[] getBlueMovementCards() {
-        return blueMovementCards;
-    }
-    public void setBlueMovementCards(MovementCard[] blueMovementCards) {
-        this.blueMovementCards = blueMovementCards;
-        for (MovementCard blueMovementCard : blueMovementCards) {
-            addElement(blueMovementCard);
-        }
-    }
-
-    public MovementCard[] getRedMovementCards() {
-        return redMovementCards;
-    }
-    public void setRedMovementCards(MovementCard[] redMovementCards) {
-        this.redMovementCards = redMovementCards;
-        for (MovementCard redMovementCard : redMovementCards) {
-            addElement(redMovementCard);
-        }
     }
 
     public PawnPot getBluePot() {
@@ -336,17 +313,40 @@ public class KoRStageModel extends GameStageModel {
                 }
             }
         });
+
         onPutInContainer((element, gridDest, rowDest, colDest) -> {
-            // just check when pawns are put in 9x9 board
-            if (gridDest != board) return;
-            Pawn p = (Pawn) element;
-            if (p.getStatus() == Pawn.Status.BLUE_PAWN) {
-                bluePawnsToPlay--;
-            } else if (p.getStatus() == Pawn.Status.RED_PAWN) {
-                redPawnsToPlay--;
+            // ACTION : Prendre une carte mouvement de la pile
+            if(gridDest instanceof MovementCardSpread) {
+                // CHANGE LE POSSESSEUR DE LA CARTE
+                final MovementCard.Owner owner = (gridDest == blueMovementCardsSpread)
+                        ? MovementCard.Owner.PLAYER_BLUE : MovementCard.Owner.PLAYER_RED;
+                ((MovementCard)element).setOwner(owner);
+
+                // SI IL N'Y A PLUS DE CARTE DANS LA PILE ALORS LA REFAIRE
+                if(movementCardStack.isEmpty()) redoMovementCardStack();
+                return;
             }
-            if ((bluePawnsToPlay == 0) && (redPawnsToPlay == 0)) {
-                computePartyResult();
+
+            // ACTION : Placer un pion sur le plateau
+            if(gridDest == board) {
+                Pawn pawn = (Pawn) element;
+
+                // RÉCUPÈRE LES ÉLÉMENTS POUR METTRE À JOUR LE COMPTEUR DES PIONS DU JOUEUR
+                final TextElement textElement;
+                final PawnPot pawnPot;
+                if(pawn.getStatus() == Pawn.Status.BLUE_PAWN) {
+                    textElement = bluePawnText;
+                    pawnPot = bluePot;
+                } else if (pawn.getStatus() == Pawn.Status.RED_PAWN) {
+                    textElement = redPawnText;
+                    pawnPot = redPot;
+                } else {
+                    // SI LE PION PLACÉ EST LE ROI ALORS NE RIEN FAIRE (joué 1 fois lors du setup)
+                    return;
+                }
+
+                // MET À JOUR L'AFFICHAGE DU COMPTEUR DES PIONS
+                textElement.setText(String.valueOf(ContainerElements.countElements(pawnPot)));
             }
         });
     }
@@ -363,28 +363,12 @@ public class KoRStageModel extends GameStageModel {
         model.stopStage();
     }
 
-    public int getMovementCardStackToPlay() {
-        return movementCardStackToPlay;
-    }
-
-    public void setMovementCardStackToPlay(int movementCardStackToPlay) {
-        this.movementCardStackToPlay = movementCardStackToPlay;
-    }
-
     public int getBlueHeroCardToPlay() {
         return blueHeroCardToPlay;
     }
 
-    public int getBluePawnsToPlay() {
-        return bluePawnsToPlay;
-    }
-
     public int getRedHeroCardToPlay() {
         return redHeroCardToPlay;
-    }
-
-    public int getRedPawnsToPlay() {
-        return redPawnsToPlay;
     }
 
     @Override
@@ -392,36 +376,17 @@ public class KoRStageModel extends GameStageModel {
         return new KoRStageFactory(this);
     }
 
-    public Coord2D getElementPosition(GameElement gameElement, ContainerElement containerElement) {
-        for(int x=0; x<containerElement.getNbRows(); x++) {
-            for(int y=0; y<containerElement.getNbCols(); y++) {
-                if(containerElement.isEmptyAt(x, y)) continue;
-                if(containerElement.getElement(x ,y).getType() == gameElement.getType()) return new Coord2D(x, y);
-            }
-        }
-        return null;
-    }
+    private void redoMovementCardStack() {
+        // RÉCUPÈRE LES CARTES MOVEMENT DÉJÀ JOUÉES
+        List<MovementCard> movementCardList = getMovementCards(MovementCard.Owner.OUT);
 
-    public Coord2D getPawnPosition(Pawn.Status pawnStatus, ContainerElement containerElement) {
-        for(int row=0; row<containerElement.getNbRows(); row++) {
-            for(int col=0; col<containerElement.getNbCols(); col++) {
-                if(containerElement.isEmptyAt(row, col)) continue;
-                if(containerElement.getElement(row ,col) instanceof Pawn pawnElement) {
-                    if(pawnElement.getStatus() == pawnStatus)
-                        return new Coord2D(col, row);
-                }
-            }
-        }
-        return null;
-    }
+        // MÉLANGER LES CARTES QUI ONT ÉTÉ JOUÉES
+        Collections.shuffle(movementCardList);
 
-    public Coord2D geEmptyPosition(ContainerElement containerElement) {
-        for(int row=0; row<containerElement.getNbRows(); row++) {
-            for(int col=0; col<containerElement.getNbCols(); col++) {
-                if(containerElement.isEmptyAt(row, col))
-                    return new Coord2D(row, col);
-            }
+        // REMET LES CARTES JOUÉES DANS LA PILE
+        for(MovementCard movementCard : movementCardList) {
+            movementCard.setOwner(MovementCard.Owner.STACK);
+            movementCardStack.addElement(movementCard, 0, 0);
         }
-        return null;
     }
 }
