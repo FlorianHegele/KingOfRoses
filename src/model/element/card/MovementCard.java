@@ -9,7 +9,7 @@ public class MovementCard extends GameElement {
 
     private final int step;
     private final Direction direction;
-    private boolean isInStack;
+    private Owner owner;
 
     public MovementCard(int step, Direction direction, GameStageModel gameStageModel) {
         super(gameStageModel);
@@ -20,15 +20,15 @@ public class MovementCard extends GameElement {
 
         this.step = step;
         this.direction = direction;
-        this.isInStack = true;
+        this.owner = Owner.STACK;
     }
 
-    public boolean isInStack() {
-        return isInStack;
+    public Owner getOwner() {
+        return owner;
     }
 
-    public void setInStack(boolean isInStack) {
-        this.isInStack = isInStack;
+    public void setOwner(Owner owner) {
+        this.owner = owner;
     }
 
     public int getStep() {
@@ -49,15 +49,6 @@ public class MovementCard extends GameElement {
 
     public Coord2D getDirectionVector() {
         return direction.getVecteur().multiply(step);
-    }
-
-    @Override
-    public String toString() {
-        return "MovementCard{" +
-                "step=" + step +
-                ", direction=" + direction +
-                ", isInStack=" + isInStack +
-                '}';
     }
 
     public enum Direction {
@@ -127,5 +118,13 @@ public class MovementCard extends GameElement {
                 default -> throw new IllegalCallerException("Illegal direction");
             }
         }
+    }
+
+    // TODO : CHECK IF I CAN REPLACE STACK & OUT BY JUST ONE VARIABLE
+    public enum Owner {
+        PLAYER_RED,
+        PLAYER_BLUE,
+        STACK,
+        OUT;
     }
 }
