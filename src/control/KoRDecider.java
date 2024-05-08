@@ -32,6 +32,8 @@ public class KoRDecider extends Decider {
         // do a cast get a variable of the real type to get access to the attributes of KoRStageModel
         KoRStageModel stage = (KoRStageModel) model.getGameStage();
         KoRBoard board = stage.getBoard(); // get the board
+
+        /*
         PawnPot pot = null; // the pot where to take a pawn
         GameElement pawn = null; // the pawn that is moved
         int rowDest = 0; // the dest. row in board
@@ -58,9 +60,9 @@ public class KoRDecider extends Decider {
                     break; // stop the loop
                 }
             }
-        }
+        }*/
 
-        ActionList actions = ActionFactory.generatePutInContainer(model, pawn, "KoRboard", rowDest, colDest);
+        ActionList actions = null;
         actions.setDoEndOfTurn(true); // after playing this action list, it will be the end of turn for current player.
 
         return actions;
