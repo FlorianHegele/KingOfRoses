@@ -469,6 +469,10 @@ public class KoRStageModel extends GameStageModel {
         return false;
     }
 
+    public boolean gameIsStuck() {
+        return !playerCanPlay(PlayerData.PLAYER_BLUE) && !playerCanPlay(PlayerData.PLAYER_RED);
+    }
+
 
     // TODO : REWRITE THE ENTIER CODE OF THIS FUNCTION
     private void computePartyResult() {

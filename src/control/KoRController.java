@@ -80,7 +80,8 @@ public class KoRController extends Controller {
     }
 
     private boolean analyseAndPlay(String line) {
-        KoRStageModel gameStage = (KoRStageModel) model.getGameStage();
+        final KoRStageModel gameStage = (KoRStageModel) model.getGameStage();
+        final PlayerData playerData = PlayerData.getCurrentPlayerData(model);
 
         final char action = line.charAt(0);
         final int length = line.length();
@@ -89,7 +90,7 @@ public class KoRController extends Controller {
             if(length != 1) return false;
 
             final ContainerElement container;
-            if (model.getIdPlayer() == PlayerData.PLAYER_BLUE.getId()) {
+            if (playerData == PlayerData.PLAYER_BLUE) {
                 container = gameStage.getBlueMovementCardsSpread();
             } else {
                 container = gameStage.getRedMovementCardsSpread();
@@ -116,7 +117,7 @@ public class KoRController extends Controller {
 
             final PawnPot pawnPot;
             final MovementCardSpread movementCardSpread;
-            if (model.getIdPlayer() == PlayerData.PLAYER_BLUE.getId()) {
+            if (playerData == PlayerData.PLAYER_BLUE) {
                 pawnPot = gameStage.getBluePot();
                 movementCardSpread = gameStage.getBlueMovementCardsSpread();
             } else {
@@ -188,7 +189,11 @@ public class KoRController extends Controller {
             return false;
         }
 
-        actions.setDoEndOfTurn(true); // after playing this action list, it will be the end of turn for current player.
+        // TODO : CHECK IF THIS IS VALID
+        if(gameStage.playerCanPlay(playerData.getNextPlayerData())) {
+            actions.setDoEndOfTurn(true); // after playing this action list, it will be the end of turn for current player.
+        }
+
         ActionPlayer play = new ActionPlayer(model, this, actions);
         play.start();
 

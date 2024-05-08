@@ -1,5 +1,6 @@
 package model;
 
+import boardifier.model.Model;
 import boardifier.view.ConsoleColor;
 
 public enum PlayerData {
@@ -25,6 +26,23 @@ public enum PlayerData {
 
     public String getName() {
         return name().toLowerCase();
+    }
+
+    public PlayerData getNextPlayerData() {
+        return (this == PLAYER_RED) ? PLAYER_BLUE : PLAYER_RED;
+    }
+
+    public static PlayerData getPlayerData(int id) {
+        for (PlayerData playerData : PlayerData.values()) {
+            if (playerData.getId() == id) {
+                return playerData;
+            }
+        }
+        return null;
+    }
+
+    public static PlayerData getCurrentPlayerData(Model model) {
+        return getPlayerData(model.getIdPlayer());
     }
 
 }
