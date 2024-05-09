@@ -54,7 +54,7 @@ public class KoRController extends Controller {
             }
 
             playTurn(gameStage, playerData);
-            update();
+            if(!model.isEndStage()) update();
         }
         endGame();
     }
@@ -73,7 +73,15 @@ public class KoRController extends Controller {
             while (!ok) {
                 System.out.print(p.getName() + " > ");
                 // ANALYSE L'ENTRÉE DU JOUEUR HUMAIN
-                ok = analyse(gameStage, playerData, getLine());
+
+                final String line = getLine();
+                // REGARDE SI LE JOUEUR ARRETE LE JEU (EXEMPLE : CTRL + D)
+                if(line == null) {
+                    System.out.println("Partie arrêté !");
+                    model.stopStage();
+                    return;
+                }
+                ok = analyse(gameStage, playerData, line);
                 // SI L'ENTRÉE N'EST PAS VALIDE, ALORS BOUCLÉ UNE FOIS DE PLUS SUR UNE NOUVELLE ENTRÉE
                 if (!ok) {
                     System.out.println("incorrect instruction. retry !");
