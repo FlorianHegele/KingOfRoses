@@ -65,7 +65,6 @@ public class KoRController extends Controller {
         // RÉCUPÈRE LE NOUVEAU JOUEUR
         final Player p = model.getCurrentPlayer();
         if (p.getType() == Player.COMPUTER) {
-            System.out.println("COMPUTER PLAYS");
             KoRDecider decider = new KoRDecider(model, this);
             actionPlayer = new ActionPlayer(model, this, decider, null);
         } else {
@@ -104,6 +103,7 @@ public class KoRController extends Controller {
         stageModel.getPlayerName().setText(p.getName());
     }
 
+    // RENVOIE FAUX SI L'ACTION N'EST PAS VALIDE
     private boolean analyse(KoRStageModel gameStage, PlayerData playerData, String line) {
         if (line.isEmpty() || line.length() > 2) return false;
 

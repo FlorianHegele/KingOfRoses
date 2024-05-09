@@ -29,14 +29,9 @@ public class ContainerElements {
         int count = 0;
         for(int row=0; row<containerElement.getNbRows(); row++) {
             for(int col=0; col<containerElement.getNbCols(); col++) {
-                count += countElementsInCell(containerElement, row, col);
+                count += containerElement.getElements(row, col).size();
             }
         }
         return count;
     }
-
-    public static int countElementsInCell(ContainerElement containerElement, int row, int col) {
-        return containerElement.getElements(row, col).size();
-    }
-
 }

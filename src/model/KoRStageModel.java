@@ -623,5 +623,5 @@ public class KoRStageModel extends GameStageModel {
         return null;
     }
 
-    private record PawnNode(Pawn.Status status, int row, int col) {}
+    public record PawnNode(Pawn.Status status, int row, int col) {}
 }
