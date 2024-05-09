@@ -12,10 +12,7 @@ import model.element.card.MovementCard;
 import utils.ContainerElements;
 import utils.Elements;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * KoRStageModel defines the model for the single stage in "The KoR". Indeed,
@@ -43,6 +40,9 @@ import java.util.Random;
  *
  */
 public class KoRStageModel extends GameStageModel {
+
+    private static final int[] dx = {1, -1, 0, 0};
+    private static final int[] dy = {0, 0, 1, -1};
 
     // define stage game elements
     private KoRBoard board;
@@ -333,11 +333,10 @@ public class KoRStageModel extends GameStageModel {
 
                 // MET À JOUR LE COMPTEUR DE LA PILE
                 movementCardStackText.setText(String.valueOf(getMovementCards(MovementCard.Owner.STACK).size()));
-                return;
             }
 
             // ACTION : Placer un pion sur le plateau
-            if(containerDest == board) {
+            else if(containerDest == board) {
                 Pawn pawn = (Pawn) element;
 
                 // RÉCUPÈRE LES ÉLÉMENTS POUR METTRE À JOUR LE COMPTEUR DES PIONS DU JOUEUR
@@ -356,6 +355,11 @@ public class KoRStageModel extends GameStageModel {
 
                 // MET À JOUR L'AFFICHAGE DU COMPTEUR DES PIONS
                 textElement.setText(String.valueOf(ContainerElements.countElements(pawnPot)));
+            }
+
+            // REGARDE SI LA PARTIE PREND FIN
+            if(gameIsStuck()) {
+                computePartyResult();
             }
         });
     }
@@ -439,10 +443,7 @@ public class KoRStageModel extends GameStageModel {
 
         // SI LE JOUEUR PEUT PIOCHER UNE CARTE DE MOUVEMENT
         final int countMovementCards = ContainerElements.countElements(movementCardSpread);
-        if(countMovementCards < 5) {
-            // RAJOUTER L'ACTION DE PIOCHER
-            return true;
-        }
+        if(countMovementCards < 5) return true;
 
         final boolean hasHeroCard = ContainerElements.countElements(heroCardStack) > 0;
         final Coord2D kingPos = ContainerElements.getElementPosition(kingPawn, board);
@@ -474,16 +475,124 @@ public class KoRStageModel extends GameStageModel {
     }
 
 
-    // TODO : REWRITE THE ENTIER CODE OF THIS FUNCTION
     private void computePartyResult() {
-        int idWinner = new Random().nextInt(2);
+        final int idWinner;
+        final int redZoneCounter = getPlayerZonePoint(Pawn.Status.RED_PAWN);
+        final int blueZoneCounter = getPlayerZonePoint(Pawn.Status.BLUE_PAWN);
 
-        System.out.println("end of game");
+        board.resetReachableCells(true);
+
+        if(redZoneCounter == blueZoneCounter) {
+            final int redPawnPlaced = getTotalPawnOnBoard(Pawn.Status.RED_PAWN);
+            final int bluePawnPlaced = getTotalPawnOnBoard(Pawn.Status.BLUE_PAWN);
+
+            if(redPawnPlaced == bluePawnPlaced) {
+                // ÉGALITÉ PARFAITE
+                idWinner = -1;
+            } else {
+                // RÉCUPÈRE LE JOUEUR QUI A LE PLUS DE PION DE SA COULEUR VISIBLE POUR LE METTRE GAGNANT
+                final PlayerData winner = (redPawnPlaced > bluePawnPlaced) ? PlayerData.PLAYER_RED : PlayerData.PLAYER_BLUE;
+                idWinner = winner.getId();
+            }
+        } else {
+            // RÉCUPÈRE LE JOUEUR QUI A LE PLUS DE POINT DE ZONE POUR LE METTRE GAGNANT
+            final PlayerData winner = (redZoneCounter > blueZoneCounter) ? PlayerData.PLAYER_RED : PlayerData.PLAYER_BLUE;
+            idWinner = winner.getId();
+        }
 
         // set the winner
         model.setIdWinner(idWinner);
         // stop de the game
         model.stopStage();
+    }
+
+    private int getPlayerZonePoint(Pawn.Status status) {
+        final Deque<PawnNode> pawnNodes = new LinkedList<>();
+
+        int totalCounter = 0;
+        for(int row=0; row < board.getNbRows(); row++) {
+            for(int col=0; col < board.getNbCols(); col++) {
+                final Pawn pawn = getPlayedPawn(row, col);
+
+                // SI IL N'Y A PAS DE PION, ALORS RENDRE LA CASE INATTEIGNABLE ET PASSER À LA CASSE SUIVANTE
+                if(pawn == null) {
+                    board.setCellReachable(row, col, false);
+                    continue;
+                }
+
+                // SI ON NE PEUT PAS ATTEINDRE LA CELLULE OU QUE LE PION EST CELUI DE L'ADVERSAIRE,
+                // ALORS PASSER À LA CELLULE SUIVANTE
+                if(!board.canReachCell(row, col) || pawn.getStatus() != status) continue;
+
+
+                // AJOUTE UNE REFERENCE DU PION DANS UNE LISTE ET INITIALISE LE COMPTEUR DE VOISIN
+                pawnNodes.add(new PawnNode(status, row, col));
+                int counter = 0;
+
+                while(!pawnNodes.isEmpty()) {
+                    // TANT QUE LA LISTE N'EST PAS VIDE ON Y RAJOUTER LES RÉFÉRENCES DES PIONS VOISINS ATTEIGNABLES
+                    // DE MEME COULER PAR RAPPORT AU 1ER RÉFÉRENTIEL DE LA LISTE TOUT EN L'ENLEVANT DE LA LISTE
+                    // + ON INCRÉMENTE DE 1 LE COMPTEUR DE VOISIN
+
+                    counter++;
+                    pawnNodes.addAll(getNeighbors(pawnNodes.peek()));
+                }
+
+                // AJOUTE AU COMPTEUR FINAL LE COMPTEUR DE VOISIN AU CARRÉ
+                totalCounter += counter * counter;
+            }
+        }
+
+        return totalCounter;
+    }
+
+    private List<PawnNode> getNeighbors(PawnNode pawnNode) {
+        final List<PawnNode> neighbors = new ArrayList<>();
+
+        for(int i=0; i<4; i++) {
+            final int row = dy[i] + pawnNode.row;
+            final int col = dx[i] + pawnNode.col;
+
+            // SI ON NE PEUT PAS ATTEINDRE LA CELLULE PROCHAINE OU QU'ELLE A DÉJÀ ÉTÉ ATTEINTE
+            // ALORS NE RIEN FAIRE ET PASSER À LA CELLULE SUIVANTE
+            if(!board.canReachCell(row, col)) continue;
+
+            final Pawn pawn = getPlayedPawn(row, col);
+
+            // SI LA CASSE EST VIDE (OU QUE LES COORDONNÉES SONT HORS DU TABLEAU), ALORS RENDRE
+            // LA CELLULE INATTEIGNABLE (SI ON EST TOUJOURS DANS LE TABLEAU) ET PASSER À LA CASE VOISINE SUIVANTE
+            if(pawn == null) {
+                board.setCellReachable(row, col, false);
+                continue;
+            }
+
+            // SI LE PION EST CELUI DE L'ADVERSAIRE ALORS PASSER À LA CASE VOISINE SUIVANTE
+            if(pawn.getStatus() != pawnNode.status) continue;
+
+            // AJOUTE LE PION À LA LISTE ET RENDRE LA CELLULE INATTEIGNABLE
+            neighbors.add(new PawnNode(pawnNode.status, col, row));
+            board.setCellReachable(row, col, false);
+        }
+
+        return neighbors;
+    }
+
+    private int getTotalPawnOnBoard(Pawn.Status status) {
+        int totalPawn = 0;
+
+        for (int row = 0; row < board.getNbRows(); row++) {
+            for (int col = 0; col < board.getNbCols(); col++) {
+                final Pawn pawn = getPlayedPawn(row, col);
+
+                // SI IL N'Y A PAS DE PION, ALORS PASSER À LA CASSE SUIVANTE
+                if (pawn == null) continue;
+
+                // INCRÉMENTER LE COMPTEUR SI LE PION EST BIEN DE LA BONNE COULEUR
+                if(pawn.getStatus() == status) totalPawn++;
+            }
+        }
+
+        return totalPawn;
     }
 
     @Override
@@ -504,4 +613,15 @@ public class KoRStageModel extends GameStageModel {
             movementCardStack.addElement(movementCard, 0, 0);
         }
     }
+
+    public Pawn getPlayedPawn(int row, int col) {
+        for(GameElement gameElement : board.getElements(row, col)) {
+            final Pawn pawn = (Pawn) gameElement;
+            if(pawn == kingPawn) continue;
+            return pawn;
+        }
+        return null;
+    }
+
+    private record PawnNode(Pawn.Status status, int row, int col) {}
 }
