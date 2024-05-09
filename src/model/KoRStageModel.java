@@ -535,7 +535,7 @@ public class KoRStageModel extends GameStageModel {
                     // + ON INCRÉMENTE DE 1 LE COMPTEUR DE VOISIN
 
                     counter++;
-                    pawnNodes.addAll(getNeighbors(pawnNodes.peek()));
+                    pawnNodes.addAll(getNeighbors(pawnNodes.poll()));
                 }
 
                 // AJOUTE AU COMPTEUR FINAL LE COMPTEUR DE VOISIN AU CARRÉ
