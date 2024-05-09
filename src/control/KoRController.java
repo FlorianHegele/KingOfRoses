@@ -11,19 +11,21 @@ import model.KoRStageModel;
 import model.PlayerData;
 import model.container.KoRBoard;
 import model.container.PawnPot;
+import model.container.card.HeroCardStack;
 import model.container.card.MovementCardSpread;
 import model.element.Pawn;
+import model.element.card.HeroCard;
 import model.element.card.MovementCard;
 import utils.ContainerElements;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class KoRController extends Controller {
 
     BufferedReader consoleIn;
     boolean firstPlayer;
+    ActionList playerActionList;
 
     public KoRController(Model model, View view) {
         super(model, view);
@@ -39,38 +41,40 @@ public class KoRController extends Controller {
         update();
         while (!model.isEndStage()) {
             playTurn();
-            endOfTurn();
             update();
         }
         endGame();
     }
 
     private void playTurn() {
-        // get the new player
-        Player p = model.getCurrentPlayer();
+        final ActionPlayer actionPlayer;
+
+        // RÉCUPÈRE LE NOUVEAU JOUEUR
+        final Player p = model.getCurrentPlayer();
         if (p.getType() == Player.COMPUTER) {
             System.out.println("COMPUTER PLAYS");
             KoRDecider decider = new KoRDecider(model, this);
-            ActionPlayer play = new ActionPlayer(model, this, decider, null);
-            play.start();
+            actionPlayer = new ActionPlayer(model, this, decider, null);
         } else {
             boolean ok = false;
             while (!ok) {
                 System.out.print(p.getName() + " > ");
-                try {
-                    String line = consoleIn.readLine();
-                    if (!line.isEmpty() && line.length() <= 2) {
-                        ok = analyseAndPlay(line);
-                    }
-                    if (!ok) {
-                        System.out.println("incorrect instruction. retry !");
-                    }
-                } catch (IOException ignored) {
+                // ANALYSE L'ENTRÉE DU JOUEUR HUMAIN
+                ok = analyse(getLine());
+                // SI L'ENTRÉE N'EST PAS VALIDE, ALORS BOUCLÉ UNE FOIS DE PLUS SUR UNE NOUVELLE ENTRÉE
+                if (!ok) {
+                    System.out.println("incorrect instruction. retry !");
                 }
             }
+            // RÉCUPÈRE LES ACTIONS DU JOUEURS POUR EN FAIRE UN ACTIONPLAYER
+            actionPlayer = new ActionPlayer(model, this, playerActionList);
         }
+
+        // JOUE LES ACTIONS RENSEIGNÉES
+        actionPlayer.start();
     }
 
+    @Override
     public void endOfTurn() {
         model.setNextPlayer();
         // get the new player to display its name
@@ -79,7 +83,9 @@ public class KoRController extends Controller {
         stageModel.getPlayerName().setText(p.getName());
     }
 
-    private boolean analyseAndPlay(String line) {
+    private boolean analyse(String line) {
+        if (line.isEmpty() || line.length() > 2) return false;
+
         final KoRStageModel gameStage = (KoRStageModel) model.getGameStage();
         final PlayerData playerData = PlayerData.getCurrentPlayerData(model);
 
@@ -126,9 +132,10 @@ public class KoRController extends Controller {
             }
 
             // SI N'A PLUS DE PION (IMPOSSIBLE TECHNIQUEMENT)
-            if(pawnPot.isEmptyAt(0, 0)) {
+            if(pawnPot.isEmpty()) {
                 Logger.trace("Bug ICI, normalement le joueur est obligé de passer son tour.");
                 System.out.println("Vous n'avez plus de pion à jouer!");
+                return false;
             }
 
             // SI N'A PLUS DE CARTE MOUVEMENT
@@ -177,26 +184,95 @@ public class KoRController extends Controller {
             actions.addAll(ActionFactory.generateRemoveFromStage(model, movementCard));
 
         } else if (action == 'H') {
-            // TODO : CHECK TOTAL PLAYER CARD IF > 0 ??
-            // TODO : CHECK TOTAL HERO PLAYER CARD IF > 0
             if(length != 2) return false;
-            final int posCard = getIntFromString(line.substring(1));
 
-            if(posCard == -1) return false;
+            // SI L'INDEX DE L'ACTION RENVOIE -1 ALORS CE N'EST PAS UN NOMBRE QUI SUIT LA LETTRE 'D'
+            // note : on vérifie si l'index fait -2 (et pas -1) car on fait -1 sur la variable pour avoir le vrai index
+            //        par exemple l'index de la carte 3 est 2 (donc 3-1)
+            final int indexCard = getIntFromString(line.substring(1))-1;
+            if(indexCard == -2) return false;
 
-            actions = null;
+            final MovementCardSpread movementCardSpread;
+            final HeroCardStack heroCardStack;
+            if (playerData == PlayerData.PLAYER_BLUE) {
+                movementCardSpread = gameStage.getBlueMovementCardsSpread();
+                heroCardStack = gameStage.getBlueHeroCardStack();
+            } else {
+                movementCardSpread = gameStage.getRedMovementCardsSpread();
+                heroCardStack = gameStage.getRedHeroCardStack();
+            }
+
+            if(heroCardStack.isEmpty()) {
+                System.out.println("Vous n'avez plus de carte héro à jouer.!");
+                return false;
+            }
+
+            // SI N'A PLUS DE CARTE MOUVEMENT
+            if(movementCardSpread.isEmpty()) {
+                System.out.println("Vous n'avez pas de carte mouvement à jouer.\nPiocher une carte!");
+                return false;
+            }
+
+            // SI LA CARTE MOUVEMENT SELECTIONNÉ N'EXISTE PAS
+            if(movementCardSpread.isEmptyAt(indexCard, 0)) {
+                System.out.println("Sélectionner une carte que vous possédez.");
+                return false;
+            }
+
+            // RÉCUPÈRE LES ÉLÉMENTS ESSENTIELS
+            final KoRBoard board = gameStage.getBoard();
+            final HeroCard heroCard = (HeroCard) heroCardStack.getElement(0, 0);
+            final MovementCard movementCard = (MovementCard) movementCardSpread.getElement(indexCard, 0);
+            final GameElement king = gameStage.getKingPawn();
+
+            // RÉCUPÈRE LA POSITION DU PION DU ROI QU'ON ADDITIONNE AU VECTEUR DE LA CARTE DÉPLACEMENT
+            final Coord2D pos = ContainerElements.getElementPosition(king, board)
+                    .add(movementCard.getDirectionVector());
+
+            final int col = (int) pos.getX();
+            final int row = (int) pos.getY();
+
+            // SI ON NE PEUT PAS ATTEINDRE LA CASE AVEC LA CARTE
+            if(!board.canReachCell(row, col) || board.isEmptyAt(row, col)) {
+                System.out.println("Vous ne pouvez pas jouer cette carte!");
+                Logger.info("Sortie de tableau");
+                return false;
+            }
+
+            // RÉCUPÈRE LE PION À RETOURNER ET CHANGE SA COULEUR
+            final Pawn pawn = (Pawn) board.getElement(row, col);
+            if(pawn.getStatus().isOwnedBy(playerData)) {
+                System.out.println("Vous ne pouvez pas jouer cette carte!");
+                Logger.info("Pion du joueur courant");
+                return false;
+            }
+            pawn.flipStatus();
+
+            // BOUGE LE PION DU ROI SUR LE PLATEAU
+            actions = ActionFactory.generateMoveWithinContainer(model, king, row, col);
+
+            // ENLEVER LA CARTE HÉRO DU JOUEUR
+            // Note: Joue l'événement removeFromContainer pour lire l'event dans le Model
+            //       et joue ensuite l'event removeFromStage pour enlever la carte de l'affichage
+            actions.addAll(ActionFactory.generateRemoveFromContainer(model, heroCard));
+            actions.addAll(ActionFactory.generateRemoveFromStage(model, heroCard));
+
+            // ENLEVER LA CARTE DÉPLACEMENT DU JOUEUR
+            // Note: Joue l'événement removeFromContainer pour lire l'event dans le Model
+            //       et joue ensuite l'event removeFromStage pour enlever la carte de l'affichage
+            actions.addAll(ActionFactory.generateRemoveFromContainer(model, movementCard));
+            actions.addAll(ActionFactory.generateRemoveFromStage(model, movementCard));
+
         } else {
             return false;
         }
 
-        // TODO : CHECK IF THIS IS VALID
         if(gameStage.playerCanPlay(playerData.getNextPlayerData())) {
             actions.setDoEndOfTurn(true); // after playing this action list, it will be the end of turn for current player.
         }
 
-        ActionPlayer play = new ActionPlayer(model, this, actions);
-        play.start();
-
+        // MET À JOUR LES ACTIONS DU JOUEUR
+        playerActionList = actions;
         return true;
     }
 
@@ -208,6 +284,16 @@ public class KoRController extends Controller {
             resultat = -1;
         }
         return resultat;
+    }
+
+    private String getLine() {
+        final String line;
+        try {
+            line = consoleIn.readLine();
+        } catch (Exception e) {
+            return "";
+        }
+        return line;
     }
 
 }
