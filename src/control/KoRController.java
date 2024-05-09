@@ -40,13 +40,26 @@ public class KoRController extends Controller {
         consoleIn = new BufferedReader(new InputStreamReader(System.in));
         update();
         while (!model.isEndStage()) {
-            playTurn();
+            final KoRStageModel gameStage = (KoRStageModel) model.getGameStage();
+            final PlayerData playerData = PlayerData.getCurrentPlayerData(model);
+
+            // SI LE JOUEUR NE PEUT PAS JOUER, IL PASSE SON TOUR
+            if(!gameStage.playerCanPlay(playerData)) {
+                final String playerName = model.getCurrentPlayerName();
+                endOfTurn();
+                update();
+
+                System.out.println("Le joueur " + playerName + " ne peut pas jouer !\nIl passe son tour.");
+                continue;
+            }
+
+            playTurn(gameStage, playerData);
             update();
         }
         endGame();
     }
 
-    private void playTurn() {
+    private void playTurn(KoRStageModel gameStage, PlayerData playerData) {
         final ActionPlayer actionPlayer;
 
         // RÉCUPÈRE LE NOUVEAU JOUEUR
@@ -60,7 +73,7 @@ public class KoRController extends Controller {
             while (!ok) {
                 System.out.print(p.getName() + " > ");
                 // ANALYSE L'ENTRÉE DU JOUEUR HUMAIN
-                ok = analyse(getLine());
+                ok = analyse(gameStage, playerData, getLine());
                 // SI L'ENTRÉE N'EST PAS VALIDE, ALORS BOUCLÉ UNE FOIS DE PLUS SUR UNE NOUVELLE ENTRÉE
                 if (!ok) {
                     System.out.println("incorrect instruction. retry !");
@@ -83,11 +96,8 @@ public class KoRController extends Controller {
         stageModel.getPlayerName().setText(p.getName());
     }
 
-    private boolean analyse(String line) {
+    private boolean analyse(KoRStageModel gameStage, PlayerData playerData, String line) {
         if (line.isEmpty() || line.length() > 2) return false;
-
-        final KoRStageModel gameStage = (KoRStageModel) model.getGameStage();
-        final PlayerData playerData = PlayerData.getCurrentPlayerData(model);
 
         final char action = line.charAt(0);
         final int length = line.length();
@@ -267,9 +277,7 @@ public class KoRController extends Controller {
             return false;
         }
 
-        if(gameStage.playerCanPlay(playerData.getNextPlayerData())) {
-            actions.setDoEndOfTurn(true); // after playing this action list, it will be the end of turn for current player.
-        }
+        actions.setDoEndOfTurn(true); // after playing this action list, it will be the end of turn for current player.
 
         // MET À JOUR LES ACTIONS DU JOUEUR
         playerActionList = actions;
