@@ -1,5 +1,6 @@
 package model.element.card;
 
+import boardifier.model.Coord2D;
 import boardifier.model.ElementTypes;
 import boardifier.model.GameElement;
 import boardifier.model.GameStageModel;
@@ -8,7 +9,7 @@ public class MovementCard extends GameElement {
 
     private final int step;
     private final Direction direction;
-    private boolean isInStack;
+    private Owner owner;
 
     public MovementCard(int step, Direction direction, GameStageModel gameStageModel) {
         super(gameStageModel);
@@ -19,15 +20,15 @@ public class MovementCard extends GameElement {
 
         this.step = step;
         this.direction = direction;
-        this.isInStack = true;
+        this.owner = Owner.STACK;
     }
 
-    public boolean isInStack() {
-        return isInStack;
+    public Owner getOwner() {
+        return owner;
     }
 
-    public void setInStack(boolean isInStack) {
-        this.isInStack = isInStack;
+    public void setOwner(Owner owner) {
+        this.owner = owner;
     }
 
     public int getStep() {
@@ -46,29 +47,34 @@ public class MovementCard extends GameElement {
         return direction;
     }
 
-    @Override
-    public String toString() {
-        return "MovementCard{" +
-                "step=" + step +
-                ", direction=" + direction +
-                ", isInStack=" + isInStack +
-                '}';
+    public Coord2D getDirectionVector() {
+        return direction.getVecteur().multiply(step);
     }
 
     public enum Direction {
-        NORTH("\u2191"),
-        NORTHEAST("\u2197"),
-        EAST("\u2192"),
-        SOUTHEAST("\u2198"),
-        SOUTH("\u2193"),
-        SOUTHWEST("\u2199"),
-        WEST("\u2190"),
-        NORTHWEST("\u2196");
+        NORTH(-1, 0, "\u2191"),
+        NORTHEAST(-1, 1, "\u2197"),
+        EAST(0, 1, "\u2192"),
+        SOUTHEAST(1, 1, "\u2198"),
+        SOUTH(1, 0, "\u2193"),
+        SOUTHWEST(1, -1, "\u2199"),
+        WEST(0, -1, "\u2190"),
+        NORTHWEST(-1, -1, "\u2196");
 
+        private final Coord2D vecteur;
         private final String symbole;
 
-        Direction(String symbole) {
+        Direction(int col, int raw, String symbole) {
+            this(new Coord2D(raw, col), symbole);
+        }
+
+        Direction(Coord2D vecteur, String symbole) {
             this.symbole = symbole;
+            this.vecteur = vecteur;
+        }
+
+        public Coord2D getVecteur() {
+            return vecteur;
         }
 
         public String getSymbole() {
@@ -112,5 +118,13 @@ public class MovementCard extends GameElement {
                 default -> throw new IllegalCallerException("Illegal direction");
             }
         }
+    }
+
+    // TODO : CHECK IF I CAN REPLACE STACK & OUT BY JUST ONE VARIABLE
+    public enum Owner {
+        PLAYER_RED,
+        PLAYER_BLUE,
+        STACK,
+        OUT; // (OUT SIGNIFIE QUE LA CARTE N'EST PAS À UN JOUEUR ET N'EST PAS DANS LA PILE)
     }
 }

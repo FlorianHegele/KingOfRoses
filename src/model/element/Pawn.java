@@ -4,6 +4,7 @@ import boardifier.model.ElementTypes;
 import boardifier.model.GameElement;
 import boardifier.model.GameStageModel;
 import boardifier.view.ConsoleColor;
+import model.PlayerData;
 
 
 public class Pawn extends GameElement {
@@ -32,16 +33,20 @@ public class Pawn extends GameElement {
 
     public enum Status {
 
-        RED_PAWN(ConsoleColor.RED_BACKGROUND, 0),
-        BLUE_PAWN(ConsoleColor.BLUE_BACKGROUND, 1),
-        KING_PAWN(ConsoleColor.YELLOW_BACKGROUND, 2);
+        RED_PAWN(PlayerData.PLAYER_RED),
+        BLUE_PAWN(PlayerData.PLAYER_BLUE),
+        KING_PAWN(2, ConsoleColor.YELLOW_BACKGROUND);
 
-        private final String backgroundColor;
         private final int id;
+        private final String backgroundColor;
 
-        Status(String backgroundColor, int id) {
-            this.backgroundColor = backgroundColor;
+        Status(PlayerData playerData) {
+            this(playerData.getId(), playerData.getBackgroundColor());
+        }
+
+        Status(int id, String backgroundColor) {
             this.id = id;
+            this.backgroundColor = backgroundColor;
         }
 
         public String getBackgroundColor() {
@@ -54,6 +59,10 @@ public class Pawn extends GameElement {
 
         public int getID() {
             return id;
+        }
+
+        public boolean isOwnedBy(PlayerData playerData) {
+            return playerData.getId() == id;
         }
     }
 

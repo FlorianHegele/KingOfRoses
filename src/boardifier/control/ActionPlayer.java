@@ -46,13 +46,15 @@ public class ActionPlayer {
 
         model.setCaptureEvents(true);
 
+        // FIX : Play end of turn if it's required
+        if(actions.mustDoEndOfTurn()) control.endOfTurn();
     }
 
     private void playActions(ActionList actions) {
         // loop over all action packs
         int idPack = 0;
         for(List<GameAction> actionPack : actions.getActions()) {
-            System.out.println("playing pack "+idPack);
+            Logger.info("playing pack "+idPack);
             // step 4 : do the real actions, based on action.type
             for(GameAction action : actionPack) {
                 action.execute();

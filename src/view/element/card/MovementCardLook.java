@@ -7,18 +7,21 @@ import model.element.card.MovementCard;
 
 public class MovementCardLook extends ElementLook {
 
-    // TODO : BUG HERE
-
     public MovementCardLook(GameElement element) {
         // Pawn look is constituted of a single character, so shape size = 1x1
         super(element, 1, 2);
+        setAnchorType(ElementLook.ANCHOR_TOPLEFT);
     }
 
     protected void render() {
         MovementCard card = (MovementCard)element;
 
-        if(card.isInStack()) {
+        if(card.getOwner() == MovementCard.Owner.STACK) {
             shape[0][0] = ConsoleColor.BLACK + ConsoleColor.WHITE_BACKGROUND + "M" + ConsoleColor.RESET;
+        } else if(card.getOwner() == MovementCard.Owner.OUT) {
+            // FIXME : CARTE TECHNIQUEMENT INVISIBLE
+            shape[0][0] = ConsoleColor.BLACK + ConsoleColor.YELLOW_BACKGROUND + card.getDirection().getSymbole() + ConsoleColor.RESET;
+            shape[1][0] = ConsoleColor.BLACK + ConsoleColor.YELLOW_BACKGROUND + card.getStep() + ConsoleColor.RESET;
         } else {
             shape[0][0] = ConsoleColor.BLACK + ConsoleColor.WHITE_BACKGROUND + card.getDirection().getSymbole() + ConsoleColor.RESET;
             shape[1][0] = ConsoleColor.BLACK + ConsoleColor.WHITE_BACKGROUND + card.getStep() + ConsoleColor.RESET;

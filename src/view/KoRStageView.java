@@ -9,14 +9,12 @@ import boardifier.view.TextLook;
 import model.KoRStageModel;
 import model.element.card.MovementCard;
 import view.container.PawnPotLook;
-import view.container.card.HeroCardSpreadLook;
+import view.container.card.HeroCardStackLook;
 import view.container.card.MovementCardSpreadLook;
 import view.container.card.MovementCardStackLook;
 import view.element.PawnLook;
 import view.element.card.HeroCardLook;
 import view.element.card.MovementCardLook;
-
-// TODO : Adapt to the new game, the UI won't look like this
 
 /**
  * KoRStageView has to create all the looks for all game elements created by the KoRStageFactory.
@@ -60,6 +58,15 @@ public class KoRStageView extends GameStageView {
 
         // create look for the text element
         addLook(new TextLook(model.getPlayerName()));
+        addLook(new TextLook(model.getActionDescription1()));
+        addLook(new TextLook(model.getActionDescription2()));
+        addLook(new TextLook(model.getActionDescription3()));
+        addLook(new TextLook(model.getActionDescription4()));
+        addLook(new TextLook(model.getMovementCardStackText()));
+        addLook(new TextLook(model.getBlueHeroCardText()));
+        addLook(new TextLook(model.getRedHeroCardText()));
+        addLook(new TextLook(model.getRedPawnText()));
+        addLook(new TextLook(model.getBluePawnText()));
 
 
         /*
@@ -70,10 +77,9 @@ public class KoRStageView extends GameStageView {
         addLook(new ClassicBoardLook(2, 4, model.getBoard(), 1, 1, true));
 
         // create look for the hero cards
-        addLook(new HeroCardSpreadLook(model.getRedHeroCardSpread()));
-        addLook(new HeroCardSpreadLook(model.getBlueHeroCardSpread()));
+        addLook(new HeroCardStackLook(model.getRedHeroCardStack()));
+        addLook(new HeroCardStackLook(model.getBlueHeroCardStack()));
 
-        // TODO : create deck
         // create look for the movement deck cards
         addLook(new MovementCardStackLook(model.getMovementCardStack()));
 
@@ -96,23 +102,15 @@ public class KoRStageView extends GameStageView {
             addLook(new HeroCardLook(model.getBlueHeroCards()[i]));
         }
 
-        // create look for the movement cards
-        for(int i=0; i<5; i++) {
-            Logger.trace(model.getRedMovementCards()[i].toString() + " | " + model.getBlueMovementCards()[i].toString() + " | HERE ");
-            addLook(new MovementCardLook(model.getRedMovementCards()[i]));
-            addLook(new MovementCardLook(model.getBlueMovementCards()[i]));
-        }
-
         // create look for the pawns
-        for(int i=0; i<52; i++) {
+        for(int i=0; i<26; i++) {
             addLook(new PawnLook(model.getRedPawns()[i]));
             addLook(new PawnLook(model.getBluePawns()[i]));
         }
         addLook(new PawnLook(model.getKingPawn()));
 
-        // TODO : create deck
-        // create look for the movement deck card
-        for(MovementCard movementCard : model.getMovementCardDeck()) {
+        // create look for the movement card
+        for(MovementCard movementCard : model.getMovementCards()) {
             addLook(new MovementCardLook(movementCard));
         }
 

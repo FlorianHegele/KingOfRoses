@@ -1,16 +1,15 @@
 package view.element;
 
-import boardifier.control.Logger;
-import boardifier.model.GameElement;
 import boardifier.view.ConsoleColor;
 import boardifier.view.ElementLook;
 import model.element.Pawn;
 
 public class PawnLook extends ElementLook {
 
-    public PawnLook(GameElement element) {
+    // FIXME : BUG VISUEL, PARFOIS LE PION DU ROI N'EST PAS AFFICHÉ EST AFFICHÉ EN DESSOUS DE CERTAIN PION
+    public PawnLook(Pawn element) {
         // Pawn look is constituted of a single character, so shape size = 1x1
-        super(element, 1, 1);
+        super(element, 1, 1, (element.getStatus() == Pawn.Status.KING_PAWN) ? 0 : 1);
     }
 
     protected void render() {

@@ -33,7 +33,27 @@ public class Coord2D {
         return new Coord2D(this.x+x, this.y+y);
     }
 
+    public Coord2D add (Coord2D other) {
+        return add(other.getX(), other.getY());
+    }
+
+    public Coord2D multiply (double scale) {
+        return new Coord2D(this.x * scale, this.y * scale);
+    }
+
+    public Coord2D add (Coord2D other, Coord2D scale) {
+        return add(other.getX() * scale.getX(), other.getY() * scale.getY());
+    }
+
     public Coord2D subtract (double x, double y) {
         return new Coord2D(this.x-x, this.y-y);
+    }
+
+    @Override
+    public String toString() {
+        return "Coord2D{" +
+                "x=" + x +
+                ", y=" + y +
+                '}';
     }
 }

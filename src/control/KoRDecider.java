@@ -12,6 +12,7 @@ import model.KoRStageModel;
 import model.element.Pawn;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
@@ -31,6 +32,8 @@ public class KoRDecider extends Decider {
         // do a cast get a variable of the real type to get access to the attributes of KoRStageModel
         KoRStageModel stage = (KoRStageModel) model.getGameStage();
         KoRBoard board = stage.getBoard(); // get the board
+
+        /*
         PawnPot pot = null; // the pot where to take a pawn
         GameElement pawn = null; // the pawn that is moved
         int rowDest = 0; // the dest. row in board
@@ -47,7 +50,7 @@ public class KoRDecider extends Decider {
             // if there is a pawn in i.
             if (p != null) {
                 // get the valid cells
-                List<Point> valid = board.computeValidCells(p);
+                List<Point> valid = new ArrayList<>();
                 if (!valid.isEmpty()) {
                     // choose at random one of the valid cells
                     int id = loto.nextInt(valid.size());
@@ -57,9 +60,9 @@ public class KoRDecider extends Decider {
                     break; // stop the loop
                 }
             }
-        }
+        }*/
 
-        ActionList actions = ActionFactory.generatePutInContainer(model, pawn, "KoRboard", rowDest, colDest);
+        ActionList actions = null;
         actions.setDoEndOfTurn(true); // after playing this action list, it will be the end of turn for current player.
 
         return actions;
