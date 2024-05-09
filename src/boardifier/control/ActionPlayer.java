@@ -46,6 +46,8 @@ public class ActionPlayer {
 
         model.setCaptureEvents(true);
 
+        // FIX : Play end of turn if it's required
+        if(actions.mustDoEndOfTurn()) control.endOfTurn();
     }
 
     private void playActions(ActionList actions) {
