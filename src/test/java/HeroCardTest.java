@@ -1,4 +1,3 @@
-
 import boardifier.model.Model;
 import boardifier.view.ConsoleColor;
 import model.KoRStageModel;
