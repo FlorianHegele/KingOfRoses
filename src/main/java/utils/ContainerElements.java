@@ -19,7 +19,7 @@ public class ContainerElements {
         for (int row = 0; row < containerElement.getNbRows(); row++) {
             for (int col = 0; col < containerElement.getNbCols(); col++) {
                 if (containerElement.isEmptyAt(row, col))
-                    return new Coord2D(row, col);
+                    return new Coord2D(col, row);
             }
         }
         return null;
