@@ -20,6 +20,7 @@ public class KoRConsole {
         // SETUP GAME CONFIGURATION
         final GameConfigurationModel gameConfigurationModel = new GameConfigurationModel(model);
         final GameConfigurationController gameConfigurationController = new GameConfigurationController(gameConfigurationModel, consoleController);
+        gameConfigurationController.doCheck();
 
         // LOAD GAME ELEMENTS
         StageFactory.registerModelAndView("kor", "model.KoRStageModel", "view.KoRStageView");

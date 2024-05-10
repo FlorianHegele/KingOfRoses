@@ -11,21 +11,27 @@ public class GameConfigurationController {
     public GameConfigurationController(GameConfigurationModel gameConfigurationModel, ConsoleController consoleController) {
         this.configurationModel = gameConfigurationModel;
         this.console = consoleController;
-        doCheck();
     }
 
-    private void doCheck() {
+    public void doCheck() {
         console.printlnCheckMessage("Press enter if you want to skip !");
 
-        setSeed();
-        setPlayerName();
         configurationModel.updateLogger();
+        setSeed();
+        setPlayerMode();
+        setPlayerName();
     }
 
     private void setSeed() {
         console.printCheckMessage("specific seed ? ");
         final String line = console.getCheckConsoleLine();
         if (!line.isEmpty()) GameConfigurationModel.RANDOM.setSeed(Strings.parseLong(line));
+    }
+
+    private void setPlayerMode() {
+        console.printCheckMessage("specific player mode (0: PvP, 1: PvAI, 2: AIvAI) ? ");
+        final String line = console.getCheckConsoleLine();
+        if (!line.isEmpty()) configurationModel.setPlayerMode(Strings.parseInt(line));
     }
 
     private void setPlayerName() {
@@ -35,7 +41,7 @@ public class GameConfigurationController {
             final String line = console.getCheckConsoleLine();
             if (!line.isEmpty()) playersName[i - 1] = line;
         }
-        configurationModel.addPlayer(playersName[0], playersName[1]);
+        configurationModel.addPlayers(playersName[0], playersName[1]);
     }
 
 }

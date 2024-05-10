@@ -18,8 +18,8 @@ public class GameConfigurationModel {
 
     public GameConfigurationModel(Model model, int playerMode, int loggerMode) {
         this.model = model;
-        this.playerMode = playerMode;
-        this.loggerMode = loggerMode;
+        setPlayerMode(playerMode);
+        setLoggerMode(loggerMode);
     }
 
     public GameConfigurationModel(Model model) {
@@ -35,14 +35,14 @@ public class GameConfigurationModel {
     }
 
     public void setPlayerMode(int playerMode) {
-        this.playerMode = playerMode;
+        this.playerMode = (playerMode < 0) || (playerMode > 2) ? DEFAULT_PLAYER_MODE : playerMode;
     }
 
     public void setLoggerMode(int loggerMode) {
-        this.loggerMode = loggerMode;
+        this.loggerMode = (loggerMode < 0) || (loggerMode > 1) ? DEFAULT_LOGGER_MODE : loggerMode;
     }
 
-    public void addPlayer(String player1, String player2) {
+    public void addPlayers(String player1, String player2) {
         if (playerMode == 0) {
             model.addHumanPlayer(player1);
             model.addHumanPlayer(player2);
