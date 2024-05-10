@@ -1,6 +1,8 @@
 package model;
 
 import boardifier.model.*;
+import boardifier.model.action.ActionList;
+import control.SimpleActionList;
 import model.container.KoRBoard;
 import model.container.PawnPot;
 import model.container.card.HeroCardStack;
@@ -386,9 +388,11 @@ public class KoRStageModel extends GameStageModel {
         });
     }
 
-    public List<String> getPossiblePlayerActions(PlayerData playerData) {
-        final List<String> actions = new ArrayList<>();
+    public List<ActionList> getPossiblePlayerActions(PlayerData playerData) {
+        final List<ActionList> actions = new ArrayList<>();
         if (playerData == null) return actions;
+
+        final SimpleActionList simpleActionList = new SimpleActionList(model);
 
         final PawnPot pawnPot;
         final MovementCardSpread movementCardSpread;
@@ -411,7 +415,7 @@ public class KoRStageModel extends GameStageModel {
         final int countMovementCards = ContainerElements.countElements(movementCardSpread);
         if (countMovementCards < 5) {
             // RAJOUTER L'ACTION DE PIOCHER
-            actions.add("P");
+            actions.add(simpleActionList.pickUpMovementCard(movementCardSpread));
         }
 
         // SI LE JOUEUR NE POSSÈDE PAS DE CARTE MOUVEMENT ALORS RENVOYER L'ACTION DE PIOCHER UNIQUEMENT
@@ -437,9 +441,10 @@ public class KoRStageModel extends GameStageModel {
             // SINON SI LE JOUEUR POSSÈDE AU MOINS UNE CARTE HERO ET QUE LE PION N'EST PAS
             // LE SIEN ALORS RAJOUTER L'ACTION DE LA CARTE DÉPLACEMENT + HÉRO
             if (board.isEmptyAt(row, col)) {
-                actions.add("D" + (cardRow + 1));
+                actions.add(simpleActionList.useMovementCard(movementCard, (Pawn) pawnPot.getElement(0, 0), potentialPos));
             } else if (hasHeroCard && !((Pawn) board.getElement(row, col)).getStatus().isOwnedBy(playerData)) {
-                actions.add("H" + (cardRow + 1));
+                actions.add(simpleActionList.useHeroCard((HeroCard) heroCardStack.getElement(0, 0), movementCard,
+                        (Pawn) board.getElement(row, col), potentialPos));
             }
         }
         return actions;

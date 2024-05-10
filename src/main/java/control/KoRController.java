@@ -1,6 +1,5 @@
 package control;
 
-import boardifier.control.ActionFactory;
 import boardifier.control.ActionPlayer;
 import boardifier.control.Controller;
 import boardifier.control.Logger;
@@ -100,7 +99,8 @@ public class KoRController extends Controller {
 
         final char action = line.charAt(0);
         final int length = line.length();
-        final ActionList actions;
+
+        final SimpleActionList simpleActionList = new SimpleActionList(model);
         if (action == 'P') {
             if (length != 1) return false;
 
@@ -111,16 +111,14 @@ public class KoRController extends Controller {
                 container = gameStage.getRedMovementCardsSpread();
             }
             // RÉCUPÈRE LA PREMIERE CASE VIDE DU JOUEUR DANS CA GRILLE DE CARTE DE DÉPLACEMENT
-            final Coord2D coord2D = ContainerElements.geEmptyPosition(container);
+            final Coord2D coord2D = ContainerElements.getEmptyPosition(container);
 
             if (coord2D == null) {
                 System.out.println("Vous avez déjà plus de 5 cartes mouvement");
                 return false;
             }
 
-            // RÉCUPÈRE LA 1ÈRE CARTE MOUVEMENT DE LA PILE
-            final MovementCard movementCard = (MovementCard) gameStage.getMovementCardStack().getElement(0, 0);
-            actions = ActionFactory.generatePutInContainer(model, movementCard, container.getName(), (int) coord2D.getX(), (int) coord2D.getY());
+            playerActionList = simpleActionList.pickUpMovementCard(container, coord2D);
         } else if (action == 'D') {
             if (length != 2) return false;
 
@@ -179,19 +177,7 @@ public class KoRController extends Controller {
                 return false;
             }
 
-
-            // BOUGE LE PION DU ROI SUR LE PLATEAU
-            actions = ActionFactory.generateMoveWithinContainer(model, king, row, col);
-
-            // METTRE LE PION DU JOUEUR À LA MEME POSITION QUE LE ROI SUR LE PLATEAU
-            actions.addAll(ActionFactory.generatePutInContainer(model, pawn, board.getName(), row, col));
-
-            // ENLEVER LA CARTE DÉPLACEMENT DU JOUEUR
-            // Note: Joue l'événement removeFromContainer pour lire l'event dans le Model
-            //       et joue ensuite l'event removeFromStage pour enlever la carte de l'affichage
-            actions.addAll(ActionFactory.generateRemoveFromContainer(model, movementCard));
-            actions.addAll(ActionFactory.generateRemoveFromStage(model, movementCard));
-
+            playerActionList = simpleActionList.useMovementCard(movementCard, pawn, pos);
         } else if (action == 'H') {
             if (length != 2) return false;
 
@@ -255,29 +241,12 @@ public class KoRController extends Controller {
                 Logger.info("Pion du joueur courant");
                 return false;
             }
-            pawn.flipStatus();
 
-            // BOUGE LE PION DU ROI SUR LE PLATEAU
-            actions = ActionFactory.generateMoveWithinContainer(model, king, row, col);
-
-            // ENLEVER LA CARTE HÉRO DU JOUEUR
-            // Note: Joue l'événement removeFromContainer pour lire l'event dans le Model
-            //       et joue ensuite l'event removeFromStage pour enlever la carte de l'affichage
-            actions.addAll(ActionFactory.generateRemoveFromContainer(model, heroCard));
-            actions.addAll(ActionFactory.generateRemoveFromStage(model, heroCard));
-
-            // ENLEVER LA CARTE DÉPLACEMENT DU JOUEUR
-            // Note: Joue l'événement removeFromContainer pour lire l'event dans le Model
-            //       et joue ensuite l'event removeFromStage pour enlever la carte de l'affichage
-            actions.addAll(ActionFactory.generateRemoveFromContainer(model, movementCard));
-            actions.addAll(ActionFactory.generateRemoveFromStage(model, movementCard));
-
+            playerActionList = simpleActionList.useHeroCard(heroCard, movementCard, pawn, pos);
         } else {
             return false;
         }
 
-        // MET À JOUR LES ACTIONS DU JOUEUR
-        playerActionList = actions;
         return true;
     }
 
