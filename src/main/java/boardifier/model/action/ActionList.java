@@ -49,4 +49,17 @@ public class ActionList {
     public boolean mustDoEndOfTurn() {
         return doEndOfTurn;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder stringBuilder = new StringBuilder("ActionList :");
+
+        for(List<GameAction> gameActions : actions) {
+            for(GameAction gameAction : gameActions) {
+                stringBuilder.append(" | ").append(gameAction);
+            }
+        }
+
+        return stringBuilder.append(" |").toString();
+    }
 }

@@ -247,6 +247,7 @@ public class KoRController extends Controller {
             return false;
         }
 
+        Logger.info(playerActionList.toString());
         return true;
     }
 

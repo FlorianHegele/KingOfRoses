@@ -80,4 +80,9 @@ public abstract class GameAction {
         onEndCallback = callback;
     }
     public abstract void execute();
+
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName() + "{ " + element.getClass().getSimpleName() + " }";
+    }
 }
