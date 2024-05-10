@@ -3,7 +3,6 @@ package model.element.card;
 import boardifier.model.ElementTypes;
 import boardifier.model.GameElement;
 import boardifier.model.GameStageModel;
-import boardifier.view.ConsoleColor;
 import model.PlayerData;
 
 
@@ -15,7 +14,7 @@ public class HeroCard extends GameElement {
         super(gameStageModel);
 
         // REGISTER NEW ELEMENT TYPE
-        ElementTypes.register("hero_card",52);
+        ElementTypes.register("hero_card", 52);
         this.type = ElementTypes.getType("hero_card");
 
         this.status = status;

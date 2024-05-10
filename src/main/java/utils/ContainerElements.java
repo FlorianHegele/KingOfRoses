@@ -16,9 +16,9 @@ public class ContainerElements {
     }
 
     public static Coord2D geEmptyPosition(ContainerElement containerElement) {
-        for(int row=0; row<containerElement.getNbRows(); row++) {
-            for(int col=0; col<containerElement.getNbCols(); col++) {
-                if(containerElement.isEmptyAt(row, col))
+        for (int row = 0; row < containerElement.getNbRows(); row++) {
+            for (int col = 0; col < containerElement.getNbCols(); col++) {
+                if (containerElement.isEmptyAt(row, col))
                     return new Coord2D(row, col);
             }
         }
@@ -27,8 +27,8 @@ public class ContainerElements {
 
     public static int countElements(ContainerElement containerElement) {
         int count = 0;
-        for(int row=0; row<containerElement.getNbRows(); row++) {
-            for(int col=0; col<containerElement.getNbCols(); col++) {
+        for (int row = 0; row < containerElement.getNbRows(); row++) {
+            for (int col = 0; col < containerElement.getNbCols(); col++) {
                 count += containerElement.getElements(row, col).size();
             }
         }

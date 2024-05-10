@@ -16,7 +16,7 @@ public class Pawn extends GameElement {
 
         // REGISTER NEW ELEMENT TYPE
         // Associe le mot pawn à l'entier 50
-        ElementTypes.register("pawn",50);
+        ElementTypes.register("pawn", 50);
         // Récupère l'entier associé au mot pawn et l'associe à la variable type
         this.type = ElementTypes.getType("pawn");
 

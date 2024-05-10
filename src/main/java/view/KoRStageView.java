@@ -4,7 +4,6 @@ import boardifier.control.Logger;
 import boardifier.model.GameStageModel;
 import boardifier.view.ClassicBoardLook;
 import boardifier.view.GameStageView;
-
 import boardifier.view.TextLook;
 import model.KoRStageModel;
 import model.element.card.MovementCard;
@@ -46,7 +45,7 @@ public class KoRStageView extends GameStageView {
 
     @Override
     public void createLooks() {
-        KoRStageModel model = (KoRStageModel)gameStageModel;
+        KoRStageModel model = (KoRStageModel) gameStageModel;
 
         /*
         TO FULFILL:
@@ -97,20 +96,20 @@ public class KoRStageView extends GameStageView {
          */
 
         // create look for the hero cards
-        for(int i=0; i<4; i++) {
+        for (int i = 0; i < 4; i++) {
             addLook(new HeroCardLook(model.getRedHeroCards()[i]));
             addLook(new HeroCardLook(model.getBlueHeroCards()[i]));
         }
 
         // create look for the pawns
-        for(int i=0; i<26; i++) {
+        for (int i = 0; i < 26; i++) {
             addLook(new PawnLook(model.getRedPawns()[i]));
             addLook(new PawnLook(model.getBluePawns()[i]));
         }
         addLook(new PawnLook(model.getKingPawn()));
 
         // create look for the movement card
-        for(MovementCard movementCard : model.getMovementCards()) {
+        for (MovementCard movementCard : model.getMovementCards()) {
             addLook(new MovementCardLook(movementCard));
         }
 

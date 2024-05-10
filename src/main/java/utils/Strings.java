@@ -57,9 +57,11 @@ public class Strings {
     public static int parseInt(String str) {
         return parseInt(str, 0);
     }
+
     public static long parseLong(String str) {
         return parseLong(str, 0);
     }
+
     public static boolean parseBoolean(String str) {
         return parseBoolean(str, false);
     }
@@ -67,9 +69,11 @@ public class Strings {
     public static int parseInt(String[] strings, int index) {
         return parseInt(strings, index, 0);
     }
+
     public static long parseLong(String[] strings, int index) {
         return parseLong(strings, index, 0);
     }
+
     public static boolean parseBoolean(String[] strings, int index) {
         return parseBoolean(strings, index, false);
     }

@@ -13,7 +13,7 @@ public class PawnLook extends ElementLook {
     }
 
     protected void render() {
-        Pawn pawn = (Pawn)element;
+        Pawn pawn = (Pawn) element;
         Pawn.Status status = pawn.getStatus();
 
         shape[0][0] = ConsoleColor.BLACK + status.getBackgroundColor() + "P" + ConsoleColor.RESET;

@@ -1,20 +1,13 @@
 package control;
 
-import boardifier.control.ActionFactory;
 import boardifier.control.Controller;
 import boardifier.control.Decider;
-import boardifier.model.GameElement;
 import boardifier.model.Model;
 import boardifier.model.action.ActionList;
-import model.container.KoRBoard;
-import model.container.PawnPot;
 import model.KoRStageModel;
-import model.element.Pawn;
+import model.container.KoRBoard;
 
-import java.awt.*;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Random;
 
 public class KoRDecider extends Decider {

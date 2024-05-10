@@ -33,6 +33,10 @@ public class SetupController {
         doCheck();
     }
 
+    public static SetupController init(Model model, String[] args) {
+        return new SetupController(model, Strings.parseInt(args, 0), Strings.parseInt(args, 1), Strings.parseBoolean(args, 2));
+    }
+
     private void doCheck() {
         printlnCheckMessage("Press enter if you want to skip !");
 
@@ -44,15 +48,15 @@ public class SetupController {
     private void setSeed() {
         printCheckMessage("specific seed ? ");
         final String line = getCheckConsoleLine();
-        if(!line.isEmpty()) KoRStageModel.RANDOM.setSeed(Strings.parseLong(line));
+        if (!line.isEmpty()) KoRStageModel.RANDOM.setSeed(Strings.parseLong(line));
     }
 
     private void setPlayerName() {
         final String[] playersName = {"player1", "player2"};
-        for(int i=1; i<3; i++) {
-            printCheckMessage("specific player name ("+i+") ? ");
+        for (int i = 1; i < 3; i++) {
+            printCheckMessage("specific player name (" + i + ") ? ");
             final String line = getCheckConsoleLine();
-            if(!line.isEmpty()) playersName[i-1] = line;
+            if (!line.isEmpty()) playersName[i - 1] = line;
         }
         addPlayer(playersName[0], playersName[1]);
     }
@@ -71,10 +75,10 @@ public class SetupController {
     }
 
     private void setLoggerMode() {
-        if(loggerMode == 0) {
+        if (loggerMode == 0) {
             Logger.setLevel(Logger.LOGGER_NONE);
             Logger.setVerbosity(Logger.VERBOSE_NONE);
-        } else if(loggerMode == 1) {
+        } else if (loggerMode == 1) {
             Logger.setLevel(Logger.LOGGER_TRACE);
             Logger.setVerbosity(Logger.VERBOSE_HIGH);
         }
@@ -93,19 +97,15 @@ public class SetupController {
     }
 
     private void printlnCheckMessage(String message) {
-        if(!skipCheck) System.out.println(message);
+        if (!skipCheck) System.out.println(message);
     }
 
     private void printlnCheckMessage() {
-        if(!skipCheck) System.out.println();
+        if (!skipCheck) System.out.println();
     }
 
     private void printCheckMessage(String message) {
-        if(!skipCheck) System.out.print(message);
-    }
-
-    public static SetupController init(Model model, String[] args) {
-        return new SetupController(model, Strings.parseInt(args, 0), Strings.parseInt(args, 1), Strings.parseBoolean(args, 2));
+        if (!skipCheck) System.out.print(message);
     }
 
 }

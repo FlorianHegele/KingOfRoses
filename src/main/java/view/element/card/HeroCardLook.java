@@ -13,7 +13,7 @@ public class HeroCardLook extends ElementLook {
     }
 
     protected void render() {
-        HeroCard card = (HeroCard)element;
+        HeroCard card = (HeroCard) element;
 
         shape[0][0] = ConsoleColor.BLACK + card.getStatus().getBackgroundColor() + "H" + ConsoleColor.RESET;
     }

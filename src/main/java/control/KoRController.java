@@ -4,7 +4,10 @@ import boardifier.control.ActionFactory;
 import boardifier.control.ActionPlayer;
 import boardifier.control.Controller;
 import boardifier.control.Logger;
-import boardifier.model.*;
+import boardifier.model.ContainerElement;
+import boardifier.model.Coord2D;
+import boardifier.model.GameElement;
+import boardifier.model.Player;
 import boardifier.model.action.ActionList;
 import boardifier.view.View;
 import model.KoRStageModel;
@@ -21,9 +24,10 @@ import utils.Strings;
 
 public class KoRController extends Controller {
 
+    private final SetupController setupController;
+
     boolean firstPlayer;
     private ActionList playerActionList;
-    private SetupController setupController;
 
     public KoRController(boardifier.model.Model model, View view, SetupController setupController) {
         super(model, view);
@@ -42,7 +46,7 @@ public class KoRController extends Controller {
             final PlayerData playerData = PlayerData.getCurrentPlayerData(model);
 
             playTurn(gameStage, playerData);
-            if(!model.isEndStage()) update();
+            if (!model.isEndStage()) update();
         }
         endGame();
     }
@@ -63,7 +67,7 @@ public class KoRController extends Controller {
 
                 final String line = setupController.getConsoleLine();
                 // REGARDE SI LE JOUEUR ARRETE LE JEU (EXEMPLE : CTRL + D ou "stop")
-                if(line == null || line.equals("stop")) {
+                if (line == null || line.equals("stop")) {
                     model.stopStage();
                     return;
                 }
@@ -81,7 +85,7 @@ public class KoRController extends Controller {
         // JOUE LES ACTIONS RENSEIGNÉES
         actionPlayer.start();
 
-        if(gameStage.playerCanPlay(playerData.getNextPlayerData())) endOfTurn();
+        if (gameStage.playerCanPlay(playerData.getNextPlayerData())) endOfTurn();
     }
 
     @Override
@@ -95,13 +99,13 @@ public class KoRController extends Controller {
 
     // RENVOIE FAUX SI L'ACTION N'EST PAS VALIDE
     private boolean actionAnalyse(KoRStageModel gameStage, PlayerData playerData, String line) {
-        if(line.isEmpty() || line.length() > 2) return false;
+        if (line.isEmpty() || line.length() > 2) return false;
 
         final char action = line.charAt(0);
         final int length = line.length();
         final ActionList actions;
-        if(action == 'P') {
-            if(length != 1) return false;
+        if (action == 'P') {
+            if (length != 1) return false;
 
             final ContainerElement container;
             if (playerData == PlayerData.PLAYER_BLUE) {
@@ -112,7 +116,7 @@ public class KoRController extends Controller {
             // RÉCUPÈRE LA PREMIERE CASE VIDE DU JOUEUR DANS CA GRILLE DE CARTE DE DÉPLACEMENT
             final Coord2D coord2D = ContainerElements.geEmptyPosition(container);
 
-            if(coord2D == null) {
+            if (coord2D == null) {
                 System.out.println("Vous avez déjà plus de 5 cartes mouvement");
                 return false;
             }
@@ -121,13 +125,13 @@ public class KoRController extends Controller {
             final MovementCard movementCard = (MovementCard) gameStage.getMovementCardStack().getElement(0, 0);
             actions = ActionFactory.generatePutInContainer(model, movementCard, container.getName(), (int) coord2D.getX(), (int) coord2D.getY());
         } else if (action == 'D') {
-            if(length != 2) return false;
+            if (length != 2) return false;
 
             // SI L'INDEX DE L'ACTION RENVOIE -1 ALORS CE N'EST PAS UN NOMBRE QUI SUIT LA LETTRE 'D'
             // note : on vérifie si l'index fait -2 (et pas -1) car on fait -1 sur la variable pour avoir le vrai index
             //        par exemple l'index de la carte 3 est 2 (donc 3-1)
-            final int indexCard = Strings.parseInt(line.substring(1))-1;
-            if(indexCard == -1) return false;
+            final int indexCard = Strings.parseInt(line.substring(1)) - 1;
+            if (indexCard == -1) return false;
 
             final PawnPot pawnPot;
             final MovementCardSpread movementCardSpread;
@@ -140,20 +144,20 @@ public class KoRController extends Controller {
             }
 
             // SI N'A PLUS DE PION (IMPOSSIBLE TECHNIQUEMENT)
-            if(pawnPot.isEmpty()) {
+            if (pawnPot.isEmpty()) {
                 Logger.trace("Bug ICI, normalement le joueur est obligé de passer son tour.");
                 System.out.println("Vous n'avez plus de pion à jouer!");
                 return false;
             }
 
             // SI N'A PLUS DE CARTE MOUVEMENT
-            if(movementCardSpread.isEmpty()) {
+            if (movementCardSpread.isEmpty()) {
                 System.out.println("Vous n'avez pas de carte mouvement à jouer.\nPiocher une carte!");
                 return false;
             }
 
             // SI LA CARTE MOUVEMENT SELECTIONNÉ N'EXISTE PAS
-            if(movementCardSpread.isEmptyAt(indexCard, 0)) {
+            if (movementCardSpread.isEmptyAt(indexCard, 0)) {
                 System.out.println("Sélectionner une carte que vous possédez.");
                 return false;
             }
@@ -172,7 +176,7 @@ public class KoRController extends Controller {
             final int row = (int) pos.getY();
 
             // SI ON NE PEUT PAS ATTEINDRE LA CASE AVEC LA CARTE
-            if(!board.canReachCell(row, col) || !board.isEmptyAt(row, col)) {
+            if (!board.canReachCell(row, col) || !board.isEmptyAt(row, col)) {
                 System.out.println("Vous ne pouvez pas jouer cette carte!");
                 Logger.info("Sortie de tableau");
                 return false;
@@ -192,13 +196,13 @@ public class KoRController extends Controller {
             actions.addAll(ActionFactory.generateRemoveFromStage(model, movementCard));
 
         } else if (action == 'H') {
-            if(length != 2) return false;
+            if (length != 2) return false;
 
             // SI L'INDEX DE L'ACTION RENVOIE -1 ALORS CE N'EST PAS UN NOMBRE QUI SUIT LA LETTRE 'D'
             // note : on vérifie si l'index fait -2 (et pas -1) car on fait -1 sur la variable pour avoir le vrai index
             //        par exemple l'index de la carte 3 est 2 (donc 3-1)
-            final int indexCard = Strings.parseInt(line.substring(1))-1;
-            if(indexCard == -1) return false;
+            final int indexCard = Strings.parseInt(line.substring(1)) - 1;
+            if (indexCard == -1) return false;
 
             final MovementCardSpread movementCardSpread;
             final HeroCardStack heroCardStack;
@@ -210,19 +214,19 @@ public class KoRController extends Controller {
                 heroCardStack = gameStage.getRedHeroCardStack();
             }
 
-            if(heroCardStack.isEmpty()) {
+            if (heroCardStack.isEmpty()) {
                 System.out.println("Vous n'avez plus de carte héro à jouer.!");
                 return false;
             }
 
             // SI N'A PLUS DE CARTE MOUVEMENT
-            if(movementCardSpread.isEmpty()) {
+            if (movementCardSpread.isEmpty()) {
                 System.out.println("Vous n'avez pas de carte mouvement à jouer.\nPiocher une carte!");
                 return false;
             }
 
             // SI LA CARTE MOUVEMENT SELECTIONNÉ N'EXISTE PAS
-            if(movementCardSpread.isEmptyAt(indexCard, 0)) {
+            if (movementCardSpread.isEmptyAt(indexCard, 0)) {
                 System.out.println("Sélectionner une carte que vous possédez.");
                 return false;
             }
@@ -241,7 +245,7 @@ public class KoRController extends Controller {
             final int row = (int) pos.getY();
 
             // SI ON NE PEUT PAS ATTEINDRE LA CASE AVEC LA CARTE
-            if(!board.canReachCell(row, col) || board.isEmptyAt(row, col)) {
+            if (!board.canReachCell(row, col) || board.isEmptyAt(row, col)) {
                 System.out.println("Vous ne pouvez pas jouer cette carte!");
                 Logger.info("Sortie de tableau");
                 return false;
@@ -249,7 +253,7 @@ public class KoRController extends Controller {
 
             // RÉCUPÈRE LE PION À RETOURNER ET CHANGE SA COULEUR
             final Pawn pawn = (Pawn) board.getElement(row, col);
-            if(pawn.getStatus().isOwnedBy(playerData)) {
+            if (pawn.getStatus().isOwnedBy(playerData)) {
                 System.out.println("Vous ne pouvez pas jouer cette carte!");
                 Logger.info("Pion du joueur courant");
                 return false;

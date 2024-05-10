@@ -15,7 +15,7 @@ public class MovementCard extends GameElement {
         super(gameStageModel);
 
         // REGISTER NEW ELEMENT TYPE
-        ElementTypes.register("direction_card",51);
+        ElementTypes.register("direction_card", 51);
         this.type = ElementTypes.getType("direction_card");
 
         this.step = step;
@@ -125,6 +125,6 @@ public class MovementCard extends GameElement {
         PLAYER_RED,
         PLAYER_BLUE,
         STACK,
-        OUT; // (OUT SIGNIFIE QUE LA CARTE N'EST PAS À UN JOUEUR ET N'EST PAS DANS LA PILE)
+        OUT // (OUT SIGNIFIE QUE LA CARTE N'EST PAS À UN JOUEUR ET N'EST PAS DANS LA PILE)
     }
 }
