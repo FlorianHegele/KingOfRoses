@@ -1,3 +1,4 @@
+import boardifier.model.Coord2D;
 import boardifier.model.GameStageModel;
 import boardifier.model.Model;
 import model.KoRStageModel;
@@ -11,7 +12,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class MovementCardTest {
 
-    private GameStageModel gameStageModel;
     private MovementCard northCard;
     private MovementCard eastCard;
     private MovementCard southCard;
@@ -24,7 +24,7 @@ class MovementCardTest {
 
     //Initialisation du test
     public void setUp() {
-        gameStageModel = new KoRStageModel("test", new Model());
+        GameStageModel gameStageModel = new KoRStageModel("test", new Model());
         northCard = new MovementCard(2, MovementCard.Direction.NORTH, gameStageModel);
         eastCard = new MovementCard(1, MovementCard.Direction.EAST, gameStageModel);
         southCard = new MovementCard(3, MovementCard.Direction.SOUTH, gameStageModel);
@@ -49,41 +49,6 @@ class MovementCardTest {
         assertEquals(51, southwestCard.getType());
         assertEquals(51, northwestCard.getType());
 
-
-    }
-
-    @Test
-    //Teste de la méthode permettant de savoir si une carte est dans la pile
-    public void testIsInStack() {
-        setUp();
-        // Vérifie que la carte est dans la pile
-        assertTrue(northCard.isInStack());
-        assertTrue(eastCard.isInStack());
-        assertTrue(southCard.isInStack());
-        assertTrue(westCard.isInStack());
-        assertTrue(northeastCard.isInStack());
-        assertTrue(southeastCard.isInStack());
-        assertTrue(southwestCard.isInStack());
-        assertTrue(northwestCard.isInStack());
-
-        // Retire la carte de la pile
-        northCard.setInStack(false);
-        eastCard.setInStack(false);
-        southCard.setInStack(false);
-        westCard.setInStack(false);
-        northeastCard.setInStack(false);
-        southeastCard.setInStack(false);
-        southwestCard.setInStack(false);
-        northwestCard.setInStack(false);
-        // Vérifie que la carte n'est plus dans la pile
-        assertFalse(northCard.isInStack());
-        assertFalse(eastCard.isInStack());
-        assertFalse(southCard.isInStack());
-        assertFalse(westCard.isInStack());
-        assertFalse(northeastCard.isInStack());
-        assertFalse(southeastCard.isInStack());
-        assertFalse(southwestCard.isInStack());
-        assertFalse(northwestCard.isInStack());
 
     }
 
@@ -163,6 +128,35 @@ class MovementCardTest {
         assertEquals('\u2160', southeastCard.getStepRepresentation());
         assertEquals('\u2161', southwestCard.getStepRepresentation());
         assertEquals('\u2162', northwestCard.getStepRepresentation());
+    }
+
+    @Test
+    public void testGetDirectionVector() {
+        setUp();
+        assertEquals(0, northCard.getDirectionVector().getX());
+        assertEquals(-2, northCard.getDirectionVector().getY());
+
+        assertEquals(1, eastCard.getDirectionVector().getX());
+        assertEquals(0, eastCard.getDirectionVector().getY());
+
+        assertEquals(0, southCard.getDirectionVector().getX());
+        assertEquals(3, southCard.getDirectionVector().getY());
+
+        assertEquals(-2, westCard.getDirectionVector().getX());
+        assertEquals(0, westCard.getDirectionVector().getY());
+
+        assertEquals(1, northeastCard.getDirectionVector().getX());
+        assertEquals(-1, northeastCard.getDirectionVector().getY());
+
+        assertEquals(1, southeastCard.getDirectionVector().getX());
+        assertEquals(1, southeastCard.getDirectionVector().getY());
+
+        assertEquals(-2, southwestCard.getDirectionVector().getX());
+        assertEquals(2, southwestCard.getDirectionVector().getY());
+
+        assertEquals(-3, northwestCard.getDirectionVector().getX());
+        assertEquals(-3, northwestCard.getDirectionVector().getY());
+
     }
 
 
