@@ -321,11 +321,11 @@ public class KoRStageModel extends GameStageModel {
     }
 
 
-    // READ EVENT
+    // READ ACTION
     private void setupCallbacks() {
         onRemoveFromContainer((element, containerFrom, rowDest, colDest) -> {
             // ACTION : Joue une carte déplacement
-            if (element instanceof MovementCard movementCard) {
+            if (containerFrom.getName().startsWith(MovementCardSpread.PREFIX) && element instanceof MovementCard movementCard) {
                 // CHANGE LE STATUS DE LA CARTE DÉPLACEMENT
                 movementCard.setOwner(MovementCard.Owner.OUT);
                 return;
