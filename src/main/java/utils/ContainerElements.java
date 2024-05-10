@@ -15,7 +15,7 @@ public class ContainerElements {
         return (cell == null) ? null : new Coord2D(cell[1], cell[0]);
     }
 
-    public static Coord2D geEmptyPosition(ContainerElement containerElement) {
+    public static Coord2D getEmptyPosition(ContainerElement containerElement) {
         for (int row = 0; row < containerElement.getNbRows(); row++) {
             for (int col = 0; col < containerElement.getNbCols(); col++) {
                 if (containerElement.isEmptyAt(row, col))
