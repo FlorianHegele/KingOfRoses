@@ -10,7 +10,7 @@ public class GameConfigurationModel {
     public static final Random RANDOM = new Random();
 
     public static final int DEFAULT_PLAYER_MODE = 0;
-    public static final int DEFAULT_LOGGER_MODE = 0;
+    public static final int DEFAULT_LOGGER_MODE = 1;
 
     private final Model model;
     private int playerMode;

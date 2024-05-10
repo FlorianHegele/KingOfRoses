@@ -43,6 +43,15 @@ public class MovementCard extends GameElement {
         return (char) (startPoint + step);
     }
 
+    @Override
+    public String toString() {
+        return "MovementCard{" +
+                "step=" + step +
+                ", direction=" + direction +
+                ", owner=" + owner +
+                '}';
+    }
+
     public Direction getDirection() {
         return direction;
     }

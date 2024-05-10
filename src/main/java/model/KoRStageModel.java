@@ -1,5 +1,6 @@
 package model;
 
+import boardifier.control.Logger;
 import boardifier.model.*;
 import boardifier.model.action.ActionList;
 import control.SimpleActionList;
@@ -325,14 +326,13 @@ public class KoRStageModel extends GameStageModel {
     private void setupCallbacks() {
         onRemoveFromContainer((element, containerFrom, rowDest, colDest) -> {
             // ACTION : Joue une carte déplacement
-            if (containerFrom.getName().startsWith(MovementCardSpread.PREFIX) && element instanceof MovementCard movementCard) {
+            if (containerFrom instanceof MovementCardSpread) {
                 // CHANGE LE STATUS DE LA CARTE DÉPLACEMENT
-                movementCard.setOwner(MovementCard.Owner.OUT);
-                return;
+                ((MovementCard)element).setOwner(MovementCard.Owner.OUT);
             }
 
             // ACTION : Joue une carte héro
-            if (element instanceof HeroCard heroCard) {
+            else if (element instanceof HeroCard heroCard) {
                 // MET À JOUR LE COMPTEUR DE CARTE HÉRO
                 final TextElement textElement;
                 if (heroCard.getStatus() == HeroCard.Status.BLUE_CARD) {
@@ -350,13 +350,28 @@ public class KoRStageModel extends GameStageModel {
                 // CHANGE LE POSSESSEUR DE LA CARTE
                 final MovementCard.Owner owner = (containerDest == blueMovementCardsSpread)
                         ? MovementCard.Owner.PLAYER_BLUE : MovementCard.Owner.PLAYER_RED;
-                ((MovementCard) element).setOwner(owner);
+                final MovementCard movementCard = (MovementCard) element;
+
+                Logger.info("Card before pickup from the stack " + movementCard);
+
+                movementCard.setOwner(owner);
+
+                Logger.info("Card pickup from the stack " + movementCard);
 
                 // SI IL N'Y A PLUS DE CARTE DANS LA PILE ALORS LA REFAIRE
                 if (getMovementCards(MovementCard.Owner.STACK).isEmpty()) redoMovementCardStack();
 
                 // MET À JOUR LE COMPTEUR DE LA PILE
-                movementCardStackText.setText(String.valueOf(getMovementCards(MovementCard.Owner.STACK).size()));
+                movementCardStackText.setText(String.valueOf(ContainerElements.countElements(movementCardStack)));
+            }
+
+            // ACTION : placer une carte dans la pile
+            else if(containerDest instanceof MovementCardStack) {
+                final MovementCard movementCard = (MovementCard) element;
+                Logger.info("Card before added to the stack " + movementCard);
+                movementCard.setOwner(MovementCard.Owner.STACK);
+                Logger.info("Card added to the stack " + movementCard);
+                movementCardStackText.setText(String.valueOf(ContainerElements.countElements(movementCardStack)));
             }
 
             // ACTION : Placer un pion sur le plateau
@@ -636,8 +651,8 @@ public class KoRStageModel extends GameStageModel {
 
         // REMET LES CARTES JOUÉES DANS LA PILE
         for (MovementCard movementCard : movementCardList) {
-            movementCard.setOwner(MovementCard.Owner.STACK);
             movementCardStack.addElement(movementCard, 0, 0);
+            Logger.info("Add to pack " + movementCard);
         }
     }
 

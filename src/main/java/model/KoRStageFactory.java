@@ -187,11 +187,9 @@ public class KoRStageFactory extends StageElementsFactory {
         for (int i = 0; i < 5; i++) {
             //get card from the stack
             final MovementCard redMovementCard = movementCardDeck[i];
-            redMovementCard.setOwner(MovementCard.Owner.PLAYER_RED);
             redMovementCardsSpread.addElement(redMovementCard, i, 0);
 
             final MovementCard blueMovementCard = movementCardDeck[i + 5];
-            blueMovementCard.setOwner(MovementCard.Owner.PLAYER_BLUE);
             blueMovementCardsSpread.addElement(blueMovementCard, i, 0);
         }
 

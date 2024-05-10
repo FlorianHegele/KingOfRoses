@@ -3,6 +3,7 @@ package view.element.card;
 import boardifier.model.GameElement;
 import boardifier.view.ConsoleColor;
 import boardifier.view.ElementLook;
+import model.PlayerData;
 import model.element.card.MovementCard;
 
 public class MovementCardLook extends ElementLook {
@@ -16,15 +17,18 @@ public class MovementCardLook extends ElementLook {
     protected void render() {
         MovementCard card = (MovementCard) element;
 
-        if (card.getOwner() == MovementCard.Owner.STACK) {
+        final MovementCard.Owner owner = card.getOwner();
+        if (owner == MovementCard.Owner.STACK) {
             shape[0][0] = ConsoleColor.BLACK + ConsoleColor.WHITE_BACKGROUND + "M" + ConsoleColor.RESET;
-        } else if (card.getOwner() == MovementCard.Owner.OUT) {
-            // FIXME : CARTE TECHNIQUEMENT INVISIBLE
+        } else if (owner == MovementCard.Owner.OUT) {
             shape[0][0] = ConsoleColor.BLACK + ConsoleColor.YELLOW_BACKGROUND + card.getDirection().getSymbole() + ConsoleColor.RESET;
             shape[1][0] = ConsoleColor.BLACK + ConsoleColor.YELLOW_BACKGROUND + card.getStep() + ConsoleColor.RESET;
-        } else {
+        } else if (owner == MovementCard.Owner.PLAYER_RED) {
             shape[0][0] = ConsoleColor.BLACK + ConsoleColor.WHITE_BACKGROUND + card.getDirection().getSymbole() + ConsoleColor.RESET;
-            shape[1][0] = ConsoleColor.BLACK + ConsoleColor.WHITE_BACKGROUND + card.getStep() + ConsoleColor.RESET;
+            shape[1][0] = ConsoleColor.BLACK + PlayerData.PLAYER_RED.getBackgroundColor()  + card.getStep() + ConsoleColor.RESET;
+        } else if (owner == MovementCard.Owner.PLAYER_BLUE) {
+            shape[0][0] = ConsoleColor.BLACK + ConsoleColor.WHITE_BACKGROUND + card.getDirection().getSymbole() + ConsoleColor.RESET;
+            shape[1][0] = ConsoleColor.BLACK + PlayerData.PLAYER_BLUE.getBackgroundColor()  + card.getStep() + ConsoleColor.RESET;
         }
     }
 
