@@ -17,19 +17,18 @@ import model.element.Pawn;
 import model.element.card.HeroCard;
 import model.element.card.MovementCard;
 import utils.ContainerElements;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import utils.Strings;
 
 public class KoRController extends Controller {
 
-    BufferedReader consoleIn;
     boolean firstPlayer;
-    ActionList playerActionList;
+    private ActionList playerActionList;
+    private SetupController setupController;
 
-    public KoRController(Model model, View view) {
+    public KoRController(boardifier.model.Model model, View view, SetupController setupController) {
         super(model, view);
-        firstPlayer = true;
+        this.setupController = setupController;
+        this.firstPlayer = true;
     }
 
     /**
@@ -37,21 +36,10 @@ public class KoRController extends Controller {
      * It is pretty straight forward to write :
      */
     public void stageLoop() {
-        consoleIn = new BufferedReader(new InputStreamReader(System.in));
         update();
         while (!model.isEndStage()) {
             final KoRStageModel gameStage = (KoRStageModel) model.getGameStage();
             final PlayerData playerData = PlayerData.getCurrentPlayerData(model);
-
-            // SI LE JOUEUR NE PEUT PAS JOUER, IL PASSE SON TOUR
-            if(!gameStage.playerCanPlay(playerData)) {
-                final String playerName = model.getCurrentPlayerName();
-                endOfTurn();
-                update();
-
-                System.out.println("Le joueur " + playerName + " ne peut pas jouer !\nIl passe son tour.");
-                continue;
-            }
 
             playTurn(gameStage, playerData);
             if(!model.isEndStage()) update();
@@ -73,14 +61,14 @@ public class KoRController extends Controller {
                 System.out.print(p.getName() + " > ");
                 // ANALYSE L'ENTRÉE DU JOUEUR HUMAIN
 
-                final String line = getLine();
-                // REGARDE SI LE JOUEUR ARRETE LE JEU (EXEMPLE : CTRL + D)
-                if(line == null) {
-                    System.out.println("Partie arrêté !");
+                final String line = setupController.getConsoleLine();
+                // REGARDE SI LE JOUEUR ARRETE LE JEU (EXEMPLE : CTRL + D ou "stop")
+                if(line == null || line.equals("stop")) {
                     model.stopStage();
                     return;
                 }
-                ok = analyse(gameStage, playerData, line);
+
+                ok = actionAnalyse(gameStage, playerData, line);
                 // SI L'ENTRÉE N'EST PAS VALIDE, ALORS BOUCLÉ UNE FOIS DE PLUS SUR UNE NOUVELLE ENTRÉE
                 if (!ok) {
                     System.out.println("incorrect instruction. retry !");
@@ -92,6 +80,8 @@ public class KoRController extends Controller {
 
         // JOUE LES ACTIONS RENSEIGNÉES
         actionPlayer.start();
+
+        if(gameStage.playerCanPlay(playerData.getNextPlayerData())) endOfTurn();
     }
 
     @Override
@@ -104,8 +94,8 @@ public class KoRController extends Controller {
     }
 
     // RENVOIE FAUX SI L'ACTION N'EST PAS VALIDE
-    private boolean analyse(KoRStageModel gameStage, PlayerData playerData, String line) {
-        if (line.isEmpty() || line.length() > 2) return false;
+    private boolean actionAnalyse(KoRStageModel gameStage, PlayerData playerData, String line) {
+        if(line.isEmpty() || line.length() > 2) return false;
 
         final char action = line.charAt(0);
         final int length = line.length();
@@ -136,8 +126,8 @@ public class KoRController extends Controller {
             // SI L'INDEX DE L'ACTION RENVOIE -1 ALORS CE N'EST PAS UN NOMBRE QUI SUIT LA LETTRE 'D'
             // note : on vérifie si l'index fait -2 (et pas -1) car on fait -1 sur la variable pour avoir le vrai index
             //        par exemple l'index de la carte 3 est 2 (donc 3-1)
-            final int indexCard = getIntFromString(line.substring(1))-1;
-            if(indexCard == -2) return false;
+            final int indexCard = Strings.parseInt(line.substring(1))-1;
+            if(indexCard == -1) return false;
 
             final PawnPot pawnPot;
             final MovementCardSpread movementCardSpread;
@@ -207,8 +197,8 @@ public class KoRController extends Controller {
             // SI L'INDEX DE L'ACTION RENVOIE -1 ALORS CE N'EST PAS UN NOMBRE QUI SUIT LA LETTRE 'D'
             // note : on vérifie si l'index fait -2 (et pas -1) car on fait -1 sur la variable pour avoir le vrai index
             //        par exemple l'index de la carte 3 est 2 (donc 3-1)
-            final int indexCard = getIntFromString(line.substring(1))-1;
-            if(indexCard == -2) return false;
+            final int indexCard = Strings.parseInt(line.substring(1))-1;
+            if(indexCard == -1) return false;
 
             final MovementCardSpread movementCardSpread;
             final HeroCardStack heroCardStack;
@@ -285,31 +275,9 @@ public class KoRController extends Controller {
             return false;
         }
 
-        actions.setDoEndOfTurn(true); // after playing this action list, it will be the end of turn for current player.
-
         // MET À JOUR LES ACTIONS DU JOUEUR
         playerActionList = actions;
         return true;
-    }
-
-    public static int getIntFromString(String str) {
-        int resultat;
-        try {
-            resultat = Integer.parseInt(str);
-        } catch (NumberFormatException e) {
-            resultat = -1;
-        }
-        return resultat;
-    }
-
-    private String getLine() {
-        final String line;
-        try {
-            line = consoleIn.readLine();
-        } catch (Exception e) {
-            return "";
-        }
-        return line;
     }
 
 }
