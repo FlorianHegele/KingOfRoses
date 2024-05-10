@@ -40,8 +40,6 @@ import java.util.*;
  */
 public class KoRStageModel extends GameStageModel {
 
-    public static final Random RANDOM = new Random();
-
     private static final int[] dx = {1, -1, 0, 0};
     private static final int[] dy = {0, 0, 1, -1};
 
@@ -629,7 +627,7 @@ public class KoRStageModel extends GameStageModel {
         List<MovementCard> movementCardList = getMovementCards(MovementCard.Owner.OUT);
 
         // MÉLANGER LES CARTES QUI ONT ÉTÉ JOUÉES
-        Collections.shuffle(movementCardList, RANDOM);
+        Collections.shuffle(movementCardList, GameConfigurationModel.RANDOM);
 
         // REMET LES CARTES JOUÉES DANS LA PILE
         for (MovementCard movementCard : movementCardList) {

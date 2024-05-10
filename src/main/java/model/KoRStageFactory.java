@@ -181,7 +181,7 @@ public class KoRStageFactory extends StageElementsFactory {
         stageModel.setMovementCards(movementCardDeck);
 
         //shuffle deck
-        Arrays.shuffleArray(movementCardDeck, KoRStageModel.RANDOM);
+        Arrays.shuffleArray(movementCardDeck, GameConfigurationModel.RANDOM);
 
         //distributes the cards to the players
         for (int i = 0; i < 5; i++) {

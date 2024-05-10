@@ -4,10 +4,7 @@ import boardifier.control.ActionFactory;
 import boardifier.control.ActionPlayer;
 import boardifier.control.Controller;
 import boardifier.control.Logger;
-import boardifier.model.ContainerElement;
-import boardifier.model.Coord2D;
-import boardifier.model.GameElement;
-import boardifier.model.Player;
+import boardifier.model.*;
 import boardifier.model.action.ActionList;
 import boardifier.view.View;
 import model.KoRStageModel;
@@ -24,14 +21,14 @@ import utils.Strings;
 
 public class KoRController extends Controller {
 
-    private final SetupController setupController;
+    private final ConsoleController console;
 
     boolean firstPlayer;
     private ActionList playerActionList;
 
-    public KoRController(boardifier.model.Model model, View view, SetupController setupController) {
+    public KoRController(Model model, View view, ConsoleController consoleController) {
         super(model, view);
-        this.setupController = setupController;
+        this.console = consoleController;
         this.firstPlayer = true;
     }
 
@@ -65,7 +62,7 @@ public class KoRController extends Controller {
                 System.out.print(p.getName() + " > ");
                 // ANALYSE L'ENTRÉE DU JOUEUR HUMAIN
 
-                final String line = setupController.getConsoleLine();
+                final String line = console.getConsoleLine();
                 // REGARDE SI LE JOUEUR ARRETE LE JEU (EXEMPLE : CTRL + D ou "stop")
                 if (line == null || line.equals("stop")) {
                     model.stopStage();

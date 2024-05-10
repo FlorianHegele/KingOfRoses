@@ -1,22 +1,30 @@
+import boardifier.model.Model;
+import control.ConsoleController;
 import control.KoRController;
 import boardifier.model.GameException;
 import boardifier.view.View;
 
 import boardifier.control.StageFactory;
-import boardifier.model.Model;
-import control.SetupController;
+import control.GameConfigurationController;
+import model.GameConfigurationModel;
 
 public class KoRConsole {
 
     public static void main(String[] args) {
-        // CREATE MODEL (WITH SPECIFIC DATA IF YOU WANT)
-        Model model = new Model();
-        SetupController setupController = SetupController.init(model, args);
+        // CREATE CONSOLE CONTROLLER
+        final ConsoleController consoleController = new ConsoleController();
+
+        // CREATE MODEL
+        final Model model = new Model();
+
+        // SETUP GAME CONFIGURATION
+        final GameConfigurationModel gameConfigurationModel = new GameConfigurationModel(model);
+        final GameConfigurationController gameConfigurationController = new GameConfigurationController(gameConfigurationModel, consoleController);
 
         // LOAD GAME ELEMENTS
         StageFactory.registerModelAndView("kor", "model.KoRStageModel", "view.KoRStageView");
-        View korView = new View(model);
-        KoRController control = new KoRController(model, korView, setupController);
+        final View korView = new View(model);
+        final KoRController control = new KoRController(model, korView, consoleController);
         control.setFirstStageName("kor");
         try {
             control.startGame();
