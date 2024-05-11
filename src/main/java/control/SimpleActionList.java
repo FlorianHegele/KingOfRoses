@@ -80,11 +80,7 @@ public class SimpleActionList {
         actionList.addAll(ActionFactory.generateMoveWithinContainer(model, gameStage.getKingPawn(), row, col));
 
         // ENLEVER LA CARTE DÉPLACEMENT DU JOUEUR
-        // Note: Joue l'événement removeFromContainer pour lire l'event dans le Model
-        //       et joue ensuite l'event removeFromStage pour enlever la carte de l'affichage
-
-        actionList.addAll(ActionFactory.generateRemoveFromContainer(model, movementCard));
-        actionList.addAll(ActionFactory.generateRemoveFromStage(model, movementCard));
+        actionList.addAll(ActionFactory.generatePutInContainer(model, movementCard, gameStage.getMovementCardStackPlayed().getName(), 0, 0));
     }
 
 }

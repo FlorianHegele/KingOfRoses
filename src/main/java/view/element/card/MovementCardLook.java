@@ -20,6 +20,7 @@ public class MovementCardLook extends ElementLook {
         final MovementCard.Owner owner = card.getOwner();
         if (owner == MovementCard.Owner.STACK) {
             shape[0][0] = ConsoleColor.BLACK + ConsoleColor.WHITE_BACKGROUND + "M" + ConsoleColor.RESET;
+            shape[1][0] = " ";
         } else if (owner == MovementCard.Owner.OUT) {
             shape[0][0] = ConsoleColor.BLACK + ConsoleColor.YELLOW_BACKGROUND + card.getDirection().getSymbole() + ConsoleColor.RESET;
             shape[1][0] = ConsoleColor.BLACK + ConsoleColor.YELLOW_BACKGROUND + card.getStep() + ConsoleColor.RESET;

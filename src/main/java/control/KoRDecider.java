@@ -2,7 +2,6 @@ package control;
 
 import boardifier.control.Controller;
 import boardifier.control.Decider;
-import boardifier.control.Logger;
 import boardifier.model.Model;
 import boardifier.model.action.ActionList;
 import model.KoRStageModel;
@@ -29,9 +28,7 @@ public class KoRDecider extends Decider {
         final List<ActionList> actionListList = stage.getPossiblePlayerActions(PlayerData.getCurrentPlayerData(model));
 
         // RETURN ONE OF THEM
-        final ActionList actionList = actionListList.get(LOTO.nextInt(actionListList.size()));
-        Logger.info(actionList.toString());
 
-        return actionList;
+        return actionListList.get(LOTO.nextInt(actionListList.size()));
     }
 }

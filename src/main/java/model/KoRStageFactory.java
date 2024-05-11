@@ -8,6 +8,7 @@ import model.container.PawnPot;
 import model.container.card.HeroCardStack;
 import model.container.card.MovementCardSpread;
 import model.container.card.MovementCardStack;
+import model.container.card.MovementCardStackPlayed;
 import model.element.Pawn;
 import model.element.card.HeroCard;
 import model.element.card.MovementCard;
@@ -76,15 +77,19 @@ public class KoRStageFactory extends StageElementsFactory {
          */
 
         // BOARD
-        // create the board, in 1,2 in the virtual space
+        // create the board, in 10, 5 in the virtual space
         KoRBoard board = new KoRBoard(10, 5, stageModel);
         stageModel.setBoard(board);
 
 
         // MOVEMENT CARD STACK
-        // create the movement cards stack in 0, 2
+        // create the movement cards stack in 28, 2
         MovementCardStack movementCardStack = new MovementCardStack(28, 2, stageModel);
         stageModel.setMovementCardStack(movementCardStack);
+
+        // create the movement cards stack in 28, 25
+        MovementCardStackPlayed movementCardStackPlayed = new MovementCardStackPlayed(28, 25, stageModel);
+        stageModel.setMovementCardStackPlayed(movementCardStackPlayed);
 
 
         // RED ELEMENT

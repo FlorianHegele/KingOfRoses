@@ -11,6 +11,7 @@ import view.container.PawnPotLook;
 import view.container.card.HeroCardStackLook;
 import view.container.card.MovementCardSpreadLook;
 import view.container.card.MovementCardStackLook;
+import view.container.card.MovementCardStackPlayedLook;
 import view.element.PawnLook;
 import view.element.card.HeroCardLook;
 import view.element.card.MovementCardLook;
@@ -81,6 +82,7 @@ public class KoRStageView extends GameStageView {
 
         // create look for the movement deck cards
         addLook(new MovementCardStackLook(model.getMovementCardStack()));
+        addLook(new MovementCardStackPlayedLook(model.getMovementCardStackPlayed()));
 
         // create look for the movement spread cards
         addLook(new MovementCardSpreadLook(model.getRedMovementCardsSpread()));

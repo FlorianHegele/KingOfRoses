@@ -4,8 +4,6 @@ import boardifier.control.Logger;
 import boardifier.model.ContainerElement;
 import boardifier.view.GridLook;
 
-// TODO: Adapt to the new game
-
 
 public class MovementCardStackLook extends GridLook {
 

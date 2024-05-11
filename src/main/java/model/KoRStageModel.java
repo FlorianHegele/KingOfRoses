@@ -1,5 +1,7 @@
 package model;
 
+import boardifier.control.ActionFactory;
+import boardifier.control.ActionPlayer;
 import boardifier.control.Logger;
 import boardifier.model.*;
 import boardifier.model.action.ActionList;
@@ -9,6 +11,7 @@ import model.container.PawnPot;
 import model.container.card.HeroCardStack;
 import model.container.card.MovementCardSpread;
 import model.container.card.MovementCardStack;
+import model.container.card.MovementCardStackPlayed;
 import model.element.Pawn;
 import model.element.card.HeroCard;
 import model.element.card.MovementCard;
@@ -55,6 +58,7 @@ public class KoRStageModel extends GameStageModel {
     private HeroCard[] redHeroCards;
 
     private MovementCardStack movementCardStack;
+    private MovementCardStackPlayed movementCardStackPlayed;
     private MovementCardSpread blueMovementCardsSpread;
     private MovementCardSpread redMovementCardsSpread;
     private MovementCard[] movementCards;
@@ -142,7 +146,16 @@ public class KoRStageModel extends GameStageModel {
 
     public void setMovementCardStack(MovementCardStack movementCardStack) {
         this.movementCardStack = movementCardStack;
-        addElement(movementCardStack);
+        addContainer(movementCardStack);
+    }
+
+    public MovementCardStackPlayed getMovementCardStackPlayed() {
+        return movementCardStackPlayed;
+    }
+
+    public void setMovementCardStackPlayed(MovementCardStackPlayed movementCardStackPlayed) {
+        this.movementCardStackPlayed = movementCardStackPlayed;
+        addContainer(movementCardStackPlayed);
     }
 
     public List<MovementCard> getMovementCards(MovementCard.Owner owner) {
@@ -325,14 +338,8 @@ public class KoRStageModel extends GameStageModel {
     // READ ACTION
     private void setupCallbacks() {
         onRemoveFromContainer((element, containerFrom, rowDest, colDest) -> {
-            // ACTION : Joue une carte déplacement
-            if (containerFrom instanceof MovementCardSpread) {
-                // CHANGE LE STATUS DE LA CARTE DÉPLACEMENT
-                ((MovementCard)element).setOwner(MovementCard.Owner.OUT);
-            }
-
             // ACTION : Joue une carte héro
-            else if (element instanceof HeroCard heroCard) {
+            if (element instanceof HeroCard heroCard) {
                 // MET À JOUR LE COMPTEUR DE CARTE HÉRO
                 final TextElement textElement;
                 if (heroCard.getStatus() == HeroCard.Status.BLUE_CARD) {
@@ -351,12 +358,7 @@ public class KoRStageModel extends GameStageModel {
                 final MovementCard.Owner owner = (containerDest == blueMovementCardsSpread)
                         ? MovementCard.Owner.PLAYER_BLUE : MovementCard.Owner.PLAYER_RED;
                 final MovementCard movementCard = (MovementCard) element;
-
-                Logger.info("Card before pickup from the stack " + movementCard);
-
                 movementCard.setOwner(owner);
-
-                Logger.info("Card pickup from the stack " + movementCard);
 
                 // SI IL N'Y A PLUS DE CARTE DANS LA PILE ALORS LA REFAIRE
                 if (getMovementCards(MovementCard.Owner.STACK).isEmpty()) redoMovementCardStack();
@@ -365,12 +367,15 @@ public class KoRStageModel extends GameStageModel {
                 movementCardStackText.setText(String.valueOf(ContainerElements.countElements(movementCardStack)));
             }
 
-            // ACTION : placer une carte dans la pile
-            else if(containerDest instanceof MovementCardStack) {
+            // ACTION : Ajouter une carte de la fosse
+            else if (containerDest == movementCardStackPlayed) {
+                ((MovementCard)element).setOwner(MovementCard.Owner.OUT);
+            }
+
+            // ACTION : Ajouter une carte dans la pile
+            else if(containerDest == movementCardStack) {
                 final MovementCard movementCard = (MovementCard) element;
-                Logger.info("Card before added to the stack " + movementCard);
                 movementCard.setOwner(MovementCard.Owner.STACK);
-                Logger.info("Card added to the stack " + movementCard);
                 movementCardStackText.setText(String.valueOf(ContainerElements.countElements(movementCardStack)));
             }
 
@@ -649,11 +654,13 @@ public class KoRStageModel extends GameStageModel {
         // MÉLANGER LES CARTES QUI ONT ÉTÉ JOUÉES
         Collections.shuffle(movementCardList, GameConfigurationModel.RANDOM);
 
+        final ActionList actionList = new ActionList();
+
         // REMET LES CARTES JOUÉES DANS LA PILE
-        for (MovementCard movementCard : movementCardList) {
-            movementCardStack.addElement(movementCard, 0, 0);
-            Logger.info("Add to pack " + movementCard);
-        }
+        for (MovementCard movementCard : movementCardList)
+            actionList.addAll(ActionFactory.generatePutInContainer(model, movementCard, movementCardStack.getName(), 0, 0));
+
+        new ActionPlayer(model, null, actionList).start();
     }
 
     public Pawn getPlayedPawn(int row, int col) {
