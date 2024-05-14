@@ -63,7 +63,7 @@ public class KoRController extends Controller {
             ActionList actionList = new ActionList();
             if(ai==AIData.RANDOM) {
                 // add all the moves the AI has to do to play the turn
-                actionList.addAll(new KoRDeciderRandom(model, this).decide());
+                actionList.addAll(new KoRDeciderCamarade(model, this).decide());
             }
             actionPlayer = new ActionPlayer(model, this, actionList);
         } else {
