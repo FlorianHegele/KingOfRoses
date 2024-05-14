@@ -8,6 +8,10 @@ public class GameConfigurationController {
     private final GameConfigurationModel configurationModel;
     private final ConsoleController console;
 
+    // Map of player data and AI data
+    // PlayerData is the key and AIData is the value
+    private final Map <PlayerData, AIData> playerDataAIDataMap = new HashMap<>();
+
     public GameConfigurationController(GameConfigurationModel gameConfigurationModel, ConsoleController consoleController) {
         this.configurationModel = gameConfigurationModel;
         this.console = consoleController;
@@ -39,11 +43,11 @@ public class GameConfigurationController {
      * Depends if the player mode is PvAI or AIvAI
      * If the player mode is PvP, the IA is not selected
      */
-    private void selectIA(){
+    private void setAI(){
         if (configurationModel.getPlayerMode() == 1 || configurationModel.getPlayerMode() == 2) {
             console.printCheckMessage("select IA (0: Random, 1: MinMax, 2: AlphaBeta) ? ");
             final String line = console.getCheckConsoleLine();
-            if (!line.isEmpty()) configurationModel.setIA(Strings.parseInt(line));
+            if (!line.isEmpty()) configurationModel.setAI(Strings.parseInt(line));
         }
     }
 
