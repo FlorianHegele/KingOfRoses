@@ -34,6 +34,19 @@ public class GameConfigurationController {
         if (!line.isEmpty()) configurationModel.setPlayerMode(Strings.parseInt(line));
     }
 
+    /*
+     * Select IA for player 1 and player 2
+     * Depends if the player mode is PvAI or AIvAI
+     * If the player mode is PvP, the IA is not selected
+     */
+    private void selectIA(){
+        if (configurationModel.getPlayerMode() == 1 || configurationModel.getPlayerMode() == 2) {
+            console.printCheckMessage("select IA (0: Random, 1: MinMax, 2: AlphaBeta) ? ");
+            final String line = console.getCheckConsoleLine();
+            if (!line.isEmpty()) configurationModel.setIA(Strings.parseInt(line));
+        }
+    }
+
     private void setPlayerName() {
         final String[] playersName = {"player1", "player2"};
         for (int i = 1; i < 3; i++) {
