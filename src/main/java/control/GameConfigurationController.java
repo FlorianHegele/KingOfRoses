@@ -40,15 +40,21 @@ public class GameConfigurationController {
 
     /*
      * Select IA for player 1 and player 2
-     * Depends if the player mode is PvAI or AIvAI
      * If the player mode is PvP, the IA is not selected
+     * If the player mode is PvAI, the IA is selected for player 2
+     * If the player mode is AIvAI, the IA is selected for player 1 and player 2
+     * The IA is selected from the AIData enum
+     * 0 = Random AI, 1 = Camarade AI, 2 = Guide AI
      */
     private void setAI(){
-        if (configurationModel.getPlayerMode() == 1 || configurationModel.getPlayerMode() == 2) {
-            console.printCheckMessage("select IA (0: Random, 1: MinMax, 2: AlphaBeta) ? ");
+        if (configurationModel.getPlayerMode() == 1 
+                || configurationModel.getPlayerMode() == 2) {
+            // Select IA for player 1
+            console.printCheckMessage("O: random, 1: camarade, 2: guide ? ");
             final String line = console.getCheckConsoleLine();
-            if (!line.isEmpty()) configurationModel.setAI(Strings.parseInt(line));
-        }
+            if (!line.isEmpty())
+                configurationModel.setAI(Strings.parseInt(line));
+                }
     }
 
     private void setPlayerName() {
