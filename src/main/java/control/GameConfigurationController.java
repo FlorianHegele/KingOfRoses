@@ -60,7 +60,7 @@ public class GameConfigurationController {
             // the IA is selected for player 2 (PLAYER_BLUE)
             // by adding the player data and AI data to the map 
             if (!line.isEmpty()) {
-                configurationModel.playerDataAIDataMap.put(PlayerData.PLAYER_BLUE, AIData.values()[Strings.parseInt(line)]);
+                configurationModel.getPlayerDataAIDataMap().put(PlayerData.PLAYER_BLUE, AIData.values()[Strings.parseInt(line)]);
             }
         }
 
@@ -75,7 +75,7 @@ public class GameConfigurationController {
             // the IA is selected for player 1 (PLAYER_RED)
             // by adding the player data and AI data to the map
             if (!line.isEmpty()) {
-                configurationModel.playerDataAIDataMap.put(PlayerData.PLAYER_RED, AIData.values()[Strings.parseInt(line)]);
+                configurationModel.getPlayerDataAIDataMap().put(PlayerData.PLAYER_RED, AIData.values()[Strings.parseInt(line)]);
             }
 
             // select IA for player 2
@@ -86,7 +86,7 @@ public class GameConfigurationController {
             // the IA is selected for player 2 (PLAYER_BLUE)
             // by adding the player data and AI data to the map
             if (!line2.isEmpty()) {
-                configurationModel.playerDataAIDataMap.put(PlayerData.PLAYER_BLUE, AIData.values()[Strings.parseInt(line2)]);
+                configurationModel.getPlayerDataAIDataMap().put(PlayerData.PLAYER_BLUE, AIData.values()[Strings.parseInt(line2)]);
             }
         }
     }
