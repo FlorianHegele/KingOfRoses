@@ -25,7 +25,7 @@ public class KoRConsole {
         // LOAD GAME ELEMENTS
         StageFactory.registerModelAndView("kor", "model.KoRStageModel", "view.KoRStageView");
         final View korView = new View(model);
-        final KoRController control = new KoRController(model, korView, consoleController);
+        final KoRController control = new KoRController(model, korView, consoleController, gameConfigurationModel);
         control.setFirstStageName("kor");
         try {
             control.startGame();

@@ -42,7 +42,7 @@ public class GameConfigurationModel {
         return loggerMode;
     }
 
-    public Map getPlayerDataAIDataMap() {
+    public Map<PlayerData, AIData> getPlayerDataAIDataMap() {
         return playerDataAIDataMap;
     }
 

@@ -11,11 +11,11 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 
-public class KoRDecider extends Decider {
+public class KoRDeciderRandom extends Decider {
 
     private static final Random LOTO = new Random(Calendar.getInstance().getTimeInMillis());
 
-    public KoRDecider(Model model, Controller control) {
+    public KoRDeciderRandom(Model model, Controller control) {
         super(model, control);
     }
 

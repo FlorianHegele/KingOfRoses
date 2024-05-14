@@ -6,6 +6,8 @@ import boardifier.control.Logger;
 import boardifier.model.*;
 import boardifier.model.action.ActionList;
 import boardifier.view.View;
+import model.AIData;
+import model.GameConfigurationModel;
 import model.KoRStageModel;
 import model.PlayerData;
 import model.container.KoRBoard;
@@ -24,9 +26,11 @@ public class KoRController extends Controller {
 
     boolean firstPlayer;
     private ActionList playerActionList;
+    private GameConfigurationModel gameConfigurationModel;
 
-    public KoRController(Model model, View view, ConsoleController consoleController) {
+    public KoRController(Model model, View view, ConsoleController consoleController, GameConfigurationModel gameConfigurationModel) {
         super(model, view);
+        this.gameConfigurationModel = gameConfigurationModel;
         this.console = consoleController;
         this.firstPlayer = true;
     }
@@ -52,9 +56,16 @@ public class KoRController extends Controller {
 
         // RÉCUPÈRE LE NOUVEAU JOUEUR
         final Player p = model.getCurrentPlayer();
+        // IF player is a computer
         if (p.getType() == Player.COMPUTER) {
-            KoRDecider decider = new KoRDecider(model, this);
-            actionPlayer = new ActionPlayer(model, this, decider, null);
+            // THEN play the turn automatically
+            AIData ai = gameConfigurationModel.getPlayerDataAIDataMap().get(playerData);
+            ActionList actionList = new ActionList();
+            if(ai==AIData.RANDOM) {
+                // add all the moves the AI has to do to play the turn
+                actionList.addAll(new KoRDeciderRandom(model, this).decide());
+            }
+            actionPlayer = new ActionPlayer(model, this, actionList);
         } else {
             boolean ok = false;
             while (!ok) {
