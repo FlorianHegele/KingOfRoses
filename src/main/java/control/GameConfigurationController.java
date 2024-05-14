@@ -1,12 +1,17 @@
 package control;
 
 import model.GameConfigurationModel;
+import model.PlayerData;
+import model.AIData;
 import utils.Strings;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GameConfigurationController {
 
     private final GameConfigurationModel configurationModel;
     private final ConsoleController console;
+
 
     public GameConfigurationController(GameConfigurationModel gameConfigurationModel, ConsoleController consoleController) {
         this.configurationModel = gameConfigurationModel;
@@ -20,6 +25,7 @@ public class GameConfigurationController {
         setSeed();
         setPlayerMode();
         setPlayerName();
+        setAI();
     }
 
     private void setSeed() {
@@ -32,6 +38,61 @@ public class GameConfigurationController {
         console.printCheckMessage("specific player mode (0: PvP, 1: PvAI, 2: AIvAI) ? ");
         final String line = console.getCheckConsoleLine();
         if (!line.isEmpty()) configurationModel.setPlayerMode(Strings.parseInt(line));
+    }
+
+    /*
+     * Select IA for player 1 and player 2
+     * If the player mode is PvP, the IA is not selected
+     * If the player mode is PvAI, the IA is selected for player 2
+     * If the player mode is AIvAI, the IA is selected for player 1 and player 2
+     * The IA is selected from the AIData enum
+     * 0 = Random AI, 1 = Camarade AI, 2 = Guide AI
+     */
+    // TODO : Refactor this method to work with GameConfigurationModel
+    private void setAI(){
+        // if the player mode is PvP, the IA is not selected
+        if (configurationModel.getPlayerMode() == 0) {return;}
+
+        // if the player mode is PvAI, the IA is selected for player 2
+        if (configurationModel.getPlayerMode() == 1) {
+
+            // select IA for player 2
+            console.printCheckMessage("specific AI for player 2 (0: Random, 1: Camarade, 2: Guide) ? ");
+            final String line = console.getCheckConsoleLine();
+            
+            // if the line is not empty,
+            // the IA is selected for player 2 (PLAYER_BLUE)
+            // by adding the player data and AI data to the map 
+            if (!line.isEmpty()) {
+                configurationModel.getPlayerDataAIDataMap().put(PlayerData.PLAYER_BLUE, AIData.getAIData(Strings.parseInt(line)));
+            }
+        }
+
+        // if the player mode is AIvAI,
+        // the IA is selected for player 1 and player 2
+        if (configurationModel.getPlayerMode() == 2) {
+            // select IA for player 1
+            console.printCheckMessage("specific AI for player 1 (0: Random, 1: Camarade, 2: Guide) ? ");
+            final String line = console.getCheckConsoleLine();
+
+            // if the line is not empty,
+            // the IA is selected for player 1 (PLAYER_RED)
+            // by adding the player data and AI data to the map
+            if (!line.isEmpty()) {
+                configurationModel.getPlayerDataAIDataMap().put(PlayerData.PLAYER_RED, AIData.getAIData(Strings.parseInt(line)));
+            }
+
+            // select IA for player 2
+            console.printCheckMessage("specific AI for player 2 (0: Random, 1: Camarade, 2: Guide) ? ");
+            final String line2 = console.getCheckConsoleLine();
+
+            // if the line is not empty,
+            // the IA is selected for player 2 (PLAYER_BLUE)
+            // by adding the player data and AI data to the map
+            if (!line2.isEmpty()) {
+                configurationModel.getPlayerDataAIDataMap().put(PlayerData.PLAYER_BLUE, AIData.getAIData(Strings.parseInt(line2)));
+            }
+        }
     }
 
     private void setPlayerName() {
