@@ -16,6 +16,12 @@ public class GameConfigurationModel {
     private int playerMode;
     private int loggerMode;
 
+    // Map to store the player data and AI data
+    // PlayerData is the key and AIData is the value
+    private final Map <PlayerData, AIData> playerDataAIDataMap = new HashMap<>();
+
+
+
     public GameConfigurationModel(Model model, int playerMode, int loggerMode) {
         this.model = model;
         setPlayerMode(playerMode);

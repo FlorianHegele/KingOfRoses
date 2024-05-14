@@ -9,9 +9,6 @@ public class GameConfigurationController {
     private final GameConfigurationModel configurationModel;
     private final ConsoleController console;
 
-    // Map to store the player data and AI data
-    // PlayerData is the key and AIData is the value
-    private final Map <PlayerData, AIData> playerDataAIDataMap = new HashMap<>();
 
     public GameConfigurationController(GameConfigurationModel gameConfigurationModel, ConsoleController consoleController) {
         this.configurationModel = gameConfigurationModel;
@@ -47,6 +44,7 @@ public class GameConfigurationController {
      * The IA is selected from the AIData enum
      * 0 = Random AI, 1 = Camarade AI, 2 = Guide AI
      */
+    // TODO : Refactor this method to work with GameConfigurationModel
     private void setAI(){
         // if the player mode is PvP, the IA is not selected
         if (configurationModel.getPlayerMode() == 0) {return;}
@@ -62,7 +60,7 @@ public class GameConfigurationController {
             // the IA is selected for player 2 (PLAYER_BLUE)
             // by adding the player data and AI data to the map 
             if (!line.isEmpty()) {
-                playerDataAIDataMap.put(PlayerData.PLAYER_BLUE, AIData.values()[Strings.parseInt(line)]);
+                configurationModel.playerDataAIDataMap.put(PlayerData.PLAYER_BLUE, AIData.values()[Strings.parseInt(line)]);
             }
         }
 
@@ -77,7 +75,7 @@ public class GameConfigurationController {
             // the IA is selected for player 1 (PLAYER_RED)
             // by adding the player data and AI data to the map
             if (!line.isEmpty()) {
-                playerDataAIDataMap.put(PlayerData.PLAYER_RED, AIData.values()[Strings.parseInt(line)]);
+                configurationModel.playerDataAIDataMap.put(PlayerData.PLAYER_RED, AIData.values()[Strings.parseInt(line)]);
             }
 
             // select IA for player 2
@@ -88,7 +86,7 @@ public class GameConfigurationController {
             // the IA is selected for player 2 (PLAYER_BLUE)
             // by adding the player data and AI data to the map
             if (!line2.isEmpty()) {
-                playerDataAIDataMap.put(PlayerData.PLAYER_BLUE, AIData.values()[Strings.parseInt(line2)]);
+                configurationModel.playerDataAIDataMap.put(PlayerData.PLAYER_BLUE, AIData.values()[Strings.parseInt(line2)]);
             }
         }
     }
