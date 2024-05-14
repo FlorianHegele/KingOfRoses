@@ -2,6 +2,7 @@ package model;
 
 import boardifier.control.Logger;
 import boardifier.model.Model;
+import java.util.HashMap;
 
 import java.util.Random;
 
