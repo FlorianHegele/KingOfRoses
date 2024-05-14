@@ -556,6 +556,9 @@ public class KoRStageModel extends GameStageModel {
                 if (!board.canReachCell(row, col) || pawn.getStatus() != status) continue;
 
 
+                // RENDRE LE PION INATTEIGNABLE
+                board.setCellReachable(row, col, false);
+
                 // AJOUTE UNE REFERENCE DU PION DANS UNE LISTE ET INITIALISE LE COMPTEUR DE VOISIN
                 pawnNodes.add(new PawnNode(status, row, col));
                 int counter = 0;
@@ -590,8 +593,8 @@ public class KoRStageModel extends GameStageModel {
 
             final Pawn pawn = getPlayedPawn(row, col);
 
-            // SI LA CASSE EST VIDE (OU QUE LES COORDONNÉES SONT HORS DU TABLEAU), ALORS RENDRE
-            // LA CELLULE INATTEIGNABLE (SI ON EST TOUJOURS DANS LE TABLEAU) ET PASSER À LA CASE VOISINE SUIVANTE
+            // SI LA CASSE EST VIDE, ALORS RENDRE LA CELLULE INATTEIGNABLE
+            // (SI ON EST TOUJOURS DANS LE TABLEAU) ET PASSER À LA CASE VOISINE SUIVANTE
             if (pawn == null) {
                 board.setCellReachable(row, col, false);
                 continue;
@@ -601,7 +604,7 @@ public class KoRStageModel extends GameStageModel {
             if (pawn.getStatus() != pawnNode.status) continue;
 
             // AJOUTE LE PION À LA LISTE ET RENDRE LA CELLULE INATTEIGNABLE
-            neighbors.add(new PawnNode(pawnNode.status, col, row));
+            neighbors.add(new PawnNode(pawnNode.status, row, col));
             board.setCellReachable(row, col, false);
         }
 
