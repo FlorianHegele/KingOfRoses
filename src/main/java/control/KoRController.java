@@ -36,13 +36,20 @@ public class KoRController extends Controller {
      * It is pretty straight forward to write :
      */
     public void stageLoop() {
+        final KoRStageModel gameStage = (KoRStageModel) model.getGameStage();
+
         update();
         while (!model.isEndStage()) {
-            final KoRStageModel gameStage = (KoRStageModel) model.getGameStage();
-            final PlayerData playerData = PlayerData.getCurrentPlayerData(model);
+            // TANT QUE LA PARTIE N'EST PAS BLOQUÉ, ON JOUE
+            while (!gameStage.gameIsStuck()) {
+                final PlayerData playerData = PlayerData.getCurrentPlayerData(model);
 
-            playTurn(gameStage, playerData);
-            if (!model.isEndStage()) update();
+                playTurn(gameStage, playerData);
+
+                if (!model.isEndStage()) update();
+            }
+
+            gameStage.computePartyResult();
         }
         endGame();
     }
@@ -81,6 +88,7 @@ public class KoRController extends Controller {
         // JOUE LES ACTIONS RENSEIGNÉES
         actionPlayer.start();
 
+        // SI LE PROCHAIN JOUEUR PEUT JOUER, ALORS DÉCLARER LA FIN DU TOUR POUR PASSER AU JOUEUR SUIVANT
         if (gameStage.playerCanPlay(playerData.getNextPlayerData())) endOfTurn();
     }
 
@@ -128,20 +136,16 @@ public class KoRController extends Controller {
             final int indexCard = Strings.parseInt(line.substring(1)) - 1;
             if (indexCard == -1) return false;
 
-            final PawnPot pawnPot;
             final MovementCardSpread movementCardSpread;
             if (playerData == PlayerData.PLAYER_BLUE) {
-                pawnPot = gameStage.getBluePot();
                 movementCardSpread = gameStage.getBlueMovementCardsSpread();
             } else {
-                pawnPot = gameStage.getRedPot();
                 movementCardSpread = gameStage.getRedMovementCardsSpread();
             }
 
-            // SI N'A PLUS DE PION (IMPOSSIBLE TECHNIQUEMENT)
-            if (pawnPot.isEmpty()) {
-                Logger.trace("Bug ICI, normalement le joueur est obligé de passer son tour.");
-                System.out.println("Vous n'avez plus de pion à jouer!");
+            final PawnPot pawnPot = gameStage.getGeneralPot(playerData);
+            if(pawnPot == null) {
+                Logger.info("BUG, pot vide, fin de partie !");
                 return false;
             }
 
@@ -160,7 +164,6 @@ public class KoRController extends Controller {
             // RÉCUPÈRE LES ÉLÉMENTS ESSENTIELS
             final KoRBoard board = gameStage.getBoard();
             final MovementCard movementCard = (MovementCard) movementCardSpread.getElement(indexCard, 0);
-            final Pawn pawn = (Pawn) pawnPot.getElement(0, 0);
             final GameElement king = gameStage.getKingPawn();
 
             // RÉCUPÈRE LA POSITION DU PION DU ROI QU'ON ADDITIONNE AU VECTEUR DE LA CARTE DÉPLACEMENT
@@ -177,7 +180,7 @@ public class KoRController extends Controller {
                 return false;
             }
 
-            playerActionList = simpleActionList.useMovementCard(movementCard, pawn, pos);
+            playerActionList = simpleActionList.useMovementCard(movementCard, pos, playerData);
         } else if (action == 'H') {
             if (length != 2) return false;
 

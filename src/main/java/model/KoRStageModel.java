@@ -383,27 +383,11 @@ public class KoRStageModel extends GameStageModel {
             else if (containerDest == board) {
                 Pawn pawn = (Pawn) element;
 
-                // RÉCUPÈRE LES ÉLÉMENTS POUR METTRE À JOUR LE COMPTEUR DES PIONS DU JOUEUR
-                final TextElement textElement;
-                final PawnPot pawnPot;
-                if (pawn.getStatus() == Pawn.Status.BLUE_PAWN) {
-                    textElement = bluePawnText;
-                    pawnPot = bluePot;
-                } else if (pawn.getStatus() == Pawn.Status.RED_PAWN) {
-                    textElement = redPawnText;
-                    pawnPot = redPot;
-                } else {
-                    // SI LE PION PLACÉ EST LE ROI ALORS NE RIEN FAIRE (joué 1 fois lors du setup)
-                    return;
-                }
+                if (pawn.getStatus() == Pawn.Status.KING_PAWN) return;
 
-                // MET À JOUR L'AFFICHAGE DU COMPTEUR DES PIONS
-                textElement.setText(String.valueOf(ContainerElements.countElements(pawnPot)));
-            }
-
-            // REGARDE SI LA PARTIE PREND FIN
-            if (gameIsStuck()) {
-                computePartyResult();
+                // MET À JOUR L'AFFICHAGE DES COMPTEURS DES PIONS
+                redPawnText.setText(String.valueOf(ContainerElements.countElements(redPot)));
+                bluePawnText.setText(String.valueOf(ContainerElements.countElements(bluePot)));
             }
         });
     }
@@ -414,16 +398,14 @@ public class KoRStageModel extends GameStageModel {
 
         final SimpleActionList simpleActionList = new SimpleActionList(model);
 
-        final PawnPot pawnPot;
+        final PawnPot pawnPot = getGeneralPot(playerData);
         final MovementCardSpread movementCardSpread;
         final HeroCardStack heroCardStack;
 
         if (playerData == PlayerData.PLAYER_BLUE) {
-            pawnPot = bluePot;
             movementCardSpread = blueMovementCardsSpread;
             heroCardStack = blueHeroCardStack;
         } else {
-            pawnPot = redPot;
             movementCardSpread = redMovementCardsSpread;
             heroCardStack = redHeroCardStack;
         }
@@ -461,7 +443,7 @@ public class KoRStageModel extends GameStageModel {
             // SINON SI LE JOUEUR POSSÈDE AU MOINS UNE CARTE HERO ET QUE LE PION N'EST PAS
             // LE SIEN ALORS RAJOUTER L'ACTION DE LA CARTE DÉPLACEMENT + HÉRO
             if (board.isEmptyAt(row, col)) {
-                actions.add(simpleActionList.useMovementCard(movementCard, (Pawn) pawnPot.getElement(0, 0), potentialPos));
+                actions.add(simpleActionList.useMovementCard(movementCard, potentialPos, playerData));
             } else if (hasHeroCard && !((Pawn) board.getElement(row, col)).getStatus().isOwnedBy(playerData)) {
                 actions.add(simpleActionList.useHeroCard((HeroCard) heroCardStack.getElement(0, 0), movementCard,
                         (Pawn) board.getElement(row, col), potentialPos));
@@ -471,22 +453,21 @@ public class KoRStageModel extends GameStageModel {
     }
 
     public boolean playerCanPlay(PlayerData playerData) {
-        final PawnPot pawnPot;
+        final PawnPot pawnPot = getGeneralPot(playerData);
+
+        // SI LES JOUEURS N'ONT PLUS DE PION, ALORS ILS NE PEUVENT RIEN FAIRE
+        if (pawnPot == null) return false;
+
         final MovementCardSpread movementCardSpread;
         final HeroCardStack heroCardStack;
 
         if (playerData == PlayerData.PLAYER_BLUE) {
-            pawnPot = bluePot;
             movementCardSpread = blueMovementCardsSpread;
             heroCardStack = blueHeroCardStack;
         } else {
-            pawnPot = redPot;
             movementCardSpread = redMovementCardsSpread;
             heroCardStack = redHeroCardStack;
         }
-
-        // SI LE JOUEUR N'A PLUS DE PION, ALORS IL NE PEUT RIEN FAIRE
-        if (pawnPot.isEmpty()) return false;
 
         // SI LE JOUEUR PEUT PIOCHER UNE CARTE DE MOUVEMENT
         final int countMovementCards = ContainerElements.countElements(movementCardSpread);
@@ -522,17 +503,17 @@ public class KoRStageModel extends GameStageModel {
     }
 
 
-    private void computePartyResult() {
+    public void computePartyResult() {
         final int idWinner;
         final int redZoneCounter = getPlayerZonePoint(Pawn.Status.RED_PAWN);
         final int blueZoneCounter = getPlayerZonePoint(Pawn.Status.BLUE_PAWN);
 
         board.resetReachableCells(true);
 
-        if (redZoneCounter == blueZoneCounter) {
-            final int redPawnPlaced = getTotalPawnOnBoard(Pawn.Status.RED_PAWN);
-            final int bluePawnPlaced = getTotalPawnOnBoard(Pawn.Status.BLUE_PAWN);
+        final int redPawnPlaced = getTotalPawnOnBoard(Pawn.Status.RED_PAWN);
+        final int bluePawnPlaced = getTotalPawnOnBoard(Pawn.Status.BLUE_PAWN);
 
+        if (redZoneCounter == blueZoneCounter) {
             if (redPawnPlaced == bluePawnPlaced) {
                 // ÉGALITÉ PARFAITE
                 idWinner = -1;
@@ -546,6 +527,9 @@ public class KoRStageModel extends GameStageModel {
             final PlayerData winner = (redZoneCounter > blueZoneCounter) ? PlayerData.PLAYER_RED : PlayerData.PLAYER_BLUE;
             idWinner = winner.getId();
         }
+
+        System.out.println("Points rouge : " + redZoneCounter + ", pions total " + redPawnPlaced);
+        System.out.println("Points bleu : " + blueZoneCounter + ", pions total " + bluePawnPlaced);
 
         // set the winner
         model.setIdWinner(idWinner);
@@ -670,6 +654,19 @@ public class KoRStageModel extends GameStageModel {
             return pawn;
         }
         return null;
+    }
+
+    public PawnPot getPawnPot(PlayerData playerData) {
+        return (playerData == PlayerData.PLAYER_RED) ? redPot : bluePot;
+    }
+
+    public PawnPot getGeneralPot(PlayerData playerData) {
+        PawnPot pawnPot = getPawnPot(playerData);
+        if(pawnPot.isEmpty()) {
+            pawnPot = getPawnPot(playerData.getNextPlayerData());
+            if(pawnPot.isEmpty()) return null;
+        }
+        return pawnPot;
     }
 
     public record PawnNode(Pawn.Status status, int row, int col) {

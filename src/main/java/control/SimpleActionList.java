@@ -7,6 +7,8 @@ import boardifier.model.Model;
 import boardifier.model.action.ActionList;
 import boardifier.model.action.FlipPawn;
 import model.KoRStageModel;
+import model.PlayerData;
+import model.container.PawnPot;
 import model.element.Pawn;
 import model.element.card.HeroCard;
 import model.element.card.MovementCard;
@@ -38,11 +40,14 @@ public class SimpleActionList {
         return actionList;
     }
 
-    public ActionList useMovementCard(MovementCard movementCard, Pawn pawn, Coord2D newKingPos) {
+    public ActionList useMovementCard(MovementCard movementCard, Coord2D newKingPos, PlayerData playerData) {
         final ActionList actionList = new ActionList();
 
         final int col = (int) newKingPos.getX();
         final int row = (int) newKingPos.getY();
+
+        final Pawn pawn = (Pawn) gameStage.getGeneralPot(playerData).getElement(0, 0);
+        if(!pawn.getStatus().isOwnedBy(playerData)) actionList.addSingleAction(new FlipPawn(model, pawn));
 
         // ADD MOVE PAWN ACTION
         actionList.addAll(ActionFactory.generatePutInContainer(model, pawn, gameStage.getBoard().getName(), row, col));
