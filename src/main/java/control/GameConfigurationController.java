@@ -9,7 +9,7 @@ public class GameConfigurationController {
     private final GameConfigurationModel configurationModel;
     private final ConsoleController console;
 
-    // Map of player data and AI data
+    // Map to store the player data and AI data
     // PlayerData is the key and AIData is the value
     private final Map <PlayerData, AIData> playerDataAIDataMap = new HashMap<>();
 
