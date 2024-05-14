@@ -40,6 +40,10 @@ public class GameConfigurationModel {
         return loggerMode;
     }
 
+    public playerDataAIDataMap getPlayerDataAIDataMap() {
+        return playerDataAIDataMap;
+    }
+
     public void setPlayerMode(int playerMode) {
         this.playerMode = (playerMode < 0) || (playerMode > 2) ? DEFAULT_PLAYER_MODE : playerMode;
     }
