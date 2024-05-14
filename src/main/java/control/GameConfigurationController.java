@@ -1,6 +1,7 @@
 package control;
 
 import model.GameConfigurationModel;
+import model.PlayerData;
 import utils.Strings;
 
 public class GameConfigurationController {
@@ -47,14 +48,49 @@ public class GameConfigurationController {
      * 0 = Random AI, 1 = Camarade AI, 2 = Guide AI
      */
     private void setAI(){
-        if (configurationModel.getPlayerMode() == 1 
-                || configurationModel.getPlayerMode() == 2) {
-            // Select IA for player 1
-            console.printCheckMessage("O: random, 1: camarade, 2: guide ? ");
+        // if the player mode is PvP, the IA is not selected
+        if (configurationModel.getPlayerMode() == 0) {return;}
+
+        // if the player mode is PvAI, the IA is selected for player 2
+        if (configurationModel.getPlayerMode() == 1) {
+
+            // select IA for player 2
+            console.printCheckMessage("specific AI for player 2 (0: Random, 1: Camarade, 2: Guide) ? ");
             final String line = console.getCheckConsoleLine();
-            if (!line.isEmpty())
-                configurationModel.setAI(Strings.parseInt(line));
-                }
+            
+            // if the line is not empty,
+            // the IA is selected for player 2 (PLAYER_BLUE)
+            // by adding the player data and AI data to the map 
+            if (!line.isEmpty()) {
+                playerDataAIDataMap.put(PlayerData.PLAYER_BLUE, AIData.values()[Strings.parseInt(line)]);
+            }
+        }
+
+        // if the player mode is AIvAI,
+        // the IA is selected for player 1 and player 2
+        if (configurationModel.getPlayerMode() == 2) {
+            // select IA for player 1
+            console.printCheckMessage("specific AI for player 1 (0: Random, 1: Camarade, 2: Guide) ? ");
+            final String line = console.getCheckConsoleLine();
+
+            // if the line is not empty,
+            // the IA is selected for player 1 (PLAYER_RED)
+            // by adding the player data and AI data to the map
+            if (!line.isEmpty()) {
+                playerDataAIDataMap.put(PlayerData.PLAYER_RED, AIData.values()[Strings.parseInt(line)]);
+            }
+
+            // select IA for player 2
+            console.printCheckMessage("specific AI for player 2 (0: Random, 1: Camarade, 2: Guide) ? ");
+            final String line2 = console.getCheckConsoleLine();
+
+            // if the line is not empty,
+            // the IA is selected for player 2 (PLAYER_BLUE)
+            // by adding the player data and AI data to the map
+            if (!line2.isEmpty()) {
+                playerDataAIDataMap.put(PlayerData.PLAYER_BLUE, AIData.values()[Strings.parseInt(line2)]);
+            }
+        }
     }
 
     private void setPlayerName() {
