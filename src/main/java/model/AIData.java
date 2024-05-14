@@ -12,10 +12,23 @@ public enum AIData {
     CAMARADE(1), // Prioritize placing pieces on the board
     GUIDE(2); // Prioritize cutting the opponent's lines
 
-    private final int id = 0;
+    private int id = 0;
 
     AIData(int id) {
         this.id = id;
+    }
+
+    // Get the id of the AI data
+    public static AIData getAIData(int id) {
+        // Loop through the AI data values
+        for (AIData aiData : AIData.values()) {
+            // If the id of the AI data is equal to the id passed as a parameter
+            if (aiData.getId() == id) {
+                // Return the AI data
+                return aiData;
+            }
+        }
+        return null;
     }
 
     public int getId() {

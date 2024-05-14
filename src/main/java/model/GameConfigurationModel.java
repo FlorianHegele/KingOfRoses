@@ -3,6 +3,7 @@ package model;
 import boardifier.control.Logger;
 import boardifier.model.Model;
 import java.util.HashMap;
+import java.util.Map;
 
 import java.util.Random;
 
@@ -41,7 +42,7 @@ public class GameConfigurationModel {
         return loggerMode;
     }
 
-    public playerDataAIDataMap getPlayerDataAIDataMap() {
+    public Map getPlayerDataAIDataMap() {
         return playerDataAIDataMap;
     }
 
