@@ -13,7 +13,8 @@ import java.util.Random;
 
 public class KoRDeciderCamarade extends Decider {
 
-    private static final Random LOTO = new Random(Calendar.getInstance().getTimeInMillis());
+    private static final Random LOTO = new Random(Calendar.getInstance().
+            getTimeInMillis());
 
     public KoRDeciderCamarade(Model model, Controller control) {
         super(model, control);
@@ -21,11 +22,13 @@ public class KoRDeciderCamarade extends Decider {
 
     @Override
     public ActionList decide() {
-        // do a cast get a variable of the real type to get access to the attributes of KoRStageModel
+        // do a cast get a variable of the real type
+        // to get access to the attributes of KoRStageModel
         KoRStageModel stage = (KoRStageModel) model.getGameStage();
 
         // GET ALL POSSIBLE ACTIONS
-        final List<ActionList> actionListList = stage.getPossiblePlayerActions(PlayerData.getCurrentPlayerData(model));
+        final List<ActionList> actionListList = stage.getPossiblePlayerActions(
+                PlayerData.getCurrentPlayerData(model));
 
         // RETURN ONE OF THEM
 
