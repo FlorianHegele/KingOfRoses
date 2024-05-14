@@ -11,6 +11,9 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 
+/*
+ * Represent an AI player priorizing putting new pieces on the board
+ */
 public class KoRDeciderCamarade extends Decider {
 
     private static final Random LOTO = new Random(Calendar.getInstance().getTimeInMillis());

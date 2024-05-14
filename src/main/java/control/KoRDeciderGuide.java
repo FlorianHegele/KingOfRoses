@@ -11,6 +11,10 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 
+
+/*
+ * Represent an AI player priorizing cutting the other player lines
+ */
 public class KoRDeciderGuide extends Decider {
 
     private static final Random LOTO = new Random(Calendar.getInstance().getTimeInMillis());
