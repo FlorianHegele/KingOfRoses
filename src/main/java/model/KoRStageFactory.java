@@ -52,23 +52,23 @@ public class KoRStageFactory extends StageElementsFactory {
         stageModel.setActionDescription4(actionDescriptionText4);
 
         TextElement movementCardStackText = new TextElement("14", stageModel);
-        movementCardStackText.setLocation(28, 1);
+        movementCardStackText.setLocation(2, 7);
         stageModel.setMovementCardStackText(movementCardStackText);
 
         TextElement textBluePawn = new TextElement("26", stageModel);
-        textBluePawn.setLocation(12, 28);
+        textBluePawn.setLocation(51, 21);
         stageModel.setBluePawnText(textBluePawn);
 
         TextElement textRedPawn = new TextElement("26", stageModel);
-        textRedPawn.setLocation(44, 28);
+        textRedPawn.setLocation(51, 7);
         stageModel.setRedPawnText(textRedPawn);
 
         TextElement textBlueCardHero = new TextElement("4", stageModel);
-        textBlueCardHero.setLocation(3, 5);
+        textBlueCardHero.setLocation(36, 27);
         stageModel.setBlueHeroCardText(textBlueCardHero);
 
         TextElement textRedCardHero = new TextElement("4", stageModel);
-        textRedCardHero.setLocation(54, 5);
+        textRedCardHero.setLocation(11, 1);
         stageModel.setRedHeroCardText(textRedCardHero);
 
 
@@ -84,39 +84,39 @@ public class KoRStageFactory extends StageElementsFactory {
 
         // MOVEMENT CARD STACK
         // create the movement cards stack in 28, 2
-        MovementCardStack movementCardStack = new MovementCardStack(28, 2, stageModel);
+        MovementCardStack movementCardStack = new MovementCardStack(2, 8, stageModel);
         stageModel.setMovementCardStack(movementCardStack);
 
         // create the movement cards stack in 28, 25
-        MovementCardStackPlayed movementCardStackPlayed = new MovementCardStackPlayed(28, 25, stageModel);
+        MovementCardStackPlayed movementCardStackPlayed = new MovementCardStackPlayed(2, 15, stageModel);
         stageModel.setMovementCardStackPlayed(movementCardStackPlayed);
 
 
         // RED ELEMENT
         //create the red hero cards stack in 1,1 in the virtual space
-        HeroCardStack redHeroCardStack = new HeroCardStack(53, 6, stageModel);
+        HeroCardStack redHeroCardStack = new HeroCardStack(10, 2, stageModel);
         stageModel.setRedHeroCardStack(redHeroCardStack);
 
         //create the red movements cards spread in 2,1 in the virtual space
-        MovementCardSpread redMovementCardsSpread = new MovementCardSpread(PlayerData.PLAYER_RED, 53, 9, stageModel);
+        MovementCardSpread redMovementCardsSpread = new MovementCardSpread(PlayerData.PLAYER_RED, 16, 1, stageModel);
         stageModel.setRedMovementCardsSpread(redMovementCardsSpread);
 
         //create the red pot in 19,2 in the virtual space
-        PawnPot redPot = new PawnPot(44, 25, stageModel);
+        PawnPot redPot = new PawnPot(50, 8, stageModel);
         stageModel.setRedPot(redPot);
 
 
         // BLUE ELEMENT
         //create the blue hero cards stack in 1,3 in the virtual space
-        HeroCardStack blueHeroCardStack = new HeroCardStack(2, 6, stageModel);
+        HeroCardStack blueHeroCardStack = new HeroCardStack(35, 24, stageModel);
         stageModel.setBlueHeroCardStack(blueHeroCardStack);
 
         //create the blue movements cards spread in 2,3 in the virtual space
-        MovementCardSpread blueMovementCardsSpread = new MovementCardSpread(PlayerData.PLAYER_BLUE, 2, 9, stageModel);
+        MovementCardSpread blueMovementCardsSpread = new MovementCardSpread(PlayerData.PLAYER_BLUE, 10, 24, stageModel);
         stageModel.setBlueMovementCardsSpread(blueMovementCardsSpread);
 
         //create the blue pot in 25,2 in the virtual space
-        PawnPot bluePot = new PawnPot(12, 25, stageModel);
+        PawnPot bluePot = new PawnPot(50, 18, stageModel);
         stageModel.setBluePot(bluePot);
 
 
@@ -192,10 +192,10 @@ public class KoRStageFactory extends StageElementsFactory {
         for (int i = 0; i < 5; i++) {
             //get card from the stack
             final MovementCard redMovementCard = movementCardDeck[i];
-            redMovementCardsSpread.addElement(redMovementCard, i, 0);
+            redMovementCardsSpread.addElement(redMovementCard, 0, i);
 
             final MovementCard blueMovementCard = movementCardDeck[i + 5];
-            blueMovementCardsSpread.addElement(blueMovementCard, i, 0);
+            blueMovementCardsSpread.addElement(blueMovementCard, 0, i);
         }
 
         //put the rest of the cards in the pile

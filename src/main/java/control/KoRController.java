@@ -170,14 +170,14 @@ public class KoRController extends Controller {
             }
 
             // SI LA CARTE MOUVEMENT SELECTIONNÉ N'EXISTE PAS
-            if (movementCardSpread.isEmptyAt(indexCard, 0)) {
+            if (movementCardSpread.isEmptyAt(0, indexCard)) {
                 System.out.println("Sélectionner une carte que vous possédez.");
                 return false;
             }
 
             // RÉCUPÈRE LES ÉLÉMENTS ESSENTIELS
             final KoRBoard board = gameStage.getBoard();
-            final MovementCard movementCard = (MovementCard) movementCardSpread.getElement(indexCard, 0);
+            final MovementCard movementCard = (MovementCard) movementCardSpread.getElement(0, indexCard);
             final GameElement king = gameStage.getKingPawn();
 
             // RÉCUPÈRE LA POSITION DU PION DU ROI QU'ON ADDITIONNE AU VECTEUR DE LA CARTE DÉPLACEMENT
@@ -226,7 +226,7 @@ public class KoRController extends Controller {
             }
 
             // SI LA CARTE MOUVEMENT SELECTIONNÉ N'EXISTE PAS
-            if (movementCardSpread.isEmptyAt(indexCard, 0)) {
+            if (movementCardSpread.isEmptyAt(0, indexCard)) {
                 System.out.println("Sélectionner une carte que vous possédez.");
                 return false;
             }
@@ -234,7 +234,7 @@ public class KoRController extends Controller {
             // RÉCUPÈRE LES ÉLÉMENTS ESSENTIELS
             final KoRBoard board = gameStage.getBoard();
             final HeroCard heroCard = (HeroCard) heroCardStack.getElement(0, 0);
-            final MovementCard movementCard = (MovementCard) movementCardSpread.getElement(indexCard, 0);
+            final MovementCard movementCard = (MovementCard) movementCardSpread.getElement(0, indexCard);
             final GameElement king = gameStage.getKingPawn();
 
             // RÉCUPÈRE LA POSITION DU PION DU ROI QU'ON ADDITIONNE AU VECTEUR DE LA CARTE DÉPLACEMENT
