@@ -68,7 +68,7 @@ public class KoRController extends Controller {
             // THEN play the turn automatically
             AIData ai = gameConfigurationModel.getPlayerDataAIDataMap().get(playerData);
             ActionList actionList = new ActionList();
-
+            // Choose which AI should play for the current player
             switch (ai){
                 case AIData.RANDOM -> actionList.addAll(new KoRDeciderRandom(model, this).decide());
                 case AIData.CAMARADE -> actionList.addAll(new KoRDeciderCamarade(model, this).decide());
