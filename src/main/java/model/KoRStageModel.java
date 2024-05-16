@@ -473,7 +473,7 @@ public class KoRStageModel extends GameStageModel {
         final int countMovementCards = ContainerElements.countElements(movementCardSpread);
         if (countMovementCards < 5) return true;
 
-        // SI LE JOUEUR PEUT JOUER UNE CARTE
+        // LE JOUEUR PEUT-IL JOUER UNE CARTE ? LESQUELS
         final boolean hasHeroCard = ContainerElements.countElements(heroCardStack) > 0;
         final Coord2D kingPos = ContainerElements.getElementPosition(kingPawn, board);
         final int cardCol = 0;
