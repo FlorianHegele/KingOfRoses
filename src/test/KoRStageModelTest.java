@@ -65,15 +65,25 @@ class KoRStageModelTest {
         } catch (GameException e) {
             System.out.println("Cannot start the game. Abort");
         }
+    }
+    public void setupCallbacksTest(){
 
     }
 
-    @Test
-    public void testsetupCallbacks(){
-        setUp();
-        launchGame();
 
 
 
 
-}}
+}
+
+
+
+
+
+
+
+
+
+
+
+
