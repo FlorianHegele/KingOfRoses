@@ -72,7 +72,7 @@ public class GameConfigurationModel {
             Logger.setLevel(Logger.LOGGER_NONE);
             Logger.setVerbosity(Logger.VERBOSE_NONE);
         } else if (loggerMode == 1) {
-            Logger.setLevel(Logger.LOGGER_TRACE);
+            Logger.setLevel(Logger.LOGGER_DEBUG);
             Logger.setVerbosity(Logger.VERBOSE_HIGH);
         }
     }

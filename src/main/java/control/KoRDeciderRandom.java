@@ -2,6 +2,7 @@ package control;
 
 import boardifier.control.Controller;
 import boardifier.control.Decider;
+import boardifier.control.Logger;
 import boardifier.model.Model;
 import boardifier.model.action.ActionList;
 import model.KoRStageModel;
@@ -29,6 +30,7 @@ public class KoRDeciderRandom extends Decider {
 
         // RETURN ONE OF THEM
 
+        Logger.debug("Playing for " + PlayerData.getCurrentPlayerData(model));
         return actionListList.get(LOTO.nextInt(actionListList.size()));
     }
 }

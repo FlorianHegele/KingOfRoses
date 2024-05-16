@@ -2,6 +2,7 @@ package control;
 
 import boardifier.control.Controller;
 import boardifier.control.Decider;
+import boardifier.control.Logger;
 import boardifier.model.Model;
 import boardifier.model.action.ActionList;
 import model.KoRStageModel;
@@ -13,6 +14,7 @@ import java.util.Random;
 
 /*
  * Represent an AI player priorizing putting new pieces on the board
+ * Will look to increase it's score whenever possible
  */
 public class KoRDeciderCamarade extends Decider {
 
@@ -31,7 +33,17 @@ public class KoRDeciderCamarade extends Decider {
         final List<ActionList> actionListList = stage.getPossiblePlayerActions(PlayerData.getCurrentPlayerData(model));
 
         // TODO : IMPLEMENT THE DECISION MAKING PROCESS
+        // Is putting a piece possible ?
+        // YES : Reduce actionList
+        if(actionListList)
+        // NO : Random
+        // Is putting a piece next to another piece possible ?
+        // YES : Play the corresponding card
+        // NO : Play a random card
         // RETURN ONE OF THEM
+        Logger.debug("Playing for " + PlayerData.getCurrentPlayerData(model));
         return actionListList.get(LOTO.nextInt(actionListList.size()));
     }
+
+
 }
