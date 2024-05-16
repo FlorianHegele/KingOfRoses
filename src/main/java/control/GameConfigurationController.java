@@ -4,8 +4,6 @@ import model.GameConfigurationModel;
 import model.PlayerData;
 import model.AIData;
 import utils.Strings;
-import java.util.HashMap;
-import java.util.Map;
 
 public class GameConfigurationController {
 

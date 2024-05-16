@@ -61,6 +61,10 @@ public class Pawn extends GameElement {
             return id;
         }
 
+        public static Pawn.Status getPawnStatus(PlayerData playerData) {
+            return (playerData == PlayerData.PLAYER_RED) ? Pawn.Status.RED_PAWN : Pawn.Status.BLUE_PAWN;
+        }
+
         public boolean isOwnedBy(PlayerData playerData) {
             return playerData.getId() == id;
         }

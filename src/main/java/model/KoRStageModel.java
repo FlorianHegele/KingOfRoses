@@ -505,8 +505,8 @@ public class KoRStageModel extends GameStageModel {
 
     public void computePartyResult() {
         final int idWinner;
-        final int redZoneCounter = getPlayerZonePoint(Pawn.Status.RED_PAWN);
-        final int blueZoneCounter = getPlayerZonePoint(Pawn.Status.BLUE_PAWN);
+        final int redZoneCounter = getPlayerPoint(PlayerData.PLAYER_RED);
+        final int blueZoneCounter = getPlayerPoint(PlayerData.PLAYER_BLUE);
 
         board.resetReachableCells(true);
 
@@ -537,47 +537,55 @@ public class KoRStageModel extends GameStageModel {
         model.stopStage();
     }
 
-    private int getPlayerZonePoint(Pawn.Status status) {
-        final Deque<PawnNode> pawnNodes = new LinkedList<>();
-
+    public int getPlayerPoint(PlayerData playerData) {
         int totalCounter = 0;
         for (int row = 0; row < board.getNbRows(); row++) {
             for (int col = 0; col < board.getNbCols(); col++) {
-                final Pawn pawn = getPlayedPawn(row, col);
 
-                // SI IL N'Y A PAS DE PION, ALORS RENDRE LA CASE INATTEIGNABLE ET PASSER À LA CASSE SUIVANTE
-                if (pawn == null) {
-                    board.setCellReachable(row, col, false);
-                    continue;
-                }
-
-                // SI ON NE PEUT PAS ATTEINDRE LA CELLULE OU QUE LE PION EST CELUI DE L'ADVERSAIRE,
-                // ALORS PASSER À LA CELLULE SUIVANTE
-                if (!board.canReachCell(row, col) || pawn.getStatus() != status) continue;
-
-
-                // RENDRE LE PION INATTEIGNABLE
-                board.setCellReachable(row, col, false);
-
-                // AJOUTE UNE REFERENCE DU PION DANS UNE LISTE ET INITIALISE LE COMPTEUR DE VOISIN
-                pawnNodes.add(new PawnNode(status, row, col));
-                int counter = 0;
-
-                while (!pawnNodes.isEmpty()) {
-                    // TANT QUE LA LISTE N'EST PAS VIDE ON Y RAJOUTER LES RÉFÉRENCES DES PIONS VOISINS ATTEIGNABLES
-                    // DE MEME COULER PAR RAPPORT AU 1ER RÉFÉRENTIEL DE LA LISTE TOUT EN L'ENLEVANT DE LA LISTE
-                    // + ON INCRÉMENTE DE 1 LE COMPTEUR DE VOISIN
-
-                    counter++;
-                    pawnNodes.addAll(getNeighbors(pawnNodes.poll()));
-                }
+                final int total = getPlayerZonePawn(playerData, row, col);
 
                 // AJOUTE AU COMPTEUR FINAL LE COMPTEUR DE VOISIN AU CARRÉ
-                totalCounter += counter * counter;
+                totalCounter += total * total;
             }
         }
 
         return totalCounter;
+    }
+
+    public int getPlayerZonePawn(PlayerData playerData, int row, int col) {
+        final Pawn.Status status = Pawn.Status.getPawnStatus(playerData);
+        final Deque<PawnNode> pawnNodes = new LinkedList<>();
+
+        final Pawn pawn = getPlayedPawn(row, col);
+
+        // SI IL N'Y A PAS DE PION, ALORS RENDRE LA CASE INATTEIGNABLE ET PASSER À LA CASSE SUIVANTE
+        if (pawn == null) {
+            board.setCellReachable(row, col, false);
+            return 0;
+        }
+
+        // SI ON NE PEUT PAS ATTEINDRE LA CELLULE OU QUE LE PION EST CELUI DE L'ADVERSAIRE,
+        // ALORS PASSER À LA CELLULE SUIVANTE
+        if (!board.canReachCell(row, col) || pawn.getStatus() != status) return 0;
+
+
+        // RENDRE LE PION INATTEIGNABLE
+        board.setCellReachable(row, col, false);
+
+        // AJOUTE UNE REFERENCE DU PION DANS UNE LISTE ET INITIALISE LE COMPTEUR DE VOISIN
+        pawnNodes.add(new PawnNode(status, row, col));
+        int counter = 0;
+
+        while (!pawnNodes.isEmpty()) {
+            // TANT QUE LA LISTE N'EST PAS VIDE ON Y RAJOUTER LES RÉFÉRENCES DES PIONS VOISINS ATTEIGNABLES
+            // DE MEME COULER PAR RAPPORT AU 1ER RÉFÉRENTIEL DE LA LISTE TOUT EN L'ENLEVANT DE LA LISTE
+            // + ON INCRÉMENTE DE 1 LE COMPTEUR DE VOISIN
+
+            counter++;
+            pawnNodes.addAll(getNeighbors(pawnNodes.poll()));
+        }
+
+        return counter;
     }
 
     private List<PawnNode> getNeighbors(PawnNode pawnNode) {
