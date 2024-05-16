@@ -5,6 +5,7 @@ import boardifier.control.ActionPlayer;
 import boardifier.control.Logger;
 import boardifier.model.*;
 import boardifier.model.action.ActionList;
+import control.ActionPoints;
 import control.SimpleActionList;
 import model.container.KoRBoard;
 import model.container.PawnPot;
@@ -392,8 +393,9 @@ public class KoRStageModel extends GameStageModel {
         });
     }
 
-    public List<ActionList> getPossibleMovementCards(PlayerData playerData) {
-        final List<ActionList> actions = new ArrayList<>();
+    // FIXME : Shouldn't get hero card
+    public List<ActionPoints> getPossibleMovementCards(PlayerData playerData) {
+        final List<ActionPoints> actions = new ArrayList<>();
         if (playerData == null) return actions;
 
         final SimpleActionList simpleActionList = new SimpleActionList(model);
@@ -433,12 +435,13 @@ public class KoRStageModel extends GameStageModel {
 
             // SI L'EMPLACEMENT EST VIDE, ALORS RAJOUTER L'ACTION DU DÉPLACEMENT SIMPLE
             if (board.isEmptyAt(row, col)) {
-                actions.add(simpleActionList.useMovementCard(movementCard, potentialPos, playerData));
+                actions.add(new ActionPoints(simpleActionList.useMovementCard(movementCard, potentialPos, playerData),getPlayerZonePawnSimple(playerData,row,col)));
             // SINON SI LE JOUEUR POSSÈDE AU MOINS UNE CARTE HERO ET QUE LE PION N'EST PAS
             // LE SIEN ALORS RAJOUTER L'ACTION DE LA CARTE DÉPLACEMENT + HÉRO
+                // TODO : A supprimer et a déplacer dans une fonction spécifique
             } else if (hasHeroCard && !((Pawn) board.getElement(row, col)).getStatus().isOwnedBy(playerData)) {
-                actions.add(simpleActionList.useHeroCard((HeroCard) heroCardStack.getElement(0, 0), movementCard,
-                        (Pawn) board.getElement(row, col), potentialPos));
+                actions.add(new ActionPoints(simpleActionList.useHeroCard((HeroCard) heroCardStack.getElement(0, 0), movementCard,
+                        (Pawn) board.getElement(row, col), potentialPos),getPlayerZonePawnSimple(playerData,row,col)));
             }
         }
         return actions;
@@ -651,14 +654,10 @@ public class KoRStageModel extends GameStageModel {
         final Pawn pawn = getPlayedPawn(row, col);
 
         // SI IL N'Y A PAS DE PION, ALORS RENDRE LA CASE INATTEIGNABLE ET PASSER À LA CASSE SUIVANTE
-        if (pawn == null) {
-            board.setCellReachable(row, col, false);
-            return 0;
-        }
 
         // SI ON NE PEUT PAS ATTEINDRE LA CELLULE OU QUE LE PION EST CELUI DE L'ADVERSAIRE,
         // ALORS PASSER À LA CELLULE SUIVANTE
-        if (!board.canReachCell(row, col) || pawn.getStatus() != status) return 0;
+        if (!board.canReachCell(row, col) || (pawn != null && pawn.getStatus() != status)) return 0;
 
 
         // RENDRE LE PION INATTEIGNABLE

@@ -15,9 +15,7 @@ import model.element.Pawn;
 import model.element.card.MovementCard;
 import utils.ContainerElements;
 
-import java.util.Calendar;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /*
  * Represent an AI player priorizing putting new pieces on the board
@@ -37,7 +35,7 @@ public class KoRDeciderCamarade extends Decider {
         Logger.debug("Playing for " + PlayerData.getCurrentPlayerData(model));
 
         // GET ALL ACTION REGARDING PLAYABLE CARDS
-        final List<ActionList> actionCardList = stage.getPossibleMovementCards(PlayerData.getCurrentPlayerData(model));
+        final List<ActionPoints> actionCardList = stage.getPossibleMovementCards(PlayerData.getCurrentPlayerData(model));
         // GET ALL ACTION TO TAKE NEW CARD
         final List<ActionList> actionTakeList = stage.getPossibleTakeCardAction(PlayerData.getCurrentPlayerData(model));
 
@@ -46,12 +44,18 @@ public class KoRDeciderCamarade extends Decider {
         if(!actionCardList.isEmpty()) {
             Logger.debug("A card is playable for : " + PlayerData.getCurrentPlayerData(model));
             // TODO : Which move will add to the longest line ? Need to sort the list
-            return actionCardList.get(0);
+            Collections.sort(actionCardList);
+            for(ActionPoints actionCard : actionCardList) {
+                System.out.println();
+                Logger.debug("ActionCard : " + actionCard);
+            }
+            return actionCardList.get(0).al;
         }
         // Is taking a card possible ?
         Logger.debug("A take card is playable for : " + PlayerData.getCurrentPlayerData(model));
         return actionTakeList.get(0);
 
     }
+
 
 }
