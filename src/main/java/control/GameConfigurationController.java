@@ -19,11 +19,18 @@ public class GameConfigurationController {
     public void doCheck() {
         console.printlnCheckMessage("Press enter if you want to skip !");
 
-        configurationModel.updateLogger();
+        setLoggerMode();
         setSeed();
         setPlayerMode();
         setPlayerName();
         setAI();
+    }
+
+    private void setLoggerMode(){
+        console.printCheckMessage("Logger Mode (0: None, 1:Full) ? ");
+        final String line = console.getCheckConsoleLine();
+        if (!line.isEmpty()) configurationModel.setLoggerMode(Strings.parseInt(line));
+        configurationModel.updateLogger();
     }
 
     private void setSeed() {
