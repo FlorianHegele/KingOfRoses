@@ -444,6 +444,34 @@ public class KoRStageModel extends GameStageModel {
         return actions;
     }
 
+    public List<ActionList> getPossibleTakeCardAction(PlayerData playerData) {
+        final List<ActionList> actions = new ArrayList<>();
+        if (playerData == null) return actions;
+
+        final SimpleActionList simpleActionList = new SimpleActionList(model);
+
+        final PawnPot pawnPot = getGeneralPot(playerData);
+        final MovementCardSpread movementCardSpread;
+
+        if (playerData == PlayerData.PLAYER_BLUE) {
+            movementCardSpread = blueMovementCardsSpread;
+        } else {
+            movementCardSpread = redMovementCardsSpread;
+        }
+
+        // SI LE JOUEUR N'A PLUS DE PION, ALORS IL NE PEUT RIEN FAIRE
+        if (pawnPot.isEmpty()) return actions;
+
+        // SI LE JOUEUR PEUT PIOCHER UNE CARTE DE MOUVEMENT
+        final int countMovementCards = ContainerElements.countElements(movementCardSpread);
+        if (countMovementCards < 5) {
+            // RAJOUTER L'ACTION DE PIOCHER
+            actions.add(simpleActionList.pickUpMovementCard(movementCardSpread));
+        }
+
+        return actions;
+    }
+
     public List<ActionList> getPossiblePlayerActions(PlayerData playerData) {
         final List<ActionList> actions = new ArrayList<>();
         if (playerData == null) return actions;
