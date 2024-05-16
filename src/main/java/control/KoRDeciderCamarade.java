@@ -34,8 +34,8 @@ public class KoRDeciderCamarade extends Decider {
 
         // TODO : IMPLEMENT THE DECISION MAKING PROCESS
         // Is putting a piece possible ?
+
         // YES : Reduce actionList
-        if(actionListList)
         // NO : Random
         // Is putting a piece next to another piece possible ?
         // YES : Play the corresponding card
