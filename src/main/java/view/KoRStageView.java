@@ -74,7 +74,7 @@ public class KoRStageView extends GameStageView {
          */
 
         // create look for the main board
-        addLook(new ClassicBoardLook(2, 4, model.getBoard(), 1, 1, true));
+        addLook(new ClassicBoardLook(2, 4, model.getBoard(), 1, 1, false));
 
         // create look for the hero cards
         addLook(new HeroCardStackLook(model.getRedHeroCardStack()));

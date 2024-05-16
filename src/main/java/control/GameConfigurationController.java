@@ -26,7 +26,7 @@ public class GameConfigurationController {
         setAI();
     }
 
-    private void setLoggerMode(){
+    private void setLoggerMode() {
         console.printCheckMessage("Logger Mode (0: None, 1:Full) ? ");
         final String line = console.getCheckConsoleLine();
         if (!line.isEmpty()) configurationModel.setLoggerMode(Strings.parseInt(line));

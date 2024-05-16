@@ -425,8 +425,8 @@ public class KoRStageModel extends GameStageModel {
 
         final boolean hasHeroCard = ContainerElements.countElements(heroCardStack) > 0;
         final Coord2D kingPos = ContainerElements.getElementPosition(kingPawn, board);
-        final int cardCol = 0;
-        for (int cardRow = 0; cardRow < countMovementCards; cardRow++) {
+        final int cardRow = 0;
+        for (int cardCol = 0; cardCol < countMovementCards; cardCol++) {
             if (movementCardSpread.isEmptyAt(cardRow, cardCol)) continue;
 
             // RÉCUPÈRE CHAQUE CARTE DIRECTION DU JOUEUR
@@ -476,8 +476,8 @@ public class KoRStageModel extends GameStageModel {
         // LE JOUEUR PEUT-IL JOUER UNE CARTE ? LESQUELS
         final boolean hasHeroCard = ContainerElements.countElements(heroCardStack) > 0;
         final Coord2D kingPos = ContainerElements.getElementPosition(kingPawn, board);
-        final int cardCol = 0;
-        for (int cardRow = 0; cardRow < countMovementCards; cardRow++) {
+        final int cardRow = 0;
+        for (int cardCol = 0; cardCol < countMovementCards; cardCol++) {
             if (movementCardSpread.isEmptyAt(cardRow, cardCol)) continue;
 
             // RÉCUPÈRE CHAQUE CARTE DIRECTION DU JOUEUR
