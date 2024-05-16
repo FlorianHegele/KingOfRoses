@@ -68,10 +68,13 @@ public class KoRController extends Controller {
             // THEN play the turn automatically
             AIData ai = gameConfigurationModel.getPlayerDataAIDataMap().get(playerData);
             ActionList actionList = new ActionList();
-            if(ai==AIData.RANDOM) {
-                // add all the moves the AI has to do to play the turn
-                actionList.addAll(new KoRDeciderCamarade(model, this).decide());
+
+            switch (ai){
+                case AIData.RANDOM -> actionList.addAll(new KoRDeciderRandom(model, this).decide());
+                case AIData.CAMARADE -> actionList.addAll(new KoRDeciderCamarade(model, this).decide());
+                case AIData.GUIDE -> actionList.addAll(new KoRDeciderGuide(model, this).decide());
             }
+
             actionPlayer = new ActionPlayer(model, this, actionList);
         } else {
             boolean ok = false;
