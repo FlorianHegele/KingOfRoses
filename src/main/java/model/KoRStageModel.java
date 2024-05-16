@@ -505,8 +505,8 @@ public class KoRStageModel extends GameStageModel {
 
     public void computePartyResult() {
         final int idWinner;
-        final int redZoneCounter = getPlayerPoint(PlayerData.PLAYER_RED);
-        final int blueZoneCounter = getPlayerPoint(PlayerData.PLAYER_BLUE);
+        final int redZoneCounter = getTotalPlayerPoint(PlayerData.PLAYER_RED);
+        final int blueZoneCounter = getTotalPlayerPoint(PlayerData.PLAYER_BLUE);
 
         board.resetReachableCells(true);
 
@@ -537,7 +537,19 @@ public class KoRStageModel extends GameStageModel {
         model.stopStage();
     }
 
-    public int getPlayerPoint(PlayerData playerData) {
+    public int getTotalPlayerPointSimple(PlayerData playerData) {
+        final int playerPoint = getTotalPlayerPoint(playerData);
+        board.resetReachableCells(true);
+        return playerPoint;
+    }
+
+    public int getPlayerZonePawnSimple(PlayerData playerData, int row, int col) {
+        final int playerPoint = getPlayerZonePawn(playerData, row, col);
+        board.resetReachableCells(true);
+        return playerPoint;
+    }
+
+    private int getTotalPlayerPoint(PlayerData playerData) {
         int totalCounter = 0;
         for (int row = 0; row < board.getNbRows(); row++) {
             for (int col = 0; col < board.getNbCols(); col++) {
@@ -548,11 +560,10 @@ public class KoRStageModel extends GameStageModel {
                 totalCounter += total * total;
             }
         }
-
         return totalCounter;
     }
 
-    public int getPlayerZonePawn(PlayerData playerData, int row, int col) {
+    private int getPlayerZonePawn(PlayerData playerData, int row, int col) {
         final Pawn.Status status = Pawn.Status.getPawnStatus(playerData);
         final Deque<PawnNode> pawnNodes = new LinkedList<>();
 
