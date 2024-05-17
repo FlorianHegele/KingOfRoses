@@ -397,7 +397,7 @@ public class KoRStageModel extends GameStageModel {
      * @param playerData the player data
      * @return List of list of actions for the player to play a hero card
      */
-    public List<ActionPoints> getPossibleHeroMove(PlayerData playerData){
+    public List<ActionPoints> getPossibleHeroMove(PlayerData playerData, PlayerData opponent){
         final List<ActionPoints> actions = new ArrayList<>();
         if (playerData == null) return actions;
 
@@ -443,7 +443,7 @@ public class KoRStageModel extends GameStageModel {
             // ALORS RAJOUTER L'ACTION DE LA CARTE DÉPLACEMENT + HERO
             if (!((Pawn) board.getElement(row, col)).getStatus().isOwnedBy(playerData)) {
                 actions.add(new ActionPoints(simpleActionList.useHeroCard((HeroCard) heroCardStack.getElement(0, 0), movementCard,
-                        (Pawn) board.getElement(row, col), potentialPos),getPlayerZonePawnSimple(playerData,row,col)));
+                        (Pawn) board.getElement(row, col), potentialPos),getPlayerZonePawnSimple(opponent,row,col)));
             }
 
         }

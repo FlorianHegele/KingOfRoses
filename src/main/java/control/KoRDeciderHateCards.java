@@ -33,9 +33,8 @@ public class KoRDeciderHateCards extends Decider {
         // GET ALL ACTION TO TAKE NEW CARD
         final List<ActionList> actionTakeList = stage.getPossibleTakeCardAction(PlayerData.getCurrentPlayerData(model));
         // GET ALL ACTION REGARDING HERO CARDS
-        final List<ActionPoints> actionHeroList = stage.getPossibleHeroMove(PlayerData.getCurrentPlayerData(model));
+        final List<ActionPoints> actionHeroList = stage.getPossibleHeroMove(PlayerData.getCurrentPlayerData(model), PlayerData.getCurrentPlayerData(model).getNextPlayerData());
 
-        // TODO : IMPLEMENT THE DECISION MAKING PROCESS
         // Is playing a card possible ?
         if(!actionCardList.isEmpty()) {
             Logger.debug("A card is playable for : " + PlayerData.getCurrentPlayerData(model));
