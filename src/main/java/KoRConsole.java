@@ -12,7 +12,7 @@ public class KoRConsole {
 
     public static void main(String[] args) {
         // CREATE CONSOLE CONTROLLER
-        final ConsoleController consoleController = new ConsoleController(true);
+        final ConsoleController consoleController = new ConsoleController(false);
 
         // CREATE MODEL
         final Model model = new Model();
