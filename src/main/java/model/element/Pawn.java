@@ -54,6 +54,7 @@ public class Pawn extends GameElement {
         }
 
         public Status getOpposite() {
+            if(this == KING_PAWN) throw new IllegalCallerException("The king's pawn can't be flipped");
             return (this == BLUE_PAWN) ? RED_PAWN : BLUE_PAWN;
         }
 
