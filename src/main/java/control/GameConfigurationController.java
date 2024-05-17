@@ -51,7 +51,7 @@ public class GameConfigurationController {
      * If the player mode is PvAI, the IA is selected for player 2
      * If the player mode is AIvAI, the IA is selected for player 1 and player 2
      * The IA is selected from the AIData enum
-     * 0 = Random AI, 1 = Camarade AI, 2 = Guide AI
+     * 0 = Random AI, 1 = Camarade AI, 2 = HateCards AI
      */
     // TODO : Refactor this method to work with GameConfigurationModel
     private void setAI(){
@@ -62,7 +62,7 @@ public class GameConfigurationController {
         if (configurationModel.getPlayerMode() == 1) {
 
             // select IA for player 2
-            console.printCheckMessage("specific AI for player 2 (0: Random, 1: Camarade, 2: Guide) ? ");
+            console.printCheckMessage("specific AI for player 2 (0: Random, 1: Camarade, 2: HateCards, 3: Guide) ? ");
             final String line = console.getCheckConsoleLine();
             
             // if the line is not empty,
@@ -77,7 +77,7 @@ public class GameConfigurationController {
         // the IA is selected for player 1 and player 2
         if (configurationModel.getPlayerMode() == 2) {
             // select IA for player 1
-            console.printCheckMessage("specific AI for player 1 (0: Random, 1: Camarade, 2: Guide) ? ");
+            console.printCheckMessage("specific AI for player 2 (0: Random, 1: Camarade, 2: HateCards, 3: Guide) ? ");
             final String line = console.getCheckConsoleLine();
 
             // if the line is not empty,
@@ -88,7 +88,7 @@ public class GameConfigurationController {
             }
 
             // select IA for player 2
-            console.printCheckMessage("specific AI for player 2 (0: Random, 1: Camarade, 2: Guide) ? ");
+            console.printCheckMessage("specific AI for player 2 (0: Random, 1: Camarade, 2: HateCards, 3: Guide) ? ");
             final String line2 = console.getCheckConsoleLine();
 
             // if the line is not empty,

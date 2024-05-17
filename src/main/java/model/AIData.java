@@ -9,8 +9,10 @@ import boardifier.view.ConsoleColor;
  */
 public enum AIData {
     RANDOM(0), // Random AI
-    CAMARADE(1), // Prioritize placing pieces on the board
-    GUIDE(2); // Prioritize cutting the opponent's lines
+    CAMARADE(1), // Prioritize placing pieces on the board without harming the opponent
+    HATECARDS(2), // Really hates taking cards
+    GUIDE(3); // Prioritize cutting the opponent's lines
+
 
     private int id = 0;
 

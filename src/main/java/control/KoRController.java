@@ -72,6 +72,7 @@ public class KoRController extends Controller {
             switch (ai){
                 case RANDOM -> actionList.addAll(new KoRDeciderRandom(model, this).decide());
                 case CAMARADE -> actionList.addAll(new KoRDeciderCamarade(model, this).decide());
+                case HATECARDS -> actionList.addAll(new KoRDeciderHateCards(model,this).decide());
                 case GUIDE -> actionList.addAll(new KoRDeciderGuide(model, this).decide());
             }
 
