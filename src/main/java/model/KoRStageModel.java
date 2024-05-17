@@ -393,7 +393,67 @@ public class KoRStageModel extends GameStageModel {
         });
     }
 
-    // FIXME : Shouldn't get hero card
+    /**
+     * @param playerData the player data
+     * @return List of list of actions for the player to play a hero card
+     */
+    public List<ActionPoints> getPossibleHeroMove(PlayerData playerData){
+        final List<ActionPoints> actions = new ArrayList<>();
+        if (playerData == null) return actions;
+
+        final SimpleActionList simpleActionList = new SimpleActionList(model);
+
+        final PawnPot pawnPot = getGeneralPot(playerData);
+        final MovementCardSpread movementCardSpread;
+        final HeroCardStack heroCardStack;
+
+        if (playerData == PlayerData.PLAYER_BLUE) {
+            movementCardSpread = blueMovementCardsSpread;
+            heroCardStack = blueHeroCardStack;
+        } else {
+            movementCardSpread = redMovementCardsSpread;
+            heroCardStack = redHeroCardStack;
+        }
+
+        // SI LE JOUEUR N'A PLUS DE PION OU DE CARTE HERO, NE RENVOI AUCUNE ACTION
+        final boolean hasHeroCard = ContainerElements.countElements(heroCardStack) > 0;
+        if (pawnPot.isEmpty()||!hasHeroCard) return actions;
+
+        final int countMovementCards = ContainerElements.countElements(movementCardSpread);
+
+        final Coord2D kingPos = ContainerElements.getElementPosition(kingPawn, board);
+        final int cardRow = 0;
+        for (int cardCol = 0; cardCol < countMovementCards; cardCol++) {
+            // S'IL N'Y A PAS DE CARTE A CET EMPLACEMENT, PASSER A L'EMPLACEMENT SUIANT
+            if (movementCardSpread.isEmptyAt(cardRow, cardCol)) continue;
+
+            // RÉCUPÈRE CHAQUE CARTE DIRECTION DU JOUEUR
+            final MovementCard movementCard = (MovementCard) movementCardSpread.getElement(cardRow, cardCol);
+
+            // RÉCUPÈRE L'EMPLACEMENT POTENTIEL DU ROI AVEC LA CARTE DIRECTION JOUÉE
+            final Coord2D potentialPos = movementCard.getDirectionVector().add(kingPos);
+            final int col = (int) potentialPos.getX();
+            final int row = (int) potentialPos.getY();
+
+            // SI ON NE PEUT PAS ATTEINDRE LA POSITION POTENTIELLE OU QU'IL N'Y A PAS DE PION
+            // ALORS ON PASSE À LA CARTE SUIVANTE
+            if (!board.canReachCell(row, col)||board.isEmptyAt(row, col)) continue;
+
+            // SI LE PION N'EST PAS CELUI DU JOUEUR
+            // ALORS RAJOUTER L'ACTION DE LA CARTE DÉPLACEMENT + HERO
+            if (!((Pawn) board.getElement(row, col)).getStatus().isOwnedBy(playerData)) {
+                actions.add(new ActionPoints(simpleActionList.useHeroCard((HeroCard) heroCardStack.getElement(0, 0), movementCard,
+                        (Pawn) board.getElement(row, col), potentialPos),getPlayerZonePawnSimple(playerData,row,col)));
+            }
+
+        }
+        return actions;
+    }
+
+    /**
+     * @param playerData the player data
+     * @return List of list of actions for the player to play a movement card
+     */
     public List<ActionPoints> getPossibleMovementCards(PlayerData playerData) {
         final List<ActionPoints> actions = new ArrayList<>();
         if (playerData == null) return actions;
@@ -436,12 +496,6 @@ public class KoRStageModel extends GameStageModel {
             // SI L'EMPLACEMENT EST VIDE, ALORS RAJOUTER L'ACTION DU DÉPLACEMENT SIMPLE
             if (board.isEmptyAt(row, col)) {
                 actions.add(new ActionPoints(simpleActionList.useMovementCard(movementCard, potentialPos, playerData),getPlayerZonePawnSimple(playerData,row,col)));
-            // SINON SI LE JOUEUR POSSÈDE AU MOINS UNE CARTE HERO ET QUE LE PION N'EST PAS
-            // LE SIEN ALORS RAJOUTER L'ACTION DE LA CARTE DÉPLACEMENT + HÉRO
-                // TODO : A supprimer et a déplacer dans une fonction spécifique
-            } else if (hasHeroCard && !((Pawn) board.getElement(row, col)).getStatus().isOwnedBy(playerData)) {
-                actions.add(new ActionPoints(simpleActionList.useHeroCard((HeroCard) heroCardStack.getElement(0, 0), movementCard,
-                        (Pawn) board.getElement(row, col), potentialPos),getPlayerZonePawnSimple(playerData,row,col)));
             }
         }
         return actions;

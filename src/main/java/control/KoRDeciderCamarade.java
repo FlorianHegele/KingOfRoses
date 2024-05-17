@@ -38,12 +38,14 @@ public class KoRDeciderCamarade extends Decider {
         final List<ActionPoints> actionCardList = stage.getPossibleMovementCards(PlayerData.getCurrentPlayerData(model));
         // GET ALL ACTION TO TAKE NEW CARD
         final List<ActionList> actionTakeList = stage.getPossibleTakeCardAction(PlayerData.getCurrentPlayerData(model));
+        // GET ALL ACTION REGARDING HERO CARDS
+        final List<ActionPoints> actionHeroList = stage.getPossibleHeroMove(PlayerData.getCurrentPlayerData(model));
 
         // TODO : IMPLEMENT THE DECISION MAKING PROCESS
         // Is playing a card possible ?
         if(!actionCardList.isEmpty()) {
             Logger.debug("A card is playable for : " + PlayerData.getCurrentPlayerData(model));
-            // TODO : Which move will add to the longest line ? Need to sort the list
+            // order by most to least points and do the move lending the most points
             Collections.sort(actionCardList);
             for(ActionPoints actionCard : actionCardList) {
                 System.out.println();
@@ -52,8 +54,14 @@ public class KoRDeciderCamarade extends Decider {
             return actionCardList.get(0).al;
         }
         // Is taking a card possible ?
-        Logger.debug("A take card is playable for : " + PlayerData.getCurrentPlayerData(model));
-        return actionTakeList.get(0);
+        if(!actionTakeList.isEmpty()) {
+            Logger.debug("A take card action is playable for : " + PlayerData.getCurrentPlayerData(model));
+            return actionTakeList.get(0);
+        }
+
+        // As a last resort play on the opponent trying to get the most point out of it
+        Logger.debug("A hero card is playable for : " + PlayerData.getCurrentPlayerData(model));
+        return actionHeroList.get(0).al;
 
     }
 
