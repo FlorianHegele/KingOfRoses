@@ -31,10 +31,11 @@ public class KoRDeciderRandom extends KoRDecider {
      */
     @Override
     public ActionList decide() {
+        // Log the current player
+        Logger.debug("Playing for " + playerData);
+
         // Get all possible actions for the current player.
         final List<ActionList> actionListList = simpleActionList.getPossiblePlayerActions();
-
-        Logger.debug("Playing for " + playerData);
 
         // Return one randomly selected action list.
         return actionListList.get(LOTO.nextInt(actionListList.size()));

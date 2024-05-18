@@ -9,32 +9,45 @@ import model.data.PlayerData;
 
 import java.util.*;
 
-/*
- * Represent an AI player priorizing putting new pieces on the board
- * Will look to increase it's score whenever possible
+/**
+ * Represents an AI player that prioritizes placing new pieces on the board.
+ * This AI will look to increase its score whenever possible.
  */
 public class KoRDeciderCamarade extends KoRDecider {
 
+    /**
+     * Constructs a KoRDeciderCamarade with the specified model, control, and player data.
+     *
+     * @param model the game model.
+     * @param control the game controller.
+     * @param playerData the player data.
+     */
     public KoRDeciderCamarade(Model model, Controller control, PlayerData playerData) {
         super(model, control, playerData);
     }
 
+    /**
+     * Decides the next action for the AI player.
+     * The decision is based on prioritizing actions that place new pieces on the board to maximize the score.
+     *
+     * @return the list of actions the AI player will take.
+     */
     @Override
     public ActionList decide() {
-        // do a cast get a variable of the real type to get access to the attributes of KoRStageModel
+        // Log the current player
         Logger.debug("Playing for " + playerData);
 
-        // GET ALL ACTION REGARDING PLAYABLE CARDS
+        // Get all possible actions for playing movement cards
         final List<ActionPoints> actionCardList = simpleActionList.getPossibleMovementCards();
-        // GET ALL ACTION TO TAKE NEW CARD
+        // Get all possible actions for taking new cards
         final List<ActionList> actionTakeList = simpleActionList.getPossibleTakeCardAction();
-        // GET ALL ACTION REGARDING HERO CARDS
+        // Get all possible actions for playing hero cards
         final List<ActionPoints> actionHeroList = simpleActionList.getPossibleHeroMove();
 
-        // Is playing a card possible ?
+        // Check if playing a movement card is possible
         if(!actionCardList.isEmpty()) {
             Logger.debug("A card is playable for : " + playerData);
-            // order by most to least points and do the move lending the most points
+            // Order actions by most to least points and choose the action with the most points
             Collections.sort(actionCardList);
             for(ActionPoints actionCard : actionCardList) {
                 System.out.println();
@@ -42,17 +55,16 @@ public class KoRDeciderCamarade extends KoRDecider {
             }
             return actionCardList.get(0).getActionList();
         }
-        // Is taking a card possible ?
+
+        // Check if taking a card is possible
         if(!actionTakeList.isEmpty()) {
             Logger.debug("A take card action is playable for : " + playerData);
             return actionTakeList.get(0);
         }
 
-        // As a last resort play on the opponent trying to get the most point out of it
+        // As a last resort, play a hero card trying to get the most points out of it
         Logger.debug("A hero card is playable for : " + playerData);
         return actionHeroList.get(0).getActionList();
-
     }
-
 
 }
