@@ -4,12 +4,57 @@ import boardifier.model.GameStageModel;
 import model.KoRStageModel;
 import org.junit.jupiter.api.Test;
 
-public class MovementCardTest {
+import static org.junit.jupiter.api.Assertions.*;
+
+class MovementCardTest {
 
     @Test
-    public void testMovementCard() {
-        GameStageModel gameStageModel = new KoRStageModel("", null);
-        MovementCard movementCard = new MovementCard(1, MovementCard.Direction.NORTH, gameStageModel);
+    void testInvertDirection() {
+        // CHECK IF THE INVERTED DIRECTION IS WORKING WELL
+        assertEquals(MovementCard.Direction.SOUTH, MovementCard.Direction.NORTH.getOpposite());
+        assertEquals(MovementCard.Direction.NORTH, MovementCard.Direction.SOUTH.getOpposite());
+        assertEquals(MovementCard.Direction.WEST, MovementCard.Direction.EAST.getOpposite());
+        assertEquals(MovementCard.Direction.EAST, MovementCard.Direction.WEST.getOpposite());
+        assertEquals(MovementCard.Direction.NORTHEAST, MovementCard.Direction.SOUTHWEST.getOpposite());
+        assertEquals(MovementCard.Direction.SOUTHWEST, MovementCard.Direction.NORTHEAST.getOpposite());
+        assertEquals(MovementCard.Direction.SOUTHEAST, MovementCard.Direction.NORTHWEST.getOpposite());
+        assertEquals(MovementCard.Direction.NORTHWEST, MovementCard.Direction.SOUTHEAST.getOpposite());
     }
 
+    @Test
+    void testToggleMovementCard() {
+        GameStageModel gameStageModel = new KoRStageModel("", null);
+        // SETUP MOVEMENT CARD WITH OPPOSITE DIRECTION
+        MovementCard movementCard = new MovementCard(1, MovementCard.Direction.NORTH, gameStageModel);
+        MovementCard movementCardInvert = new MovementCard(1, MovementCard.Direction.SOUTH, gameStageModel);
+        // INVERT ONE CARD
+        movementCardInvert.toggleInverted();
+
+        // CHECK IF THE MOVEMENT CARD IS INVERTED IN THE RIGHT DIRECTION
+        assertTrue(movementCardInvert.isInverted());
+        assertEquals(movementCard.getDirection(), movementCardInvert.getDirection());
+    }
+
+    @Test
+    void testToggleMovementCardByOwner() {
+        GameStageModel gameStageModel = new KoRStageModel("", null);
+        // SETUP MOVEMENT CARD
+        MovementCard movementCardBlue = new MovementCard(1, MovementCard.Direction.NORTH, gameStageModel);
+        MovementCard movementCardRed = new MovementCard(1, MovementCard.Direction.SOUTH, gameStageModel);
+        // CHANGE THEIR OWNER
+        movementCardBlue.setOwner(MovementCard.Owner.PLAYER_BLUE);
+        movementCardRed.setOwner(MovementCard.Owner.PLAYER_RED);
+
+        // CHECK IF BLUE MOVEMENT CARD IS NOT INVERTED AND IF RED MOVEMENT CARD IS INVERTED
+        assertEquals(MovementCard.Direction.NORTH, movementCardBlue.getDirection());
+        assertEquals(MovementCard.Direction.NORTH, movementCardRed.getDirection());
+    }
+
+    @Test
+    void testDefaultOwnerMovementCard() {
+        GameStageModel gameStageModel = new KoRStageModel("", null);
+        // SETUP MOVEMENT CARD
+        MovementCard movementCard = new MovementCard(1, MovementCard.Direction.NORTH, gameStageModel);
+        assertEquals(MovementCard.Owner.STACK, movementCard.getOwner());
+    }
 }
