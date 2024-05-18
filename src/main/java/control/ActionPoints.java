@@ -2,6 +2,8 @@ package control;
 
 import boardifier.model.action.ActionList;
 
+import java.util.Objects;
+
 /**
  * This class represents a pair of action list and points.
  * It is used by AI to evaluate and compare different moves based on their calculated points.
@@ -54,6 +56,18 @@ public class ActionPoints implements Comparable<ActionPoints> {
     @Override
     public int compareTo(ActionPoints actionPoints) {
         return Integer.compare(actionPoints.point, this.point);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ActionPoints that)) return false;
+        return point == that.point && Objects.equals(actionList, that.actionList);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(point, actionList);
     }
 
     /**
