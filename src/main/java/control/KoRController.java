@@ -20,14 +20,26 @@ import model.element.card.MovementCard;
 import utils.ContainerElements;
 import utils.Strings;
 
+/**
+ * This class controls the game flow, allowing the AI or player to do specific action with {@link ActionList}.
+ * It extends the Controller class and manages the main game loop and player turns.
+ */
 public class KoRController extends Controller {
 
     private final ConsoleController console;
+    private final GameConfigurationModel gameConfigurationModel;
 
     boolean firstPlayer;
     private ActionList playerActionList;
-    private GameConfigurationModel gameConfigurationModel;
 
+    /**
+     * Constructs a KoRController with the specified model, view, consoleController, and the gameConfigurationModel.
+     *
+     * @param model the game model.
+     * @param view the game view.
+     * @param consoleController the console controller for handling console input.
+     * @param gameConfigurationModel the configuration model for the game.
+     */
     public KoRController(Model model, View view, ConsoleController consoleController, GameConfigurationModel gameConfigurationModel) {
         super(model, view);
         this.gameConfigurationModel = gameConfigurationModel;
@@ -36,15 +48,16 @@ public class KoRController extends Controller {
     }
 
     /**
-     * Defines what to do within the single stage of the single party
-     * It is pretty straight forward to write :
+     * Defines what to do within the single stage of the single party.
+     * Continuously plays the game until it is ended or the game is stuck.
      */
     public void stageLoop() {
         final KoRStageModel gameStage = (KoRStageModel) model.getGameStage();
 
         update();
+        // While the game is not end
         while (!model.isEndStage()) {
-            // TANT QUE LA PARTIE N'EST PAS BLOQUÉ, ON JOUE
+            // While the game is not stuck, play
             while (!gameStage.gameIsStuck()) {
                 final PlayerData playerData = PlayerData.getCurrentPlayerData(model);
 
@@ -52,28 +65,39 @@ public class KoRController extends Controller {
 
                 if (!model.isEndStage()) update();
             }
-
+            // Print winner and stats of the game
             gameStage.computePartyResult();
         }
         endGame();
     }
 
+    /**
+     * Plays a single turn for the specified player data.
+     * Determines whether the current player is a computer or a human and acts accordingly.
+     *
+     * @param gameStage the current game stage model.
+     * @param playerData the player data for the current player.
+     */
     private void playTurn(KoRStageModel gameStage, PlayerData playerData) {
         final ActionPlayer actionPlayer;
 
-        // RÉCUPÈRE LE NOUVEAU JOUEUR
+        // Retrieve the player who need to play
         final Player p = model.getCurrentPlayer();
-        // IF player is a computer
+
+        // If the player is a computer
         if (p.getType() == Player.COMPUTER) {
-            // THEN play the turn automatically
-            AIData ai = gameConfigurationModel.getPlayerDataAIDataMap().get(playerData);
-            ActionList actionList = new ActionList();
+            // Then play the turn automatically
+            final AIData ai = gameConfigurationModel.getPlayerDataAIDataMap().get(playerData);
+            final ActionList actionList;
+
             // Choose which AI should play for the current player
             switch (ai){
-                case RANDOM -> actionList.addAll(new KoRDeciderRandom(model, this).decide());
-                case CAMARADE -> actionList.addAll(new KoRDeciderCamarade(model, this).decide());
-                case HATECARDS -> actionList.addAll(new KoRDeciderHateCards(model,this).decide());
-                case GUIDE -> actionList.addAll(new KoRDeciderGuide(model, this).decide());
+                case RANDOM -> actionList = new KoRDeciderRandom(model, this).decide();
+                case CAMARADE -> actionList = new KoRDeciderCamarade(model, this).decide();
+                case HATECARDS -> actionList = new KoRDeciderHateCards(model,this).decide();
+                case GUIDE -> actionList = new KoRDeciderGuide(model, this).decide();
+                // Technically impossible
+                default -> throw new IllegalCallerException("Impossible to reach this error, a condition must be added here to implement the correct AI");
             }
 
             actionPlayer = new ActionPlayer(model, this, actionList);
@@ -81,42 +105,57 @@ public class KoRController extends Controller {
             boolean ok = false;
             while (!ok) {
                 System.out.print(p.getName() + " > ");
-                // ANALYSE L'ENTRÉE DU JOUEUR HUMAIN
-
+                // Analyze the human player's input
                 final String line = console.getConsoleLine();
-                // REGARDE SI LE JOUEUR ARRETE LE JEU (EXEMPLE : CTRL + D ou "stop")
+
+                // Check if the player stops the game (e.g., CTRL + D or "stop")
                 if (line == null || line.equals("stop")) {
                     model.stopStage();
                     return;
                 }
 
                 ok = actionAnalyse(gameStage, playerData, line);
-                // SI L'ENTRÉE N'EST PAS VALIDE, ALORS BOUCLÉ UNE FOIS DE PLUS SUR UNE NOUVELLE ENTRÉE
-                if (!ok) {
-                    System.out.println("incorrect instruction. retry !");
-                }
+                // If the input is invalid, loop again for new input
+                if (!ok) System.out.println("incorrect instruction. retry !");
             }
-            // RÉCUPÈRE LES ACTIONS DU JOUEURS POUR EN FAIRE UN ACTIONPLAYER
+            // Retrieve the player's actions and create an ActionPlayer
             actionPlayer = new ActionPlayer(model, this, playerActionList);
         }
 
-        // JOUE LES ACTIONS RENSEIGNÉES
+        // Execute the specified actions
         actionPlayer.start();
 
-        // SI LE PROCHAIN JOUEUR PEUT JOUER, ALORS DÉCLARER LA FIN DU TOUR POUR PASSER AU JOUEUR SUIVANT
+        // If the next player can play, declare the end of the turn to pass to the next player
         if (gameStage.playerCanPlay(playerData.getNextPlayerData())) endOfTurn();
     }
 
+    /**
+     * Ends the current player's turn and sets the next player.
+     * Updates the display to show the new player's name.
+     * <p>
+     * Played by :
+     * <p>
+     * - {@link #playTurn(KoRStageModel, PlayerData)}, if next player can play
+     * <p>
+     * - {@link ActionPlayer#start()}, if the ActionList {@link ActionList#mustDoEndOfTurn()} return true
+     */
     @Override
     public void endOfTurn() {
         model.setNextPlayer();
-        // get the new player to display its name
+        // Get the new player to display their name
         Player p = model.getCurrentPlayer();
         KoRStageModel stageModel = (KoRStageModel) model.getGameStage();
         stageModel.getPlayerName().setText(p.getName());
     }
 
-    // RENVOIE FAUX SI L'ACTION N'EST PAS VALIDE
+    /**
+     * Analyzes the player's input and constructs the corresponding action list if the input is valid.
+     *
+     * @param gameStage the current game stage model.
+     * @param playerData the data of the current player.
+     * @param line the player's input line.
+     * @return true if the action is valid and an action list is created, false otherwise.
+     */
     private boolean actionAnalyse(KoRStageModel gameStage, PlayerData playerData, String line) {
         if (line.isEmpty() || line.length() > 2) return false;
 
@@ -127,15 +166,14 @@ public class KoRController extends Controller {
         if (action == 'P') {
             if (length != 1) return false;
 
-            final ContainerElement container;
-            if (playerData == PlayerData.PLAYER_BLUE) {
-                container = gameStage.getBlueMovementCardsSpread();
-            } else {
-                container = gameStage.getRedMovementCardsSpread();
-            }
-            // RÉCUPÈRE LA PREMIERE CASE VIDE DU JOUEUR DANS CA GRILLE DE CARTE DE DÉPLACEMENT
+            final ContainerElement container = (playerData == PlayerData.PLAYER_BLUE)
+                    ? gameStage.getBlueMovementCardsSpread()
+                    : gameStage.getRedMovementCardsSpread();
+
+            // Get the first empty position in the player's movement card grid
             final Coord2D coord2D = ContainerElements.getEmptyPosition(container);
 
+            // If the hand of the player is full, do nothing
             if (coord2D == null) {
                 System.out.println("Vous avez déjà plus de 5 cartes mouvement");
                 return false;
@@ -145,50 +183,44 @@ public class KoRController extends Controller {
         } else if (action == 'D') {
             if (length != 2) return false;
 
-            // SI L'INDEX DE L'ACTION RENVOIE -1 ALORS CE N'EST PAS UN NOMBRE QUI SUIT LA LETTRE 'D'
-            // note : on vérifie si l'index fait -2 (et pas -1) car on fait -1 sur la variable pour avoir le vrai index
-            //        par exemple l'index de la carte 3 est 2 (donc 3-1)
+            // Parse the index from the input and adjust to zero-based index
             final int indexCard = Strings.parseInt(line.substring(1)) - 1;
+            // If the indexCard is invalid, do nothing
             if (indexCard == -1) return false;
 
-            final MovementCardSpread movementCardSpread;
-            if (playerData == PlayerData.PLAYER_BLUE) {
-                movementCardSpread = gameStage.getBlueMovementCardsSpread();
-            } else {
-                movementCardSpread = gameStage.getRedMovementCardsSpread();
-            }
+            final MovementCardSpread movementCardSpread = (playerData == PlayerData.PLAYER_BLUE)
+                    ? gameStage.getBlueMovementCardsSpread()
+                    : gameStage.getRedMovementCardsSpread();
 
+            // Get the general pot
             final PawnPot pawnPot = gameStage.getGeneralPot(playerData);
-            if(pawnPot == null) {
-                Logger.info("BUG, pot vide, fin de partie !");
-                return false;
-            }
+            // If Blue and Red pot is empty, this means that the code cannot be reached because the game should be over
+            if(pawnPot == null) throw new IllegalCallerException("Unreachable code, the code to determine whether a player can play must be re-read");
 
-            // SI N'A PLUS DE CARTE MOUVEMENT
+
             if (movementCardSpread.isEmpty()) {
                 System.out.println("Vous n'avez pas de carte mouvement à jouer.\nPiocher une carte!");
                 return false;
             }
 
-            // SI LA CARTE MOUVEMENT SELECTIONNÉ N'EXISTE PAS
             if (movementCardSpread.isEmptyAt(0, indexCard)) {
                 System.out.println("Sélectionner une carte que vous possédez.");
                 return false;
             }
 
-            // RÉCUPÈRE LES ÉLÉMENTS ESSENTIELS
+            // Get the necessary elements
             final KoRBoard board = gameStage.getBoard();
             final MovementCard movementCard = (MovementCard) movementCardSpread.getElement(0, indexCard);
             final GameElement king = gameStage.getKingPawn();
 
-            // RÉCUPÈRE LA POSITION DU PION DU ROI QU'ON ADDITIONNE AU VECTEUR DE LA CARTE DÉPLACEMENT
+            // Calculate the new position for the king based on the movement card's direction vector
             final Coord2D pos = ContainerElements.getElementPosition(king, board)
                     .add(movementCard.getDirectionVector());
 
             final int col = (int) pos.getX();
             final int row = (int) pos.getY();
 
-            // SI ON NE PEUT PAS ATTEINDRE LA CASE AVEC LA CARTE
+            // Validate the move
             if (!board.canReachCell(row, col) || !board.isEmptyAt(row, col)) {
                 System.out.println("Vous ne pouvez pas jouer cette carte!");
                 Logger.info("Sortie de tableau");
@@ -199,10 +231,9 @@ public class KoRController extends Controller {
         } else if (action == 'H') {
             if (length != 2) return false;
 
-            // SI L'INDEX DE L'ACTION RENVOIE -1 ALORS CE N'EST PAS UN NOMBRE QUI SUIT LA LETTRE 'D'
-            // note : on vérifie si l'index fait -2 (et pas -1) car on fait -1 sur la variable pour avoir le vrai index
-            //        par exemple l'index de la carte 3 est 2 (donc 3-1)
+            // Parse the index from the input and adjust to zero-based index
             final int indexCard = Strings.parseInt(line.substring(1)) - 1;
+            // If the indexCard is invalid, do nothing
             if (indexCard == -1) return false;
 
             final MovementCardSpread movementCardSpread;
@@ -220,39 +251,37 @@ public class KoRController extends Controller {
                 return false;
             }
 
-            // SI N'A PLUS DE CARTE MOUVEMENT
             if (movementCardSpread.isEmpty()) {
                 System.out.println("Vous n'avez pas de carte mouvement à jouer.\nPiocher une carte!");
                 return false;
             }
 
-            // SI LA CARTE MOUVEMENT SELECTIONNÉ N'EXISTE PAS
             if (movementCardSpread.isEmptyAt(0, indexCard)) {
                 System.out.println("Sélectionner une carte que vous possédez.");
                 return false;
             }
 
-            // RÉCUPÈRE LES ÉLÉMENTS ESSENTIELS
+            // Get the necessary elements
             final KoRBoard board = gameStage.getBoard();
             final HeroCard heroCard = (HeroCard) heroCardStack.getElement(0, 0);
             final MovementCard movementCard = (MovementCard) movementCardSpread.getElement(0, indexCard);
             final GameElement king = gameStage.getKingPawn();
 
-            // RÉCUPÈRE LA POSITION DU PION DU ROI QU'ON ADDITIONNE AU VECTEUR DE LA CARTE DÉPLACEMENT
+            // Calculate the new position for the king based on the movement card's direction vector
             final Coord2D pos = ContainerElements.getElementPosition(king, board)
                     .add(movementCard.getDirectionVector());
 
             final int col = (int) pos.getX();
             final int row = (int) pos.getY();
 
-            // SI ON NE PEUT PAS ATTEINDRE LA CASE AVEC LA CARTE
+            // Validate the move
             if (!board.canReachCell(row, col) || board.isEmptyAt(row, col)) {
                 System.out.println("Vous ne pouvez pas jouer cette carte!");
                 Logger.info("Sortie de tableau");
                 return false;
             }
 
-            // RÉCUPÈRE LE PION À RETOURNER ET CHANGE SA COULEUR
+            // Get the pawn to be flipped and check its ownership
             final Pawn pawn = (Pawn) board.getElement(row, col);
             if (pawn.getStatus().isOwnedBy(playerData)) {
                 System.out.println("Vous ne pouvez pas jouer cette carte!");
