@@ -23,19 +23,18 @@ public class MovementCardLook extends ElementLook {
             shape[1][0] = " ";
         }
 
-        else if (owner == MovementCard.Owner.OUT) {
-            shape[0][0] = ConsoleColor.BLACK + ConsoleColor.YELLOW_BACKGROUND + card.getDirection().getSymbole() + ConsoleColor.RESET;
-            shape[1][0] = ConsoleColor.BLACK + ConsoleColor.YELLOW_BACKGROUND + card.getStep() + ConsoleColor.RESET;
-        }
+        else {
+            final String backgroundColor = card.getOwner().getBackgroundColor();
+            final String direction = ConsoleColor.BLACK + backgroundColor + card.getDirection().getSymbole() + ConsoleColor.RESET;
+            final String step = ConsoleColor.BLACK + backgroundColor + card.getStep() + ConsoleColor.RESET;
 
-        else if (owner == MovementCard.Owner.PLAYER_RED) {
-            shape[0][0] = ConsoleColor.BLACK + ConsoleColor.WHITE_BACKGROUND + card.getStep() + ConsoleColor.RESET;
-            shape[1][0] = ConsoleColor.BLACK + ConsoleColor.WHITE_BACKGROUND + card.getDirection().getSymbole() + ConsoleColor.RESET;
-        }
-
-        else if (owner == MovementCard.Owner.PLAYER_BLUE) {
-            shape[0][0] = ConsoleColor.BLACK + ConsoleColor.WHITE_BACKGROUND + card.getDirection().getSymbole() + ConsoleColor.RESET;
-            shape[1][0] = ConsoleColor.BLACK + ConsoleColor.WHITE_BACKGROUND + card.getStep() + ConsoleColor.RESET;
+            if(card.isInverted()) {
+                shape[0][0] = step;
+                shape[1][0] = direction;
+            } else {
+                shape[0][0] = direction;
+                shape[1][0] = step;
+            }
         }
     }
 

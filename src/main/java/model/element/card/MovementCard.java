@@ -4,11 +4,13 @@ import boardifier.model.Coord2D;
 import boardifier.model.ElementTypes;
 import boardifier.model.GameElement;
 import boardifier.model.GameStageModel;
+import boardifier.view.ConsoleColor;
 
 public class MovementCard extends GameElement {
 
+    private boolean inverted;
     private final int step;
-    private final Direction direction;
+    private Direction direction;
     private Owner owner;
 
     public MovementCard(int step, Direction direction, GameStageModel gameStageModel) {
@@ -20,6 +22,7 @@ public class MovementCard extends GameElement {
 
         this.step = step;
         this.direction = direction;
+        this.inverted = false;
         this.owner = Owner.STACK;
     }
 
@@ -29,6 +32,16 @@ public class MovementCard extends GameElement {
 
     public void setOwner(Owner owner) {
         this.owner = owner;
+        if(owner == Owner.PLAYER_RED) toggleInverted();
+    }
+
+    public boolean isInverted() {
+        return inverted;
+    }
+
+    public void toggleInverted() {
+        this.inverted = !this.inverted;
+        this.direction = direction.getOpposite();
     }
 
     public int getStep() {
@@ -134,6 +147,10 @@ public class MovementCard extends GameElement {
         PLAYER_RED,
         PLAYER_BLUE,
         STACK,
-        OUT // (OUT SIGNIFIE QUE LA CARTE N'EST PAS À UN JOUEUR ET N'EST PAS DANS LA PILE)
+        OUT; // (OUT SIGNIFIE QUE LA CARTE N'EST PAS À UN JOUEUR ET N'EST PAS DANS LA PILE)
+
+        public String getBackgroundColor() {
+            return (this == OUT) ? ConsoleColor.YELLOW_BACKGROUND : ConsoleColor.WHITE_BACKGROUND;
+        }
     }
 }

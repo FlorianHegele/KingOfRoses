@@ -803,8 +803,10 @@ public class KoRStageModel extends GameStageModel {
         final ActionList actionList = new ActionList();
 
         // REMET LES CARTES JOUÉES DANS LA PILE
-        for (MovementCard movementCard : movementCardList)
+        for (MovementCard movementCard : movementCardList) {
+            if(movementCard.isInverted()) movementCard.toggleInverted();
             actionList.addAll(ActionFactory.generatePutInContainer(model, movementCard, movementCardStack.getName(), 0, 0));
+        }
 
         new ActionPlayer(model, null, actionList).start();
     }
