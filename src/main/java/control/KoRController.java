@@ -2,14 +2,15 @@ package control;
 
 import boardifier.control.ActionPlayer;
 import boardifier.control.Controller;
+import boardifier.control.Decider;
 import boardifier.control.Logger;
 import boardifier.model.*;
 import boardifier.model.action.ActionList;
 import boardifier.view.View;
-import model.AIData;
+import model.data.AIData;
 import model.GameConfigurationModel;
 import model.KoRStageModel;
-import model.PlayerData;
+import model.data.PlayerData;
 import model.container.KoRBoard;
 import model.container.PawnPot;
 import model.container.card.HeroCardStack;
@@ -88,19 +89,9 @@ public class KoRController extends Controller {
         if (p.getType() == Player.COMPUTER) {
             // Then play the turn automatically
             final AIData ai = gameConfigurationModel.getPlayerDataAIDataMap().get(playerData);
-            final ActionList actionList;
+            final Decider decider = ai.getDecider(playerData, model, this);
 
-            // Choose which AI should play for the current player
-            switch (ai){
-                case RANDOM -> actionList = new KoRDeciderRandom(model, this).decide();
-                case CAMARADE -> actionList = new KoRDeciderCamarade(model, this).decide();
-                case HATECARDS -> actionList = new KoRDeciderHateCards(model,this).decide();
-                case GUIDE -> actionList = new KoRDeciderGuide(model, this).decide();
-                // Technically impossible
-                default -> throw new IllegalCallerException("Impossible to reach this error, a condition must be added here to implement the correct AI");
-            }
-
-            actionPlayer = new ActionPlayer(model, this, actionList);
+            actionPlayer = new ActionPlayer(model, this, decider.decide());
         } else {
             boolean ok = false;
             while (!ok) {
@@ -162,7 +153,7 @@ public class KoRController extends Controller {
         final char action = line.charAt(0);
         final int length = line.length();
 
-        final SimpleActionList simpleActionList = new SimpleActionList(model);
+        final SimpleActionList simpleActionList = new SimpleActionList(model, playerData);
         if (action == 'P') {
             if (length != 1) return false;
 
@@ -227,7 +218,7 @@ public class KoRController extends Controller {
                 return false;
             }
 
-            playerActionList = simpleActionList.useMovementCard(movementCard, pos, playerData);
+            playerActionList = simpleActionList.useMovementCard(movementCard, pos);
         } else if (action == 'H') {
             if (length != 2) return false;
 

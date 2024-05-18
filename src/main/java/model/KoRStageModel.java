@@ -2,17 +2,15 @@ package model;
 
 import boardifier.control.ActionFactory;
 import boardifier.control.ActionPlayer;
-import boardifier.control.Logger;
 import boardifier.model.*;
 import boardifier.model.action.ActionList;
-import control.ActionPoints;
-import control.SimpleActionList;
 import model.container.KoRBoard;
 import model.container.PawnPot;
 import model.container.card.HeroCardStack;
 import model.container.card.MovementCardSpread;
 import model.container.card.MovementCardStack;
 import model.container.card.MovementCardStackPlayed;
+import model.data.PlayerData;
 import model.element.Pawn;
 import model.element.card.HeroCard;
 import model.element.card.MovementCard;
@@ -391,202 +389,6 @@ public class KoRStageModel extends GameStageModel {
                 bluePawnText.setText(String.valueOf(ContainerElements.countElements(bluePot)));
             }
         });
-    }
-
-    /**
-     * @param playerData the player data
-     * @return List of list of actions for the player to play a hero card
-     */
-    public List<ActionPoints> getPossibleHeroMove(PlayerData playerData, PlayerData opponent){
-        final List<ActionPoints> actions = new ArrayList<>();
-        if (playerData == null) return actions;
-
-        final SimpleActionList simpleActionList = new SimpleActionList(model);
-
-        final PawnPot pawnPot = getGeneralPot(playerData);
-        final MovementCardSpread movementCardSpread;
-        final HeroCardStack heroCardStack;
-
-        if (playerData == PlayerData.PLAYER_BLUE) {
-            movementCardSpread = blueMovementCardsSpread;
-            heroCardStack = blueHeroCardStack;
-        } else {
-            movementCardSpread = redMovementCardsSpread;
-            heroCardStack = redHeroCardStack;
-        }
-
-        // SI LE JOUEUR N'A PLUS DE PION OU DE CARTE HERO, NE RENVOI AUCUNE ACTION
-        final boolean hasHeroCard = ContainerElements.countElements(heroCardStack) > 0;
-        if (pawnPot.isEmpty()||!hasHeroCard) return actions;
-
-        final int countMovementCards = ContainerElements.countElements(movementCardSpread);
-
-        final Coord2D kingPos = ContainerElements.getElementPosition(kingPawn, board);
-        final int cardRow = 0;
-        for (int cardCol = 0; cardCol < countMovementCards; cardCol++) {
-            // S'IL N'Y A PAS DE CARTE A CET EMPLACEMENT, PASSER A L'EMPLACEMENT SUIANT
-            if (movementCardSpread.isEmptyAt(cardRow, cardCol)) continue;
-
-            // RÉCUPÈRE CHAQUE CARTE DIRECTION DU JOUEUR
-            final MovementCard movementCard = (MovementCard) movementCardSpread.getElement(cardRow, cardCol);
-
-            // RÉCUPÈRE L'EMPLACEMENT POTENTIEL DU ROI AVEC LA CARTE DIRECTION JOUÉE
-            final Coord2D potentialPos = movementCard.getDirectionVector().add(kingPos);
-            final int col = (int) potentialPos.getX();
-            final int row = (int) potentialPos.getY();
-
-            // SI ON NE PEUT PAS ATTEINDRE LA POSITION POTENTIELLE OU QU'IL N'Y A PAS DE PION
-            // ALORS ON PASSE À LA CARTE SUIVANTE
-            if (!board.canReachCell(row, col)||board.isEmptyAt(row, col)) continue;
-
-            // SI LE PION N'EST PAS CELUI DU JOUEUR
-            // ALORS RAJOUTER L'ACTION DE LA CARTE DÉPLACEMENT + HERO
-            if (!((Pawn) board.getElement(row, col)).getStatus().isOwnedBy(playerData)) {
-                actions.add(new ActionPoints(simpleActionList.useHeroCard((HeroCard) heroCardStack.getElement(0, 0), movementCard,
-                        (Pawn) board.getElement(row, col), potentialPos),getPlayerZonePawnSimple(opponent,row,col)));
-            }
-
-        }
-        return actions;
-    }
-
-    /**
-     * @param playerData the player data
-     * @return List of list of actions for the player to play a movement card
-     */
-    public List<ActionPoints> getPossibleMovementCards(PlayerData playerData) {
-        final List<ActionPoints> actions = new ArrayList<>();
-        if (playerData == null) return actions;
-
-        final SimpleActionList simpleActionList = new SimpleActionList(model);
-
-        final PawnPot pawnPot = getGeneralPot(playerData);
-        final MovementCardSpread movementCardSpread;
-        final HeroCardStack heroCardStack;
-
-        if (playerData == PlayerData.PLAYER_BLUE) {
-            movementCardSpread = blueMovementCardsSpread;
-            heroCardStack = blueHeroCardStack;
-        } else {
-            movementCardSpread = redMovementCardsSpread;
-            heroCardStack = redHeroCardStack;
-        }
-
-        // SI LE JOUEUR N'A PLUS DE PION, ALORS IL NE PEUT RIEN FAIRE
-        if (pawnPot.isEmpty()) return actions;
-
-        final int countMovementCards = ContainerElements.countElements(movementCardSpread);
-
-        final boolean hasHeroCard = ContainerElements.countElements(heroCardStack) > 0;
-        final Coord2D kingPos = ContainerElements.getElementPosition(kingPawn, board);
-        final int cardRow = 0;
-        for (int cardCol = 0; cardCol < countMovementCards; cardCol++) {
-            if (movementCardSpread.isEmptyAt(cardRow, cardCol)) continue;
-
-            // RÉCUPÈRE CHAQUE CARTE DIRECTION DU JOUEUR
-            final MovementCard movementCard = (MovementCard) movementCardSpread.getElement(cardRow, cardCol);
-            // RÉCUPÈRE L'EMPLACEMENT POTENTIEL DU ROI AVEC LA CARTE DIRECTION JOUÉE
-            final Coord2D potentialPos = movementCard.getDirectionVector().add(kingPos);
-            final int col = (int) potentialPos.getX();
-            final int row = (int) potentialPos.getY();
-
-            // SI ON NE PEUT PAS ATTEINDRE LA POSITION POTENTIEL, ALORS ON PASSE À LA CARTE SUIVANTE
-            if (!board.canReachCell(row, col)) continue;
-
-            // SI L'EMPLACEMENT EST VIDE, ALORS RAJOUTER L'ACTION DU DÉPLACEMENT SIMPLE
-            if (board.isEmptyAt(row, col)) {
-                actions.add(new ActionPoints(simpleActionList.useMovementCard(movementCard, potentialPos, playerData),getPlayerZonePawnSimple(playerData,row,col)));
-            }
-        }
-        return actions;
-    }
-
-    public List<ActionList> getPossibleTakeCardAction(PlayerData playerData) {
-        final List<ActionList> actions = new ArrayList<>();
-        if (playerData == null) return actions;
-
-        final SimpleActionList simpleActionList = new SimpleActionList(model);
-
-        final PawnPot pawnPot = getGeneralPot(playerData);
-        final MovementCardSpread movementCardSpread;
-
-        if (playerData == PlayerData.PLAYER_BLUE) {
-            movementCardSpread = blueMovementCardsSpread;
-        } else {
-            movementCardSpread = redMovementCardsSpread;
-        }
-
-        // SI LE JOUEUR N'A PLUS DE PION, ALORS IL NE PEUT RIEN FAIRE
-        if (pawnPot.isEmpty()) return actions;
-
-        // SI LE JOUEUR PEUT PIOCHER UNE CARTE DE MOUVEMENT
-        final int countMovementCards = ContainerElements.countElements(movementCardSpread);
-        if (countMovementCards < 5) {
-            // RAJOUTER L'ACTION DE PIOCHER
-            actions.add(simpleActionList.pickUpMovementCard(movementCardSpread));
-        }
-
-        return actions;
-    }
-
-    public List<ActionList> getPossiblePlayerActions(PlayerData playerData) {
-        final List<ActionList> actions = new ArrayList<>();
-        if (playerData == null) return actions;
-
-        final SimpleActionList simpleActionList = new SimpleActionList(model);
-
-        final PawnPot pawnPot = getGeneralPot(playerData);
-        final MovementCardSpread movementCardSpread;
-        final HeroCardStack heroCardStack;
-
-        if (playerData == PlayerData.PLAYER_BLUE) {
-            movementCardSpread = blueMovementCardsSpread;
-            heroCardStack = blueHeroCardStack;
-        } else {
-            movementCardSpread = redMovementCardsSpread;
-            heroCardStack = redHeroCardStack;
-        }
-
-        // SI LE JOUEUR N'A PLUS DE PION, ALORS IL NE PEUT RIEN FAIRE
-        if (pawnPot.isEmpty()) return actions;
-
-        // SI LE JOUEUR PEUT PIOCHER UNE CARTE DE MOUVEMENT
-        final int countMovementCards = ContainerElements.countElements(movementCardSpread);
-        if (countMovementCards < 5) {
-            // RAJOUTER L'ACTION DE PIOCHER
-            actions.add(simpleActionList.pickUpMovementCard(movementCardSpread));
-        }
-
-        // SI LE JOUEUR NE POSSÈDE PAS DE CARTE MOUVEMENT ALORS RENVOYER L'ACTION DE PIOCHER UNIQUEMENT
-        if (countMovementCards == 0) return actions;
-
-        final boolean hasHeroCard = ContainerElements.countElements(heroCardStack) > 0;
-        final Coord2D kingPos = ContainerElements.getElementPosition(kingPawn, board);
-        final int cardRow = 0;
-        for (int cardCol = 0; cardCol < countMovementCards; cardCol++) {
-            if (movementCardSpread.isEmptyAt(cardRow, cardCol)) continue;
-
-            // RÉCUPÈRE CHAQUE CARTE DIRECTION DU JOUEUR
-            final MovementCard movementCard = (MovementCard) movementCardSpread.getElement(cardRow, cardCol);
-            // RÉCUPÈRE L'EMPLACEMENT POTENTIEL DU ROI AVEC LA CARTE DIRECTION JOUÉE
-            final Coord2D potentialPos = movementCard.getDirectionVector().add(kingPos);
-            final int col = (int) potentialPos.getX();
-            final int row = (int) potentialPos.getY();
-
-            // SI ON NE PEUT PAS ATTEINDRE LA POSITION POTENTIEL, ALORS ON PASSE À LA CARTE SUIVANTE
-            if (!board.canReachCell(row, col)) continue;
-
-            // SI L'EMPLACEMENT EST VIDE, ALORS RAJOUTER L'ACTION DU DÉPLACEMENT SIMPLE
-            // SINON SI LE JOUEUR POSSÈDE AU MOINS UNE CARTE HERO ET QUE LE PION N'EST PAS
-            // LE SIEN ALORS RAJOUTER L'ACTION DE LA CARTE DÉPLACEMENT + HÉRO
-            if (board.isEmptyAt(row, col)) {
-                actions.add(simpleActionList.useMovementCard(movementCard, potentialPos, playerData));
-            } else if (hasHeroCard && !((Pawn) board.getElement(row, col)).getStatus().isOwnedBy(playerData)) {
-                actions.add(simpleActionList.useHeroCard((HeroCard) heroCardStack.getElement(0, 0), movementCard,
-                        (Pawn) board.getElement(row, col), potentialPos));
-            }
-        }
-        return actions;
     }
 
     public boolean playerCanPlay(PlayerData playerData) {

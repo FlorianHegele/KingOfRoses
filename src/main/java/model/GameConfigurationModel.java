@@ -2,6 +2,9 @@ package model;
 
 import boardifier.control.Logger;
 import boardifier.model.Model;
+import model.data.AIData;
+import model.data.PlayerData;
+
 import java.util.HashMap;
 import java.util.Map;
 

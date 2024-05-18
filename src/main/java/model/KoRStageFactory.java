@@ -9,6 +9,7 @@ import model.container.card.HeroCardStack;
 import model.container.card.MovementCardSpread;
 import model.container.card.MovementCardStack;
 import model.container.card.MovementCardStackPlayed;
+import model.data.PlayerData;
 import model.element.Pawn;
 import model.element.card.HeroCard;
 import model.element.card.MovementCard;

@@ -3,7 +3,6 @@ package view.element.card;
 import boardifier.model.GameElement;
 import boardifier.view.ConsoleColor;
 import boardifier.view.ElementLook;
-import model.PlayerData;
 import model.element.card.MovementCard;
 
 public class MovementCardLook extends ElementLook {

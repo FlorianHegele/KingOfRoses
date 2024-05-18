@@ -1,8 +1,8 @@
 package control;
 
 import model.GameConfigurationModel;
-import model.PlayerData;
-import model.AIData;
+import model.data.PlayerData;
+import model.data.AIData;
 import utils.Strings;
 
 /**

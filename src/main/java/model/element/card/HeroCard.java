@@ -3,7 +3,7 @@ package model.element.card;
 import boardifier.model.ElementTypes;
 import boardifier.model.GameElement;
 import boardifier.model.GameStageModel;
-import model.PlayerData;
+import model.data.PlayerData;
 
 
 public class HeroCard extends GameElement {

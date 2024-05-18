@@ -4,7 +4,7 @@ import boardifier.model.ElementTypes;
 import boardifier.model.GameElement;
 import boardifier.model.GameStageModel;
 import boardifier.view.ConsoleColor;
-import model.PlayerData;
+import model.data.PlayerData;
 
 
 public class Pawn extends GameElement {

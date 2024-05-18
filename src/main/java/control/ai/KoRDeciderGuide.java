@@ -1,61 +1,55 @@
-package control;
+package control.ai;
 
 import boardifier.control.Controller;
-import boardifier.control.Decider;
 import boardifier.control.Logger;
 import boardifier.model.Model;
 import boardifier.model.action.ActionList;
-import model.KoRStageModel;
-import model.PlayerData;
+import control.ActionPoints;
+import model.data.PlayerData;
 
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 
 /*
  * Represent an AI player priorizing cutting the other player lines
  */
-public class KoRDeciderGuide extends Decider {
+public class KoRDeciderGuide extends KoRDecider {
 
-    private static final Random LOTO = new Random(Calendar.getInstance().getTimeInMillis());
+    private static final int THRESHOLD = 4;
 
-    public KoRDeciderGuide(Model model, Controller control) {
-        super(model, control);
+    public KoRDeciderGuide(Model model, Controller control, PlayerData playerData) {
+        super(model, control, playerData);
     }
 
     @Override
     public ActionList decide() {
-        final int threshold = 4;
         // do a cast get a variable of the real type to get access to the attributes of KoRStageModel
-        KoRStageModel stage = (KoRStageModel) model.getGameStage();
-
-        Logger.debug("Playing for " + PlayerData.getCurrentPlayerData(model));
+        Logger.debug("Playing for " + playerData);
 
         // GET ALL ACTION REGARDING PLAYABLE CARDS
-        final List<ActionPoints> actionCardList = stage.getPossibleMovementCards(PlayerData.getCurrentPlayerData(model));
+        final List<ActionPoints> actionCardList = simpleActionList.getPossibleMovementCards();
         // GET ALL ACTION TO TAKE NEW CARD
-        final List<ActionList> actionTakeList = stage.getPossibleTakeCardAction(PlayerData.getCurrentPlayerData(model));
+        final List<ActionList> actionTakeList = simpleActionList.getPossibleTakeCardAction();
         // GET ALL ACTION REGARDING HERO CARDS
-        final List<ActionPoints> actionHeroList = stage.getPossibleHeroMove(PlayerData.getCurrentPlayerData(model), PlayerData.getCurrentPlayerData(model).getNextPlayerData());
+        final List<ActionPoints> actionHeroList = simpleActionList.getPossibleHeroMove();
 
         // TODO : IMPLEMENT THE DECISION MAKING PROCESS
         // Is playing  hero card possible options ?
         if(!actionHeroList.isEmpty()) {
-            Logger.debug("A card and a hero card is playable for : " + PlayerData.getCurrentPlayerData(model));
+            Logger.debug("A card and a hero card is playable for : " + playerData);
             // Should the AI attack ?
             Collections.sort(actionHeroList);
             for(ActionPoints action : actionHeroList) {
                 Logger.debug("HeroCard: " + action);
-                if (action.getPoint() >= threshold)
+                if (action.getPoint() >= THRESHOLD)
                     return action.getActionList();
             }
         }
 
         // Is playing a card possible ?
         if(!actionCardList.isEmpty()) {
-            Logger.debug("A card is playable for : " + PlayerData.getCurrentPlayerData(model));
+            Logger.debug("A card is playable for : " + playerData);
             // order by most to least points and do the move lending the most points
             Collections.sort(actionCardList);
             for(ActionPoints actionCard : actionCardList) {
@@ -66,7 +60,7 @@ public class KoRDeciderGuide extends Decider {
         }
 
         // finally take a card
-        Logger.debug("A take card action is playable for : " + PlayerData.getCurrentPlayerData(model));
+        Logger.debug("A take card action is playable for : " + playerData);
         return actionTakeList.get(0);
 
     }

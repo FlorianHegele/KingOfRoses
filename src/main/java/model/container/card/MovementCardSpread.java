@@ -2,7 +2,7 @@ package model.container.card;
 
 import boardifier.model.ContainerElement;
 import boardifier.model.GameStageModel;
-import model.PlayerData;
+import model.data.PlayerData;
 
 public class MovementCardSpread extends ContainerElement {
 
