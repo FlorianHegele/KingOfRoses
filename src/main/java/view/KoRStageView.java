@@ -4,7 +4,6 @@ import boardifier.control.Logger;
 import boardifier.model.GameStageModel;
 import boardifier.view.ClassicBoardLook;
 import boardifier.view.GameStageView;
-
 import boardifier.view.TextLook;
 import model.KoRStageModel;
 import model.element.card.MovementCard;
@@ -12,6 +11,7 @@ import view.container.PawnPotLook;
 import view.container.card.HeroCardStackLook;
 import view.container.card.MovementCardSpreadLook;
 import view.container.card.MovementCardStackLook;
+import view.container.card.MovementCardStackPlayedLook;
 import view.element.PawnLook;
 import view.element.card.HeroCardLook;
 import view.element.card.MovementCardLook;
@@ -46,7 +46,7 @@ public class KoRStageView extends GameStageView {
 
     @Override
     public void createLooks() {
-        KoRStageModel model = (KoRStageModel)gameStageModel;
+        KoRStageModel model = (KoRStageModel) gameStageModel;
 
         /*
         TO FULFILL:
@@ -74,7 +74,7 @@ public class KoRStageView extends GameStageView {
          */
 
         // create look for the main board
-        addLook(new ClassicBoardLook(2, 4, model.getBoard(), 1, 1, true));
+        addLook(new ClassicBoardLook(2, 4, model.getBoard(), 1, 1, false));
 
         // create look for the hero cards
         addLook(new HeroCardStackLook(model.getRedHeroCardStack()));
@@ -82,6 +82,7 @@ public class KoRStageView extends GameStageView {
 
         // create look for the movement deck cards
         addLook(new MovementCardStackLook(model.getMovementCardStack()));
+        addLook(new MovementCardStackPlayedLook(model.getMovementCardStackPlayed()));
 
         // create look for the movement spread cards
         addLook(new MovementCardSpreadLook(model.getRedMovementCardsSpread()));
@@ -97,20 +98,20 @@ public class KoRStageView extends GameStageView {
          */
 
         // create look for the hero cards
-        for(int i=0; i<4; i++) {
+        for (int i = 0; i < 4; i++) {
             addLook(new HeroCardLook(model.getRedHeroCards()[i]));
             addLook(new HeroCardLook(model.getBlueHeroCards()[i]));
         }
 
         // create look for the pawns
-        for(int i=0; i<26; i++) {
+        for (int i = 0; i < 26; i++) {
             addLook(new PawnLook(model.getRedPawns()[i]));
             addLook(new PawnLook(model.getBluePawns()[i]));
         }
         addLook(new PawnLook(model.getKingPawn()));
 
         // create look for the movement card
-        for(MovementCard movementCard : model.getMovementCards()) {
+        for (MovementCard movementCard : model.getMovementCards()) {
             addLook(new MovementCardLook(movementCard));
         }
 

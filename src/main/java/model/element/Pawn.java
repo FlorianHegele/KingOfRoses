@@ -16,7 +16,7 @@ public class Pawn extends GameElement {
 
         // REGISTER NEW ELEMENT TYPE
         // Associe le mot pawn à l'entier 50
-        ElementTypes.register("pawn",50);
+        ElementTypes.register("pawn", 50);
         // Récupère l'entier associé au mot pawn et l'associe à la variable type
         this.type = ElementTypes.getType("pawn");
 
@@ -54,12 +54,15 @@ public class Pawn extends GameElement {
         }
 
         public Status getOpposite() {
-            if(this == KING_PAWN) throw new IllegalCallerException("The king's pawn can't be flipped");
             return (this == BLUE_PAWN) ? RED_PAWN : BLUE_PAWN;
         }
 
         public int getID() {
             return id;
+        }
+
+        public static Pawn.Status getPawnStatus(PlayerData playerData) {
+            return (playerData == PlayerData.PLAYER_RED) ? Pawn.Status.RED_PAWN : Pawn.Status.BLUE_PAWN;
         }
 
         public boolean isOwnedBy(PlayerData playerData) {

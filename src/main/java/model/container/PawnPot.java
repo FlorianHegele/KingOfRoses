@@ -1,7 +1,7 @@
 package model.container;
 
-import boardifier.model.GameStageModel;
 import boardifier.model.ContainerElement;
+import boardifier.model.GameStageModel;
 
 public class PawnPot extends ContainerElement {
 

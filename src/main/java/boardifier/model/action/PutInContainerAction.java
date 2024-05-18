@@ -78,4 +78,9 @@ public class PutInContainerAction extends GameAction {
             }
         }
     }
+
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName() + "{ " + element.getClass().getSimpleName() + " => "+ containerDest.getName() +" in rown "+ rowDest + ", col " + colDest +" +  }";
+    }
 }

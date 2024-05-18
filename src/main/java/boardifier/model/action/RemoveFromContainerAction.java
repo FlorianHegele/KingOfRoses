@@ -26,4 +26,9 @@ public class RemoveFromContainerAction extends GameAction {
     public void createAnimation() {
         animation = new WaitAnimation(model, 1);
     }
+
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName() + "{ " + element.getClass().getSimpleName() + " => "+((element.getContainer() == null) ? "null" : element.getContainer().getName())+" }";
+    }
 }

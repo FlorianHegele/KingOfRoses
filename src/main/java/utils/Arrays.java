@@ -17,8 +17,12 @@ public class Arrays {
     }
 
     public static <T> void shuffleArray(T[] array) {
+        shuffleArray(array, random);
+    }
+
+    public static <T> void shuffleArray(T[] array, Random random) {
         final int length = array.length;
-        for(int i = 0; i < length; i++) {
+        for (int i = 0; i < length; i++) {
             final int randomIndex = random.nextInt(length);
             swapArrayIndex(array, i, randomIndex);
         }

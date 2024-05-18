@@ -1,7 +1,7 @@
 package model.container;
 
-import boardifier.model.GameStageModel;
 import boardifier.model.ContainerElement;
+import boardifier.model.GameStageModel;
 
 /**
  * KoR main board represent the element where pawns are put when played
@@ -13,6 +13,6 @@ import boardifier.model.ContainerElement;
 public class KoRBoard extends ContainerElement {
     public KoRBoard(int x, int y, GameStageModel gameStageModel) {
         // call the super-constructor to create a 9x9 grid, named "KoR", and in x,y in space
-        super("KoRboard", x, y, 9 , 9, gameStageModel);
+        super("KoRboard", x, y, 9, 9, gameStageModel);
     }
 }

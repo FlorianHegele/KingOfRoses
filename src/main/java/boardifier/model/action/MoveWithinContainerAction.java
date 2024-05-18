@@ -69,4 +69,9 @@ public class MoveWithinContainerAction extends GameAction {
             }
         }
     }
+
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName() + "{ " + element.getClass().getSimpleName() + " => "+((element.getContainer() == null) ? "null" : element.getContainer().getName())+" in rown "+ rowDest + ", col " + colDest + " }";
+    }
 }
