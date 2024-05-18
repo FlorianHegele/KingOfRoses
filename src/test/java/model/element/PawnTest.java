@@ -8,22 +8,19 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
-public class PawnTest {
+class PawnTest {
 
     @Test
-    public void testGetOpposite() {
-        // Création d'un plateau
+    void testGetOpposite() {
         KoRStageModel stage = new KoRStageModel("test", new Model());
-        // Création d'un pion bleu et rouge
-        Pawn pawnB = new Pawn(Pawn.Status.BLUE_PAWN, stage);
-        Pawn pawnR = new Pawn(Pawn.Status.RED_PAWN, stage);
-        Pawn pawnK = new Pawn(Pawn.Status.KING_PAWN, stage);
+        Pawn.Status redPawnStatus = Pawn.Status.RED_PAWN;
+        Pawn.Status bluePawnStatus = Pawn.Status.BLUE_PAWN;
+        Pawn.Status kingPawnStatus = Pawn.Status.KING_PAWN;
 
         // Teste la récupération du statut opposé d'un pion
-        assertEquals(Pawn.Status.RED_PAWN, pawnB.getStatus().getOpposite());
-        assertEquals(Pawn.Status.BLUE_PAWN, pawnR.getStatus().getOpposite());
-        assertThrows(IllegalCallerException.class, () -> pawnK.getStatus().getOpposite());
-
+        assertEquals(redPawnStatus, bluePawnStatus.getOpposite());
+        assertEquals(bluePawnStatus, redPawnStatus.getOpposite());
+        assertThrows(IllegalCallerException.class, kingPawnStatus::getOpposite);
     }
 
 }
