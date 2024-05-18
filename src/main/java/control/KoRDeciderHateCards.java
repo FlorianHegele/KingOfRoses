@@ -44,13 +44,13 @@ public class KoRDeciderHateCards extends Decider {
                 System.out.println();
                 Logger.debug("ActionCard : " + actionCard);
             }
-            return actionCardList.get(0).al;
+            return actionCardList.get(0).getActionList();
         }
 
         // play on the opponent
         if(!actionHeroList.isEmpty()) {
             Logger.debug("A hero card is playable for : " + PlayerData.getCurrentPlayerData(model));
-            return actionHeroList.get(0).al;
+            return actionHeroList.get(0).getActionList();
         }
         // finally take a card
         Logger.debug("A take card action is playable for : " + PlayerData.getCurrentPlayerData(model));

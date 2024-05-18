@@ -3,14 +3,21 @@ package control;
 import boardifier.model.action.ActionList;
 
 public class ActionPoints implements Comparable<ActionPoints> {
-    int point;
-    ActionList al;
+    private final int point;
+    private final ActionList actionList;
 
-    public ActionPoints(ActionList al, int point) {
-        this.al = al;
+    public ActionPoints(ActionList actionList, int point) {
+        this.actionList = actionList;
         this.point = point;
     }
 
+    public int getPoint() {
+        return point;
+    }
+
+    public ActionList getActionList() {
+        return actionList;
+    }
 
     /**
      * Compares this object with the specified object for order.
@@ -27,7 +34,7 @@ public class ActionPoints implements Comparable<ActionPoints> {
     public String toString() {
         return "ActionPoints{" +
                 "point=" + point +
-                ", al=" + al +
+                ", actionList=" + actionList +
                 '}';
     }
 }

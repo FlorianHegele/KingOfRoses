@@ -3,17 +3,10 @@ package control;
 import boardifier.control.Controller;
 import boardifier.control.Decider;
 import boardifier.control.Logger;
-import boardifier.model.Coord2D;
 import boardifier.model.Model;
 import boardifier.model.action.ActionList;
 import model.KoRStageModel;
 import model.PlayerData;
-import model.container.PawnPot;
-import model.container.card.HeroCardStack;
-import model.container.card.MovementCardSpread;
-import model.element.Pawn;
-import model.element.card.MovementCard;
-import utils.ContainerElements;
 
 import java.util.*;
 
@@ -50,7 +43,7 @@ public class KoRDeciderCamarade extends Decider {
                 System.out.println();
                 Logger.debug("ActionCard : " + actionCard);
             }
-            return actionCardList.get(0).al;
+            return actionCardList.get(0).getActionList();
         }
         // Is taking a card possible ?
         if(!actionTakeList.isEmpty()) {
@@ -60,7 +53,7 @@ public class KoRDeciderCamarade extends Decider {
 
         // As a last resort play on the opponent trying to get the most point out of it
         Logger.debug("A hero card is playable for : " + PlayerData.getCurrentPlayerData(model));
-        return actionHeroList.get(0).al;
+        return actionHeroList.get(0).getActionList();
 
     }
 

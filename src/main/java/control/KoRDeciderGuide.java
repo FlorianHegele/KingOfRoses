@@ -48,8 +48,8 @@ public class KoRDeciderGuide extends Decider {
             Collections.sort(actionHeroList);
             for(ActionPoints action : actionHeroList) {
                 Logger.debug("HeroCard: " + action);
-                if (action.point >= threshold)
-                    return action.al;
+                if (action.getPoint() >= threshold)
+                    return action.getActionList();
             }
         }
 
@@ -62,7 +62,7 @@ public class KoRDeciderGuide extends Decider {
                 System.out.println();
                 Logger.debug("ActionCard : " + actionCard);
             }
-            return actionCardList.get(0).al;
+            return actionCardList.get(0).getActionList();
         }
 
         // finally take a card
