@@ -643,8 +643,8 @@ public class KoRStageModel extends GameStageModel {
 
     public void computePartyResult() {
         final int idWinner;
-        final int redZoneCounter = getTotalPlayerPoint(PlayerData.PLAYER_RED);
-        final int blueZoneCounter = getTotalPlayerPoint(PlayerData.PLAYER_BLUE);
+        final int redZoneCounter = getTotalPlayerPoint(PlayerData.PLAYER_RED, false);
+        final int blueZoneCounter = getTotalPlayerPoint(PlayerData.PLAYER_BLUE, false);
 
         board.resetReachableCells(true);
 
@@ -676,23 +676,23 @@ public class KoRStageModel extends GameStageModel {
     }
 
     public int getTotalPlayerPointSimple(PlayerData playerData) {
-        final int playerPoint = getTotalPlayerPoint(playerData);
+        final int playerPoint = getTotalPlayerPoint(playerData, true);
         board.resetReachableCells(true);
         return playerPoint;
     }
 
     public int getPlayerZonePawnSimple(PlayerData playerData, int row, int col) {
-        final int playerPoint = getPlayerZonePawn(playerData, row, col);
+        final int playerPoint = getPlayerZonePawn(playerData, row, col, true);
         board.resetReachableCells(true);
         return playerPoint;
     }
 
-    private int getTotalPlayerPoint(PlayerData playerData) {
+    private int getTotalPlayerPoint(PlayerData playerData, boolean acceptEmptyBaseCell) {
         int totalCounter = 0;
         for (int row = 0; row < board.getNbRows(); row++) {
             for (int col = 0; col < board.getNbCols(); col++) {
 
-                final int total = getPlayerZonePawn(playerData, row, col);
+                final int total = getPlayerZonePawn(playerData, row, col, acceptEmptyBaseCell);
 
                 // AJOUTE AU COMPTEUR FINAL LE COMPTEUR DE VOISIN AU CARRÉ
                 totalCounter += total * total;
@@ -701,13 +701,18 @@ public class KoRStageModel extends GameStageModel {
         return totalCounter;
     }
 
-    private int getPlayerZonePawn(PlayerData playerData, int row, int col) {
+    private int getPlayerZonePawn(PlayerData playerData, int row, int col, boolean acceptEmptyBaseCell) {
         final Pawn.Status status = Pawn.Status.getPawnStatus(playerData);
         final Deque<PawnNode> pawnNodes = new LinkedList<>();
 
         final Pawn pawn = getPlayedPawn(row, col);
 
-        // SI IL N'Y A PAS DE PION, ALORS RENDRE LA CASE INATTEIGNABLE ET PASSER À LA CASSE SUIVANTE
+        // SI IL N'Y A PAS DE PION ET QU'ON VEUT PAS ACCEPTER LES CASES VIDES COMME POINT
+        // DE DÉPART, ALORS RENDRE LA CASE INATTEIGNABLE ET PASSER À LA CASE SUIVANTE
+        if(!acceptEmptyBaseCell && pawn == null) {
+            board.setCellReachable(row, col, false);
+            return 0;
+        }
 
         // SI ON NE PEUT PAS ATTEINDRE LA CELLULE OU QUE LE PION EST CELUI DE L'ADVERSAIRE,
         // ALORS PASSER À LA CELLULE SUIVANTE
@@ -719,6 +724,7 @@ public class KoRStageModel extends GameStageModel {
 
         // AJOUTE UNE REFERENCE DU PION DANS UNE LISTE ET INITIALISE LE COMPTEUR DE VOISIN
         pawnNodes.add(new PawnNode(status, row, col));
+
         int counter = 0;
 
         while (!pawnNodes.isEmpty()) {
