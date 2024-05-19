@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class KoRStageModelTest {
 
-    private static KoRStageModel stageModel;
+    private KoRStageModel stageModel;
 
     @BeforeEach
     void createStageModel() throws GameException {
