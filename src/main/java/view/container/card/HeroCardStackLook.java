@@ -1,45 +1,22 @@
 package view.container.card;
 
-import boardifier.control.Logger;
 import boardifier.model.ContainerElement;
-import boardifier.view.GridLook;
+import view.container.TinyGridLook;
 
+/**
+ * The HeroCardStackLook class represents the visual representation of a hero card stack using a tiny grid look.
+ * It provides specific configurations for rendering the hero card stack.
+ */
+public class HeroCardStackLook extends TinyGridLook {
 
-public class HeroCardStackLook extends GridLook {
-
+    /**
+     * Constructs a new HeroCardStackLook with the specified container element.
+     * @param containerElement The container element associated with this hero card stack look.
+     */
     public HeroCardStackLook(ContainerElement containerElement) {
-        super(2, 2, containerElement, -1, 1);
-        setVerticalAlignment(ALIGN_MIDDLE);
-        setHorizontalAlignment(ALIGN_CENTER);
+        super(2, 2, containerElement); // Each cell size is 2x2
+        setVerticalAlignment(ALIGN_MIDDLE); // Aligns elements vertically in the middle of cells
+        setHorizontalAlignment(ALIGN_CENTER); // Aligns elements horizontally in the center of cells
     }
 
-    protected void renderBorders() {
-        Logger.debug("called", this);
-        // start by drawing the border of each cell, which will be change after
-        for (int i = 0; i < nbRows; i++) {
-            //top-left corner
-            shape[i * rowHeight][0] = "\u250F";
-            // top-right corner
-            shape[i * rowHeight][colWidth] = "\u2513";
-            //bottom-left corner
-            shape[(i + 1) * rowHeight][0] = "\u2517";
-            // bottom-right corner
-            shape[(i + 1) * rowHeight][colWidth] = "\u251B";
-
-            for (int k = 1; k < colWidth; k++) {
-                shape[i * rowHeight][k] = "\u2501";
-                shape[(i + 1) * rowHeight][k] = "\u2501";
-            }
-            // draw left & righ vertical lines
-            for (int k = 1; k < rowHeight; k++) {
-                shape[i * rowHeight + k][0] = "\u2503";
-                shape[i * rowHeight + k][colWidth] = "\u2503";
-            }
-        }
-        // change intersections on first & last vert. border
-        for (int i = 1; i < nbRows; i++) {
-            shape[i * rowHeight][0] = "\u2523";
-            shape[i * rowHeight][colWidth] = "\u252B";
-        }
-    }
 }
