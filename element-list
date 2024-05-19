@@ -5,9 +5,11 @@ boardifier.model.action
 boardifier.model.animation
 boardifier.view
 control
+control.ai
 model
 model.container
 model.container.card
+model.data
 model.element
 model.element.card
 utils
