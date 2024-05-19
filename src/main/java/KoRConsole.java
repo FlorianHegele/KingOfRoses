@@ -8,16 +8,25 @@ import boardifier.control.StageFactory;
 import control.GameConfigurationController;
 import model.GameConfigurationModel;
 
+/**
+ * The KoRConsole class serves as the entry point for the King of Roses game in console mode.
+ * It initializes the necessary components such as the console controller, model, and game configuration,
+ * and starts the game loop.
+ */
 public class KoRConsole {
 
+    /**
+     * The main method serves as the entry point for the King of Roses game in console mode.
+     * @param args Command line arguments (not used).
+     */
     public static void main(String[] args) {
-        // CREATE CONSOLE CONTROLLER
+        // Create a console controller
         final ConsoleController consoleController = new ConsoleController(false);
 
-        // CREATE MODEL
+        // Create the model
         final Model model = new Model();
 
-        // SETUP GAME CONFIGURATION
+        // Set up game configuration
         final GameConfigurationModel gameConfigurationModel = new GameConfigurationModel(
                 model,
                 GameConfigurationModel.DEFAULT_PLAYER_MODE,
@@ -26,7 +35,7 @@ public class KoRConsole {
         final GameConfigurationController gameConfigurationController = new GameConfigurationController(gameConfigurationModel, consoleController);
         gameConfigurationController.doCheck();
 
-        // LOAD GAME ELEMENTS
+        // Load game elements
         StageFactory.registerModelAndView("kor", "model.KoRStageModel", "view.KoRStageView");
         final View korView = new View(model);
         final KoRController control = new KoRController(model, korView, consoleController, gameConfigurationModel);
