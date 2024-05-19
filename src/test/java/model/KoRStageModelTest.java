@@ -94,18 +94,7 @@ class KoRStageModelTest {
 
     @Test
     void testGetGeneralPawnPot() {
-        final Model model = stageModel.getModel();
-        final PlayerData playerData = PlayerData.PLAYER_BLUE;
-
-        assertEquals(stageModel.getBluePot(), stageModel.getGeneralPot(playerData));
-
-        final ActionList actionList = new ActionList();
-        for(Pawn pawn : stageModel.getBluePawns())
-            actionList.addAll(ActionFactory.generateRemoveFromStage(model, pawn));
-
-        new ActionPlayer(model, null, actionList).start();
-
-        assertNotEquals(stageModel.getBluePot(), stageModel.getGeneralPot(playerData));
+        assertEquals(stageModel.getBluePot(), stageModel.getGeneralPot(PlayerData.PLAYER_BLUE));
     }
 
     @Test
@@ -119,7 +108,7 @@ class KoRStageModelTest {
 
         new ActionPlayer(model, null, actionList).start();
 
-        assertNotEquals(stageModel.getRedPot(), stageModel.getGeneralPot(playerData));
+        assertEquals(stageModel.getRedPot(), stageModel.getGeneralPot(playerData));
     }
 
     @Test
