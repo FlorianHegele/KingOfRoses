@@ -852,7 +852,7 @@ public class KoRStageModel extends GameStageModel {
      * @param pawnNode The pawn node for which to retrieve neighboring nodes.
      * @return The list of neighboring pawn nodes.
      */
-    private List<PawnNode> getNeighbors(PawnNode pawnNode) {
+    public List<PawnNode> getNeighbors(PawnNode pawnNode) {
         final List<PawnNode> neighbors = new ArrayList<>();
 
         for (int i = 0; i < 4; i++) {

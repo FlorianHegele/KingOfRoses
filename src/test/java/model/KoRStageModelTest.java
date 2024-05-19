@@ -154,6 +154,10 @@ class KoRStageModelTest {
 
         assertEquals(pawn, stageModel.getPlayedPawn(4, 4)); // i = 2
     }
+
+    // TODO : getTotalPawnOnBoard, getPlayerZonePawn, getTotalPlayerPoint, getNeighbors, getPlayerZonePawnSimple, getTotalPlayerPointSimple
+    // TODO : computePartyResult, gameIsStuck, playerCanPlay, every Callbacks
+
 }
 
 
