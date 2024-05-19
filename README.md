@@ -1,5 +1,5 @@
-# KingOfRoses
-King of Roses
+# King of Roses
+[![Deploy Javadoc](https://github.com/FlorianHegele/the-rose-king/actions/workflows/auto-javadoc.yml/badge.svg)](https://florianhegele.github.io/the-rose-king/)
 
 # **1°/ Matériel et mise en place**
 
