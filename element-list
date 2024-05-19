@@ -1,0 +1,18 @@
+unnamed package
+boardifier.control
+boardifier.model
+boardifier.model.action
+boardifier.model.animation
+boardifier.view
+control
+model
+model.container
+model.container.card
+model.element
+model.element.card
+utils
+view
+view.container
+view.container.card
+view.element
+view.element.card
