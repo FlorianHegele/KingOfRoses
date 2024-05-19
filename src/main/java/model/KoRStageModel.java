@@ -934,9 +934,16 @@ public class KoRStageModel extends GameStageModel {
      * Retrieves the pawn pot for the specified player data.
      * @param playerData The player data for which to retrieve the pawn pot.
      * @return The pawn pot associated with the specified player data.
+     * @throws IllegalArgumentException if the player is not red or blue.
      */
     public PawnPot getPawnPot(PlayerData playerData) {
-        return (playerData == PlayerData.PLAYER_RED) ? redPot : bluePot;
+        final PawnPot pawnPot;
+        switch (playerData) {
+            case PLAYER_BLUE -> pawnPot = bluePot;
+            case PLAYER_RED -> pawnPot = redPot;
+            default -> throw new IllegalArgumentException("PlayerData " + playerData.name() + " not supported");
+        }
+        return pawnPot;
     }
 
     /**
@@ -944,6 +951,7 @@ public class KoRStageModel extends GameStageModel {
      * If the initial pawn pot is empty, it checks the next player's pawn pot.
      * @param playerData The player data for which to retrieve the pawn pot.
      * @return The pawn pot that still has pawns, or null if both are empty.
+     * @throws IllegalArgumentException if the player is not red or blue.
      */
     public PawnPot getGeneralPot(PlayerData playerData) {
         PawnPot pawnPot = getPawnPot(playerData);

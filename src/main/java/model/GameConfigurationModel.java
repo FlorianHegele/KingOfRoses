@@ -41,7 +41,6 @@ public class GameConfigurationModel {
      */
     public GameConfigurationModel(Model model, int playerMode, int loggerMode) {
         this.model = model;
-
         this.playerDataAIDataMap = new EnumMap<>(PlayerData.class);
 
         setPlayerMode(playerMode);

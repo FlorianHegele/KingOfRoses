@@ -93,7 +93,7 @@ public class Pawn extends GameElement {
             switch (this) {
                 case BLUE_PAWN -> opposite = RED_PAWN;
                 case RED_PAWN -> opposite = BLUE_PAWN;
-                default -> throw new IllegalStateException("King pawn does not have an opposite status.");
+                default -> throw new IllegalCallerException("King pawn does not have an opposite status.");
             }
             return opposite;
         }

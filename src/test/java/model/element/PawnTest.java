@@ -1,7 +1,5 @@
 package model.element;
 
-import boardifier.model.Model;
-import model.KoRStageModel;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
