@@ -24,7 +24,7 @@ public class MovementCardLook extends ElementLook {
 
         else {
             final String backgroundColor = card.getOwner().getBackgroundColor();
-            final String direction = ConsoleColor.BLACK + backgroundColor + card.getDirection().getSymbole() + ConsoleColor.RESET;
+            final String direction = ConsoleColor.BLACK + backgroundColor + card.getDirection().getSymbol() + ConsoleColor.RESET;
             final String step = ConsoleColor.BLACK + backgroundColor + card.getStep() + ConsoleColor.RESET;
 
             if(card.isInverted()) {

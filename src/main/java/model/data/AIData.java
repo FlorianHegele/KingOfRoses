@@ -40,10 +40,7 @@ public enum AIData {
         // Loop through the AI data values
         for (AIData aiData : AIData.values()) {
             // If the id of the AI data is equal to the id passed as a parameter
-            if (aiData.getId() == id) {
-                // Return the AI data
-                return aiData;
-            }
+            if (aiData.getId() == id) return aiData;
         }
         return null;
     }

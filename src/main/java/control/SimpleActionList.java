@@ -1,11 +1,13 @@
 package control;
 
 import boardifier.control.ActionFactory;
+import boardifier.control.ActionPlayer;
 import boardifier.model.ContainerElement;
 import boardifier.model.Coord2D;
 import boardifier.model.Model;
 import boardifier.model.action.ActionList;
 import boardifier.model.action.FlipPawn;
+import model.GameConfigurationModel;
 import model.KoRStageModel;
 import model.data.PlayerData;
 import model.container.KoRBoard;
@@ -18,6 +20,7 @@ import model.element.card.MovementCard;
 import utils.ContainerElements;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -367,6 +370,29 @@ public class SimpleActionList {
             }
         }
         return actions;
+    }
+
+    /**
+     * Redoes the movement card stack by reshuffling the played movement
+     * cards and putting them back into the stack.
+     */
+    public ActionList redoMovementCardStack() {
+        // Retrieve the played movement cards
+        final List<MovementCard> movementCardList = gameStage.getMovementCards(MovementCard.Owner.OUT);
+
+        // Shuffle the played cards
+        Collections.shuffle(movementCardList, GameConfigurationModel.RANDOM);
+
+        final ActionList actionList = new ActionList();
+        final String containerName = gameStage.getMovementCardStack().getName();
+
+        // Put the played cards back into the stack
+        for (MovementCard movementCard : movementCardList) {
+            if(movementCard.isInverted()) movementCard.toggleInverted();
+            actionList.addAll(ActionFactory.generatePutInContainer(model, movementCard, containerName, 0, 0));
+        }
+
+        return actionList;
     }
     
 }
