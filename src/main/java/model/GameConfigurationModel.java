@@ -11,6 +11,10 @@ import java.util.Map;
 
 import java.util.Random;
 
+/**
+ * Represents the model for configuring the game before starting.
+ * It allows setting player mode, logger mode, adding players, and updating the logger settings.
+ */
 public class GameConfigurationModel {
 
     public static final Random RANDOM = new Random();
