@@ -166,6 +166,7 @@ public abstract class GameStageModel {
     public void onMoveInContainer(ContainerOpCallback callback) {
         onMoveInContainerCallback = callback;
     }
+
     public void onRemoveFromContainer(ContainerOpCallback callback) {
         onRemoveFromContainerCallback = callback;
     }

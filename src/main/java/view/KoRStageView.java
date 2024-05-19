@@ -17,44 +17,28 @@ import view.element.card.HeroCardLook;
 import view.element.card.MovementCardLook;
 
 /**
- * KoRStageView has to create all the looks for all game elements created by the KoRStageFactory.
- * The desired UI is the following:
- * player            ╔═╗    ┏━━━┓
- *    A   B   C      ║1║    ┃ 1 ┃
- *  ╔═══╦═══╦═══╗    ╠═╣    ┣━━━┫
- * 1║   ║   ║   ║    ║2║    ┃ 2 ┃
- *  ╠═══╬═══╬═══╣    ╠═╣    ┣━━━┫
- * 2║   ║   ║   ║    ║3║    ┃ 3 ┃
- *  ╠═══╬═══╬═══╣    ╠═╣    ┣━━━┫
- * 3║   ║   ║   ║    ║4║    ┃ 4 ┃
- *  ╚═══╩═══╩═══╝    ╚═╝    ┗━━━┛
- *
- * The UI constraints are :
- *   - the main board has double-segments border, coordinates, and cells of size 2x4
- *   - the black pot has double-segments border, will cells that resize to match what is within (or not)
- *   - the red pot has simple-segment border, and cells have a fixed size of 2x4
- *
- *   main board can be instanciated directly as a ClassicBoardLook.
- *   black pot could be instanciated directly as a TableLook, but in this demo a BlackPotLook subclass is created (in case of we want to modifiy the look in some way)
- *   for red pot, a subclass RedPotLook of GridLook is used, in order to override the method that render the borders.
+ * The KoRStageView class is responsible for creating the visual representation of the game elements
+ * produced by the KoRStageFactory. It generates the desired UI layout based on specific constraints.
+ * The UI layout includes a main board, blue and red pots, and various other game elements.
  */
-
 public class KoRStageView extends GameStageView {
+
+    /**
+     * Constructs a new KoRStageView with the specified name and associated game stage model.
+     * @param name The name of the KoRStageView.
+     * @param gameStageModel The game stage model associated with this view.
+     */
     public KoRStageView(String name, GameStageModel gameStageModel) {
         super(name, gameStageModel);
     }
 
+    /**
+     * Creates the visual representations (looks) for all game elements using the provided model.
+     * The method creates looks for the main board, text, pots, pawns, hero cards, and movement cards.
+     */
     @Override
     public void createLooks() {
         KoRStageModel model = (KoRStageModel) gameStageModel;
-
-        /*
-        TO FULFILL:
-            using the model of the board, pots and pawns
-            - create & add the look of the main board using an instance of ClassicBoardLook, with cells of size 4x2
-            - create & add the look of the two pots using instances of PawnPotLook with cells of size 4x2
-            - crate & add the look of the 8 pawns
-         */
 
         // create look for the text element
         addLook(new TextLook(model.getPlayerName()));
@@ -74,7 +58,7 @@ public class KoRStageView extends GameStageView {
          */
 
         // create look for the main board
-        addLook(new ClassicBoardLook(2, 4, model.getBoard(), 1, 1, true));
+        addLook(new ClassicBoardLook(2, 4, model.getBoard(), 1, 1, false));
 
         // create look for the hero cards
         addLook(new HeroCardStackLook(model.getRedHeroCardStack()));

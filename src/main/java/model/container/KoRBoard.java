@@ -4,15 +4,19 @@ import boardifier.model.ContainerElement;
 import boardifier.model.GameStageModel;
 
 /**
- * KoR main board represent the element where pawns are put when played
- * Thus, a simple ContainerElement with 9 rows and 9 column is needed.
- * Nevertheless, in order to "simplify" the work for the controller part,
- * this class also contains method to determine all the valid cells to put a
- * pawn with a given value.
+ * The KoR main board represents the element where pawns are placed when played.
+ * This class provides a 9x9 grid to accommodate pawns.
  */
 public class KoRBoard extends ContainerElement {
+
+    /**
+     * Constructs a new KoRBoard with the specified coordinates and associated game stage model.
+     * @param x The x-coordinate of the board.
+     * @param y The y-coordinate of the board.
+     * @param gameStageModel The game stage model associated with this board.
+     */
     public KoRBoard(int x, int y, GameStageModel gameStageModel) {
-        // call the super-constructor to create a 9x9 grid, named "KoR", and in x,y in space
+        // Call the super-constructor to create a 9x9 grid, named "KoR", at the specified coordinates
         super("KoRboard", x, y, 9, 9, gameStageModel);
     }
 }

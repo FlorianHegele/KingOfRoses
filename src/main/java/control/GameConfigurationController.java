@@ -1,52 +1,86 @@
 package control;
 
 import model.GameConfigurationModel;
-import model.PlayerData;
-import model.AIData;
+import model.data.PlayerData;
+import model.data.AIData;
 import utils.Strings;
 
+/**
+ * This class controls the game configuration during the game startup.
+ * It allows setting various configurations such as logger mode, random seed, player mode, player names, and AI settings.
+ */
 public class GameConfigurationController {
 
     private final GameConfigurationModel configurationModel;
     private final ConsoleController console;
 
-
+    /**
+     * Constructs a GameConfigurationController with the specified configuration model and console controller.
+     *
+     * @param gameConfigurationModel the game configuration model to be used.
+     * @param consoleController the console controller for handling user input and output.
+     */
     public GameConfigurationController(GameConfigurationModel gameConfigurationModel, ConsoleController consoleController) {
         this.configurationModel = gameConfigurationModel;
         this.console = consoleController;
     }
 
+    /**
+     * Initiates the configuration check process by prompting the user to set various configuration options.
+     * Allows skipping input by pressing enter.
+     */
     public void doCheck() {
         console.printlnCheckMessage("Press enter if you want to skip !");
 
-        configurationModel.updateLogger();
+        setLoggerMode();
         setSeed();
         setPlayerMode();
         setPlayerName();
         setAI();
     }
 
+    /**
+     * Prompts the user to set the logger mode.
+     * 0: None, 1: Full.
+     */
+    private void setLoggerMode() {
+        console.printCheckMessage("Logger Mode (0: None, 1:Full) ? ");
+        final String line = console.getCheckConsoleLine();
+        if (!line.isEmpty()) configurationModel.setLoggerMode(Strings.parseInt(line));
+        configurationModel.updateLogger();
+    }
+
+    /**
+     * Prompts the user to set a specific seed for the game.
+     */
     private void setSeed() {
         console.printCheckMessage("specific seed ? ");
         final String line = console.getCheckConsoleLine();
         if (!line.isEmpty()) GameConfigurationModel.RANDOM.setSeed(Strings.parseLong(line));
     }
 
+    /**
+     * Prompts the user to set the player mode.
+     * 0: PvP, 1: PvAI, 2: AIvAI.
+     */
     private void setPlayerMode() {
         console.printCheckMessage("specific player mode (0: PvP, 1: PvAI, 2: AIvAI) ? ");
         final String line = console.getCheckConsoleLine();
         if (!line.isEmpty()) configurationModel.setPlayerMode(Strings.parseInt(line));
     }
 
-    /*
-     * Select IA for player 1 and player 2
-     * If the player mode is PvP, the IA is not selected
-     * If the player mode is PvAI, the IA is selected for player 2
-     * If the player mode is AIvAI, the IA is selected for player 1 and player 2
-     * The IA is selected from the AIData enum
-     * 0 = Random AI, 1 = Camarade AI, 2 = Guide AI
+    /**
+     * Prompts the user to select AI settings based on the player mode.
+     * <p>
+     * - If the player mode is PvP, no AI is selected.
+     * <p>
+     * - If the player mode is PvAI, AI is selected for player 2.
+     * <p>
+     * - If the player mode is AIvAI, AI is selected for both players.
+     * <p>
+     * AI options:
+     * 0 = Random, 1 = Camarade, 2 = HateCards, 3 = Guide.
      */
-    // TODO : Refactor this method to work with GameConfigurationModel
     private void setAI(){
         // if the player mode is PvP, the IA is not selected
         if (configurationModel.getPlayerMode() == 0) {return;}
@@ -55,7 +89,7 @@ public class GameConfigurationController {
         if (configurationModel.getPlayerMode() == 1) {
 
             // select IA for player 2
-            console.printCheckMessage("specific AI for player 2 (0: Random, 1: Camarade, 2: Guide) ? ");
+            console.printCheckMessage("specific AI for player 2 (0: Random, 1: Camarade, 2: HateCards, 3: Guide) ? ");
             final String line = console.getCheckConsoleLine();
             
             // if the line is not empty,
@@ -70,7 +104,7 @@ public class GameConfigurationController {
         // the IA is selected for player 1 and player 2
         if (configurationModel.getPlayerMode() == 2) {
             // select IA for player 1
-            console.printCheckMessage("specific AI for player 1 (0: Random, 1: Camarade, 2: Guide) ? ");
+            console.printCheckMessage("specific AI for player 2 (0: Random, 1: Camarade, 2: HateCards, 3: Guide) ? ");
             final String line = console.getCheckConsoleLine();
 
             // if the line is not empty,
@@ -81,7 +115,7 @@ public class GameConfigurationController {
             }
 
             // select IA for player 2
-            console.printCheckMessage("specific AI for player 2 (0: Random, 1: Camarade, 2: Guide) ? ");
+            console.printCheckMessage("specific AI for player 2 (0: Random, 1: Camarade, 2: HateCards, 3: Guide) ? ");
             final String line2 = console.getCheckConsoleLine();
 
             // if the line is not empty,
@@ -93,6 +127,9 @@ public class GameConfigurationController {
         }
     }
 
+    /**
+     * Prompts the user to set the names of the players.
+     */
     private void setPlayerName() {
         final String[] playersName = {"player1", "player2"};
         for (int i = 1; i < 3; i++) {
