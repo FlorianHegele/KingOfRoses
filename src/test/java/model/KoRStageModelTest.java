@@ -144,8 +144,123 @@ class KoRStageModelTest {
         assertEquals(pawn, stageModel.getPlayedPawn(4, 4)); // i = 2
     }
 
-    // TODO : getTotalPawnOnBoard, getPlayerZonePawn, getTotalPlayerPoint, getNeighbors, getPlayerZonePawnSimple, getTotalPlayerPointSimple
     // TODO : computePartyResult, gameIsStuck, playerCanPlay, every Callbacks
+
+    @Test
+    void testTotalPlayerPoint() {
+        final Model model = stageModel.getModel();
+        final PlayerData playerData = PlayerData.PLAYER_BLUE;
+        final boolean[][] defaultCell = stageModel.getBoard().getReachableCells().clone();
+
+        assertEquals(0, stageModel.getTotalPlayerPointSimple(playerData));
+
+        final ActionList actionList = new ActionList();
+        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getBluePawns()[0], stageModel.getBoard().getName(), 0, 0));
+        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getBluePawns()[1], stageModel.getBoard().getName(), 1, 0));
+        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getBluePawns()[2], stageModel.getBoard().getName(), 0, 1));
+        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getBluePawns()[3], stageModel.getBoard().getName(), 4, 4));
+        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getBluePawns()[4], stageModel.getBoard().getName(), 5, 5));
+        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[0], stageModel.getBoard().getName(), 4, 5));
+        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[1], stageModel.getBoard().getName(), 3, 5));
+        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[2], stageModel.getBoard().getName(), 6, 6));
+        new ActionPlayer(model, null, actionList).start();
+
+        assertEquals(11, stageModel.getTotalPlayerPointSimple(playerData));
+
+        // Check reset of reachable cells
+        assertArrayEquals(defaultCell, stageModel.getBoard().getReachableCells());
+
+        assertEquals(5, stageModel.getTotalPlayerPointSimple(playerData.getNextPlayerData()));
+    }
+
+    @Test
+    void testGetTotalPawnOnBoard() {
+        final Model model = stageModel.getModel();
+        assertEquals(0, stageModel.getTotalPawnOnBoard(Pawn.Status.BLUE_PAWN));
+
+        final ActionList actionList = new ActionList();
+        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getBluePawns()[0], stageModel.getBoard().getName(), 0, 0));
+        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getBluePawns()[1], stageModel.getBoard().getName(), 1, 0));
+        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getBluePawns()[2], stageModel.getBoard().getName(), 1, 1));
+        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[0], stageModel.getBoard().getName(), 3, 4));
+        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[1], stageModel.getBoard().getName(), 4, 4));
+        new ActionPlayer(model, null, actionList).start();
+
+        assertEquals(3, stageModel.getTotalPawnOnBoard(Pawn.Status.BLUE_PAWN));
+        assertEquals(2, stageModel.getTotalPawnOnBoard(Pawn.Status.RED_PAWN));
+    }
+
+    @Test
+    void testGetNeighbor() {
+        final Model model = stageModel.getModel();
+
+        assertEquals(0, stageModel.getNeighbors(new KoRStageModel.PawnNode(Pawn.Status.RED_PAWN, 0, 0)).size());
+        stageModel.getBoard().resetReachableCells(true);
+
+        new ActionPlayer(model, null, ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[0],
+                stageModel.getBoard().getName(), 1, 0)).start();
+        new ActionPlayer(model, null, ActionFactory.generatePutInContainer(model, stageModel.getBluePawns()[0],
+                stageModel.getBoard().getName(), 0, 0)).start();
+
+        assertEquals(1, stageModel.getNeighbors(new KoRStageModel.PawnNode(Pawn.Status.RED_PAWN, 0, 0)).size());
+        stageModel.getBoard().resetReachableCells(true);
+        assertEquals(0, stageModel.getNeighbors(new KoRStageModel.PawnNode(Pawn.Status.BLUE_PAWN, 0, 0)).size());
+        stageModel.getBoard().resetReachableCells(true);
+        assertEquals(1, stageModel.getNeighbors(new KoRStageModel.PawnNode(Pawn.Status.BLUE_PAWN, 1, 0)).size());
+        stageModel.getBoard().resetReachableCells(true);
+
+
+        final ActionList actionList = new ActionList();
+        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[0], stageModel.getBoard().getName(), 3, 3));
+        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[1], stageModel.getBoard().getName(), 4, 3));
+        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[2], stageModel.getBoard().getName(), 2, 3));
+        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[3], stageModel.getBoard().getName(), 3, 4));
+        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[4], stageModel.getBoard().getName(), 3, 2));
+        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[5], stageModel.getBoard().getName(), 4, 4));
+        new ActionPlayer(model, null, actionList).start();
+
+        assertEquals(4, stageModel.getNeighbors(new KoRStageModel.PawnNode(Pawn.Status.RED_PAWN, 3, 3)).size());
+        stageModel.getBoard().resetReachableCells(true);
+        assertEquals(0, stageModel.getNeighbors(new KoRStageModel.PawnNode(Pawn.Status.BLUE_PAWN, 3, 3)).size());
+    }
+
+    @Test
+    void testGetZonePawn() {
+        final Model model = stageModel.getModel();
+
+        assertEquals(0, stageModel.getPlayerZonePawnSimple(PlayerData.PLAYER_RED, 0, 0));
+
+        new ActionPlayer(model, null, ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[0],
+                stageModel.getBoard().getName(), 0, 0)).start();
+        new ActionPlayer(model, null, ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[1],
+                stageModel.getBoard().getName(), 2, 0)).start();
+        new ActionPlayer(model, null, ActionFactory.generatePutInContainer(model, stageModel.getBluePawns()[0],
+                stageModel.getBoard().getName(), 1, 1)).start();
+
+        assertEquals(0, stageModel.getPlayerZonePawnSimple(PlayerData.PLAYER_RED, 1, 1));
+        assertEquals(1, stageModel.getPlayerZonePawnSimple(PlayerData.PLAYER_RED, 0, 0));
+        // Can detect neighbours even if the current position contains no pawns
+        assertEquals(2, stageModel.getPlayerZonePawnSimple(PlayerData.PLAYER_RED, 1, 0));
+        assertEquals(1, stageModel.getPlayerZonePawnSimple(PlayerData.PLAYER_BLUE, 1, 0));
+
+        final ActionList actionList = new ActionList();
+        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[0], stageModel.getBoard().getName(), 3, 3));
+        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[1], stageModel.getBoard().getName(), 4, 3));
+        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[2], stageModel.getBoard().getName(), 2, 3));
+        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[3], stageModel.getBoard().getName(), 3, 4));
+        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[4], stageModel.getBoard().getName(), 3, 2));
+        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[5], stageModel.getBoard().getName(), 4, 4));
+        new ActionPlayer(model, null, actionList).start();
+
+        // Representation of the board, O is the 3,3 pawn
+        //   X
+        //  XOX
+        //   XX
+
+        assertEquals(6, stageModel.getPlayerZonePawnSimple(PlayerData.PLAYER_RED, 3, 3));
+        assertEquals(0, stageModel.getPlayerZonePawnSimple(PlayerData.PLAYER_BLUE, 3, 3));
+    }
+
 
 }
 

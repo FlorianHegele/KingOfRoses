@@ -793,7 +793,6 @@ public class KoRStageModel extends GameStageModel {
         int totalCounter = 0;
         for (int row = 0; row < board.getNbRows(); row++) {
             for (int col = 0; col < board.getNbCols(); col++) {
-
                 final int total = getPlayerZonePawn(playerData, row, col, acceptEmptyBaseCell);
 
                 // Add the square of the neighbor count to the final counter
@@ -834,7 +833,7 @@ public class KoRStageModel extends GameStageModel {
         // AJOUTE UNE REFERENCE DU PION DANS UNE LISTE ET INITIALISE LE COMPTEUR DE VOISIN
         pawnNodes.add(new PawnNode(status, row, col));
 
-        int counter = 0;
+        int counter = (pawn == null) ? -1 : 0;
         while (!pawnNodes.isEmpty()) {
             // While the list is not empty, add references of reachable neighboring pawns of the same color
             // as the first reference in the list and remove it from the list
@@ -888,7 +887,7 @@ public class KoRStageModel extends GameStageModel {
      * @param status The status of pawns to count.
      * @return The total number of pawns with the specified status on the board.
      */
-    private int getTotalPawnOnBoard(Pawn.Status status) {
+    public int getTotalPawnOnBoard(Pawn.Status status) {
         int totalPawn = 0;
 
         for (int row = 0; row < board.getNbRows(); row++) {
