@@ -23,10 +23,10 @@ class MovementCardTest {
 
     @Test
     void testToggleMovementCard() {
-        GameStageModel gameStageModel = new KoRStageModel("", null);
+        final GameStageModel gameStageModel = new KoRStageModel("", null);
         // SETUP MOVEMENT CARD WITH OPPOSITE DIRECTION
-        MovementCard movementCard = new MovementCard(1, MovementCard.Direction.NORTH, gameStageModel);
-        MovementCard movementCardInvert = new MovementCard(1, MovementCard.Direction.SOUTH, gameStageModel);
+        final MovementCard movementCard = new MovementCard(1, MovementCard.Direction.NORTH, gameStageModel);
+        final MovementCard movementCardInvert = new MovementCard(1, MovementCard.Direction.SOUTH, gameStageModel);
         // INVERT ONE CARD
         movementCardInvert.toggleInverted();
 
@@ -37,10 +37,10 @@ class MovementCardTest {
 
     @Test
     void testToggleMovementCardByOwner() {
-        GameStageModel gameStageModel = new KoRStageModel("", null);
+        final GameStageModel gameStageModel = new KoRStageModel("", null);
         // SETUP MOVEMENT CARD
-        MovementCard movementCardBlue = new MovementCard(1, MovementCard.Direction.NORTH, gameStageModel);
-        MovementCard movementCardRed = new MovementCard(1, MovementCard.Direction.SOUTH, gameStageModel);
+        final MovementCard movementCardBlue = new MovementCard(1, MovementCard.Direction.NORTH, gameStageModel);
+        final MovementCard movementCardRed = new MovementCard(1, MovementCard.Direction.SOUTH, gameStageModel);
         // CHANGE THEIR OWNER
         movementCardBlue.setOwner(MovementCard.Owner.PLAYER_BLUE);
         movementCardRed.setOwner(MovementCard.Owner.PLAYER_RED);
@@ -52,9 +52,9 @@ class MovementCardTest {
 
     @Test
     void testDefaultOwnerMovementCard() {
-        GameStageModel gameStageModel = new KoRStageModel("", null);
+        final GameStageModel gameStageModel = new KoRStageModel("", null);
         // SETUP MOVEMENT CARD
-        MovementCard movementCard = new MovementCard(1, MovementCard.Direction.NORTH, gameStageModel);
+        final MovementCard movementCard = new MovementCard(1, MovementCard.Direction.NORTH, gameStageModel);
         assertEquals(MovementCard.Owner.STACK, movementCard.getOwner());
     }
 }

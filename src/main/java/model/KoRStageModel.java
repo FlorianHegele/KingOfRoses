@@ -793,7 +793,6 @@ public class KoRStageModel extends GameStageModel {
         int totalCounter = 0;
         for (int row = 0; row < board.getNbRows(); row++) {
             for (int col = 0; col < board.getNbCols(); col++) {
-
                 final int total = getPlayerZonePawn(playerData, row, col, acceptEmptyBaseCell);
 
                 // Add the square of the neighbor count to the final counter
@@ -834,7 +833,7 @@ public class KoRStageModel extends GameStageModel {
         // AJOUTE UNE REFERENCE DU PION DANS UNE LISTE ET INITIALISE LE COMPTEUR DE VOISIN
         pawnNodes.add(new PawnNode(status, row, col));
 
-        int counter = 0;
+        int counter = (pawn == null) ? -1 : 0;
         while (!pawnNodes.isEmpty()) {
             // While the list is not empty, add references of reachable neighboring pawns of the same color
             // as the first reference in the list and remove it from the list
@@ -852,7 +851,7 @@ public class KoRStageModel extends GameStageModel {
      * @param pawnNode The pawn node for which to retrieve neighboring nodes.
      * @return The list of neighboring pawn nodes.
      */
-    private List<PawnNode> getNeighbors(PawnNode pawnNode) {
+    public List<PawnNode> getNeighbors(PawnNode pawnNode) {
         final List<PawnNode> neighbors = new ArrayList<>();
 
         for (int i = 0; i < 4; i++) {
@@ -888,7 +887,7 @@ public class KoRStageModel extends GameStageModel {
      * @param status The status of pawns to count.
      * @return The total number of pawns with the specified status on the board.
      */
-    private int getTotalPawnOnBoard(Pawn.Status status) {
+    public int getTotalPawnOnBoard(Pawn.Status status) {
         int totalPawn = 0;
 
         for (int row = 0; row < board.getNbRows(); row++) {
@@ -934,9 +933,16 @@ public class KoRStageModel extends GameStageModel {
      * Retrieves the pawn pot for the specified player data.
      * @param playerData The player data for which to retrieve the pawn pot.
      * @return The pawn pot associated with the specified player data.
+     * @throws IllegalArgumentException if the player is not red or blue.
      */
     public PawnPot getPawnPot(PlayerData playerData) {
-        return (playerData == PlayerData.PLAYER_RED) ? redPot : bluePot;
+        final PawnPot pawnPot;
+        switch (playerData) {
+            case PLAYER_BLUE -> pawnPot = bluePot;
+            case PLAYER_RED -> pawnPot = redPot;
+            default -> throw new IllegalArgumentException("PlayerData " + playerData.name() + " not supported");
+        }
+        return pawnPot;
     }
 
     /**
@@ -944,6 +950,7 @@ public class KoRStageModel extends GameStageModel {
      * If the initial pawn pot is empty, it checks the next player's pawn pot.
      * @param playerData The player data for which to retrieve the pawn pot.
      * @return The pawn pot that still has pawns, or null if both are empty.
+     * @throws IllegalArgumentException if the player is not red or blue.
      */
     public PawnPot getGeneralPot(PlayerData playerData) {
         PawnPot pawnPot = getPawnPot(playerData);

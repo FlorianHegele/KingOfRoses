@@ -1,16 +1,15 @@
-package model;
+package model.data;
 
-import model.data.PlayerData;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class PlayerDataTest {
+class PlayerDataTest {
 
     @Test
-    public void testGetNextPlayer() {
-        PlayerData redPlayer = PlayerData.PLAYER_RED;
-        PlayerData bluePlayer = PlayerData.PLAYER_BLUE;
+    void testGetNextPlayer() {
+        final PlayerData redPlayer = PlayerData.PLAYER_RED;
+        final PlayerData bluePlayer = PlayerData.PLAYER_BLUE;
 
         assertEquals(bluePlayer, redPlayer.getNextPlayerData());
         assertEquals(redPlayer, bluePlayer.getNextPlayerData());

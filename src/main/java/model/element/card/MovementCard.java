@@ -6,6 +6,8 @@ import boardifier.model.GameElement;
 import boardifier.model.GameStageModel;
 import boardifier.view.ConsoleColor;
 
+import java.util.Objects;
+
 /**
  * Represents a movement card in the game.
  */
@@ -208,4 +210,15 @@ public class MovementCard extends GameElement {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof MovementCard that)) return false;
+        return step == that.step && direction == that.direction;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(step, direction);
+    }
 }

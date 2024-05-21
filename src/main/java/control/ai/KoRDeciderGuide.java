@@ -49,7 +49,6 @@ public class KoRDeciderGuide extends KoRDecider {
         // Get all possible actions for playing hero cards
         final List<ActionPoints> actionHeroList = simpleActionList.getPossibleHeroMove();
 
-        // TODO : IMPLEMENT THE DECISION MAKING PROCESS
         // Check if playing a hero card is possible
         if(!actionHeroList.isEmpty()) {
             Logger.debug("A card and a hero card is playable for : " + playerData);
