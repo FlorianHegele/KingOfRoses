@@ -624,7 +624,7 @@ public class KoRStageModel extends GameStageModel {
 
                 // If the stack is empty, replenish it
                 if (getMovementCards(MovementCard.Owner.STACK).isEmpty())
-                    new ActionPlayer(model, null, new SimpleActionList(model).redoMovementCardStack());
+                    new ActionPlayer(model, null, new SimpleActionList(model).redoMovementCardStack()).start();
 
                 // Update the stack counter
                 movementCardStackText.setText(String.valueOf(ContainerElements.countElements(movementCardStack)));
