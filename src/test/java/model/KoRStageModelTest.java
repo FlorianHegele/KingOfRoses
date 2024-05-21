@@ -144,7 +144,7 @@ class KoRStageModelTest {
         assertEquals(pawn, stageModel.getPlayedPawn(4, 4)); // i = 2
     }
 
-    // TODO : computePartyResult, gameIsStuck, playerCanPlay, every Callbacks
+    // TODO : gameIsStuck, playerCanPlay, every Callbacks
 
     @Test
     void testTotalPlayerPoint() {
@@ -261,6 +261,51 @@ class KoRStageModelTest {
         assertEquals(0, stageModel.getPlayerZonePawnSimple(PlayerData.PLAYER_BLUE, 3, 3));
     }
 
+    @Test
+    void testComputePartyResultTie() {
+        final Model model = stageModel.getModel();
+
+        final ActionList actionList = new ActionList();
+        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[0], stageModel.getBoard().getName(), 3, 3));
+        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[1], stageModel.getBoard().getName(), 4, 3));
+        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getBluePawns()[0], stageModel.getBoard().getName(), 4, 4));
+        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getBluePawns()[1], stageModel.getBoard().getName(), 5, 4));
+        new ActionPlayer(model, null, actionList).start();
+
+        stageModel.computePartyResult();
+        assertEquals(-1, model.getIdWinner());
+    }
+
+    @Test
+    void testComputePartyResultSquarePoint() {
+        final Model model = stageModel.getModel();
+
+        final ActionList actionList = new ActionList();
+        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[0], stageModel.getBoard().getName(), 3, 3));
+        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[1], stageModel.getBoard().getName(), 4, 3));
+        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getBluePawns()[0], stageModel.getBoard().getName(), 4, 4));
+        new ActionPlayer(model, null, actionList).start();
+
+        stageModel.computePartyResult();
+        assertEquals(PlayerData.PLAYER_RED.getId(), model.getIdWinner());
+    }
+
+    @Test
+    void testComputePartyResultTotalPawn() {
+        final Model model = stageModel.getModel();
+
+        final ActionList actionList = new ActionList();
+        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[0], stageModel.getBoard().getName(), 3, 3));
+        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[1], stageModel.getBoard().getName(), 4, 3));
+        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getBluePawns()[0], stageModel.getBoard().getName(), 4, 4));
+        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getBluePawns()[1], stageModel.getBoard().getName(), 5, 5));
+        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getBluePawns()[2], stageModel.getBoard().getName(), 6, 6));
+        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getBluePawns()[4], stageModel.getBoard().getName(), 7, 7));
+        new ActionPlayer(model, null, actionList).start();
+
+        stageModel.computePartyResult();
+        assertEquals(PlayerData.PLAYER_BLUE.getId(), model.getIdWinner());
+    }
 
 }
 
