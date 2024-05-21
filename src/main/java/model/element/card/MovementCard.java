@@ -219,6 +219,6 @@ public class MovementCard extends GameElement {
 
     @Override
     public int hashCode() {
-        return Objects.hash(step, direction);
+        return Objects.hash(step, inverted, owner, direction);
     }
 }
