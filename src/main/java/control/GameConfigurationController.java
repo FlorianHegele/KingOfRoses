@@ -32,7 +32,7 @@ public class GameConfigurationController {
     public void doCheck() {
         console.printlnCheckMessage("Press enter if you want to skip !");
 
-        setLoggerMode();
+        //setLoggerMode();
         setSeed();
         setPlayerMode();
         setPlayerName();
@@ -42,7 +42,9 @@ public class GameConfigurationController {
     /**
      * Prompts the user to set the logger mode.
      * 0: None, 1: Full.
+     * @deprecated because of the logger mode in the GameConfigurationModel
      */
+    @Deprecated(since = "20/05/2024", forRemoval = true)
     private void setLoggerMode() {
         console.printCheckMessage("Logger Mode (0: None, 1:Full) ? ");
         final String line = console.getCheckConsoleLine();
