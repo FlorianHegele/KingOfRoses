@@ -21,6 +21,10 @@ import model.element.card.MovementCard;
 import utils.ContainerElements;
 import utils.Strings;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 /**
  * This class controls the game flow, allowing the AI or player to do specific action with {@link ActionList}.
  * It extends the Controller class and manages the main game loop and player turns.
@@ -70,6 +74,7 @@ public class KoRController extends Controller {
             gameStage.computePartyResult();
         }
         endGame();
+
     }
 
     /**

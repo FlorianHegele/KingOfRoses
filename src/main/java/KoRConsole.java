@@ -38,7 +38,7 @@ public class KoRConsole {
                 1,
                 true
         );
-        gameConfigurationModel.addAI(Map.of(PlayerData.PLAYER_BLUE, AIData.RANDOM, PlayerData.PLAYER_RED, AIData.RANDOM));
+        gameConfigurationModel.addAI(Map.of(PlayerData.PLAYER_BLUE, AIData.RANDOM, PlayerData.PLAYER_RED, AIData.GUIDE));
 
         // Init Game
         final Boardifiers boardifiers = new Boardifiers(model, consoleController, gameConfigurationModel);
@@ -50,7 +50,7 @@ public class KoRConsole {
         } catch (GameException e) {
             System.out.println("Cannot start the game. Abort");
         }
-
+        System.exit(model.getIdWinner());
     }
 
 }
