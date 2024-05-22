@@ -4,6 +4,7 @@ import boardifier.model.ElementTypes;
 import boardifier.model.GameElement;
 import boardifier.model.GameStageModel;
 import boardifier.view.ConsoleColor;
+import model.KoRStageModel;
 import model.data.PlayerData;
 
 /**
@@ -43,6 +44,14 @@ public class Pawn extends GameElement {
      */
     public Status getStatus() {
         return status;
+    }
+
+
+    public boolean isUnderKing() {
+        if(status == Status.KING_PAWN) return false;
+        if(!getContainer().getName().equals("KoRboard")) return false;
+
+        return ((KoRStageModel)gameStageModel).getKingPawn().getLocation().equals(getLocation());
     }
 
     /**
