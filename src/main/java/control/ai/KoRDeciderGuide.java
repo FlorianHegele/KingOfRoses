@@ -67,7 +67,6 @@ public class KoRDeciderGuide extends KoRDecider {
             // Order actions by most to least points and choose the action with the most points
             Collections.sort(actionCardList);
             for(ActionPoints actionCard : actionCardList) {
-                System.out.println();
                 Logger.debug("ActionCard : " + actionCard);
             }
             return actionCardList.get(0).getActionList();
