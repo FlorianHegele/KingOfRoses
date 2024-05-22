@@ -38,7 +38,7 @@ public class KoRConsole {
                 1,
                 true
         );
-        gameConfigurationModel.addAI(Map.of(PlayerData.PLAYER_BLUE, AIData.RANDOM, PlayerData.PLAYER_RED, AIData.GUIDE));
+        gameConfigurationModel.addAI(Map.of(PlayerData.PLAYER_BLUE, AIData.HATE_CARDS, PlayerData.PLAYER_RED, AIData.CAMARADE));
 
         // Init Game
         final Boardifiers boardifiers = new Boardifiers(model, consoleController, gameConfigurationModel);

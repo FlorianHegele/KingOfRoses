@@ -7,7 +7,7 @@ i=0
 
 ./launch.sh run
 
-while [ $i -le 200 ]
+while [ $i -le 500 ]
 do
     ./launch.sh runo 
     case $? in
