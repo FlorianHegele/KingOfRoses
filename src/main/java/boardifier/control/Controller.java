@@ -178,15 +178,14 @@ public abstract class Controller {
         } else {
             System.out.println("Draw game");
         }
-
     }
 
-    public void update() {
+    public void update(boolean renderGame) {
         frameNumber++;
         // process all events & updates
         processEvents();
         // update the view
-        view.update();
+        if(renderGame) view.update();
     }
 
     /* ***************************************

@@ -723,7 +723,7 @@ public class KoRStageModel extends GameStageModel {
      * Computes the result of the game.
      * Determines the winner based on zone points and total pawns placed on the board.
      */
-    public int computePartyResult() {
+    public int computePartyResult(boolean renderGame) {
         final int idWinner;
         final int redZoneCounter = getTotalPlayerPoint(PlayerData.PLAYER_RED, false);
         final int blueZoneCounter = getTotalPlayerPoint(PlayerData.PLAYER_BLUE, false);
@@ -748,9 +748,10 @@ public class KoRStageModel extends GameStageModel {
             idWinner = winner.getId();
         }
 
-        System.out.println("Points rouge : " + redZoneCounter + ", pions total " + redPawnPlaced);
-        System.out.println("Points bleu : " + blueZoneCounter + ", pions total " + bluePawnPlaced);
-
+        if(renderGame) {
+            System.out.println("Points rouge : " + redZoneCounter + ", pions total " + redPawnPlaced);
+            System.out.println("Points bleu : " + blueZoneCounter + ", pions total " + bluePawnPlaced);
+        }
         // Set the winner
         model.setIdWinner(idWinner);
         // Stop de the game

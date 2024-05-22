@@ -22,9 +22,11 @@ public class GameConfigurationModel {
     public static final int DEFAULT_PLAYER_MODE = 0;
     public static final int DEFAULT_LOGGER_MODE = 0;
     public static final boolean DEFAULT_PLAYER_INTERACTION = true;
+    public static final boolean DEFAULT_RENDER_GAME = true;
 
     private final Model model;
 
+    private boolean renderGame;
     private boolean playerInteraction;
     private int playerMode;
     private int loggerMode;
@@ -42,13 +44,14 @@ public class GameConfigurationModel {
      * @param playerMode the player mode (0: Human vs. Human, 1: Human vs. AI, 2: AI vs. AI).
      * @param loggerMode the logger mode (0: None, 1: Debug).
      */
-    public GameConfigurationModel(Model model, int playerMode, int loggerMode, boolean playerInteraction) {
+    public GameConfigurationModel(Model model, int playerMode, int loggerMode, boolean playerInteraction, boolean renderGame) {
         this.model = model;
         this.playerDataAIDataMap = new EnumMap<>(PlayerData.class);
 
         setPlayerMode(playerMode);
         setLoggerMode(loggerMode);
         setPlayerInteraction(playerInteraction);
+        setRenderGame(renderGame);
     }
 
     /**
@@ -57,7 +60,7 @@ public class GameConfigurationModel {
      * @param model the game model.
      */
     public GameConfigurationModel(Model model) {
-        this(model, DEFAULT_PLAYER_MODE, DEFAULT_LOGGER_MODE, DEFAULT_PLAYER_INTERACTION);
+        this(model, DEFAULT_PLAYER_MODE, DEFAULT_LOGGER_MODE, DEFAULT_PLAYER_INTERACTION, DEFAULT_RENDER_GAME);
     }
 
     /**
@@ -85,6 +88,15 @@ public class GameConfigurationModel {
      */
     public Map<PlayerData, AIData> getPlayerDataAIDataMap() {
         return playerDataAIDataMap;
+    }
+
+    /**
+     * Allows you to know whether you are rendering the game or not.
+     *
+     * @return a boolean that says whether the game should be rendered
+     */
+    public boolean isRenderGame() {
+        return renderGame;
     }
 
     public void addAI(Map<PlayerData, AIData> AIData) {
@@ -118,6 +130,16 @@ public class GameConfigurationModel {
      */
     public void setPlayerInteraction(boolean playerInteraction) {
         this.playerInteraction = playerInteraction;
+    }
+
+    /**
+     * Whether to render the game.
+     * It's useful to disable rendering for AI testing.
+     *
+     * @param renderGame defines whether the game should be rendered.
+     */
+    public void setRenderGame(boolean renderGame) {
+        this.renderGame = renderGame;
     }
 
     /**

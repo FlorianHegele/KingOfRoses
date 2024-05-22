@@ -36,7 +36,8 @@ public class KoRConsole {
                 model,
                 2,
                 1,
-                true
+                GameConfigurationModel.DEFAULT_PLAYER_INTERACTION,
+                GameConfigurationModel.DEFAULT_RENDER_GAME
         );
         gameConfigurationModel.addAI(Map.of(PlayerData.PLAYER_BLUE, AIData.HATE_CARDS, PlayerData.PLAYER_RED, AIData.CAMARADE));
 

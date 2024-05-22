@@ -21,10 +21,6 @@ import model.element.card.MovementCard;
 import utils.ContainerElements;
 import utils.Strings;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
 /**
  * This class controls the game flow, allowing the AI or player to do specific action with {@link ActionList}.
  * It extends the Controller class and manages the main game loop and player turns.
@@ -57,9 +53,10 @@ public class KoRController extends Controller {
      * Continuously plays the game until it is ended or the game is stuck.
      */
     public void stageLoop() {
+        final boolean gameIsRender = gameConfigurationModel.isRenderGame();
         final KoRStageModel gameStage = (KoRStageModel) model.getGameStage();
 
-        update();
+        update(gameIsRender);
         // While the game is not end
         while (!model.isEndStage()) {
             // While the game is not stuck, play
@@ -68,13 +65,13 @@ public class KoRController extends Controller {
 
                 playTurn(gameStage, playerData);
 
-                if (!model.isEndStage()) update();
+                if (!model.isEndStage()) update(gameIsRender);
             }
             // Print winner and stats of the game
-            gameStage.computePartyResult();
+            gameStage.computePartyResult(gameConfigurationModel.isRenderGame());
         }
-        endGame();
-
+        update(true);
+        if(gameIsRender) endGame();
     }
 
     /**

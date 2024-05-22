@@ -18,6 +18,10 @@ public class Boardifiers {
 
     private KoRController controller;
 
+    public Boardifiers(Model model, GameConfigurationModel gameConfigurationModel) {
+        this(model, new ConsoleController(true), gameConfigurationModel);
+    }
+
     public Boardifiers(Model model, ConsoleController consoleController, GameConfigurationModel gameConfigurationModel) {
         this.model = model;
         this.gameConfigurationModel = gameConfigurationModel;
