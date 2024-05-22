@@ -75,7 +75,12 @@ public class KoRDeciderGuide extends KoRDecider {
 
         // As a last resort, take a card
         Logger.debug("A take card action is playable for : " + playerData);
-        return actionTakeList.get(0);
+        if(!actionTakeList.isEmpty()) {
+            return actionTakeList.get(0);
+        }
+
+        return actionHeroList.get(0).getActionList();
+
     }
 
 }
