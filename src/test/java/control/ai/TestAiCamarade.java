@@ -1,4 +1,7 @@
+package control.ai;
 
+import boardifier.control.ActionFactory;
+import boardifier.control.ActionPlayer;
 import boardifier.control.StageFactory;
 import boardifier.model.Coord2D;
 import boardifier.model.GameException;
@@ -72,13 +75,32 @@ class TestAiCamarade{
         // Get the action list from the AI
         ActionList actionList = aiDecider.decide();
 
-        // Playing a movement card involves the following :
-        // Discarding a card, moving the king, putting a new pawn
-
-        System.out.println(actionList.toString());
-
         // is the AI playing a movement card ?
         assertEquals(1,ActionsUtils.actionListToInt(actionList));
 
+    }
+
+    @Test
+    void testPeutPiocherOuJouerSurPlateauVide(){
+        // Create the AI decider
+        KoRDeciderCamarade aiDecider = new KoRDeciderCamarade(stageModel.getModel(), null, PlayerData.PLAYER_RED);
+
+        // Get the AI cards
+        final MovementCardSpread redMoveCardsHand = stageModel.getRedMovementCardsSpread();
+        System.out.println("Red player first card is : " + redMoveCardsHand.getElement(0,0));
+        final MovementCard movementCard = stageModel.getMovementCards(MovementCard.Owner.PLAYER_RED).get(0);
+        System.out.println("Got this from red player hand : " + movementCard);
+
+        // Remove a card from the red AI
+        final ActionList actionList = new ActionList();
+        actionList.addAll(ActionFactory.generatePutInContainer(stageModel.getModel(), movementCard, stageModel.getMovementCardStackPlayed().getName(), 0, 0));
+        new ActionPlayer(stageModel.getModel(), null, actionList).start();
+        System.out.println("Red player first card is : " + redMoveCardsHand.getElement(0,0));
+
+        // Get the action list from the AI
+        ActionList actionL = aiDecider.decide();
+
+        // is the AI playing a movement card ?
+        assertEquals(1,ActionsUtils.actionListToInt(actionL));
     }
 }
