@@ -1,18 +1,18 @@
 package model;
 
 import boardifier.model.Model;
-import model.container.card.HeroCardStack;
 import model.data.AIData;
 import model.data.PlayerData;
+import model.element.Pawn;
 import utils.ContainerElements;
 
 public class GameStatistic {
 
     private final int gameNumber;
-    private int gameBlocked;
+    private double gameBlocked;
 
-    private AIStatistic blueStatistic;
-    private AIStatistic redStatistic;
+    private final AIStatistic blueStatistic;
+    private final AIStatistic redStatistic;
 
     public GameStatistic(AIData blueAIData, AIData redAIData, int gameNumber) {
         this.gameNumber = gameNumber;
@@ -40,8 +40,13 @@ public class GameStatistic {
             throw new IllegalArgumentException("Player data is null");
         }
 
-        blueStatistic.incrementHeroCardUsed(stageModel.getBlueHeroCardStack());
-        redStatistic.incrementHeroCardUsed(stageModel.getRedHeroCardStack());
+        final int blueHeroCardUsed = 4 - ContainerElements.countElements(stageModel.getBlueHeroCardStack());
+        final int redHeroCardUsed = 4 - ContainerElements.countElements(stageModel.getRedHeroCardStack());
+        blueStatistic.incrementHeroCardUsed(blueHeroCardUsed);
+        redStatistic.incrementHeroCardUsed(redHeroCardUsed);
+
+        blueStatistic.incrementPawnPlay(stageModel.getTotalPawnOnBoard(Pawn.Status.BLUE_PAWN) - blueHeroCardUsed);
+        redStatistic.incrementPawnPlay(stageModel.getTotalPawnOnBoard(Pawn.Status.RED_PAWN) - redHeroCardUsed);
 
         System.out.println("Winner : " + playerData.name().toLowerCase());
     }
@@ -61,9 +66,9 @@ public class GameStatistic {
 
         private final PlayerData playerData;
         private final AIData ai;
-        private int totalWin;
-        private int totalHeroCardUsed;
-        private int totalPawnUsed;
+        private double totalWin;
+        private double totalHeroCardUsed;
+        private double totalPawnPlay;
 
         public AIStatistic(PlayerData playerData, AIData aiData) {
             this.playerData = playerData;
@@ -71,28 +76,32 @@ public class GameStatistic {
 
             this.totalWin = 0;
             this.totalHeroCardUsed = 0;
-            this.totalPawnUsed = 0;
+            this.totalPawnPlay = 0;
         }
 
         public void incrementWin() {
             this.totalWin++;
         }
 
-        public void incrementHeroCardUsed(HeroCardStack heroCardStack) {
-            this.totalHeroCardUsed += 4 - ContainerElements.countElements(heroCardStack);
+        public void incrementHeroCardUsed(int heroCardUsed) {
+            this.totalHeroCardUsed += heroCardUsed;
         }
 
-        public void incrementPawnUsed(int pawns) {
-            this.totalPawnUsed += 52 - pawns;
+        public void incrementPawnPlay(int pawns) {
+            this.totalPawnPlay += pawns;
         }
 
         private void printStatistics(int totalGame) {
             System.out.println();
-            System.out.println("AI "+(playerData.getId()+1)+" ("+ai.name().toLowerCase()+"):");
+            System.out.println("AI "+(playerData.getId()+1)+" ("+ai.name().toLowerCase()+")");
             System.out.println("| Total win: " + totalWin);
             System.out.println("| Win rate: " + (100 * totalWin / totalGame)+"%");
+            System.out.println("-".repeat(20));
             System.out.println("| Total Hero card: " + totalHeroCardUsed);
             System.out.println("| Hero card rate: " + (25 * totalHeroCardUsed / totalGame)+"%");
+            System.out.println("-".repeat(20));
+            System.out.println("| Total Pawn played: " + totalPawnPlay);
+            System.out.println("| Pawn played average : " + (totalPawnPlay / totalGame));
         }
     }
 
