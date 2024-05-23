@@ -109,7 +109,6 @@ public class KoRController extends Controller {
                     return;
                 }
 
-                System.out.println("action");
                 ok = actionAnalyse(gameStage, playerData, line);
                 // If the input is invalid, loop again for new input
                 if (!ok) System.out.println("incorrect instruction. retry !");

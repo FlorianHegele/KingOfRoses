@@ -4,6 +4,8 @@ import control.ConsoleController;
 import model.GameConfigurationModel;
 import utils.Boardifiers;
 
+import static model.GameConfigurationModel.*;
+
 /**
  * The KoRConsole class serves as the entry point for the King of Roses game in console mode.
  * It initializes the necessary components such as the console controller, model, and game configuration,
@@ -24,7 +26,8 @@ public class KoRConsole {
         final Model model = new Model();
 
         // Set up game configuration
-        final GameConfigurationModel gameConfigurationModel = new GameConfigurationModel(model);
+        final GameConfigurationModel gameConfigurationModel = new GameConfigurationModel(model, 1,
+                DEFAULT_PLAYER_MODE, DEFAULT_LOGGER_MODE, DEFAULT_PLAYER_INTERACTION, DEFAULT_RENDER_GAME);
 
         // Init Game
         final Boardifiers boardifiers = new Boardifiers(model, consoleController, gameConfigurationModel);
