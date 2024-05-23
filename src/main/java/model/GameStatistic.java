@@ -48,6 +48,12 @@ public class GameStatistic {
         blueStatistic.incrementPawnPlay(stageModel.getTotalPawnOnBoard(Pawn.Status.BLUE_PAWN) - blueHeroCardUsed);
         redStatistic.incrementPawnPlay(stageModel.getTotalPawnOnBoard(Pawn.Status.RED_PAWN) - redHeroCardUsed);
 
+        blueStatistic.incrementPoint(stageModel.getTotalPlayerPointSimple(PlayerData.PLAYER_BLUE));
+        redStatistic.incrementPoint(stageModel.getTotalPlayerPointSimple(PlayerData.PLAYER_RED));
+
+        blueStatistic.incrementZone(stageModel.getTotalPawnZone(PlayerData.PLAYER_BLUE));
+        redStatistic.incrementZone(stageModel.getTotalPawnZone(PlayerData.PLAYER_RED));
+
         System.out.println("Winner : " + playerData.name().toLowerCase());
     }
 
@@ -58,7 +64,9 @@ public class GameStatistic {
         System.out.println("| Total tie: " + gameBlocked);
         System.out.println("| Tie rate: " + (100 * gameBlocked / gameNumber)+"%");
 
+        System.out.println();
         blueStatistic.printStatistics(gameNumber);
+        System.out.println();
         redStatistic.printStatistics(gameNumber);
     }
 
@@ -69,14 +77,12 @@ public class GameStatistic {
         private double totalWin;
         private double totalHeroCardUsed;
         private double totalPawnPlay;
+        private double totalPoint;
+        private double totalZone;
 
         public AIStatistic(PlayerData playerData, AIData aiData) {
             this.playerData = playerData;
             this.ai = aiData;
-
-            this.totalWin = 0;
-            this.totalHeroCardUsed = 0;
-            this.totalPawnPlay = 0;
         }
 
         public void incrementWin() {
@@ -91,6 +97,14 @@ public class GameStatistic {
             this.totalPawnPlay += pawns;
         }
 
+        public void incrementPoint(int points) {
+            this.totalPoint += points;
+        }
+
+        public void incrementZone(int zone) {
+            this.totalZone += zone;
+        }
+
         private void printStatistics(int totalGame) {
             System.out.println();
             System.out.println("AI "+(playerData.getId()+1)+" ("+ai.name().toLowerCase()+")");
@@ -102,6 +116,12 @@ public class GameStatistic {
             System.out.println("-".repeat(20));
             System.out.println("| Total Pawn played: " + totalPawnPlay);
             System.out.println("| Pawn played average : " + (totalPawnPlay / totalGame));
+            System.out.println("-".repeat(20));
+            System.out.println("| Total Point: " + totalPoint);
+            System.out.println("| Point average : " + (totalPoint / totalGame));
+            System.out.println("-".repeat(20));
+            System.out.println("| Total Zone: " + totalZone);
+            System.out.println("| Zone average : " + (totalZone / totalGame));
         }
     }
 

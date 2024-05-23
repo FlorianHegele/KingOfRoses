@@ -804,6 +804,20 @@ public class KoRStageModel extends GameStageModel {
         return totalCounter;
     }
 
+    public int getTotalPawnZone(PlayerData playerData) {
+        int totalCounter = 0;
+        for (int row = 0; row < board.getNbRows(); row++) {
+            for (int col = 0; col < board.getNbCols(); col++) {
+                final int total = getPlayerZonePawn(playerData, row, col, false);
+
+                // Add the square of the neighbor count to the final counter
+                totalCounter += (total > 0) ? 1 : 0;
+            }
+        }
+        board.resetReachableCells(true);
+        return totalCounter;
+    }
+
     /**
      * Calculates the zone points for the specified player at the given row and column on the board.
      * @param playerData The player for whom to calculate the zone points.
