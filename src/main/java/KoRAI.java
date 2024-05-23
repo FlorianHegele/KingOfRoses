@@ -2,6 +2,7 @@ import boardifier.model.GameException;
 import boardifier.model.Model;
 import control.ConsoleController;
 import model.GameConfigurationModel;
+import model.GameStatistic;
 import model.KoRStageModel;
 import model.data.AIData;
 import model.data.PlayerData;
@@ -28,12 +29,7 @@ public class KoRAI {
 
         final int iter = Strings.parseInt(args[2], 500);
 
-        int counterBlue = 0;
-        int counterRed = 0;
-        int counterTie = 0;
-
-        int blueCardHeroUse = 0;
-        int redCardHeroUse = 0;
+        final GameStatistic gameStatistic = new GameStatistic(blueAI, redAI, iter);
 
         for (int i = 1; i < iter+1; i++) {
             System.out.println("Iteration #" + i);
@@ -58,21 +54,9 @@ public class KoRAI {
             // Start Game
             try {
                 boardifiers.startGame();
-                final PlayerData playerData = PlayerData.getPlayerData(model.getIdWinner());
-                if(playerData == PlayerData.NONE) {
-                    counterTie++;
-                } else if (playerData == PlayerData.PLAYER_BLUE) {
-                    counterBlue++;
-                } else if (playerData == PlayerData.PLAYER_RED) {
-                    counterRed++;
-                } else if(playerData == null) {
-                    throw new IllegalArgumentException("Player data is null");
-                }
-                final KoRStageModel stageModel = (KoRStageModel) model.getGameStage();
-                blueCardHeroUse += 4 - ContainerElements.countElements(stageModel.getBlueHeroCardStack());
-                redCardHeroUse += 4 - ContainerElements.countElements(stageModel.getRedHeroCardStack());
+                // Game finish
 
-                System.out.println("Winner : " + playerData.name().toLowerCase());
+                gameStatistic.addStatistic(model);
             } catch (GameException e) {
                 System.err.println("Cannot start the game n°"+ i +". Abort");
                 break;
@@ -80,25 +64,7 @@ public class KoRAI {
             System.out.println();
         }
 
-        System.out.println("Total game : " + iter);
-        printState(PlayerData.PLAYER_BLUE, blueAI, counterBlue, blueCardHeroUse, iter);
-        printState(PlayerData.PLAYER_RED, redAI, counterRed, redCardHeroUse, iter);
-        printState(PlayerData.NONE, null, counterTie, -1, iter);
-    }
-
-    private static void printState(PlayerData playerData, AIData ai, int totalWin, int heroCard, int totalGame) {
-        if(playerData == PlayerData.NONE) {
-            System.out.println("Tie :");
-            System.out.println("| Total tie: " + totalWin);
-            System.out.println("| Tie rate: " + (100 * totalWin / totalGame)+"%");
-        } else {
-            System.out.println("Win AI "+(playerData.getId()+1)+" ("+ai.name().toLowerCase()+"):");
-            System.out.println("| Total win: " + totalWin);
-            System.out.println("| Win rate: " + (100 * totalWin / totalGame)+"%");
-            System.out.println("| Total Hero card: " + heroCard);
-            System.out.println("| Hero card rate: " + (25 * heroCard / totalGame)+"%");
-        }
-        System.out.println();
+        gameStatistic.printStatistics();
     }
 
 }
