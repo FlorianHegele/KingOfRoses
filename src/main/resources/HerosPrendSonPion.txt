@@ -1,0 +1,10 @@
+3
+0
+player1
+player2
+D1
+D4
+D2
+P
+D3
+stop
