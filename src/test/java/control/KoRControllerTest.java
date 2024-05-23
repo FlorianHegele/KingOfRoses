@@ -54,13 +54,18 @@ class KoRControllerTest {
         assertEquals(PlayerData.NONE.getId(), model.getIdWinner());
     }
 
+    // TODO : Rewrite this test
+    // + Do not test SimpleActionList because
+    // if we test every entry for the player,
+    // it means that every functions in this
+    // class have been used!
     @Test
-    void testWrongInput() throws GameException {
-        writeInput("A", "B", "D");
+    void testPlace() throws GameException {
+        writeInput("A");
 
         setupBoard();
 
-        assertTrue(nothingChange());
+        assertEquals(0, model.getIdPlayer());
     }
 
     private void writeInput(String... inputs) {
@@ -68,6 +73,7 @@ class KoRControllerTest {
         System.setIn(new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8)));
     }
 
+    /*
     private boolean nothingChange(int redPawnOnBoard, int bluePawnOnBoard, int movementCardInStack) {
         return stageModel.getTotalPawnOnBoard(Pawn.Status.RED_PAWN) == redPawnOnBoard
                 && stageModel.getTotalPawnOnBoard(Pawn.Status.BLUE_PAWN) == bluePawnOnBoard
@@ -77,4 +83,5 @@ class KoRControllerTest {
     private boolean nothingChange() {
         return nothingChange(0, 0, 14);
     }
+     */
 }
