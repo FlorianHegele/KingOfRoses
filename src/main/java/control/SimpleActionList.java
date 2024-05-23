@@ -1,7 +1,6 @@
 package control;
 
 import boardifier.control.ActionFactory;
-import boardifier.control.ActionPlayer;
 import boardifier.model.ContainerElement;
 import boardifier.model.Coord2D;
 import boardifier.model.Model;
@@ -9,11 +8,11 @@ import boardifier.model.action.ActionList;
 import boardifier.model.action.FlipPawn;
 import model.GameConfigurationModel;
 import model.KoRStageModel;
-import model.data.PlayerData;
 import model.container.KoRBoard;
 import model.container.PawnPot;
 import model.container.card.HeroCardStack;
 import model.container.card.MovementCardSpread;
+import model.data.PlayerData;
 import model.element.Pawn;
 import model.element.card.HeroCard;
 import model.element.card.MovementCard;
@@ -46,7 +45,7 @@ public class SimpleActionList {
         this.gameStage = (KoRStageModel) model.getGameStage();
         this.playerData = playerData;
 
-        if(playerData == null) throw new IllegalArgumentException("The player data cannot be null !");
+        if (playerData == null) throw new IllegalArgumentException("The player data cannot be null !");
     }
 
     /**
@@ -187,7 +186,8 @@ public class SimpleActionList {
         }
 
         // If Blue and Red pot is empty, this means that the code cannot be reached because the game should be over
-        if (pawnPot.isEmpty()) throw new IllegalCallerException("Unreachable code, the code to determine whether a player can play must be re-read");
+        if (pawnPot.isEmpty())
+            throw new IllegalCallerException("Unreachable code, the code to determine whether a player can play must be re-read");
 
         final int countMovementCards = ContainerElements.countElements(movementCardSpread);
         final Coord2D kingPos = ContainerElements.getElementPosition(kingPawn, board);
@@ -239,7 +239,8 @@ public class SimpleActionList {
         }
 
         // If Blue and Red pot is empty, this means that the code cannot be reached because the game should be over
-        if (pawnPot.isEmpty()) throw new IllegalCallerException("Unreachable code, the code to determine whether a player can play must be re-read");
+        if (pawnPot.isEmpty())
+            throw new IllegalCallerException("Unreachable code, the code to determine whether a player can play must be re-read");
 
         // If the player has no more hero cards, return an empty action list
         if (ContainerElements.countElements(heroCardStack) == 0) return actions;
@@ -292,7 +293,8 @@ public class SimpleActionList {
                 : gameStage.getRedMovementCardsSpread();
 
         // If Blue and Red pot is empty, this means that the code cannot be reached because the game should be over
-        if (pawnPot.isEmpty()) throw new IllegalCallerException("Unreachable code, the code to determine whether a player can play must be re-read");
+        if (pawnPot.isEmpty())
+            throw new IllegalCallerException("Unreachable code, the code to determine whether a player can play must be re-read");
 
 
         // If the player can take a card from the stack
@@ -331,7 +333,8 @@ public class SimpleActionList {
         }
 
         // If Blue and Red pot is empty, this means that the code cannot be reached because the game should be over
-        if (pawnPot.isEmpty()) throw new IllegalCallerException("Unreachable code, the code to determine whether a player can play must be re-read");
+        if (pawnPot.isEmpty())
+            throw new IllegalCallerException("Unreachable code, the code to determine whether a player can play must be re-read");
 
         // If the player can pick up a movement card.
         final int countMovementCards = ContainerElements.countElements(movementCardSpread);
@@ -388,11 +391,11 @@ public class SimpleActionList {
 
         // Put the played cards back into the stack
         for (MovementCard movementCard : movementCardList) {
-            if(movementCard.isInverted()) movementCard.toggleInverted();
+            if (movementCard.isInverted()) movementCard.toggleInverted();
             actionList.addAll(ActionFactory.generatePutInContainer(model, movementCard, containerName, 0, 0));
         }
 
         return actionList;
     }
-    
+
 }

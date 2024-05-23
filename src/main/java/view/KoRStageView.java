@@ -25,7 +25,8 @@ public class KoRStageView extends GameStageView {
 
     /**
      * Constructs a new KoRStageView with the specified name and associated game stage model.
-     * @param name The name of the KoRStageView.
+     *
+     * @param name           The name of the KoRStageView.
      * @param gameStageModel The game stage model associated with this view.
      */
     public KoRStageView(String name, GameStageModel gameStageModel) {

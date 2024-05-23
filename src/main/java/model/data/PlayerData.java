@@ -19,7 +19,7 @@ public enum PlayerData {
     /**
      * Constructs a PlayerData enum with the specified ID and background color.
      *
-     * @param id the unique ID of the player.
+     * @param id              the unique ID of the player.
      * @param backgroundColor the background color associated with the player.
      */
     PlayerData(int id, String backgroundColor) {
@@ -70,8 +70,8 @@ public enum PlayerData {
      * @return the PlayerData with the specified ID, or null if no matching PlayerData is found.
      */
     public static PlayerData getPlayerData(int id) {
-        if(id == PLAYER_RED.id) return PLAYER_RED;
-        if(id == PLAYER_BLUE.id) return PLAYER_BLUE;
+        if (id == PLAYER_RED.id) return PLAYER_RED;
+        if (id == PLAYER_BLUE.id) return PLAYER_BLUE;
         return (id == NONE.id) ? NONE : null;
     }
 

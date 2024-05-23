@@ -22,8 +22,8 @@ public class KoRDeciderGuide extends KoRDecider {
     /**
      * Constructs a KoRDeciderGuide with the specified model, control, and player data.
      *
-     * @param model the game model.
-     * @param control the game controller.
+     * @param model      the game model.
+     * @param control    the game controller.
      * @param playerData the player data.
      */
     public KoRDeciderGuide(Model model, Controller control, PlayerData playerData) {
@@ -50,11 +50,11 @@ public class KoRDeciderGuide extends KoRDecider {
         final List<ActionPoints> actionHeroList = simpleActionList.getPossibleHeroMove();
 
         // Check if playing a hero card is possible
-        if(!actionHeroList.isEmpty()) {
+        if (!actionHeroList.isEmpty()) {
             Logger.debug("A card and a hero card is playable for : " + playerData);
             // Should the AI attack?
             Collections.sort(actionHeroList);
-            for(ActionPoints action : actionHeroList) {
+            for (ActionPoints action : actionHeroList) {
                 Logger.debug("HeroCard: " + action);
                 if (action.getPoint() >= THRESHOLD)
                     return action.getActionList();
@@ -62,11 +62,11 @@ public class KoRDeciderGuide extends KoRDecider {
         }
 
         // Check if playing a movement card is possible
-        if(!actionCardList.isEmpty()) {
+        if (!actionCardList.isEmpty()) {
             Logger.debug("A card is playable for : " + playerData);
             // Order actions by most to least points and choose the action with the most points
             Collections.sort(actionCardList);
-            for(ActionPoints actionCard : actionCardList) {
+            for (ActionPoints actionCard : actionCardList) {
                 Logger.debug("ActionCard : " + actionCard);
             }
             return actionCardList.get(0).getActionList();
@@ -74,7 +74,7 @@ public class KoRDeciderGuide extends KoRDecider {
 
         // As a last resort, take a card
         Logger.debug("A take card action is playable for : " + playerData);
-        if(!actionTakeList.isEmpty()) {
+        if (!actionTakeList.isEmpty()) {
             return actionTakeList.get(0);
         }
 

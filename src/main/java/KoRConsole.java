@@ -1,17 +1,8 @@
+import boardifier.model.GameException;
 import boardifier.model.Model;
 import control.ConsoleController;
-import control.KoRController;
-import boardifier.model.GameException;
-import boardifier.view.View;
-
-import boardifier.control.StageFactory;
-import control.GameConfigurationController;
 import model.GameConfigurationModel;
-import model.data.AIData;
-import model.data.PlayerData;
 import utils.Boardifiers;
-
-import java.util.Map;
 
 /**
  * The KoRConsole class serves as the entry point for the King of Roses game in console mode.
@@ -22,6 +13,7 @@ public class KoRConsole {
 
     /**
      * The main method serves as the entry point for the King of Roses game in console mode.
+     *
      * @param args Command line arguments (not used).
      */
     public static void main(String[] args) {

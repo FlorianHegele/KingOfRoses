@@ -11,8 +11,9 @@ public class MovementCardStackPlayed extends ContainerElement {
 
     /**
      * Constructs a new MovementCardStackPlayed with the specified coordinates and associated game stage model.
-     * @param x The x-coordinate of the played stack.
-     * @param y The y-coordinate of the played stack.
+     *
+     * @param x              The x-coordinate of the played stack.
+     * @param y              The y-coordinate of the played stack.
      * @param gameStageModel The game stage model associated with this played stack.
      */
     public MovementCardStackPlayed(int x, int y, GameStageModel gameStageModel) {

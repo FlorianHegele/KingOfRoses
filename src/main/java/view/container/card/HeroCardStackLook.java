@@ -11,6 +11,7 @@ public class HeroCardStackLook extends TinyGridLook {
 
     /**
      * Constructs a new HeroCardStackLook with the specified container element.
+     *
      * @param containerElement The container element associated with this hero card stack look.
      */
     public HeroCardStackLook(ContainerElement containerElement) {

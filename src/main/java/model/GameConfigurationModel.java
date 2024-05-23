@@ -6,9 +6,7 @@ import model.data.AIData;
 import model.data.PlayerData;
 
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.Map;
-
 import java.util.Random;
 
 /**
@@ -35,12 +33,12 @@ public class GameConfigurationModel {
      * Map to store the player data and AI data.
      * PlayerData is the key and AIData is the value.
      */
-    private final Map <PlayerData, AIData> playerDataAIDataMap;
+    private final Map<PlayerData, AIData> playerDataAIDataMap;
 
     /**
      * Constructs a GameConfigurationModel with the specified model, player mode, and logger mode.
      *
-     * @param model the game model.
+     * @param model      the game model.
      * @param playerMode the player mode (0: Human vs. Human, 1: Human vs. AI, 2: AI vs. AI).
      * @param loggerMode the logger mode (0: None, 1: Debug).
      */
@@ -100,8 +98,10 @@ public class GameConfigurationModel {
     }
 
     public void addAI(Map<PlayerData, AIData> AIData) {
-        if(playerMode != 2) throw new IllegalCallerException("You cannot add 2 AIs if the player mode is not set to 2");
-        if(AIData == null || AIData.size() != 2) throw new IllegalArgumentException("AIData must contain exactly two player");
+        if (playerMode != 2)
+            throw new IllegalCallerException("You cannot add 2 AIs if the player mode is not set to 2");
+        if (AIData == null || AIData.size() != 2)
+            throw new IllegalArgumentException("AIData must contain exactly two player");
         playerDataAIDataMap.putAll(AIData);
     }
 

@@ -14,7 +14,8 @@ public class HeroCard extends GameElement {
 
     /**
      * Constructs a new hero card with the specified status and game stage model.
-     * @param status The status of the hero card.
+     *
+     * @param status         The status of the hero card.
      * @param gameStageModel The game stage model to which this hero card belongs.
      */
     public HeroCard(Status status, GameStageModel gameStageModel) {
@@ -31,6 +32,7 @@ public class HeroCard extends GameElement {
 
     /**
      * Gets the status of the hero card.
+     *
      * @return The status of the hero card.
      */
     public Status getStatus() {
@@ -50,6 +52,7 @@ public class HeroCard extends GameElement {
 
         /**
          * Constructs a new status with the specified player data.
+         *
          * @param playerData The player data associated with this status.
          */
         Status(PlayerData playerData) {
@@ -58,7 +61,8 @@ public class HeroCard extends GameElement {
 
         /**
          * Constructs a new status with the specified ID and background color.
-         * @param id The ID of the status.
+         *
+         * @param id              The ID of the status.
          * @param backgroundColor The background color associated with this status.
          */
         Status(int id, String backgroundColor) {
@@ -68,6 +72,7 @@ public class HeroCard extends GameElement {
 
         /**
          * Gets the ID of the status.
+         *
          * @return The ID of the status.
          */
         public int getId() {
@@ -76,6 +81,7 @@ public class HeroCard extends GameElement {
 
         /**
          * Gets the background color associated with this status.
+         *
          * @return The background color of the status.
          */
         public String getBackgroundColor() {

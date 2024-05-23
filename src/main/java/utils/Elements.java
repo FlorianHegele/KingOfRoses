@@ -18,7 +18,7 @@ public class Elements {
      * Updates the text of a text element with the specified value.
      *
      * @param textElement the text element to update.
-     * @param value the new value to set as the text of the element.
+     * @param value       the new value to set as the text of the element.
      */
     public static void updateText(TextElement textElement, int value) {
         final String text = (value == 0) ? "" : String.valueOf(value);

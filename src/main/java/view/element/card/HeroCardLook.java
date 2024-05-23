@@ -13,6 +13,7 @@ public class HeroCardLook extends ElementLook {
 
     /**
      * Constructs a new HeroCardLook for the specified hero card element.
+     *
      * @param element The hero card element to render.
      */
     public HeroCardLook(GameElement element) {

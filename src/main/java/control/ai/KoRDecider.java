@@ -24,8 +24,8 @@ public abstract class KoRDecider extends Decider {
     /**
      * Constructs a KoRDecider with the specified model, controller, and player data.
      *
-     * @param model the game model.
-     * @param control the game controller.
+     * @param model      the game model.
+     * @param control    the game controller.
      * @param playerData the player data associated with this decider.
      */
     protected KoRDecider(Model model, Controller control, PlayerData playerData) {

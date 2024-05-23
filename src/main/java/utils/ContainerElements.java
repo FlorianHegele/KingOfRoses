@@ -19,7 +19,7 @@ public class ContainerElements {
     /**
      * Retrieves the position of a game element within a container element.
      *
-     * @param gameElement the game element whose position is to be retrieved.
+     * @param gameElement      the game element whose position is to be retrieved.
      * @param containerElement the container element containing the game element.
      * @return the position of the game element as a {@link Coord2D} object, or null if the element is not found.
      */

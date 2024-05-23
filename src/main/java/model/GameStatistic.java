@@ -6,6 +6,11 @@ import model.data.PlayerData;
 import model.element.Pawn;
 import utils.ContainerElements;
 
+/**
+ * The GameStatistic class is responsible for gathering and displaying statistics
+ * for a series of AI-driven games in the King of Roses game. It tracks various
+ * metrics.
+ */
 public class GameStatistic {
 
     private final int gameNumber;
@@ -14,6 +19,13 @@ public class GameStatistic {
     private final AIStatistic blueStatistic;
     private final AIStatistic redStatistic;
 
+    /**
+     * Constructs a GameStatistic instance with the specified AI data and number of games.
+     *
+     * @param blueAIData The AI for the blue player.
+     * @param redAIData  The AI for the red player.
+     * @param gameNumber The total number of games to be played.
+     */
     public GameStatistic(AIData blueAIData, AIData redAIData, int gameNumber) {
         this.gameNumber = gameNumber;
         this.gameBlocked = 0;
@@ -22,21 +34,29 @@ public class GameStatistic {
         this.redStatistic = new AIStatistic(PlayerData.PLAYER_RED, redAIData);
     }
 
+    /**
+     * Increments the count of blocked games (games that ended in a tie).
+     */
     public void incrementGameBlocked() {
         this.gameBlocked++;
     }
 
+    /**
+     * Adds statistics from a completed game to the overall statistics.
+     *
+     * @param model The model of the completed game.
+     */
     public void addStatistic(Model model) {
         final KoRStageModel stageModel = (KoRStageModel) model.getGameStage();
 
         final PlayerData playerData = PlayerData.getPlayerData(model.getIdWinner());
-        if(playerData == PlayerData.NONE) {
+        if (playerData == PlayerData.NONE) {
             incrementGameBlocked();
         } else if (playerData == PlayerData.PLAYER_BLUE) {
             blueStatistic.incrementWin();
         } else if (playerData == PlayerData.PLAYER_RED) {
             redStatistic.incrementWin();
-        } else if(playerData == null) {
+        } else if (playerData == null) {
             throw new IllegalArgumentException("Player data is null");
         }
 
@@ -62,12 +82,15 @@ public class GameStatistic {
         System.out.println("Winner : " + playerData.name().toLowerCase());
     }
 
+    /**
+     * Prints the gathered statistics to the console.
+     */
     public void printStatistics() {
         System.out.println("Game Number: " + this.gameNumber);
 
         System.out.println("Tie :");
         System.out.println("| Total tie: " + gameBlocked);
-        System.out.println("| Tie rate: " + (100 * gameBlocked / gameNumber)+"%");
+        System.out.println("| Tie rate: " + (100 * gameBlocked / gameNumber) + "%");
 
         System.out.println();
         blueStatistic.printStatistics(gameNumber);
@@ -75,6 +98,10 @@ public class GameStatistic {
         redStatistic.printStatistics(gameNumber);
     }
 
+    /**
+     * The AIStatistic class is responsible for tracking and displaying statistics
+     * for a single AI. It tracks metrics.
+     */
     public static class AIStatistic {
 
         private final PlayerData playerData;
@@ -86,46 +113,85 @@ public class GameStatistic {
         private int totalZone;
         private double averageZoneSize;
 
+        /**
+         * Constructs an AIStatistic instance with the specified player and AI.
+         *
+         * @param playerData The player associated to AI.
+         * @param aiData     The AI associated to the player.
+         */
         public AIStatistic(PlayerData playerData, AIData aiData) {
             this.playerData = playerData;
             this.ai = aiData;
         }
 
+        /**
+         * Increments the win count for the AI.
+         */
         public void incrementWin() {
             this.totalWin++;
         }
 
+        /**
+         * Increments the count of hero cards used by the AI.
+         *
+         * @param heroCardUsed The number of hero cards used in the current game.
+         */
         public void incrementHeroCardUsed(int heroCardUsed) {
             this.totalHeroCardUsed += heroCardUsed;
         }
 
+        /**
+         * Increments the count of pawns played by the AI.
+         *
+         * @param pawns The number of pawns played in the current game.
+         */
         public void incrementPawnPlay(int pawns) {
             this.totalPawnPlay += pawns;
         }
 
+        /**
+         * Increments the total points scored by the AI.
+         *
+         * @param points The points scored in the current game.
+         */
         public void incrementPoint(int points) {
             this.totalPoint += points;
         }
 
+        /**
+         * Increments the count of zones controlled by the AI.
+         *
+         * @param zone The number of zones controlled in the current game.
+         */
         public void incrementZone(int zone) {
             this.totalZone += zone;
         }
 
+        /**
+         * Increments the total size of zones controlled by the AI.
+         *
+         * @param averageZoneSize The average size of zones controlled in the current game.
+         */
         public void incrementAverageZoneSize(double averageZoneSize) {
             this.averageZoneSize += averageZoneSize;
         }
 
+        /**
+         * Prints the AI statistics to the console.
+         *
+         * @param totalGame The total number of games played.
+         */
         private void printStatistics(double totalGame) {
             System.out.println();
-            System.out.println("AI "+(playerData.getId()+1)+" ("+ai.name().toLowerCase()+")");
+            System.out.println("AI " + (playerData.getId() + 1) + " (" + ai.name().toLowerCase() + ")");
 
             System.out.println("| Total win: " + totalWin);
-            System.out.println("| Win rate: " + (100 * totalWin / totalGame)+"%");
+            System.out.println("| Win rate: " + (100 * totalWin / totalGame) + "%");
 
             System.out.println("-".repeat(20));
 
             System.out.println("| Total Hero card: " + totalHeroCardUsed);
-            System.out.println("| Hero card rate: " + (25 * totalHeroCardUsed / totalGame)+"%");
+            System.out.println("| Hero card rate: " + (25 * totalHeroCardUsed / totalGame) + "%");
 
             System.out.println("-".repeat(20));
 

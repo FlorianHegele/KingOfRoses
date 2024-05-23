@@ -11,6 +11,7 @@ public class MovementCardSpreadLook extends GridLook {
 
     /**
      * Constructs a new MovementCardSpreadLook with the specified container element.
+     *
      * @param containerElement The container element associated with this movement card spread look.
      */
     public MovementCardSpreadLook(ContainerElement containerElement) {

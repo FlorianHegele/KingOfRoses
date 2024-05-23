@@ -12,6 +12,7 @@ public class PawnLook extends ElementLook {
 
     /**
      * Constructs a new PawnLook for the specified pawn element.
+     *
      * @param element The pawn element to render.
      */
     public PawnLook(Pawn element) {
@@ -26,7 +27,7 @@ public class PawnLook extends ElementLook {
         Pawn pawn = (Pawn) element;
         Pawn.Status status = pawn.getStatus();
 
-        if(pawn.isUnderKing()) {
+        if (pawn.isUnderKing()) {
             shape[0][0] = ConsoleColor.BLACK + Pawn.Status.KING_PAWN.getBackgroundColor() + " " + ConsoleColor.RESET;
         } else {
             // Set the shape character based on the pawn's status and background color
