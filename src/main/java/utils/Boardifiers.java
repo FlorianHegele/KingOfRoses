@@ -54,4 +54,8 @@ public class Boardifiers {
     public KoRStageModel getStageModel() {
         return (KoRStageModel) model.getGameStage();
     }
+
+    public KoRController getController() {
+        return controller;
+    }
 }
