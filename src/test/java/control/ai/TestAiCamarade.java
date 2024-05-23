@@ -48,7 +48,7 @@ class TestAiCamarade{
         final Model model = new Model();
 
         // Set up game configuration
-        final GameConfigurationModel gameConfigurationModel = new GameConfigurationModel(model,2,1,true);
+        final GameConfigurationModel gameConfigurationModel = new GameConfigurationModel(model,2,1,true,true);
         final GameConfigurationController gameConfigurationController = new GameConfigurationController(gameConfigurationModel, consoleController);
         gameConfigurationController.doCheck();
 

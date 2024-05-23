@@ -272,7 +272,7 @@ class KoRStageModelTest {
         actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getBluePawns()[1], stageModel.getBoard().getName(), 5, 4));
         new ActionPlayer(model, null, actionList).start();
 
-        stageModel.computePartyResult();
+        // stageModel.computePartyResult();
         assertEquals(-1, model.getIdWinner());
     }
 
@@ -286,7 +286,7 @@ class KoRStageModelTest {
         actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getBluePawns()[0], stageModel.getBoard().getName(), 4, 4));
         new ActionPlayer(model, null, actionList).start();
 
-        stageModel.computePartyResult();
+        // stageModel.computePartyResult();
         assertEquals(PlayerData.PLAYER_RED.getId(), model.getIdWinner());
     }
 
@@ -303,7 +303,7 @@ class KoRStageModelTest {
         actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getBluePawns()[4], stageModel.getBoard().getName(), 7, 7));
         new ActionPlayer(model, null, actionList).start();
 
-        stageModel.computePartyResult();
+        // stageModel.computePartyResult();
         assertEquals(PlayerData.PLAYER_BLUE.getId(), model.getIdWinner());
     }
 
