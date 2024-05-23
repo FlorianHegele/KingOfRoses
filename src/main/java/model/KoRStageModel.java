@@ -42,7 +42,7 @@ import java.util.*;
  * NB1: Callback functions MUST BE defined with a lambda expression (i.e. an arrow function).
  * NB2: There are other methods to define callbacks for other events ({@link #setupCallbacks()} methods)
  * In "The KoR", every time a pawn is put in the main board, we have to check if the party is ended and in this case, who is the winner.
- * This is the role of {@link #computePartyResult()}, which is called by the callback function if there is no more pawn to play.
+ * This is the role of {@link #computePartyResult(boolean)} ()}, which is called by the callback function if there is no more pawn to play.
  */
 public class KoRStageModel extends GameStageModel {
 
@@ -624,7 +624,7 @@ public class KoRStageModel extends GameStageModel {
 
                 // If the stack is empty, replenish it
                 if (getMovementCards(MovementCard.Owner.STACK).isEmpty())
-                    new ActionPlayer(model, null, new SimpleActionList(model).redoMovementCardStack());
+                    new ActionPlayer(model, null, new SimpleActionList(model).redoMovementCardStack()).start();
 
                 // Update the stack counter
                 movementCardStackText.setText(String.valueOf(ContainerElements.countElements(movementCardStack)));
@@ -723,7 +723,7 @@ public class KoRStageModel extends GameStageModel {
      * Computes the result of the game.
      * Determines the winner based on zone points and total pawns placed on the board.
      */
-    public void computePartyResult() {
+    public int computePartyResult(boolean renderGame) {
         final int idWinner;
         final int redZoneCounter = getTotalPlayerPoint(PlayerData.PLAYER_RED, false);
         final int blueZoneCounter = getTotalPlayerPoint(PlayerData.PLAYER_BLUE, false);
@@ -748,13 +748,15 @@ public class KoRStageModel extends GameStageModel {
             idWinner = winner.getId();
         }
 
-        System.out.println("Points rouge : " + redZoneCounter + ", pions total " + redPawnPlaced);
-        System.out.println("Points bleu : " + blueZoneCounter + ", pions total " + bluePawnPlaced);
-
+        if(renderGame) {
+            System.out.println("Points rouge : " + redZoneCounter + ", pions total " + redPawnPlaced);
+            System.out.println("Points bleu : " + blueZoneCounter + ", pions total " + bluePawnPlaced);
+        }
         // Set the winner
         model.setIdWinner(idWinner);
         // Stop de the game
         model.stopStage();
+        return idWinner;
     }
 
     /**
@@ -800,6 +802,38 @@ public class KoRStageModel extends GameStageModel {
             }
         }
         return totalCounter;
+    }
+
+    public int getTotalPawnZone(PlayerData playerData) {
+        int totalCounter = 0;
+        for (int row = 0; row < board.getNbRows(); row++) {
+            for (int col = 0; col < board.getNbCols(); col++) {
+                final int total = getPlayerZonePawn(playerData, row, col, false);
+
+                // Add the square of the neighbor count to the final counter
+                totalCounter += (total > 0) ? 1 : 0;
+            }
+        }
+        board.resetReachableCells(true);
+        return totalCounter;
+    }
+
+    public int getZoneAverage(PlayerData playerData) {
+        int totalCounter = 0;
+        int zoneNumber = 0;
+        for (int row = 0; row < board.getNbRows(); row++) {
+            for (int col = 0; col < board.getNbCols(); col++) {
+                final int total = getPlayerZonePawn(playerData, row, col, false);
+
+                // Add the square of the neighbor count to the final counter
+                if(total > 0) {
+                    totalCounter += total;
+                    zoneNumber += 1;
+                }
+            }
+        }
+        board.resetReachableCells(true);
+        return totalCounter / zoneNumber;
     }
 
     /**

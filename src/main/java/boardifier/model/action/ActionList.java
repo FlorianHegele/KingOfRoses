@@ -56,7 +56,7 @@ public class ActionList {
 
         for(List<GameAction> gameActions : actions) {
             for(GameAction gameAction : gameActions) {
-                stringBuilder.append(" | ").append(gameAction);
+                stringBuilder.append("\n | ").append(gameAction);
             }
         }
 

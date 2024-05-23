@@ -67,7 +67,6 @@ public class KoRDeciderGuide extends KoRDecider {
             // Order actions by most to least points and choose the action with the most points
             Collections.sort(actionCardList);
             for(ActionPoints actionCard : actionCardList) {
-                System.out.println();
                 Logger.debug("ActionCard : " + actionCard);
             }
             return actionCardList.get(0).getActionList();
@@ -75,7 +74,12 @@ public class KoRDeciderGuide extends KoRDecider {
 
         // As a last resort, take a card
         Logger.debug("A take card action is playable for : " + playerData);
-        return actionTakeList.get(0);
+        if(!actionTakeList.isEmpty()) {
+            return actionTakeList.get(0);
+        }
+
+        return actionHeroList.get(0).getActionList();
+
     }
 
 }

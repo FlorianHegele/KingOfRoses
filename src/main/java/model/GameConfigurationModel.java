@@ -21,8 +21,13 @@ public class GameConfigurationModel {
 
     public static final int DEFAULT_PLAYER_MODE = 0;
     public static final int DEFAULT_LOGGER_MODE = 0;
+    public static final boolean DEFAULT_PLAYER_INTERACTION = true;
+    public static final boolean DEFAULT_RENDER_GAME = true;
 
     private final Model model;
+
+    private boolean renderGame;
+    private boolean playerInteraction;
     private int playerMode;
     private int loggerMode;
 
@@ -39,12 +44,14 @@ public class GameConfigurationModel {
      * @param playerMode the player mode (0: Human vs. Human, 1: Human vs. AI, 2: AI vs. AI).
      * @param loggerMode the logger mode (0: None, 1: Debug).
      */
-    public GameConfigurationModel(Model model, int playerMode, int loggerMode) {
+    public GameConfigurationModel(Model model, int playerMode, int loggerMode, boolean playerInteraction, boolean renderGame) {
         this.model = model;
         this.playerDataAIDataMap = new EnumMap<>(PlayerData.class);
 
         setPlayerMode(playerMode);
         setLoggerMode(loggerMode);
+        setPlayerInteraction(playerInteraction);
+        setRenderGame(renderGame);
     }
 
     /**
@@ -53,7 +60,7 @@ public class GameConfigurationModel {
      * @param model the game model.
      */
     public GameConfigurationModel(Model model) {
-        this(model, DEFAULT_PLAYER_MODE, DEFAULT_LOGGER_MODE);
+        this(model, DEFAULT_PLAYER_MODE, DEFAULT_LOGGER_MODE, DEFAULT_PLAYER_INTERACTION, DEFAULT_RENDER_GAME);
     }
 
     /**
@@ -84,6 +91,21 @@ public class GameConfigurationModel {
     }
 
     /**
+     * Allows you to know whether you are rendering the game or not.
+     *
+     * @return a boolean that says whether the game should be rendered
+     */
+    public boolean isRenderGame() {
+        return renderGame;
+    }
+
+    public void addAI(Map<PlayerData, AIData> AIData) {
+        if(playerMode != 2) throw new IllegalCallerException("You cannot add 2 AIs if the player mode is not set to 2");
+        if(AIData == null || AIData.size() != 2) throw new IllegalArgumentException("AIData must contain exactly two player");
+        playerDataAIDataMap.putAll(AIData);
+    }
+
+    /**
      * Sets the player mode.
      *
      * @param playerMode the player mode to set.
@@ -99,6 +121,34 @@ public class GameConfigurationModel {
      */
     public void setLoggerMode(int loggerMode) {
         this.loggerMode = (loggerMode < 0) || (loggerMode > 1) ? DEFAULT_LOGGER_MODE : loggerMode;
+    }
+
+    /**
+     * Ensuring that players can interact directly with the game
+     *
+     * @param playerInteraction the player interaction mode to set.
+     */
+    public void setPlayerInteraction(boolean playerInteraction) {
+        this.playerInteraction = playerInteraction;
+    }
+
+    /**
+     * Whether to render the game.
+     * It's useful to disable rendering for AI testing.
+     *
+     * @param renderGame defines whether the game should be rendered.
+     */
+    public void setRenderGame(boolean renderGame) {
+        this.renderGame = renderGame;
+    }
+
+    /**
+     * Gets the current player interaction mode.
+     *
+     * @return the player interaction mode.
+     */
+    public boolean isPlayerInteraction() {
+        return playerInteraction;
     }
 
     /**

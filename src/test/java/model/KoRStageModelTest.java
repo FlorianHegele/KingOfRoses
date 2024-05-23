@@ -15,6 +15,7 @@ import model.element.Pawn;
 import model.element.card.MovementCard;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import utils.Boardifiers;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -31,17 +32,12 @@ class KoRStageModelTest {
         final Model model = new Model();
 
         // Set up game configuration
-        final GameConfigurationModel gameConfigurationModel = new GameConfigurationModel(model);
-        final GameConfigurationController gameConfigurationController = new GameConfigurationController(gameConfigurationModel, consoleController);
-        gameConfigurationController.doCheck();
+        final GameConfigurationModel gameConfigurationModel = new GameConfigurationModel(model, 2, 0, false, true);
 
-        // Load game elements
-        StageFactory.registerModelAndView("kor", "model.KoRStageModel", "view.KoRStageView");
-        final View korView = new View(model);
-        final KoRController control = new KoRController(model, korView, consoleController, gameConfigurationModel);
-        control.setFirstStageName("kor");
-
-        control.startGame();
+        // Init Game
+        final Boardifiers boardifiers = new Boardifiers(model, gameConfigurationModel);
+        boardifiers.initGame();
+        boardifiers.startGame();
 
         stageModel = (KoRStageModel) model.getGameStage();
     }
@@ -144,7 +140,7 @@ class KoRStageModelTest {
         assertEquals(pawn, stageModel.getPlayedPawn(4, 4)); // i = 2
     }
 
-    // TODO : computePartyResult, gameIsStuck, playerCanPlay, every Callbacks
+    // TODO : gameIsStuck, playerCanPlay, every Callbacks
 
     @Test
     void testTotalPlayerPoint() {
@@ -261,6 +257,51 @@ class KoRStageModelTest {
         assertEquals(0, stageModel.getPlayerZonePawnSimple(PlayerData.PLAYER_BLUE, 3, 3));
     }
 
+    @Test
+    void testComputePartyResultTie() {
+        final Model model = stageModel.getModel();
+
+        final ActionList actionList = new ActionList();
+        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[0], stageModel.getBoard().getName(), 3, 3));
+        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[1], stageModel.getBoard().getName(), 4, 3));
+        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getBluePawns()[0], stageModel.getBoard().getName(), 4, 4));
+        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getBluePawns()[1], stageModel.getBoard().getName(), 5, 4));
+        new ActionPlayer(model, null, actionList).start();
+
+        stageModel.computePartyResult(false);
+        assertEquals(PlayerData.NONE.getId(), model.getIdWinner());
+    }
+
+    @Test
+    void testComputePartyResultSquarePoint() {
+        final Model model = stageModel.getModel();
+
+        final ActionList actionList = new ActionList();
+        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[0], stageModel.getBoard().getName(), 3, 3));
+        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[1], stageModel.getBoard().getName(), 4, 3));
+        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getBluePawns()[0], stageModel.getBoard().getName(), 4, 4));
+        new ActionPlayer(model, null, actionList).start();
+
+        stageModel.computePartyResult(false);
+        assertEquals(PlayerData.PLAYER_RED.getId(), model.getIdWinner());
+    }
+
+    @Test
+    void testComputePartyResultTotalPawn() {
+        final Model model = stageModel.getModel();
+
+        final ActionList actionList = new ActionList();
+        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[0], stageModel.getBoard().getName(), 3, 3));
+        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[1], stageModel.getBoard().getName(), 4, 3));
+        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getBluePawns()[0], stageModel.getBoard().getName(), 4, 4));
+        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getBluePawns()[1], stageModel.getBoard().getName(), 5, 5));
+        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getBluePawns()[2], stageModel.getBoard().getName(), 6, 6));
+        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getBluePawns()[4], stageModel.getBoard().getName(), 7, 7));
+        new ActionPlayer(model, null, actionList).start();
+
+        stageModel.computePartyResult(false);
+        assertEquals(PlayerData.PLAYER_BLUE.getId(), model.getIdWinner());
+    }
 
 }
 

@@ -1,0 +1,27 @@
+exit code 0 = player1 wins
+exit code 1 = player2 wins
+exit code 255 = draw
+
+CAMARADE vs RANDOM (200) :
+    CAMARADE 107
+    RANDOM 90
+
+HATECARDS vs RANDOM (200) :
+    HATECARDS 125
+    RANDOM 75
+    DRAW 4
+
+GUIDE(T=4) vs RANDOM (200) :
+    GUIDE 134
+    RANDOM 64
+    DRAW 4
+
+GUIDE(T=4) vs HATECARDS (500) :
+    GUIDE 281
+    HATECARDS 215
+    DRAW 5
+
+CAMARADE vs HATECARDS (500) :
+    CAMARADE 221
+    HATECARDS 273
+    DRAW 7

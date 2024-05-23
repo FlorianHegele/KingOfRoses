@@ -26,7 +26,11 @@ public class PawnLook extends ElementLook {
         Pawn pawn = (Pawn) element;
         Pawn.Status status = pawn.getStatus();
 
-        // Set the shape character based on the pawn's status and background color
-        shape[0][0] = ConsoleColor.BLACK + status.getBackgroundColor() + " " + ConsoleColor.RESET;
+        if(pawn.isUnderKing()) {
+            shape[0][0] = ConsoleColor.BLACK + Pawn.Status.KING_PAWN.getBackgroundColor() + " " + ConsoleColor.RESET;
+        } else {
+            // Set the shape character based on the pawn's status and background color
+            shape[0][0] = ConsoleColor.BLACK + status.getBackgroundColor() + " " + ConsoleColor.RESET;
+        }
     }
 }

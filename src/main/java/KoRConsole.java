@@ -7,6 +7,11 @@ import boardifier.view.View;
 import boardifier.control.StageFactory;
 import control.GameConfigurationController;
 import model.GameConfigurationModel;
+import model.data.AIData;
+import model.data.PlayerData;
+import utils.Boardifiers;
+
+import java.util.Map;
 
 /**
  * The KoRConsole class serves as the entry point for the King of Roses game in console mode.
@@ -20,32 +25,26 @@ public class KoRConsole {
      * @param args Command line arguments (not used).
      */
     public static void main(String[] args) {
-        // Create a console controller
+        // Create a console controller (to handle keyboard input)
         final ConsoleController consoleController = new ConsoleController(false);
 
         // Create the model
         final Model model = new Model();
 
         // Set up game configuration
-        final GameConfigurationModel gameConfigurationModel = new GameConfigurationModel(
-                model,
-                GameConfigurationModel.DEFAULT_PLAYER_MODE,
-                1
-        );
-        final GameConfigurationController gameConfigurationController = new GameConfigurationController(gameConfigurationModel, consoleController);
-        gameConfigurationController.doCheck();
+        final GameConfigurationModel gameConfigurationModel = new GameConfigurationModel(model);
 
-        // Load game elements
-        StageFactory.registerModelAndView("kor", "model.KoRStageModel", "view.KoRStageView");
-        final View korView = new View(model);
-        final KoRController control = new KoRController(model, korView, consoleController, gameConfigurationModel);
-        control.setFirstStageName("kor");
+        // Init Game
+        final Boardifiers boardifiers = new Boardifiers(model, consoleController, gameConfigurationModel);
+        boardifiers.initGame();
+
+        // Start Game
         try {
-            control.startGame();
-            control.stageLoop();
+            boardifiers.startGame();
         } catch (GameException e) {
             System.out.println("Cannot start the game. Abort");
         }
+        System.exit(model.getIdWinner());
     }
 
 }

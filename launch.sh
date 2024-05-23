@@ -43,6 +43,9 @@ runApp() {
 
 # Main logic based on the argument
 case "$1" in
+    runo)
+        runApp
+        ;;
     test)
         compileApp
         compileTests

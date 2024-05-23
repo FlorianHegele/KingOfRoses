@@ -9,8 +9,9 @@ import boardifier.view.ConsoleColor;
  */
 public enum PlayerData {
 
-    PLAYER_RED(0, ConsoleColor.RED_BACKGROUND),
-    PLAYER_BLUE(1, ConsoleColor.BLUE_BACKGROUND);
+    NONE(-1, null),
+    PLAYER_BLUE(0, ConsoleColor.BLUE_BACKGROUND),
+    PLAYER_RED(1, ConsoleColor.RED_BACKGROUND);
 
     private final int id;
     private final String backgroundColor;
@@ -70,7 +71,8 @@ public enum PlayerData {
      */
     public static PlayerData getPlayerData(int id) {
         if(id == PLAYER_RED.id) return PLAYER_RED;
-        return (id == PLAYER_BLUE.id) ? PLAYER_BLUE : null;
+        if(id == PLAYER_BLUE.id) return PLAYER_BLUE;
+        return (id == NONE.id) ? NONE : null;
     }
 
     /**
