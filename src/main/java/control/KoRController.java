@@ -56,21 +56,21 @@ public class KoRController extends Controller {
         final boolean gameIsRender = gameConfigurationModel.isRenderGame();
         final KoRStageModel gameStage = (KoRStageModel) model.getGameStage();
 
-        update(gameIsRender);
         // While the game is not end
         while (!model.isEndStage()) {
-            // While the game is not stuck, play
-            while (!gameStage.gameIsStuck()) {
-                final PlayerData playerData = PlayerData.getCurrentPlayerData(model);
+            update(gameIsRender);
 
-                playTurn(gameStage, playerData);
+            final PlayerData playerData = PlayerData.getCurrentPlayerData(model);
 
-                if (!model.isEndStage()) update(gameIsRender);
-            }
-            // Print winner and stats of the game
-            gameStage.computePartyResult(gameConfigurationModel.isRenderGame());
+            playTurn(gameStage, playerData);
         }
+
         update(true);
+
+        // Print winner and stats of the game
+        if(gameStage.gameIsStuck())
+            gameStage.computePartyResult(gameConfigurationModel.isRenderGame());
+
         if (gameIsRender) endGame();
     }
 
@@ -107,6 +107,7 @@ public class KoRController extends Controller {
                     return;
                 }
 
+                System.out.println("action");
                 ok = actionAnalyse(gameStage, playerData, line);
                 // If the input is invalid, loop again for new input
                 if (!ok) System.out.println("incorrect instruction. retry !");
