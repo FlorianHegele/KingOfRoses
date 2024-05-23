@@ -98,7 +98,7 @@ public class GameConfigurationController {
             // the IA is selected for player 2 (PLAYER_BLUE)
             // by adding the player data and AI data to the map 
             if (!line.isEmpty()) {
-                configurationModel.getPlayerDataAIDataMap().put(PlayerData.PLAYER_BLUE, AIData.getAIData(Strings.parseInt(line)));
+                configurationModel.getPlayerDataAIDataMap().put(PlayerData.getPlayerData(1), AIData.getAIData(Strings.parseInt(line)));
             }
         }
 
@@ -110,10 +110,10 @@ public class GameConfigurationController {
             final String line = console.getCheckConsoleLine();
 
             // if the line is not empty,
-            // the IA is selected for player 1 (PLAYER_RED)
+            // the IA is selected for player 1
             // by adding the player data and AI data to the map
             if (!line.isEmpty()) {
-                configurationModel.getPlayerDataAIDataMap().put(PlayerData.PLAYER_RED, AIData.getAIData(Strings.parseInt(line)));
+                configurationModel.getPlayerDataAIDataMap().put(PlayerData.getPlayerData(0), AIData.getAIData(Strings.parseInt(line)));
             }
 
             // select IA for player 2
@@ -121,10 +121,10 @@ public class GameConfigurationController {
             final String line2 = console.getCheckConsoleLine();
 
             // if the line is not empty,
-            // the IA is selected for player 2 (PLAYER_BLUE)
+            // the IA is selected for player 2
             // by adding the player data and AI data to the map
             if (!line2.isEmpty()) {
-                configurationModel.getPlayerDataAIDataMap().put(PlayerData.PLAYER_BLUE, AIData.getAIData(Strings.parseInt(line2)));
+                configurationModel.getPlayerDataAIDataMap().put(PlayerData.getPlayerData(1), AIData.getAIData(Strings.parseInt(line2)));
             }
         }
     }

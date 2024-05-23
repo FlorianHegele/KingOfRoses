@@ -42,7 +42,7 @@ import java.util.*;
  * NB1: Callback functions MUST BE defined with a lambda expression (i.e. an arrow function).
  * NB2: There are other methods to define callbacks for other events ({@link #setupCallbacks()} methods)
  * In "The KoR", every time a pawn is put in the main board, we have to check if the party is ended and in this case, who is the winner.
- * This is the role of {@link #computePartyResult()}, which is called by the callback function if there is no more pawn to play.
+ * This is the role of {@link #computePartyResult(boolean)} ()}, which is called by the callback function if there is no more pawn to play.
  */
 public class KoRStageModel extends GameStageModel {
 
@@ -816,6 +816,24 @@ public class KoRStageModel extends GameStageModel {
         }
         board.resetReachableCells(true);
         return totalCounter;
+    }
+
+    public int getZoneAverage(PlayerData playerData) {
+        int totalCounter = 0;
+        int zoneNumber = 0;
+        for (int row = 0; row < board.getNbRows(); row++) {
+            for (int col = 0; col < board.getNbCols(); col++) {
+                final int total = getPlayerZonePawn(playerData, row, col, false);
+
+                // Add the square of the neighbor count to the final counter
+                if(total > 0) {
+                    totalCounter += total;
+                    zoneNumber += 1;
+                }
+            }
+        }
+        board.resetReachableCells(true);
+        return totalCounter / zoneNumber;
     }
 
     /**

@@ -54,6 +54,11 @@ public class GameStatistic {
         blueStatistic.incrementZone(stageModel.getTotalPawnZone(PlayerData.PLAYER_BLUE));
         redStatistic.incrementZone(stageModel.getTotalPawnZone(PlayerData.PLAYER_RED));
 
+        blueStatistic.incrementAverageZoneSize(stageModel.getZoneAverage(PlayerData.PLAYER_BLUE));
+        redStatistic.incrementAverageZoneSize(stageModel.getZoneAverage(PlayerData.PLAYER_RED));
+
+        System.out.println();
+
         System.out.println("Winner : " + playerData.name().toLowerCase());
     }
 
@@ -74,11 +79,12 @@ public class GameStatistic {
 
         private final PlayerData playerData;
         private final AIData ai;
-        private double totalWin;
-        private double totalHeroCardUsed;
-        private double totalPawnPlay;
-        private double totalPoint;
-        private double totalZone;
+        private int totalWin;
+        private int totalHeroCardUsed;
+        private int totalPawnPlay;
+        private int totalPoint;
+        private int totalZone;
+        private double averageZoneSize;
 
         public AIStatistic(PlayerData playerData, AIData aiData) {
             this.playerData = playerData;
@@ -105,23 +111,41 @@ public class GameStatistic {
             this.totalZone += zone;
         }
 
-        private void printStatistics(int totalGame) {
+        public void incrementAverageZoneSize(double averageZoneSize) {
+            this.averageZoneSize += averageZoneSize;
+        }
+
+        private void printStatistics(double totalGame) {
             System.out.println();
             System.out.println("AI "+(playerData.getId()+1)+" ("+ai.name().toLowerCase()+")");
+
             System.out.println("| Total win: " + totalWin);
             System.out.println("| Win rate: " + (100 * totalWin / totalGame)+"%");
+
             System.out.println("-".repeat(20));
+
             System.out.println("| Total Hero card: " + totalHeroCardUsed);
             System.out.println("| Hero card rate: " + (25 * totalHeroCardUsed / totalGame)+"%");
+
             System.out.println("-".repeat(20));
+
             System.out.println("| Total Pawn played: " + totalPawnPlay);
             System.out.println("| Pawn played average : " + (totalPawnPlay / totalGame));
+
             System.out.println("-".repeat(20));
+
             System.out.println("| Total Point: " + totalPoint);
             System.out.println("| Point average : " + (totalPoint / totalGame));
+
             System.out.println("-".repeat(20));
+
             System.out.println("| Total Zone: " + totalZone);
             System.out.println("| Zone average : " + (totalZone / totalGame));
+
+            System.out.println("-".repeat(20));
+
+            System.out.println("| Average Zone Size: " + averageZoneSize);
+            System.out.println("| Average Zone Size Per Game: " + (averageZoneSize / totalGame));
         }
     }
 
