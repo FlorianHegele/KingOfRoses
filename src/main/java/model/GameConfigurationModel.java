@@ -42,14 +42,19 @@ public class GameConfigurationModel {
      * @param playerMode the player mode (0: Human vs. Human, 1: Human vs. AI, 2: AI vs. AI).
      * @param loggerMode the logger mode (0: None, 1: Debug).
      */
-    public GameConfigurationModel(Model model, int playerMode, int loggerMode, boolean playerInteraction, boolean renderGame) {
+    public GameConfigurationModel(Model model, long seed, int playerMode, int loggerMode, boolean playerInteraction, boolean renderGame) {
         this.model = model;
         this.playerDataAIDataMap = new EnumMap<>(PlayerData.class);
 
+        setSeed(seed);
         setPlayerMode(playerMode);
         setLoggerMode(loggerMode);
         setPlayerInteraction(playerInteraction);
         setRenderGame(renderGame);
+    }
+
+    public GameConfigurationModel(Model model, int playerMode, int loggerMode, boolean playerInteraction, boolean renderGame) {
+        this(model, 0, playerMode, loggerMode, playerInteraction, renderGame);
     }
 
     /**
@@ -58,7 +63,11 @@ public class GameConfigurationModel {
      * @param model the game model.
      */
     public GameConfigurationModel(Model model) {
-        this(model, DEFAULT_PLAYER_MODE, DEFAULT_LOGGER_MODE, DEFAULT_PLAYER_INTERACTION, DEFAULT_RENDER_GAME);
+        this(model, 0, DEFAULT_PLAYER_MODE, DEFAULT_LOGGER_MODE, DEFAULT_PLAYER_INTERACTION, DEFAULT_RENDER_GAME);
+    }
+
+    public void setSeed(long seed) {
+        if(seed != 0) RANDOM.setSeed(seed);
     }
 
     /**
@@ -182,4 +191,6 @@ public class GameConfigurationModel {
             Logger.setVerbosity(Logger.VERBOSE_HIGH);
         }
     }
+
+
 }
