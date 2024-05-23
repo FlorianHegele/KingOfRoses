@@ -18,6 +18,7 @@ public class GameConfigurationModel {
     public static final Random RANDOM = new Random();
 
     public static final int DEFAULT_PLAYER_MODE = 0;
+    public static final long RANDOM_SEED = 0;
     public static final int DEFAULT_LOGGER_MODE = 0;
     public static final boolean DEFAULT_PLAYER_INTERACTION = true;
     public static final boolean DEFAULT_RENDER_GAME = true;
@@ -54,7 +55,7 @@ public class GameConfigurationModel {
     }
 
     public GameConfigurationModel(Model model, int playerMode, int loggerMode, boolean playerInteraction, boolean renderGame) {
-        this(model, 0, playerMode, loggerMode, playerInteraction, renderGame);
+        this(model, RANDOM_SEED, playerMode, loggerMode, playerInteraction, renderGame);
     }
 
     /**
@@ -63,7 +64,7 @@ public class GameConfigurationModel {
      * @param model the game model.
      */
     public GameConfigurationModel(Model model) {
-        this(model, 0, DEFAULT_PLAYER_MODE, DEFAULT_LOGGER_MODE, DEFAULT_PLAYER_INTERACTION, DEFAULT_RENDER_GAME);
+        this(model, RANDOM_SEED, DEFAULT_PLAYER_MODE, DEFAULT_LOGGER_MODE, DEFAULT_PLAYER_INTERACTION, DEFAULT_RENDER_GAME);
     }
 
     public void setSeed(long seed) {
