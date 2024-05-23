@@ -841,7 +841,7 @@ public class KoRStageModel extends GameStageModel {
      * @return The average number of pawns per zone for the specified player.
      * If the player has no zones, the method returns 0.
      */
-    public int getZoneAverage(PlayerData playerData) {
+    public double getZoneAverage(PlayerData playerData) {
         int totalCounter = 0;
         int zoneNumber = 0;
         for (int row = 0; row < board.getNbRows(); row++) {
@@ -859,7 +859,7 @@ public class KoRStageModel extends GameStageModel {
         // If there is no zone, then return 0
         if (zoneNumber == 0) return 0;
 
-        return totalCounter / zoneNumber;
+        return (double) totalCounter / zoneNumber;
     }
 
     /**
