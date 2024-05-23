@@ -171,7 +171,7 @@ public class KoRController extends Controller {
 
             // If the hand of the player is full, do nothing
             if (coord2D == null) {
-                System.out.println("Vous avez déjà plus de 5 cartes mouvement");
+                System.out.println("You already have more than 5 movement cards.");
                 return false;
             }
 
@@ -196,12 +196,12 @@ public class KoRController extends Controller {
 
 
             if (movementCardSpread.isEmpty()) {
-                System.out.println("Vous n'avez pas de carte mouvement à jouer.\nPiocher une carte!");
+                System.out.println("You don't have a movement card to play.\nDraw a card!");
                 return false;
             }
 
             if (movementCardSpread.isEmptyAt(0, indexCard)) {
-                System.out.println("Sélectionner une carte que vous possédez.");
+                System.out.println("Select a card that you own.");
                 return false;
             }
 
@@ -219,8 +219,8 @@ public class KoRController extends Controller {
 
             // Validate the move
             if (!board.canReachCell(row, col) || !board.isEmptyAt(row, col)) {
-                System.out.println("Vous ne pouvez pas jouer cette carte!");
-                Logger.info("Sortie de tableau");
+                System.out.println("Your card is going outside the boundaries of the board. \nReplay!");
+                Logger.info("Out of board");
                 return false;
             }
 
@@ -244,17 +244,17 @@ public class KoRController extends Controller {
             }
 
             if (heroCardStack.isEmpty()) {
-                System.out.println("Vous n'avez plus de carte héro à jouer.!");
+                System.out.println("You no longer have any hero cards to play!");
                 return false;
             }
 
             if (movementCardSpread.isEmpty()) {
-                System.out.println("Vous n'avez pas de carte mouvement à jouer.\nPiocher une carte!");
+                System.out.println("You don't have a movement card to play.\nDraw a card!");
                 return false;
             }
 
             if (movementCardSpread.isEmptyAt(0, indexCard)) {
-                System.out.println("Sélectionner une carte que vous possédez.");
+                System.out.println("Select a card that you possess.");
                 return false;
             }
 
@@ -273,8 +273,8 @@ public class KoRController extends Controller {
 
             // Validate the move
             if (!board.canReachCell(row, col) || board.isEmptyAt(row, col)) {
-                System.out.println("Vous ne pouvez pas jouer cette carte!");
-                Logger.info("Sortie de tableau");
+                System.out.println("Y a un pion dessus");
+                Logger.info("Out of board");
                 return false;
             }
 
