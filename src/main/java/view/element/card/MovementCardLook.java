@@ -13,6 +13,7 @@ public class MovementCardLook extends ElementLook {
 
     /**
      * Constructs a new MovementCardLook for the specified movement card element.
+     *
      * @param element The movement card element to render.
      */
     public MovementCardLook(GameElement element) {
@@ -36,7 +37,7 @@ public class MovementCardLook extends ElementLook {
             final String direction = ConsoleColor.BLACK + backgroundColor + card.getDirection().getSymbol() + ConsoleColor.RESET;
             final String step = ConsoleColor.BLACK + backgroundColor + card.getStep() + ConsoleColor.RESET;
 
-            if(card.isInverted()) {
+            if (card.isInverted()) {
                 shape[0][0] = step;
                 shape[1][0] = direction;
             } else {

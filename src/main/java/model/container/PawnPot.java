@@ -10,8 +10,9 @@ public class PawnPot extends ContainerElement {
 
     /**
      * Constructs a new PawnPot with the specified coordinates and associated game stage model.
-     * @param x The x-coordinate of the pot.
-     * @param y The y-coordinate of the pot.
+     *
+     * @param x              The x-coordinate of the pot.
+     * @param y              The y-coordinate of the pot.
      * @param gameStageModel The game stage model associated with this pot.
      */
     public PawnPot(int x, int y, GameStageModel gameStageModel) {

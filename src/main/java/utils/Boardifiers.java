@@ -41,9 +41,10 @@ public class Boardifiers {
     }
 
     public void startGame() throws GameException {
-        if(controller == null || model.isEndGame()) throw new IllegalStateException("You must first initialise the game before launching it !");
+        if (controller == null || model.isEndGame())
+            throw new IllegalStateException("You must first initialise the game before launching it !");
         controller.startGame();
-        if(gameConfigurationModel.isPlayerInteraction()) controller.stageLoop();
+        if (gameConfigurationModel.isPlayerInteraction()) controller.stageLoop();
     }
 
     public Model getModel() {
@@ -52,5 +53,9 @@ public class Boardifiers {
 
     public KoRStageModel getStageModel() {
         return (KoRStageModel) model.getGameStage();
+    }
+
+    public KoRController getController() {
+        return controller;
     }
 }

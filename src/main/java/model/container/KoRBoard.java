@@ -11,8 +11,9 @@ public class KoRBoard extends ContainerElement {
 
     /**
      * Constructs a new KoRBoard with the specified coordinates and associated game stage model.
-     * @param x The x-coordinate of the board.
-     * @param y The y-coordinate of the board.
+     *
+     * @param x              The x-coordinate of the board.
+     * @param y              The y-coordinate of the board.
      * @param gameStageModel The game stage model associated with this board.
      */
     public KoRBoard(int x, int y, GameStageModel gameStageModel) {

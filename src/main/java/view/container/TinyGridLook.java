@@ -12,8 +12,9 @@ public abstract class TinyGridLook extends GridLook {
 
     /**
      * Constructs a new TinyGridLook with the specified row height, column width, and container element.
-     * @param rowHeight The height of each row in the grid.
-     * @param colWidth The width of each column in the grid.
+     *
+     * @param rowHeight        The height of each row in the grid.
+     * @param colWidth         The width of each column in the grid.
      * @param containerElement The container element associated with this grid look.
      */
     protected TinyGridLook(int rowHeight, int colWidth, ContainerElement containerElement) {

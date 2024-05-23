@@ -20,8 +20,9 @@ public class MovementCard extends GameElement {
 
     /**
      * Constructs a new movement card with the specified step, direction, and game stage model.
-     * @param step The step of the movement card.
-     * @param direction The direction of the movement card.
+     *
+     * @param step           The step of the movement card.
+     * @param direction      The direction of the movement card.
      * @param gameStageModel The game stage model to which this movement card belongs.
      */
     public MovementCard(int step, Direction direction, GameStageModel gameStageModel) {
@@ -41,6 +42,7 @@ public class MovementCard extends GameElement {
 
     /**
      * Gets the owner of the movement card.
+     *
      * @return The owner of the movement card.
      */
     public Owner getOwner() {
@@ -50,15 +52,17 @@ public class MovementCard extends GameElement {
     /**
      * Sets the owner of the movement card and invert
      * the card if the owner is the red player.
+     *
      * @param owner The owner to set.
      */
     public void setOwner(Owner owner) {
         this.owner = owner;
-        if(owner == Owner.PLAYER_RED) toggleInverted();
+        if (owner == Owner.PLAYER_RED) toggleInverted();
     }
 
     /**
      * Checks if the movement card is inverted.
+     *
      * @return True if the movement card is inverted, false otherwise.
      */
     public boolean isInverted() {
@@ -75,6 +79,7 @@ public class MovementCard extends GameElement {
 
     /**
      * Gets the step of the movement card.
+     *
      * @return The step of the movement card.
      */
     public int getStep() {
@@ -83,6 +88,7 @@ public class MovementCard extends GameElement {
 
     /**
      * Gets the representation of the step as a character.
+     *
      * @return The representation of the step as a character.
      */
     public char getStepRepresentation() {
@@ -104,6 +110,7 @@ public class MovementCard extends GameElement {
 
     /**
      * Gets the direction of the movement card.
+     *
      * @return The direction of the movement card.
      */
     public Direction getDirection() {
@@ -112,6 +119,7 @@ public class MovementCard extends GameElement {
 
     /**
      * Gets the direction vector of the movement card.
+     *
      * @return The direction vector of the movement card.
      */
     public Coord2D getDirectionVector() {
@@ -136,8 +144,9 @@ public class MovementCard extends GameElement {
 
         /**
          * Constructs a new direction with the specified column, row, and symbol.
-         * @param col The column of the direction.
-         * @param row The row of the direction.
+         *
+         * @param col    The column of the direction.
+         * @param row    The row of the direction.
          * @param symbol The symbol representing the direction.
          */
         Direction(int col, int row, String symbol) {
@@ -146,6 +155,7 @@ public class MovementCard extends GameElement {
 
         /**
          * Constructs a new direction with the specified vector and symbol.
+         *
          * @param vector The vector representing the direction.
          * @param symbol The symbol representing the direction.
          */
@@ -156,6 +166,7 @@ public class MovementCard extends GameElement {
 
         /**
          * Gets the direction vector.
+         *
          * @return The direction vector.
          */
         public Coord2D getVector() {
@@ -164,6 +175,7 @@ public class MovementCard extends GameElement {
 
         /**
          * Gets the symbol representing the direction.
+         *
          * @return The symbol representing the direction.
          */
         public String getSymbol() {
@@ -172,6 +184,7 @@ public class MovementCard extends GameElement {
 
         /**
          * Gets the opposite direction.
+         *
          * @return The opposite direction.
          */
         public Direction getOpposite() {
@@ -203,6 +216,7 @@ public class MovementCard extends GameElement {
 
         /**
          * Gets the background color associated with the owner.
+         *
          * @return The background color associated with the owner.
          */
         public String getBackgroundColor() {

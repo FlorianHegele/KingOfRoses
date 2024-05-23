@@ -1,8 +1,8 @@
 package control;
 
 import model.GameConfigurationModel;
-import model.data.PlayerData;
 import model.data.AIData;
+import model.data.PlayerData;
 import utils.Strings;
 
 /**
@@ -18,7 +18,7 @@ public class GameConfigurationController {
      * Constructs a GameConfigurationController with the specified configuration model and console controller.
      *
      * @param gameConfigurationModel the game configuration model to be used.
-     * @param consoleController the console controller for handling user input and output.
+     * @param consoleController      the console controller for handling user input and output.
      */
     public GameConfigurationController(GameConfigurationModel gameConfigurationModel, ConsoleController consoleController) {
         this.configurationModel = gameConfigurationModel;
@@ -42,6 +42,7 @@ public class GameConfigurationController {
     /**
      * Prompts the user to set the logger mode.
      * 0: None, 1: Full.
+     *
      * @deprecated because of the logger mode in the GameConfigurationModel
      */
     @Deprecated(since = "20/05/2024", forRemoval = true)
@@ -83,9 +84,11 @@ public class GameConfigurationController {
      * AI options:
      * 0 = Random, 1 = Camarade, 2 = HateCards, 3 = Guide.
      */
-    private void setAI(){
+    private void setAI() {
         // if the player mode is PvP, the IA is not selected
-        if (configurationModel.getPlayerMode() == 0) {return;}
+        if (configurationModel.getPlayerMode() == 0) {
+            return;
+        }
 
         // if the player mode is PvAI, the IA is selected for player 2
         if (configurationModel.getPlayerMode() == 1) {
@@ -93,7 +96,7 @@ public class GameConfigurationController {
             // select IA for player 2
             console.printCheckMessage("specific AI for player 2 (0: Random, 1: Camarade, 2: HateCards, 3: Guide) ? ");
             final String line = console.getCheckConsoleLine();
-            
+
             // if the line is not empty,
             // the IA is selected for player 2 (PLAYER_BLUE)
             // by adding the player data and AI data to the map 

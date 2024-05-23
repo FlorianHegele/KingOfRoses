@@ -10,6 +10,7 @@ public class PawnPotLook extends TinyGridLook {
 
     /**
      * Constructs a new PawnPotLook with the specified container element.
+     *
      * @param containerElement The container element associated with this pawn pot look.
      */
     public PawnPotLook(ContainerElement containerElement) {

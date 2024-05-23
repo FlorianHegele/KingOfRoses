@@ -11,8 +11,9 @@ public class HeroCardStack extends ContainerElement {
 
     /**
      * Constructs a new HeroCardStack with the specified coordinates and associated game stage model.
-     * @param x The x-coordinate of the stack.
-     * @param y The y-coordinate of the stack.
+     *
+     * @param x              The x-coordinate of the stack.
+     * @param y              The y-coordinate of the stack.
      * @param gameStageModel The game stage model associated with this stack.
      */
     public HeroCardStack(int x, int y, GameStageModel gameStageModel) {

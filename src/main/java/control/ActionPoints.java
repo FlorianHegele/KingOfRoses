@@ -19,7 +19,7 @@ public class ActionPoints implements Comparable<ActionPoints> {
      * Constructs an ActionPoints object with the specified action list and points.
      *
      * @param actionList the list of actions to be performed.
-     * @param point the points associated with these actions.
+     * @param point      the points associated with these actions.
      */
     public ActionPoints(ActionList actionList, int point) {
         this.actionList = actionList;
@@ -51,7 +51,7 @@ public class ActionPoints implements Comparable<ActionPoints> {
      *
      * @param actionPoints the action points to compare with.
      * @return a negative integer, zero, or a positive integer as this object has more points,
-     *         equal points, or fewer points than the specified object.
+     * equal points, or fewer points than the specified object.
      */
     @Override
     public int compareTo(ActionPoints actionPoints) {

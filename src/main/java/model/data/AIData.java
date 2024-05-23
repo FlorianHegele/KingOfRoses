@@ -58,7 +58,7 @@ public enum AIData {
      * Returns a Decider object based on the AI strategy.
      *
      * @param playerData the player data.
-     * @param model the game model.
+     * @param model      the game model.
      * @param controller the game controller.
      * @return the Decider object for the AI strategy.
      */
@@ -66,13 +66,14 @@ public enum AIData {
         final Decider decider;
 
         // Choose which AI should play for the current player
-        switch (this){
+        switch (this) {
             case RANDOM -> decider = new KoRDeciderRandom(model, controller, playerData);
             case CAMARADE -> decider = new KoRDeciderCamarade(model, controller, playerData);
             case HATE_CARDS -> decider = new KoRDeciderHateCards(model, controller, playerData);
             case GUIDE -> decider = new KoRDeciderGuide(model, controller, playerData);
             // Technically impossible
-            default -> throw new IllegalCallerException("Impossible to reach this error, a condition must be added here to implement the correct AI");
+            default ->
+                    throw new IllegalCallerException("Impossible to reach this error, a condition must be added here to implement the correct AI");
         }
         return decider;
     }

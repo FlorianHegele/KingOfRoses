@@ -17,8 +17,8 @@ public class KoRDeciderRandom extends KoRDecider {
      * Constructor for the random decision-making AI.
      *
      * @param playerData the player data for whom the AI is making decisions.
-     * @param model the game model.
-     * @param control the game controller.
+     * @param model      the game model.
+     * @param control    the game controller.
      */
     public KoRDeciderRandom(Model model, Controller control, PlayerData playerData) {
         super(model, control, playerData);

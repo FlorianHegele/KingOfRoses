@@ -20,9 +20,9 @@ public class Lists {
     /**
      * Returns a random element from the specified list.
      *
-     * @param list the list from which to select a random element.
+     * @param list   the list from which to select a random element.
      * @param random the random number generator to use.
-     * @param <T> the type of elements in the list.
+     * @param <T>    the type of elements in the list.
      * @return a randomly selected element from the list.
      * @throws IllegalArgumentException if the list is empty.
      */
@@ -34,7 +34,7 @@ public class Lists {
      * Returns a random element from the specified list using the default random number generator.
      *
      * @param list the list from which to select a random element.
-     * @param <T> the type of elements in the list.
+     * @param <T>  the type of elements in the list.
      * @return a randomly selected element from the list.
      * @throws IllegalArgumentException if the list is empty.
      */

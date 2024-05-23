@@ -16,7 +16,8 @@ public class Pawn extends GameElement {
 
     /**
      * Constructs a pawn with the specified status and game stage model.
-     * @param status The status of the pawn.
+     *
+     * @param status         The status of the pawn.
      * @param gameStageModel The game stage model to which the pawn belongs.
      */
     public Pawn(Status status, GameStageModel gameStageModel) {
@@ -40,6 +41,7 @@ public class Pawn extends GameElement {
 
     /**
      * Retrieves the status of the pawn.
+     *
      * @return The status of the pawn.
      */
     public Status getStatus() {
@@ -48,10 +50,10 @@ public class Pawn extends GameElement {
 
 
     public boolean isUnderKing() {
-        if(status == Status.KING_PAWN) return false;
-        if(!getContainer().getName().equals("KoRboard")) return false;
+        if (status == Status.KING_PAWN) return false;
+        if (!getContainer().getName().equals("KoRboard")) return false;
 
-        return ((KoRStageModel)gameStageModel).getKingPawn().getLocation().equals(getLocation());
+        return ((KoRStageModel) gameStageModel).getKingPawn().getLocation().equals(getLocation());
     }
 
     /**
@@ -68,6 +70,7 @@ public class Pawn extends GameElement {
 
         /**
          * Constructs a status with the specified player data.
+         *
          * @param playerData The player data associated with the status.
          */
         Status(PlayerData playerData) {
@@ -76,7 +79,8 @@ public class Pawn extends GameElement {
 
         /**
          * Constructs a status with the specified ID and background color.
-         * @param id The ID associated with the status.
+         *
+         * @param id              The ID associated with the status.
          * @param backgroundColor The background color associated with the status.
          */
         Status(int id, String backgroundColor) {
@@ -86,6 +90,7 @@ public class Pawn extends GameElement {
 
         /**
          * Retrieves the background color associated with the status.
+         *
          * @return The background color associated with the status.
          */
         public String getBackgroundColor() {
@@ -94,6 +99,7 @@ public class Pawn extends GameElement {
 
         /**
          * Retrieves the opposite status.
+         *
          * @return The opposite status.
          * @throws IllegalStateException If the status is KING_PAWN, which does not have an opposite status.
          */
@@ -109,6 +115,7 @@ public class Pawn extends GameElement {
 
         /**
          * Retrieves the ID associated with the status.
+         *
          * @return The ID associated with the status.
          */
         public int getID() {
@@ -117,6 +124,7 @@ public class Pawn extends GameElement {
 
         /**
          * Retrieves the pawn status associated with the specified player data.
+         *
          * @param playerData The player data for which to retrieve the pawn status.
          * @return The pawn status associated with the specified player data.
          */
@@ -126,6 +134,7 @@ public class Pawn extends GameElement {
 
         /**
          * Checks if the status is owned by the specified player data.
+         *
          * @param playerData The player data to check against.
          * @return True if the status is owned by the player data, false otherwise.
          */

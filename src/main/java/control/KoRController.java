@@ -7,14 +7,14 @@ import boardifier.control.Logger;
 import boardifier.model.*;
 import boardifier.model.action.ActionList;
 import boardifier.view.View;
-import model.data.AIData;
 import model.GameConfigurationModel;
 import model.KoRStageModel;
-import model.data.PlayerData;
 import model.container.KoRBoard;
 import model.container.PawnPot;
 import model.container.card.HeroCardStack;
 import model.container.card.MovementCardSpread;
+import model.data.AIData;
+import model.data.PlayerData;
 import model.element.Pawn;
 import model.element.card.HeroCard;
 import model.element.card.MovementCard;
@@ -36,9 +36,9 @@ public class KoRController extends Controller {
     /**
      * Constructs a KoRController with the specified model, view, consoleController, and the gameConfigurationModel.
      *
-     * @param model the game model.
-     * @param view the game view.
-     * @param consoleController the console controller for handling console input.
+     * @param model                  the game model.
+     * @param view                   the game view.
+     * @param consoleController      the console controller for handling console input.
      * @param gameConfigurationModel the configuration model for the game.
      */
     public KoRController(Model model, View view, ConsoleController consoleController, GameConfigurationModel gameConfigurationModel) {
@@ -71,14 +71,14 @@ public class KoRController extends Controller {
             gameStage.computePartyResult(gameConfigurationModel.isRenderGame());
         }
         update(true);
-        if(gameIsRender) endGame();
+        if (gameIsRender) endGame();
     }
 
     /**
      * Plays a single turn for the specified player data.
      * Determines whether the current player is a computer or a human and acts accordingly.
      *
-     * @param gameStage the current game stage model.
+     * @param gameStage  the current game stage model.
      * @param playerData the player data for the current player.
      */
     private void playTurn(KoRStageModel gameStage, PlayerData playerData) {
@@ -144,9 +144,9 @@ public class KoRController extends Controller {
     /**
      * Analyzes the player's input and constructs the corresponding action list if the input is valid.
      *
-     * @param gameStage the current game stage model.
+     * @param gameStage  the current game stage model.
      * @param playerData the data of the current player.
-     * @param line the player's input line.
+     * @param line       the player's input line.
      * @return true if the action is valid and an action list is created, false otherwise.
      */
     private boolean actionAnalyse(KoRStageModel gameStage, PlayerData playerData, String line) {
@@ -188,7 +188,8 @@ public class KoRController extends Controller {
             // Get the general pot
             final PawnPot pawnPot = gameStage.getGeneralPot(playerData);
             // If Blue and Red pot is empty, this means that the code cannot be reached because the game should be over
-            if(pawnPot == null) throw new IllegalCallerException("Unreachable code, the code to determine whether a player can play must be re-read");
+            if (pawnPot == null)
+                throw new IllegalCallerException("Unreachable code, the code to determine whether a player can play must be re-read");
 
 
             if (movementCardSpread.isEmpty()) {

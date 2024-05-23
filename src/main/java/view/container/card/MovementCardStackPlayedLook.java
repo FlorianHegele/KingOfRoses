@@ -11,6 +11,7 @@ public class MovementCardStackPlayedLook extends GridLook {
 
     /**
      * Constructs a new MovementCardStackPlayedLook with the specified container element.
+     *
      * @param containerElement The container element associated with this played movement card stack look.
      */
     public MovementCardStackPlayedLook(ContainerElement containerElement) {

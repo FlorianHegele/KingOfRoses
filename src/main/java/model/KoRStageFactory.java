@@ -24,6 +24,7 @@ public class KoRStageFactory extends StageElementsFactory {
 
     /**
      * Constructs a new KoRStageFactory with the specified game stage model.
+     *
      * @param gameStageModel The game stage model associated with this factory.
      */
     public KoRStageFactory(GameStageModel gameStageModel) {

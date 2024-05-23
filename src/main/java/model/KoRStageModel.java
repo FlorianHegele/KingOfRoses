@@ -1,9 +1,7 @@
 package model;
 
-import boardifier.control.ActionFactory;
 import boardifier.control.ActionPlayer;
 import boardifier.model.*;
-import boardifier.model.action.ActionList;
 import control.SimpleActionList;
 import model.container.KoRBoard;
 import model.container.PawnPot;
@@ -18,7 +16,10 @@ import model.element.card.MovementCard;
 import utils.ContainerElements;
 import utils.Elements;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * KoRStageModel defines the model for the single stage in "The KoR". Indeed,
@@ -632,11 +633,11 @@ public class KoRStageModel extends GameStageModel {
 
             // ACTION: Add a card to the played stack
             else if (containerDest == movementCardStackPlayed) {
-                ((MovementCard)element).setOwner(MovementCard.Owner.OUT);
+                ((MovementCard) element).setOwner(MovementCard.Owner.OUT);
             }
 
             // ACTION: Add a card to the stack
-            else if(containerDest == movementCardStack) {
+            else if (containerDest == movementCardStack) {
                 final MovementCard movementCard = (MovementCard) element;
                 movementCard.setOwner(MovementCard.Owner.STACK);
                 movementCardStackText.setText(String.valueOf(ContainerElements.countElements(movementCardStack)));
@@ -748,7 +749,7 @@ public class KoRStageModel extends GameStageModel {
             idWinner = winner.getId();
         }
 
-        if(renderGame) {
+        if (renderGame) {
             System.out.println("Points rouge : " + redZoneCounter + ", pions total " + redPawnPlaced);
             System.out.println("Points bleu : " + blueZoneCounter + ", pions total " + bluePawnPlaced);
         }
@@ -762,6 +763,7 @@ public class KoRStageModel extends GameStageModel {
     /**
      * Gets the total points of the specified player by considering all cells on the board.
      * Resets reachable cells after calculation.
+     *
      * @param playerData The player for whom to calculate the total points.
      * @return The total points of the player.
      */
@@ -774,9 +776,10 @@ public class KoRStageModel extends GameStageModel {
     /**
      * Gets the zone points of the specified player for the cell at the specified row and column.
      * Resets reachable cells after calculation.
+     *
      * @param playerData The player for whom to calculate the zone points.
-     * @param row The row of the cell.
-     * @param col The column of the cell.
+     * @param row        The row of the cell.
+     * @param col        The column of the cell.
      * @return The zone points of the player for the specified cell.
      */
     public int getPlayerZonePawnSimple(PlayerData playerData, int row, int col) {
@@ -787,7 +790,8 @@ public class KoRStageModel extends GameStageModel {
 
     /**
      * Calculates the total points of the specified player by considering all cells on the board.
-     * @param playerData The player for whom to calculate the total points.
+     *
+     * @param playerData          The player for whom to calculate the total points.
      * @param acceptEmptyBaseCell Flag indicating whether to accept empty base cells or not.
      * @return The total points of the player.
      */
@@ -804,13 +808,21 @@ public class KoRStageModel extends GameStageModel {
         return totalCounter;
     }
 
+    /**
+     * Calculates the total number of zones owned by a player.
+     * This method iterates over the entire game board, checking each cell to determine
+     * the number of pawns in each zone owned by the specified player. It counts the total
+     * number of zones where the player has at least one pawn.
+     *
+     * @param playerData The player for whom the total number of zones is being calculated.
+     * @return The total number of zones owned by the specified player.
+     */
     public int getTotalPawnZone(PlayerData playerData) {
         int totalCounter = 0;
         for (int row = 0; row < board.getNbRows(); row++) {
             for (int col = 0; col < board.getNbCols(); col++) {
                 final int total = getPlayerZonePawn(playerData, row, col, false);
 
-                // Add the square of the neighbor count to the final counter
                 totalCounter += (total > 0) ? 1 : 0;
             }
         }
@@ -818,6 +830,17 @@ public class KoRStageModel extends GameStageModel {
         return totalCounter;
     }
 
+
+    /**
+     * Calculates the average number of pawns a player has per zone.
+     * This method iterates over the entire game board, checking each cell to determine
+     * the number of pawns in each zone owned by the specified player. It then calculates
+     * the average number of pawns per zone.
+     *
+     * @param playerData The player for whom the average is being calculated.
+     * @return The average number of pawns per zone for the specified player.
+     * If the player has no zones, the method returns 0.
+     */
     public int getZoneAverage(PlayerData playerData) {
         int totalCounter = 0;
         int zoneNumber = 0;
@@ -825,22 +848,26 @@ public class KoRStageModel extends GameStageModel {
             for (int col = 0; col < board.getNbCols(); col++) {
                 final int total = getPlayerZonePawn(playerData, row, col, false);
 
-                // Add the square of the neighbor count to the final counter
-                if(total > 0) {
+                if (total > 0) {
                     totalCounter += total;
                     zoneNumber += 1;
                 }
             }
         }
         board.resetReachableCells(true);
+
+        // If there is no zone, then return 0
+        if (zoneNumber == 0) return 0;
+
         return totalCounter / zoneNumber;
     }
 
     /**
      * Calculates the zone points for the specified player at the given row and column on the board.
-     * @param playerData The player for whom to calculate the zone points.
-     * @param row The row of the cell.
-     * @param col The column of the cell.
+     *
+     * @param playerData          The player for whom to calculate the zone points.
+     * @param row                 The row of the cell.
+     * @param col                 The column of the cell.
      * @param acceptEmptyBaseCell Flag indicating whether to accept empty base cells as a starting point.
      * @return The zone points for the player at the specified cell.
      */
@@ -852,7 +879,7 @@ public class KoRStageModel extends GameStageModel {
 
         // SI IL N'Y A PAS DE PION ET QU'ON VEUT PAS ACCEPTER LES CASES VIDES COMME POINT
         // DE DÉPART, ALORS RENDRE LA CASE INATTEIGNABLE ET PASSER À LA CASE SUIVANTE
-        if(!acceptEmptyBaseCell && pawn == null) {
+        if (!acceptEmptyBaseCell && pawn == null) {
             board.setCellReachable(row, col, false);
             return 0;
         }
@@ -882,6 +909,7 @@ public class KoRStageModel extends GameStageModel {
 
     /**
      * Retrieves the neighboring pawn nodes of the specified pawn node.
+     *
      * @param pawnNode The pawn node for which to retrieve neighboring nodes.
      * @return The list of neighboring pawn nodes.
      */
@@ -918,6 +946,7 @@ public class KoRStageModel extends GameStageModel {
 
     /**
      * Calculates the total number of pawns on the board with the specified status.
+     *
      * @param status The status of pawns to count.
      * @return The total number of pawns with the specified status on the board.
      */
@@ -941,6 +970,7 @@ public class KoRStageModel extends GameStageModel {
 
     /**
      * Retrieves the default stage elements factory for this stage model.
+     *
      * @return The default stage elements factory.
      */
     @Override
@@ -950,6 +980,7 @@ public class KoRStageModel extends GameStageModel {
 
     /**
      * Retrieves the pawn played at the specified position on the board.
+     *
      * @param row The row index.
      * @param col The column index.
      * @return The pawn played at the specified position, or null if no pawn is played.
@@ -965,6 +996,7 @@ public class KoRStageModel extends GameStageModel {
 
     /**
      * Retrieves the pawn pot for the specified player data.
+     *
      * @param playerData The player data for which to retrieve the pawn pot.
      * @return The pawn pot associated with the specified player data.
      * @throws IllegalArgumentException if the player is not red or blue.
@@ -982,15 +1014,16 @@ public class KoRStageModel extends GameStageModel {
     /**
      * Retrieves the pawn pot that still has pawns for the specified player data.
      * If the initial pawn pot is empty, it checks the next player's pawn pot.
+     *
      * @param playerData The player data for which to retrieve the pawn pot.
      * @return The pawn pot that still has pawns, or null if both are empty.
      * @throws IllegalArgumentException if the player is not red or blue.
      */
     public PawnPot getGeneralPot(PlayerData playerData) {
         PawnPot pawnPot = getPawnPot(playerData);
-        if(pawnPot.isEmpty()) {
+        if (pawnPot.isEmpty()) {
             pawnPot = getPawnPot(playerData.getNextPlayerData());
-            if(pawnPot.isEmpty()) return null;
+            if (pawnPot.isEmpty()) return null;
         }
         return pawnPot;
     }

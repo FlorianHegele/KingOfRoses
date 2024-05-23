@@ -11,6 +11,7 @@ public class MovementCardStackLook extends TinyGridLook {
 
     /**
      * Constructs a new MovementCardStackLook with the specified container element.
+     *
      * @param containerElement The container element associated with this movement card stack look.
      */
     public MovementCardStackLook(ContainerElement containerElement) {
