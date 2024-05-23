@@ -32,6 +32,7 @@ public class KoRController extends Controller {
 
     boolean firstPlayer;
     private ActionList playerActionList;
+    boolean sendStop;
 
     /**
      * Constructs a KoRController with the specified model, view, consoleController, and the gameConfigurationModel.
@@ -65,7 +66,7 @@ public class KoRController extends Controller {
             playTurn(gameStage, playerData);
         }
 
-        update(true);
+        if(!sendStop) update(true);
 
         // Print winner and stats of the game
         if(gameStage.gameIsStuck())
@@ -103,6 +104,7 @@ public class KoRController extends Controller {
 
                 // Check if the player stops the game (e.g., CTRL + D or "stop")
                 if (line == null || line.equals("stop")) {
+                    sendStop = true;
                     model.stopStage();
                     return;
                 }
