@@ -98,7 +98,7 @@ public class KoRController extends Controller {
         } else {
             boolean ok = false;
             while (!ok) {
-                System.out.print(p.getName() + " > ");
+                if(gameConfigurationModel.isRenderGame()) System.out.print(p.getName() + " > ");
                 // Analyze the human player's input
                 final String line = console.getConsoleLine();
 
