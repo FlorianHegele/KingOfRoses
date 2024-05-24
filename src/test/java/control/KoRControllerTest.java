@@ -7,6 +7,7 @@ import boardifier.model.Model;
 import boardifier.model.action.ActionList;
 import model.GameConfigurationModel;
 import model.KoRStageModel;
+import model.data.AIData;
 import model.data.PlayerData;
 import model.element.Pawn;
 import model.element.card.MovementCard;
@@ -17,6 +18,7 @@ import utils.Strings;
 
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 
 import static model.GameConfigurationModel.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -54,14 +56,53 @@ class KoRControllerTest {
         setupBoard(true, RANDOM_SEED);
     }
 
+    private void setupRandomVsAI(AIData aiData) throws GameException {
+        // Create the model
+        model = new Model();
+
+        // Set up game configuration
+        final GameConfigurationModel gameConfigurationModel = new GameConfigurationModel(model, RANDOM_SEED, 1,
+                0, false, false);
+        gameConfigurationModel.addAI(Map.of(PlayerData.PLAYER_RED, aiData));
+        // Init and start the Game
+        final Boardifiers boardifiers = new Boardifiers(model, gameConfigurationModel);
+        boardifiers.initGame();
+        boardifiers.startGame();
+
+        stageModel = (KoRStageModel) model.getGameStage();
+        controller = boardifiers.getController();
+    }
+
+
+    /*
+     * AI
+     */
+
     @Test
-    void testStopInput() throws GameException {
-        writeInput();
+    void AICanPlay() throws GameException {
+        writeInput("D1");
+
+        setupRandomVsAI(AIData.RANDOM);
+        controller.stageLoop();
+
+        assertEquals(0, model.getIdPlayer());
+        assertEquals(1, stageModel.getTotalPawnOnBoard(Pawn.Status.BLUE_PAWN));
+        assertEquals(1, stageModel.getTotalPawnOnBoard(Pawn.Status.RED_PAWN));
+    }
+
+
+    /*
+     * MOVEMENT CARD
+     */
+
+    @Test
+    void playerCantPlayWrongCardMovementVersion() throws GameException {
+        writeInput("D", "D0", "D-1", "D6");
 
         setupBoardRandom();
 
-        assertTrue(controller.sendStop);
-        assertEquals(PlayerData.NONE.getId(), model.getIdWinner());
+        assertEquals(0, model.getIdPlayer());
+        assertEquals(0, stageModel.getTotalPawnOnBoard(Pawn.Status.BLUE_PAWN));
     }
 
     @Test
@@ -95,8 +136,8 @@ class KoRControllerTest {
     void playerCanDrawMovementCard() throws GameException {
         writeInput("P");
 
-        setupBoard(false, 1);
-        new ActionPlayer(model, null, ActionFactory.generateRemoveFromContainer(model, stageModel.getMovementCards(MovementCard.Owner.PLAYER_BLUE).get(0))).start();
+        setupBoard(false, RANDOM_SEED);
+        new ActionPlayer(model, null, ActionFactory.generateRemoveFromStage(model, stageModel.getMovementCards(MovementCard.Owner.PLAYER_BLUE).get(0))).start();
         controller.stageLoop();
 
         assertEquals(1, model.getIdPlayer());
@@ -107,10 +148,72 @@ class KoRControllerTest {
     void playerCantDrawMovementCard() throws GameException {
         writeInput("P");
 
-        setupBoard(1);
+        setupBoardRandom();
 
         assertEquals(0, model.getIdPlayer());
         assertEquals(5, ContainerElements.countElements(stageModel.getBlueMovementCardsSpread()));
+    }
+
+    @Test
+    void playerCantPlacePawnOutsideMovementCardVersion() throws GameException {
+        writeInput("D5");
+
+        setupBoard(false, 1);
+
+        final ActionList actionList = ActionFactory.generateMoveWithinContainer(model, stageModel.getKingPawn(), 0, 0);
+        new ActionPlayer(model, null, actionList).start();
+
+        controller.stageLoop();
+
+        assertEquals(0, model.getIdPlayer());
+        assertEquals(0, stageModel.getTotalPawnOnBoard(Pawn.Status.BLUE_PAWN));
+    }
+
+    @Test
+    void playerNeedToUseHeroCard() throws GameException {
+        writeInput("D5");
+
+        setupBoard(false, 1);
+
+        final ActionList actionList = ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[0], stageModel.getBoard().getName(), 4, 2);
+        new ActionPlayer(model, null, actionList).start();
+
+        controller.stageLoop();
+
+        assertEquals(0, model.getIdPlayer());
+        assertEquals(0, stageModel.getTotalPawnOnBoard(Pawn.Status.BLUE_PAWN));
+        assertEquals(5, ContainerElements.countElements(stageModel.getBlueMovementCardsSpread()));
+    }
+
+    @Test
+    void playerEmptyMovementCardVersion() throws GameException {
+        writeInput("D1");
+
+        setupBoard(false, 1);
+
+        final ActionList actionList = new ActionList();
+        for(int i=0; i<5; i++)
+            actionList.addAll(ActionFactory.generateRemoveFromStage(model, stageModel.getMovementCards(MovementCard.Owner.PLAYER_BLUE).get(i)));
+        new ActionPlayer(model, null, actionList).start();
+
+        controller.stageLoop();
+
+        assertEquals(0, model.getIdPlayer());
+        assertEquals(0, stageModel.getTotalPawnOnBoard(Pawn.Status.BLUE_PAWN));
+    }
+
+    /*
+     * HERO CARD
+     */
+
+    @Test
+    void playerCantPlayWrongCardMovementHeroVersion() throws GameException {
+        writeInput("H", "H0", "H-1", "H6");
+
+        setupBoardRandom();
+
+        assertEquals(0, model.getIdPlayer());
+        assertEquals(0, stageModel.getTotalPawnOnBoard(Pawn.Status.BLUE_PAWN));
     }
 
     @Test
@@ -121,7 +224,7 @@ class KoRControllerTest {
 
         final ActionList actionList = ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[0], stageModel.getBoard().getName(), 4, 2);
         for(int i=0; i<4; i++)
-            actionList.addAll(ActionFactory.generateRemoveFromContainer(model, stageModel.getBlueHeroCards()[i]));
+            actionList.addAll(ActionFactory.generateRemoveFromStage(model, stageModel.getBlueHeroCards()[i]));
 
         new ActionPlayer(model, null, actionList).start();
         controller.stageLoop();
@@ -137,34 +240,148 @@ class KoRControllerTest {
         setupBoard(false, 1);
 
         final ActionList actionList = ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[0], stageModel.getBoard().getName(), 4, 2);
-
         new ActionPlayer(model, null, actionList).start();
+
         controller.stageLoop();
 
         assertEquals(1, model.getIdPlayer());
         assertEquals(1, stageModel.getTotalPawnOnBoard(Pawn.Status.BLUE_PAWN));
     }
 
+
     @Test
-    void playerCantPlacePawnOutOfTheBoard() throws GameException {
-        writeInput("D2", "D2");
+    void playerCantUseHeroCardOnHisOwnPawn() throws GameException {
+        writeInput("H5");
+
+        setupBoard(false, 1);
+
+        final ActionList actionList = ActionFactory.generatePutInContainer(model, stageModel.getBluePawns()[0], stageModel.getBoard().getName(), 4, 2);
+        new ActionPlayer(model, null, actionList).start();
+
+        controller.stageLoop();
+
+        assertEquals(0, model.getIdPlayer());
+        assertEquals(1, stageModel.getTotalPawnOnBoard(Pawn.Status.BLUE_PAWN));
+        assertEquals(5, ContainerElements.countElements(stageModel.getBlueMovementCardsSpread()));
+        assertEquals(4, ContainerElements.countElements(stageModel.getBlueHeroCardStack()));
+    }
+
+    @Test
+    void playerCantPlacePawnOutsideHeroCardVersion() throws GameException {
+        writeInput("H5");
+
+        setupBoard(false, 1);
+
+        final ActionList actionList = ActionFactory.generateMoveWithinContainer(model, stageModel.getKingPawn(), 0, 0);
+        new ActionPlayer(model, null, actionList).start();
+
+        controller.stageLoop();
+
+        assertEquals(0, model.getIdPlayer());
+        assertEquals(0, stageModel.getTotalPawnOnBoard(Pawn.Status.BLUE_PAWN));
+    }
+
+    @Test
+    void playerEmptyMovementCardHeroVersion() throws GameException {
+        writeInput("H1");
+
+        setupBoard(false, 1);
+
+        final ActionList actionList = new ActionList();
+        for(int i=0; i<5; i++)
+            actionList.addAll(ActionFactory.generateRemoveFromStage(model, stageModel.getMovementCards(MovementCard.Owner.PLAYER_BLUE).get(i)));
+        new ActionPlayer(model, null, actionList).start();
+
+        controller.stageLoop();
+
+        assertEquals(0, model.getIdPlayer());
+    }
+
+    @Test
+    void playerCantPlayEmptyMovementCardCellHeroVersion() throws GameException {
+        writeInput("H1");
+
+        setupBoard(false, 1);
+
+        new ActionPlayer(model, null, ActionFactory.generateRemoveFromStage(model,
+                stageModel.getBlueMovementCardsSpread().getElement(0, 0))).start();
+
+        controller.stageLoop();
+
+        assertEquals(0, model.getIdPlayer());
+        assertEquals(0, stageModel.getTotalPawnOnBoard(Pawn.Status.BLUE_PAWN));
+    }
+
+    @Test
+    void playerCantPlayHeroCardOnEmptyCell() throws GameException {
+        writeInput("H1");
+
+        setupBoardRandom();
+
+        assertEquals(0, model.getIdPlayer());
+        assertEquals(0, stageModel.getTotalPawnOnBoard(Pawn.Status.BLUE_PAWN));
+    }
+
+
+    /*
+     * BASIC
+     */
+
+    @Test
+    void testStopInput() throws GameException {
+        writeInput();
+
+        setupBoardRandom();
+
+        assertTrue(controller.sendStop);
+        assertEquals(PlayerData.NONE.getId(), model.getIdWinner());
+    }
+
+    @Test
+    void emptyInput() throws GameException {
+        writeInput("");
+
+        setupBoardRandom();
+
+        assertEquals(0, model.getIdPlayer());
+    }
+
+    @Test
+    void wrongInput() throws GameException {
+        writeInput("P1", "B", "C");
+
+        setupBoardRandom();
+
+        assertEquals(0, model.getIdPlayer());
+    }
+
+    @Test
+    void switchPlayerOnToTwo() throws GameException {
+        writeInput("D1");
+
+        setupBoardRandom();
+
+        assertEquals(1, model.getIdPlayer());
+    }
+
+    @Test
+    void switchPlayerTwoToOn() throws GameException {
+        writeInput("D1", "D2");
 
         setupBoard(1);
 
-        assertEquals(1, model.getIdPlayer());
-        assertEquals(0, stageModel.getTotalPawnOnBoard(Pawn.Status.RED_PAWN));
+        assertEquals(0, model.getIdPlayer());
     }
 
-    @Test
-    void playerCantPlacePawnOnOtherPawn() throws GameException {
-        writeInput("D3", "D2", "D5", "P", "P", "D2", "D4", "D5");
 
-        setupBoard(7);
+    /*
+     * Call Back
+     */
 
-        assertEquals(1, model.getIdPlayer());
-        assertEquals(3, stageModel.getTotalPawnOnBoard(Pawn.Status.BLUE_PAWN));
-        assertEquals(2, stageModel.getTotalPawnOnBoard(Pawn.Status.RED_PAWN));
+    @Test void removeMovementCard() throws GameException {
+        final SimpleActionList simpleActionList = new SimpleActionList(model, PlayerData.NONE);
     }
+
 
     private void writeInput(String... inputs) {
         final String input = Strings.join(inputs) + "\nstop";
