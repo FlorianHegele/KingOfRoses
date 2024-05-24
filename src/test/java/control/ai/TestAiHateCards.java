@@ -52,7 +52,7 @@ class TestAiHateCards{
         final View korView = new View(model);
         final KoRController control = new KoRController(model, korView, consoleController, gameConfigurationModel);
         // Change AI of the first player to CAMARADE for the test needs
-        gameConfigurationModel.addAI(Map.of(PlayerData.PLAYER_BLUE, AIData.CAMARADE, PlayerData.PLAYER_RED, AIData.CAMARADE));
+        gameConfigurationModel.addAI(Map.of(PlayerData.PLAYER_BLUE, AIData.HATE_CARDS, PlayerData.PLAYER_RED, AIData.HATE_CARDS));
 
         control.setFirstStageName("kor");
 
@@ -65,7 +65,7 @@ class TestAiHateCards{
     void testPlateauVide(){
 
         // Create the AI decider
-        KoRDeciderCamarade aiDecider = new KoRDeciderCamarade(stageModel.getModel(), null, PlayerData.PLAYER_RED);
+        KoRDeciderHateCards aiDecider = new KoRDeciderHateCards(stageModel.getModel(), null, PlayerData.PLAYER_BLUE);
 
         // Get the action list from the AI
         ActionList actionList = aiDecider.decide();
@@ -78,7 +78,7 @@ class TestAiHateCards{
     @Test
     void testPeutPiocherOuJouerSurPlateauVide(){
         // Create the AI decider
-        KoRDeciderCamarade aiDecider = new KoRDeciderCamarade(stageModel.getModel(), null, PlayerData.PLAYER_BLUE);
+        KoRDeciderHateCards aiDecider = new KoRDeciderHateCards(stageModel.getModel(), null, PlayerData.PLAYER_BLUE);
 
         // Get the AI cards
         final MovementCard movementCard1 = stageModel.getMovementCards(MovementCard.Owner.PLAYER_BLUE).get(0);
@@ -93,7 +93,6 @@ class TestAiHateCards{
         actionList.addAll(ActionFactory.generatePutInContainer(stageModel.getModel(), movementCard2, stageModel.getMovementCardStackPlayed().getName(), 0, 0));
 
         new ActionPlayer(stageModel.getModel(), null, actionList).start();
-        System.out.println("New blue player hand is : " + "\n ¤ " + movementCard1 + "\n ¤ " + movementCard2 + "\n ¤ " + movementCard3 + "\n ¤ " + movementCard4 + "\n ¤ " + movementCard5);
 
         // Get the action list from the AI
         ActionList actionL = aiDecider.decide();
@@ -105,7 +104,7 @@ class TestAiHateCards{
     @Test
     void testPeutJouerSurJoueurOuSurVide(){
         // Create the AI decider
-        KoRDeciderCamarade aiDecider = new KoRDeciderCamarade(stageModel.getModel(), null, PlayerData.PLAYER_RED);
+        KoRDeciderHateCards aiDecider = new KoRDeciderHateCards(stageModel.getModel(), null, PlayerData.PLAYER_BLUE);
 
         // Get the AI cards
         final MovementCardSpread redMoveCardsHand = stageModel.getRedMovementCardsSpread();
