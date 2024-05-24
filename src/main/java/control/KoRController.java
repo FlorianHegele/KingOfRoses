@@ -210,7 +210,7 @@ public class KoRController extends Controller {
             }
 
             if (movementCardSpread.isEmptyAt(0, indexCard)) {
-                System.out.println("Select a card that you own.");
+                System.out.println("Select a card that you own");
                 return false;
             }
 
@@ -228,7 +228,7 @@ public class KoRController extends Controller {
 
             // Validate the move
             if (!board.canReachCell(row, col)) {
-                System.out.println("Your card is going outside the board.");
+                System.out.println("Your pawn  is going outside the board.");
                 return false;
             }
 
@@ -270,7 +270,7 @@ public class KoRController extends Controller {
             }
 
             if (movementCardSpread.isEmptyAt(0, indexCard)) {
-                System.out.println("Select a card that you possess.");
+                System.out.println("Select a card that you own");
                 return false;
             }
 
@@ -289,7 +289,7 @@ public class KoRController extends Controller {
 
             // Validate the move
             if (!board.canReachCell(row, col)) {
-                System.out.println("Your hero card is going outside the board.");
+                System.out.println("Your pawn is going outside the board.");
                 return false;
             }
 

@@ -750,8 +750,8 @@ public class KoRStageModel extends GameStageModel {
         }
 
         if (renderGame) {
-            System.out.println("Points rouge : " + redZoneCounter + ", pions total " + redPawnPlaced);
-            System.out.println("Points bleu : " + blueZoneCounter + ", pions total " + bluePawnPlaced);
+            System.out.println("Blue points: " + blueZoneCounter + ", total pawn on the board: " + bluePawnPlaced);
+            System.out.println("Red points: " + redZoneCounter + ", total pawn on the board: " + redPawnPlaced);
         }
         // Set the winner
         model.setIdWinner(idWinner);

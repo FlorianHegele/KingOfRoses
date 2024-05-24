@@ -108,10 +108,12 @@ public class GameConfigurationModel {
     }
 
     public void addAI(Map<PlayerData, AIData> AIData) {
-        if (playerMode != 2)
-            throw new IllegalCallerException("You cannot add 2 AIs if the player mode is not set to 2");
-        if (AIData == null || AIData.size() != 2)
-            throw new IllegalArgumentException("AIData must contain exactly two player");
+        if (AIData.size() > 2 || AIData.isEmpty())
+            throw new IllegalArgumentException("AIData must contain exactly "+playerMode+" player");
+
+        if (playerMode != AIData.size())
+            throw new IllegalCallerException("You cannot add "+AIData.size()+" AIs if the player mode is not set to " + playerMode);
+
         playerDataAIDataMap.putAll(AIData);
     }
 

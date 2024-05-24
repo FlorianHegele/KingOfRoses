@@ -47,11 +47,6 @@ public class ActionsUtils {
             }
         }
 
-        System.out.println("Doing the following moves : " + Arrays.toString(outActionIdArray));
-        System.out.println("Moves expected for a movement action : " + Arrays.toString(playMovementCard));
-        System.out.println("Moves expected for a take card action : " + Arrays.toString(playTakeCard));
-
-
         // TODO :
         /*
          * Creating an array to match with the current one
