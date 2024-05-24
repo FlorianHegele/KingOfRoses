@@ -218,9 +218,13 @@ public class KoRController extends Controller {
             final int row = (int) pos.getY();
 
             // Validate the move
-            if (!board.canReachCell(row, col) || !board.isEmptyAt(row, col)) {
-                System.out.println("Your card is going outside the boundaries of the board. \nReplay!");
-                Logger.info("Out of board");
+            if (!board.canReachCell(row, col)) {
+                System.out.println("Your pawn is going outside the boundaries of the board. \nReplay!");
+                return false;
+            }
+
+            if(!board.isEmptyAt(row, col)) {
+                System.out.println("You need to used a hero card to play this movement card.");
                 return false;
             }
 
@@ -231,7 +235,10 @@ public class KoRController extends Controller {
             // Parse the index from the input and adjust to zero-based index
             final int indexCard = Strings.parseInt(line.substring(1)) - 1;
             // If the indexCard is invalid, do nothing
-            if (indexCard == -1) return false;
+            if (indexCard < 1 || indexCard > 5) {
+                System.out.println("Select a card that you own");
+                return false;
+            }
 
             final MovementCardSpread movementCardSpread;
             final HeroCardStack heroCardStack;
@@ -272,9 +279,13 @@ public class KoRController extends Controller {
             final int row = (int) pos.getY();
 
             // Validate the move
-            if (!board.canReachCell(row, col) || board.isEmptyAt(row, col)) {
-                System.out.println("Y a un pion dessus");
-                Logger.info("Out of board");
+            if (!board.canReachCell(row, col)) {
+                System.out.println("Your card is going outside the board.");
+                return false;
+            }
+
+            if (board.isEmptyAt(row, col)){
+                System.out.println("A hero card cannot be used on an empty cell");
                 return false;
             }
 
