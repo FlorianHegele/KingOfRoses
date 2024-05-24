@@ -40,7 +40,7 @@ class TestAiCamarade{
         // Set up game configuration
         final GameConfigurationModel gameConfigurationModel = new GameConfigurationModel(
                 model,
-                GameConfigurationModel.DEFAULT_PLAYER_MODE,
+                2,
                 GameConfigurationModel.DEFAULT_LOGGER_MODE,
                 GameConfigurationModel.DEFAULT_PLAYER_INTERACTION,
                 false);
@@ -52,7 +52,7 @@ class TestAiCamarade{
         final View korView = new View(model);
         final KoRController control = new KoRController(model, korView, consoleController, gameConfigurationModel);
         // Change AI of the first player to CAMARADE for the test needs
-        gameConfigurationModel.addAI(Map.of(PlayerData.PLAYER_BLUE, AIData.RANDOM, PlayerData.PLAYER_RED, AIData.CAMARADE));
+        gameConfigurationModel.addAI(Map.of(PlayerData.PLAYER_BLUE, AIData.CAMARADE, PlayerData.PLAYER_RED, AIData.CAMARADE));
 
         control.setFirstStageName("kor");
 
@@ -78,31 +78,22 @@ class TestAiCamarade{
     @Test
     void testPeutPiocherOuJouerSurPlateauVide(){
         // Create the AI decider
-        KoRDeciderCamarade aiDecider = new KoRDeciderCamarade(stageModel.getModel(), null, PlayerData.PLAYER_RED);
+        KoRDeciderCamarade aiDecider = new KoRDeciderCamarade(stageModel.getModel(), null, PlayerData.PLAYER_BLUE);
 
         // Get the AI cards
-        final MovementCardSpread redMoveCardsHand = stageModel.getRedMovementCardsSpread();
-        System.out.println("Red player first card is : " + redMoveCardsHand.getElement(0,0));
-        final MovementCard movementCard = stageModel.getMovementCards(MovementCard.Owner.PLAYER_RED).get(0);
-        System.out.println("Got this from red player hand : " + movementCard);
+        final MovementCard movementCard1 = stageModel.getMovementCards(MovementCard.Owner.PLAYER_BLUE).get(0);
+        final MovementCard movementCard2 = stageModel.getMovementCards(MovementCard.Owner.PLAYER_BLUE).get(1);
+        final MovementCard movementCard3 = stageModel.getMovementCards(MovementCard.Owner.PLAYER_BLUE).get(2);
+        final MovementCard movementCard4 = stageModel.getMovementCards(MovementCard.Owner.PLAYER_BLUE).get(3);
+        final MovementCard movementCard5 = stageModel.getMovementCards(MovementCard.Owner.PLAYER_BLUE).get(4);
+        System.out.println("Got this from blue player hand : " + "\n ¤ " + movementCard1 + "\n ¤ " + movementCard2 + "\n ¤ " + movementCard3 + "\n ¤ " + movementCard4 + "\n ¤ " + movementCard5);
 
-        // Remove all card from the red AI
+        // Remove a card from the red AI
         final ActionList actionList = new ActionList();
-        actionList.addAll(ActionFactory.generatePutInContainer(stageModel.getModel(), movementCard, stageModel.getMovementCardStackPlayed().getName(), 0, 0));
+        actionList.addAll(ActionFactory.generatePutInContainer(stageModel.getModel(), movementCard2, stageModel.getMovementCardStackPlayed().getName(), 0, 0));
+
         new ActionPlayer(stageModel.getModel(), null, actionList).start();
-        System.out.println("Red player first card is : " + redMoveCardsHand.getElement(0,0));
-        actionList.addAll(ActionFactory.generatePutInContainer(stageModel.getModel(), movementCard, stageModel.getMovementCardStackPlayed().getName(), 0, 1));
-        new ActionPlayer(stageModel.getModel(), null, actionList).start();
-        System.out.println("Red player first card is : " + redMoveCardsHand.getElement(0,0));
-        actionList.addAll(ActionFactory.generatePutInContainer(stageModel.getModel(), movementCard, stageModel.getMovementCardStackPlayed().getName(), 0, 2));
-        new ActionPlayer(stageModel.getModel(), null, actionList).start();
-        System.out.println("Red player first card is : " + redMoveCardsHand.getElement(0,0));
-        actionList.addAll(ActionFactory.generatePutInContainer(stageModel.getModel(), movementCard, stageModel.getMovementCardStackPlayed().getName(), 0, 3));
-        new ActionPlayer(stageModel.getModel(), null, actionList).start();
-        System.out.println("Red player first card is : " + redMoveCardsHand.getElement(0,0));
-        actionList.addAll(ActionFactory.generatePutInContainer(stageModel.getModel(), movementCard, stageModel.getMovementCardStackPlayed().getName(), 0, 4));
-        new ActionPlayer(stageModel.getModel(), null, actionList).start();
-        System.out.println("Red player first card is : " + redMoveCardsHand.getElement(0,0));
+        System.out.println("New blue player hand is : " + "\n ¤ " + movementCard1 + "\n ¤ " + movementCard2 + "\n ¤ " + movementCard3 + "\n ¤ " + movementCard4 + "\n ¤ " + movementCard5);
 
         // Get the action list from the AI
         ActionList actionL = aiDecider.decide();

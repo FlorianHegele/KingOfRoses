@@ -21,7 +21,6 @@ public class ActionsUtils {
         int[] playTakeCard = {1, 2};
 
         int listSize = actionList.getActions().size();
-        System.out.println(listSize);
         int[] outActionIdArray = new int[listSize];
         int i = -1;
 
@@ -49,9 +48,11 @@ public class ActionsUtils {
 
         System.out.println("Doing the following moves : " + Arrays.toString(outActionIdArray));
         System.out.println("Moves expected for a movement action : " + Arrays.toString(playMovementCard));
+        System.out.println("Moves expected for a take card action : " + Arrays.toString(playTakeCard));
+
 
         // TODO :
-        /**
+        /*
          * Creating an array to match with the current one
          * will determine which action is played
          */
