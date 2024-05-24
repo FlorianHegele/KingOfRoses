@@ -18,6 +18,7 @@ public class ActionsUtils {
      */
     public static int actionListToInt(ActionList actionList) {
         int[] playMovementCard = {1, 2, 3, 1, 2};
+        int[] playTakeCard = {1, 2};
 
         int listSize = actionList.getActions().size();
         System.out.println(listSize);
@@ -36,7 +37,6 @@ public class ActionsUtils {
                 continue;
             }
 
-
             if (gameActions.toString().contains("MoveWithinContainerAction")) {
                 outActionIdArray[i] = 3;
                 continue;
@@ -47,8 +47,8 @@ public class ActionsUtils {
             }
         }
 
-        System.out.println(Arrays.toString(outActionIdArray));
-        System.out.println(Arrays.toString(playMovementCard));
+        System.out.println("Doing the following moves : " + Arrays.toString(outActionIdArray));
+        System.out.println("Moves expected for a movement action : " + Arrays.toString(playMovementCard));
 
         // TODO :
         /**
@@ -57,6 +57,9 @@ public class ActionsUtils {
          */
         if (Arrays.equals(outActionIdArray, playMovementCard)) {
             return 1;
+        }
+        if (Arrays.equals(outActionIdArray, playTakeCard)) {
+            return 2;
         }
         return 0;
 
