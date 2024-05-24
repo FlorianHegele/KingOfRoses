@@ -24,7 +24,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class TestAiCamarade{
+class TestAiHateCards{
 
     private KoRStageModel stageModel;
     private GameConfigurationModel gameconfigurationModel;
