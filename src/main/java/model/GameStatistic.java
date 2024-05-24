@@ -15,6 +15,7 @@ public class GameStatistic {
 
     private final int gameNumber;
     private double gameBlocked;
+    private double gameBlockedRate;
 
     private final AIStatistic blueStatistic;
     private final AIStatistic redStatistic;
@@ -90,12 +91,35 @@ public class GameStatistic {
 
         System.out.println("Tie :");
         System.out.println("| Total tie: " + gameBlocked);
-        System.out.println("| Tie rate: " + (100 * gameBlocked / gameNumber) + "%");
+        System.out.println("| Tie rate: " + gameBlockedRate + "%");
 
         System.out.println();
-        blueStatistic.printStatistics(gameNumber);
+        blueStatistic.printStatistics();
         System.out.println();
-        redStatistic.printStatistics(gameNumber);
+        redStatistic.printStatistics();
+    }
+
+    public void calculateStatistic() {
+        gameBlockedRate = 100 * gameBlocked / gameNumber;
+
+        blueStatistic.calculateStatistics(gameNumber);
+        redStatistic.calculateStatistics(gameNumber);
+    }
+
+    public AIStatistic getBlueStatistic() {
+        return blueStatistic;
+    }
+
+    public AIStatistic getRedStatistic() {
+        return redStatistic;
+    }
+
+    public double getGameBlocked() {
+        return gameBlocked;
+    }
+
+    public double getGameBlockedRate() {
+        return gameBlockedRate;
     }
 
     /**
@@ -104,8 +128,15 @@ public class GameStatistic {
      */
     public static class AIStatistic {
 
-        private final PlayerData playerData;
-        private final AIData ai;
+        private final String description;
+
+        private double winRate;
+        private double heroCardUsedRate;
+        private double pawnPlayRate;
+        private double pointRate;
+        private double zoneRate;
+        private double averageZoneSizeRate;
+
         private int totalWin;
         private int totalHeroCardUsed;
         private int totalPawnPlay;
@@ -120,8 +151,7 @@ public class GameStatistic {
          * @param aiData     The AI associated to the player.
          */
         public AIStatistic(PlayerData playerData, AIData aiData) {
-            this.playerData = playerData;
-            this.ai = aiData;
+            this.description = "AI " + (playerData.getId() + 1) + " (" + aiData.name().toLowerCase() + ")";
         }
 
         /**
@@ -178,40 +208,105 @@ public class GameStatistic {
 
         /**
          * Prints the AI statistics to the console.
-         *
-         * @param totalGame The total number of games played.
          */
-        private void printStatistics(double totalGame) {
+        private void printStatistics() {
             System.out.println();
-            System.out.println("AI " + (playerData.getId() + 1) + " (" + ai.name().toLowerCase() + ")");
+            System.out.println(description);
 
             System.out.println("| Total win: " + totalWin);
-            System.out.println("| Win rate: " + (100 * totalWin / totalGame) + "%");
+            System.out.println("| Win rate: " + winRate + "%");
 
             System.out.println("-".repeat(20));
 
             System.out.println("| Total Hero card: " + totalHeroCardUsed);
-            System.out.println("| Hero card rate: " + (25 * totalHeroCardUsed / totalGame) + "%");
+            System.out.println("| Hero card rate: " + heroCardUsedRate);
 
             System.out.println("-".repeat(20));
 
             System.out.println("| Total Pawn played: " + totalPawnPlay);
-            System.out.println("| Pawn played average : " + (totalPawnPlay / totalGame));
+            System.out.println("| Pawn played average : " + pawnPlayRate);
 
             System.out.println("-".repeat(20));
 
             System.out.println("| Total Point: " + totalPoint);
-            System.out.println("| Point average : " + (totalPoint / totalGame));
+            System.out.println("| Point average : " + pointRate);
 
             System.out.println("-".repeat(20));
 
             System.out.println("| Total Zone: " + totalZone);
-            System.out.println("| Zone average : " + (totalZone / totalGame));
+            System.out.println("| Zone average : " + zoneRate);
 
             System.out.println("-".repeat(20));
 
             System.out.println("| Average Zone Size: " + averageZoneSize);
-            System.out.println("| Average Zone Size Per Game: " + (averageZoneSize / totalGame));
+            System.out.println("| Average Zone Size Per Game: " + averageZoneSizeRate);
+        }
+
+        /**
+         * Calculate the AI statistics.
+         *
+         * @param totalGame The total number of games played.
+         */
+        private void calculateStatistics(double totalGame) {
+            winRate = 100 * totalWin / totalGame;
+
+            heroCardUsedRate = totalHeroCardUsed / totalGame;
+
+            pawnPlayRate = totalPawnPlay / totalGame;
+
+            pointRate = totalPoint / totalGame;
+
+            zoneRate = totalZone / totalGame;
+
+            averageZoneSizeRate = averageZoneSize / totalGame;
+        }
+
+        public double getAverageZoneSizeRate() {
+            return averageZoneSizeRate;
+        }
+
+        public double getHeroCardUsedRate() {
+            return heroCardUsedRate;
+        }
+
+        public double getPointRate() {
+            return pointRate;
+        }
+
+        public double getZoneRate() {
+            return zoneRate;
+        }
+
+        public double getPawnPlayRate() {
+            return pawnPlayRate;
+        }
+
+        public double getWinRate() {
+            return winRate;
+        }
+
+        public double getAverageZoneSize() {
+            return averageZoneSize;
+        }
+
+        public int getTotalZone() {
+            return totalZone;
+        }
+
+        public int getTotalPoint() {
+            return totalPoint;
+        }
+
+        public int getTotalPawnPlay() {
+            return totalPawnPlay;
+        }
+
+        public int getTotalHeroCardUsed() {
+            return totalHeroCardUsed;
+        }
+
+        public int getTotalWin() {
+            return totalWin;
         }
     }
 

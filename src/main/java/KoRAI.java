@@ -74,6 +74,7 @@ public class KoRAI {
             System.out.println();
         }
 
+        gameStatistic.calculateStatistic();
         // Print the gathered statistics
         gameStatistic.printStatistics();
     }
