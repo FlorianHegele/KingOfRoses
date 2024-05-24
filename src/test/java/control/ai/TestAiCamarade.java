@@ -86,14 +86,12 @@ class TestAiCamarade{
         final MovementCard movementCard3 = stageModel.getMovementCards(MovementCard.Owner.PLAYER_BLUE).get(2);
         final MovementCard movementCard4 = stageModel.getMovementCards(MovementCard.Owner.PLAYER_BLUE).get(3);
         final MovementCard movementCard5 = stageModel.getMovementCards(MovementCard.Owner.PLAYER_BLUE).get(4);
-        System.out.println("Got this from blue player hand : " + "\n ¤ " + movementCard1 + "\n ¤ " + movementCard2 + "\n ¤ " + movementCard3 + "\n ¤ " + movementCard4 + "\n ¤ " + movementCard5);
 
         // Remove a card from the red AI
         final ActionList actionList = new ActionList();
         actionList.addAll(ActionFactory.generatePutInContainer(stageModel.getModel(), movementCard2, stageModel.getMovementCardStackPlayed().getName(), 0, 0));
 
         new ActionPlayer(stageModel.getModel(), null, actionList).start();
-        System.out.println("New blue player hand is : " + "\n ¤ " + movementCard1 + "\n ¤ " + movementCard2 + "\n ¤ " + movementCard3 + "\n ¤ " + movementCard4 + "\n ¤ " + movementCard5);
 
         // Get the action list from the AI
         ActionList actionL = aiDecider.decide();
@@ -109,15 +107,12 @@ class TestAiCamarade{
 
         // Get the AI cards
         final MovementCardSpread redMoveCardsHand = stageModel.getRedMovementCardsSpread();
-        System.out.println("Red player first card is : " + redMoveCardsHand.getElement(0,0));
         final MovementCard movementCard = stageModel.getMovementCards(MovementCard.Owner.PLAYER_RED).get(0);
-        System.out.println("Got this from red player hand : " + movementCard);
 
         // Remove a card from the red AI
         final ActionList actionList = new ActionList();
         actionList.addAll(ActionFactory.generatePutInContainer(stageModel.getModel(), movementCard, stageModel.getMovementCardStackPlayed().getName(), 0, 0));
         new ActionPlayer(stageModel.getModel(), null, actionList).start();
-        System.out.println("Red player first card is : " + redMoveCardsHand.getElement(0,0));
 
         // Get the action list from the AI
         ActionList actionL = aiDecider.decide();

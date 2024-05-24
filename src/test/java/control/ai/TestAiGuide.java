@@ -87,7 +87,6 @@ class TestAiGuide{
         final MovementCard movementCard3 = stageModel.getMovementCards(MovementCard.Owner.PLAYER_BLUE).get(2);
         final MovementCard movementCard4 = stageModel.getMovementCards(MovementCard.Owner.PLAYER_BLUE).get(3);
         final MovementCard movementCard5 = stageModel.getMovementCards(MovementCard.Owner.PLAYER_BLUE).get(4);
-        System.out.println("Got this from blue player hand : " + "\n ¤ " + movementCard1 + "\n ¤ " + movementCard2 + "\n ¤ " + movementCard3 + "\n ¤ " + movementCard4 + "\n ¤ " + movementCard5);
 
         // Remove a card from the red AI
         final ActionList actionList = new ActionList();
@@ -104,7 +103,6 @@ class TestAiGuide{
 
     @Test
     void testPeutJouerSurJoueurOuSurVideUnderThreshold(){
-        System.out.println("---testPeutJouerSurJoueurOuSurVideOverThreshold---");
         // Create the AI decider
         KoRDeciderGuide aiDecider = new KoRDeciderGuide(stageModel.getModel(), null, PlayerData.PLAYER_BLUE);
 
@@ -115,7 +113,6 @@ class TestAiGuide{
         final MovementCard movementCard4 = stageModel.getMovementCards(MovementCard.Owner.PLAYER_BLUE).get(3);
         final MovementCard movementCard5 = stageModel.getMovementCards(MovementCard.Owner.PLAYER_BLUE).get(4);
 
-        System.out.println("Got this from blue player hand : " + "\n ¤ " + movementCard1 + "\n ¤ " + movementCard2 + "\n ¤ " + movementCard3 + "\n ¤ " + movementCard4 + "\n ¤ " + movementCard5);
 
         // Remove a card from the blue AI
         final ActionList actionList = new ActionList();
@@ -151,7 +148,6 @@ class TestAiGuide{
 
     @Test
     void testPeutJouerSurJoueurOuSurVideOverThreshold(){
-        System.out.println("---testPeutJouerSurJoueurOuSurVideOverThreshold---");
         // Create the AI decider
         KoRDeciderGuide aiDecider = new KoRDeciderGuide(stageModel.getModel(), null, PlayerData.PLAYER_BLUE);
 
@@ -162,7 +158,6 @@ class TestAiGuide{
         final MovementCard movementCard4 = stageModel.getMovementCards(MovementCard.Owner.PLAYER_BLUE).get(3);
         final MovementCard movementCard5 = stageModel.getMovementCards(MovementCard.Owner.PLAYER_BLUE).get(4);
 
-        System.out.println("Got this from blue player hand : " + "\n ¤ " + movementCard1 + "\n ¤ " + movementCard2 + "\n ¤ " + movementCard3 + "\n ¤ " + movementCard4 + "\n ¤ " + movementCard5);
 
         // Remove all cards from the blue AI
         final ActionList actionList = new ActionList();

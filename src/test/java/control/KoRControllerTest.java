@@ -4,6 +4,7 @@ import boardifier.control.ActionFactory;
 import boardifier.control.ActionPlayer;
 import boardifier.model.GameException;
 import boardifier.model.Model;
+import boardifier.model.action.ActionList;
 import model.GameConfigurationModel;
 import model.KoRStageModel;
 import model.data.PlayerData;
@@ -64,14 +65,30 @@ class KoRControllerTest {
     }
 
     @Test
-    void playerCantPlayEmptyCardCell() throws GameException {
-        writeInput("D2", "D5", "D2");
+    void playerCantPlayEmptyMovementCardCell() throws GameException {
+        writeInput("D1");
 
-        setupBoard(1);
+        setupBoard(false, 1);
+
+        new ActionPlayer(model, null, ActionFactory.generateRemoveFromStage(model,
+                stageModel.getBlueMovementCardsSpread().getElement(0, 0))).start();
+
+        controller.stageLoop();
 
         assertEquals(0, model.getIdPlayer());
+        assertEquals(0, stageModel.getTotalPawnOnBoard(Pawn.Status.BLUE_PAWN));
+    }
+
+    @Test
+    void playerCanPlayMovementCard() throws GameException {
+        writeInput("D1");
+
+        setupBoard(true, 1);
+
+        controller.stageLoop();
+
+        assertEquals(1, model.getIdPlayer());
         assertEquals(1, stageModel.getTotalPawnOnBoard(Pawn.Status.BLUE_PAWN));
-        assertEquals(1, stageModel.getTotalPawnOnBoard(Pawn.Status.RED_PAWN));
     }
 
     @Test
@@ -87,15 +104,45 @@ class KoRControllerTest {
     }
 
     @Test
-    void playerCantPlayEmptyHeroCardCell() throws GameException {
-        setupBoard(false, 1);
-        new ActionPlayer(model, null,
-                ActionFactory.generateRemoveFromContainer(model, stageModel.getMovementCards(MovementCard.Owner.PLAYER_BLUE).get(0))
-        ).start();
+    void playerCantDrawMovementCard() throws GameException {
+        writeInput("P");
+
+        setupBoard(1);
 
         assertEquals(0, model.getIdPlayer());
-        assertEquals(1, stageModel.getTotalPawnOnBoard(Pawn.Status.BLUE_PAWN));
+        assertEquals(5, ContainerElements.countElements(stageModel.getBlueMovementCardsSpread()));
+    }
+
+    @Test
+    void playerCantPlayEmptyHeroCardCell() throws GameException {
+        writeInput("H5");
+
+        setupBoard(false, 1);
+
+        final ActionList actionList = ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[0], stageModel.getBoard().getName(), 4, 2);
+        for(int i=0; i<4; i++)
+            actionList.addAll(ActionFactory.generateRemoveFromContainer(model, stageModel.getBlueHeroCards()[i]));
+
+        new ActionPlayer(model, null, actionList).start();
+        controller.stageLoop();
+
+        assertEquals(0, model.getIdPlayer());
         assertEquals(1, stageModel.getTotalPawnOnBoard(Pawn.Status.RED_PAWN));
+    }
+
+    @Test
+    void playerCanPlayHeroCard() throws GameException {
+        writeInput("H5");
+
+        setupBoard(false, 1);
+
+        final ActionList actionList = ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[0], stageModel.getBoard().getName(), 4, 2);
+
+        new ActionPlayer(model, null, actionList).start();
+        controller.stageLoop();
+
+        assertEquals(1, model.getIdPlayer());
+        assertEquals(1, stageModel.getTotalPawnOnBoard(Pawn.Status.BLUE_PAWN));
     }
 
     @Test
