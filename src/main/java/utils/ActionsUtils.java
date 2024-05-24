@@ -19,6 +19,7 @@ public class ActionsUtils {
     public static int actionListToInt(ActionList actionList) {
         int[] playMovementCard = {1, 2, 3, 1, 2};
         int[] playTakeCard = {1, 2};
+        int[] playHeroCard = {0, 3, 1, 2, 1, 0};
 
         int listSize = actionList.getActions().size();
         int[] outActionIdArray = new int[listSize];
@@ -61,6 +62,9 @@ public class ActionsUtils {
         }
         if (Arrays.equals(outActionIdArray, playTakeCard)) {
             return 2;
+        }
+        if (Arrays.equals(outActionIdArray, playHeroCard)){
+            return 3;
         }
         return 0;
 
