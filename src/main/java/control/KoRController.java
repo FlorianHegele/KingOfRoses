@@ -64,6 +64,8 @@ public class KoRController extends Controller {
             final PlayerData playerData = PlayerData.getCurrentPlayerData(model);
 
             playTurn(gameStage, playerData);
+
+            if(sendStop || gameStage.gameIsStuck()) model.stopStage();
         }
 
         if(!sendStop) update(true);
@@ -105,7 +107,6 @@ public class KoRController extends Controller {
                 // Check if the player stops the game (e.g., CTRL + D or "stop")
                 if (line == null || line.equals("stop")) {
                     sendStop = true;
-                    model.stopStage();
                     return;
                 }
 
