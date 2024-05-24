@@ -68,11 +68,13 @@ public class KoRController extends Controller {
             if(sendStop || gameStage.gameIsStuck()) model.stopStage();
         }
 
-        if(!sendStop) update(true);
-
-        // Print winner and stats of the game
-        if(gameStage.gameIsStuck())
-            gameStage.computePartyResult(gameConfigurationModel.isRenderGame());
+        if(!sendStop) {
+            update(true);
+        } else {
+            // Print winner and stats of the game
+            if(gameStage.gameIsStuck())
+                gameStage.computePartyResult(gameConfigurationModel.isRenderGame());
+        }
 
         if (gameIsRender) endGame();
     }
