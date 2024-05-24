@@ -8,6 +8,7 @@ import utils.Boardifiers;
 import utils.Strings;
 
 import java.util.Map;
+import java.util.Random;
 
 /**
  * The KoRAI class serves as a testing framework for running multiple iterations of AI games.
@@ -35,7 +36,7 @@ public class KoRAI {
         final AIData redAI = AIData.valueOf(args[PlayerData.PLAYER_RED.getId()]);
 
         // Retrieve the number of iterations from command line arguments, default is 500
-        final int iter = Strings.parseInt(args[2], 500);
+        final int iter = Strings.parseInt(args, 2, 500);
 
         // Create a GameStatistic object to track game statistics
         final GameStatistic gameStatistic = new GameStatistic(blueAI, redAI, iter);
@@ -73,6 +74,7 @@ public class KoRAI {
             System.out.println();
         }
 
+        gameStatistic.calculateStatistic();
         // Print the gathered statistics
         gameStatistic.printStatistics();
     }

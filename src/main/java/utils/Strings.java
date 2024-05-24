@@ -182,4 +182,8 @@ public class Strings {
         return parseBoolean(strings, index, false);
     }
 
+    public static String join(String... strings) {
+        return String.join("\n", strings);
+    }
+
 }

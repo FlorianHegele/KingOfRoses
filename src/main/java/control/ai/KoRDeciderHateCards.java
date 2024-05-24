@@ -41,10 +41,6 @@ public class KoRDeciderHateCards extends KoRDecider {
 
         // Get all possible actions for playing movement cards
         final List<ActionPoints> actionCardList = simpleActionList.getPossibleMovementCards();
-        // Get all possible actions for taking new cards
-        final List<ActionList> actionTakeList = simpleActionList.getPossibleTakeCardAction();
-        // Get all possible actions for playing hero cards
-        final List<ActionPoints> actionHeroList = simpleActionList.getPossibleHeroMove();
 
         // Check if playing a movement card is possible
         if (!actionCardList.isEmpty()) {
@@ -57,11 +53,17 @@ public class KoRDeciderHateCards extends KoRDecider {
             return actionCardList.get(0).getActionList();
         }
 
+        // Get all possible actions for playing hero cards
+        final List<ActionPoints> actionHeroList = simpleActionList.getPossibleHeroMove();
+
         // If no movement card action is possible, check if playing a hero card is possible
         if (!actionHeroList.isEmpty()) {
             Logger.debug("A hero card is playable for : " + playerData);
             return actionHeroList.get(0).getActionList();
         }
+
+        // Get all possible actions for taking new cards
+        final List<ActionList> actionTakeList = simpleActionList.getPossibleTakeCardAction();
 
         // As a last resort, take a card
         Logger.debug("A take card action is playable for : " + playerData);

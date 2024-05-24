@@ -59,7 +59,7 @@ public class GameConfigurationController {
     private void setSeed() {
         console.printCheckMessage("specific seed ? ");
         final String line = console.getCheckConsoleLine();
-        if (!line.isEmpty()) GameConfigurationModel.RANDOM.setSeed(Strings.parseLong(line));
+        if (!line.isEmpty()) configurationModel.setSeed(Strings.parseLong(line));
     }
 
     /**
