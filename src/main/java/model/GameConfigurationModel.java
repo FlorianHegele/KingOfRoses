@@ -18,6 +18,7 @@ public class GameConfigurationModel {
     public static final Random RANDOM = new Random();
 
     public static final int DEFAULT_PLAYER_MODE = 0;
+    public static final long RANDOM_SEED = 0;
     public static final int DEFAULT_LOGGER_MODE = 0;
     public static final boolean DEFAULT_PLAYER_INTERACTION = true;
     public static final boolean DEFAULT_RENDER_GAME = true;
@@ -42,14 +43,19 @@ public class GameConfigurationModel {
      * @param playerMode the player mode (0: Human vs. Human, 1: Human vs. AI, 2: AI vs. AI).
      * @param loggerMode the logger mode (0: None, 1: Debug).
      */
-    public GameConfigurationModel(Model model, int playerMode, int loggerMode, boolean playerInteraction, boolean renderGame) {
+    public GameConfigurationModel(Model model, long seed, int playerMode, int loggerMode, boolean playerInteraction, boolean renderGame) {
         this.model = model;
         this.playerDataAIDataMap = new EnumMap<>(PlayerData.class);
 
+        setSeed(seed);
         setPlayerMode(playerMode);
         setLoggerMode(loggerMode);
         setPlayerInteraction(playerInteraction);
         setRenderGame(renderGame);
+    }
+
+    public GameConfigurationModel(Model model, int playerMode, int loggerMode, boolean playerInteraction, boolean renderGame) {
+        this(model, RANDOM_SEED, playerMode, loggerMode, playerInteraction, renderGame);
     }
 
     /**
@@ -58,7 +64,11 @@ public class GameConfigurationModel {
      * @param model the game model.
      */
     public GameConfigurationModel(Model model) {
-        this(model, DEFAULT_PLAYER_MODE, DEFAULT_LOGGER_MODE, DEFAULT_PLAYER_INTERACTION, DEFAULT_RENDER_GAME);
+        this(model, RANDOM_SEED, DEFAULT_PLAYER_MODE, DEFAULT_LOGGER_MODE, DEFAULT_PLAYER_INTERACTION, DEFAULT_RENDER_GAME);
+    }
+
+    public void setSeed(long seed) {
+        if(seed != 0) RANDOM.setSeed(seed);
     }
 
     /**
@@ -98,10 +108,12 @@ public class GameConfigurationModel {
     }
 
     public void addAI(Map<PlayerData, AIData> AIData) {
-        if (playerMode != 2)
-            throw new IllegalCallerException("You cannot add 2 AIs if the player mode is not set to 2");
-        if (AIData == null || AIData.size() != 2)
-            throw new IllegalArgumentException("AIData must contain exactly two player");
+        if (AIData.size() > 2 || AIData.isEmpty())
+            throw new IllegalArgumentException("AIData must contain exactly "+playerMode+" player");
+
+        if (playerMode != AIData.size())
+            throw new IllegalCallerException("You cannot add "+AIData.size()+" AIs if the player mode is not set to " + playerMode);
+
         playerDataAIDataMap.putAll(AIData);
     }
 
@@ -182,4 +194,6 @@ public class GameConfigurationModel {
             Logger.setVerbosity(Logger.VERBOSE_HIGH);
         }
     }
+
+
 }

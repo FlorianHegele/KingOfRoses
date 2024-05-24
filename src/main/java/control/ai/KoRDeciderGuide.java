@@ -42,10 +42,6 @@ public class KoRDeciderGuide extends KoRDecider {
         // Log the current player
         Logger.debug("Playing for " + playerData);
 
-        // Get all possible actions for playing movement cards
-        final List<ActionPoints> actionCardList = simpleActionList.getPossibleMovementCards();
-        // Get all possible actions for taking new cards
-        final List<ActionList> actionTakeList = simpleActionList.getPossibleTakeCardAction();
         // Get all possible actions for playing hero cards
         final List<ActionPoints> actionHeroList = simpleActionList.getPossibleHeroMove();
 
@@ -61,6 +57,9 @@ public class KoRDeciderGuide extends KoRDecider {
             }
         }
 
+        // Get all possible actions for playing movement cards
+        final List<ActionPoints> actionCardList = simpleActionList.getPossibleMovementCards();
+
         // Check if playing a movement card is possible
         if (!actionCardList.isEmpty()) {
             Logger.debug("A card is playable for : " + playerData);
@@ -72,6 +71,8 @@ public class KoRDeciderGuide extends KoRDecider {
             return actionCardList.get(0).getActionList();
         }
 
+        // Get all possible actions for taking new cards
+        final List<ActionList> actionTakeList = simpleActionList.getPossibleTakeCardAction();
         // As a last resort, take a card
         Logger.debug("A take card action is playable for : " + playerData);
         if (!actionTakeList.isEmpty()) {

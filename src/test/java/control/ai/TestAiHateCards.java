@@ -24,7 +24,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class TestAiCamarade{
+class TestAiHateCards{
 
     private KoRStageModel stageModel;
     private GameConfigurationModel gameconfigurationModel;
@@ -52,7 +52,7 @@ class TestAiCamarade{
         final View korView = new View(model);
         final KoRController control = new KoRController(model, korView, consoleController, gameConfigurationModel);
         // Change AI of the first player to CAMARADE for the test needs
-        gameConfigurationModel.addAI(Map.of(PlayerData.PLAYER_BLUE, AIData.CAMARADE, PlayerData.PLAYER_RED, AIData.CAMARADE));
+        gameConfigurationModel.addAI(Map.of(PlayerData.PLAYER_BLUE, AIData.HATE_CARDS, PlayerData.PLAYER_RED, AIData.HATE_CARDS));
 
         control.setFirstStageName("kor");
 
@@ -65,7 +65,7 @@ class TestAiCamarade{
     void testPlateauVide(){
 
         // Create the AI decider
-        KoRDeciderCamarade aiDecider = new KoRDeciderCamarade(stageModel.getModel(), null, PlayerData.PLAYER_RED);
+        KoRDeciderHateCards aiDecider = new KoRDeciderHateCards(stageModel.getModel(), null, PlayerData.PLAYER_BLUE);
 
         // Get the action list from the AI
         ActionList actionList = aiDecider.decide();
@@ -78,7 +78,7 @@ class TestAiCamarade{
     @Test
     void testPeutPiocherOuJouerSurPlateauVide(){
         // Create the AI decider
-        KoRDeciderCamarade aiDecider = new KoRDeciderCamarade(stageModel.getModel(), null, PlayerData.PLAYER_BLUE);
+        KoRDeciderHateCards aiDecider = new KoRDeciderHateCards(stageModel.getModel(), null, PlayerData.PLAYER_BLUE);
 
         // Get the AI cards
         final MovementCard movementCard1 = stageModel.getMovementCards(MovementCard.Owner.PLAYER_BLUE).get(0);
@@ -103,7 +103,7 @@ class TestAiCamarade{
     @Test
     void testPeutJouerSurJoueurOuSurVide(){
         // Create the AI decider
-        KoRDeciderCamarade aiDecider = new KoRDeciderCamarade(stageModel.getModel(), null, PlayerData.PLAYER_RED);
+        KoRDeciderHateCards aiDecider = new KoRDeciderHateCards(stageModel.getModel(), null, PlayerData.PLAYER_BLUE);
 
         // Get the AI cards
         final MovementCardSpread redMoveCardsHand = stageModel.getRedMovementCardsSpread();
