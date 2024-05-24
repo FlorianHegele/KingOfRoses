@@ -378,10 +378,6 @@ class KoRControllerTest {
      * Call Back
      */
 
-    @Test void removeMovementCard() throws GameException {
-        final SimpleActionList simpleActionList = new SimpleActionList(model, PlayerData.NONE);
-    }
-
 
     private void writeInput(String... inputs) {
         final String input = Strings.join(inputs) + "\nstop";

@@ -439,8 +439,6 @@ class KoRStageModelTest {
         assertTrue(stageModel.gameIsStuck());
     }
 
-    // TODO : every Callbacks
-
 }
 
 
