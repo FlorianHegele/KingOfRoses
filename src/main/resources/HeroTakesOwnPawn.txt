@@ -6,5 +6,5 @@ D1
 D4
 D2
 P
-D3
+H3
 stop
