@@ -27,12 +27,12 @@ class KoRControllerTest {
     private Model model;
 
     // Need to play this function after changing the System.in if we want to test input
-    private void setupBoard() throws GameException {
+    private void setupBoard(long seed) throws GameException {
         // Create the model
         model = new Model();
 
         // Set up game configuration
-        final GameConfigurationModel gameConfigurationModel = new GameConfigurationModel(model, RANDOM_SEED, 0,
+        final GameConfigurationModel gameConfigurationModel = new GameConfigurationModel(model, seed, 0,
                 0, true, false);
 
         // Init and start the Game
@@ -44,11 +44,15 @@ class KoRControllerTest {
         controller = boardifiers.getController();
     }
 
+    private void setupBoardRandom() throws GameException {
+        setupBoard(RANDOM_SEED);
+    }
+
     @Test
     void testStopInput() throws GameException {
         writeInput();
 
-        setupBoard();
+        setupBoardRandom();
 
         assertTrue(controller.sendStop);
         assertEquals(PlayerData.NONE.getId(), model.getIdWinner());
@@ -60,12 +64,35 @@ class KoRControllerTest {
     // it means that every functions in this
     // class have been used!
     @Test
-    void testPlace() throws GameException {
-        writeInput("A");
+    void playerCantPlacePawnOutOfTheBoard() throws GameException {
+        writeInput("D2", "D2");
 
-        setupBoard();
+        setupBoard(1);
+
+        assertEquals(1, model.getIdPlayer());
+        assertEquals(0, stageModel.getTotalPawnOnBoard(Pawn.Status.RED_PAWN));
+    }
+
+    @Test
+    void playerCantPlayEmptyCard() throws GameException {
+        writeInput("D2", "D5", "D2");
+
+        setupBoard(1);
 
         assertEquals(0, model.getIdPlayer());
+        assertEquals(1, stageModel.getTotalPawnOnBoard(Pawn.Status.BLUE_PAWN));
+        assertEquals(1, stageModel.getTotalPawnOnBoard(Pawn.Status.RED_PAWN));
+    }
+
+    @Test
+    void playerCantPlacePawnOnOtherPawn() throws GameException {
+        writeInput("D3", "D2", "D5", "P", "P", "D2", "D4", "D5");
+
+        setupBoard(7);
+
+        assertEquals(1, model.getIdPlayer());
+        assertEquals(3, stageModel.getTotalPawnOnBoard(Pawn.Status.BLUE_PAWN));
+        assertEquals(2, stageModel.getTotalPawnOnBoard(Pawn.Status.RED_PAWN));
     }
 
     private void writeInput(String... inputs) {
