@@ -1,5 +1,7 @@
 package control;
 
+import boardifier.control.ActionFactory;
+import boardifier.control.ActionPlayer;
 import boardifier.model.GameException;
 import boardifier.model.Model;
 import model.GameConfigurationModel;
@@ -7,9 +9,9 @@ import model.KoRStageModel;
 import model.data.PlayerData;
 import model.element.Pawn;
 import model.element.card.MovementCard;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import utils.Boardifiers;
+import utils.ContainerElements;
 import utils.Strings;
 
 import java.io.ByteArrayInputStream;
@@ -21,22 +23,21 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class KoRControllerTest {
 
-    private Boardifiers boardifiers;
     private KoRStageModel stageModel;
     private KoRController controller;
     private Model model;
 
     // Need to play this function after changing the System.in if we want to test input
-    private void setupBoard(long seed) throws GameException {
+    private void setupBoard(boolean startLoop, long seed) throws GameException {
         // Create the model
         model = new Model();
 
         // Set up game configuration
         final GameConfigurationModel gameConfigurationModel = new GameConfigurationModel(model, seed, 0,
-                0, true, false);
+                0, startLoop, false);
 
         // Init and start the Game
-        boardifiers = new Boardifiers(model, gameConfigurationModel);
+        final Boardifiers boardifiers = new Boardifiers(model, gameConfigurationModel);
         boardifiers.initGame();
         boardifiers.startGame();
 
@@ -44,8 +45,12 @@ class KoRControllerTest {
         controller = boardifiers.getController();
     }
 
+    private void setupBoard(long random) throws GameException {
+        setupBoard(true, random);
+    }
+
     private void setupBoardRandom() throws GameException {
-        setupBoard(RANDOM_SEED);
+        setupBoard(true, RANDOM_SEED);
     }
 
     @Test
@@ -58,11 +63,41 @@ class KoRControllerTest {
         assertEquals(PlayerData.NONE.getId(), model.getIdWinner());
     }
 
-    // TODO : Rewrite this test
-    // + Do not test SimpleActionList because
-    // if we test every entry for the player,
-    // it means that every functions in this
-    // class have been used!
+    @Test
+    void playerCantPlayEmptyCardCell() throws GameException {
+        writeInput("D2", "D5", "D2");
+
+        setupBoard(1);
+
+        assertEquals(0, model.getIdPlayer());
+        assertEquals(1, stageModel.getTotalPawnOnBoard(Pawn.Status.BLUE_PAWN));
+        assertEquals(1, stageModel.getTotalPawnOnBoard(Pawn.Status.RED_PAWN));
+    }
+
+    @Test
+    void playerCanDrawMovementCard() throws GameException {
+        writeInput("P");
+
+        setupBoard(false, 1);
+        new ActionPlayer(model, null, ActionFactory.generateRemoveFromContainer(model, stageModel.getMovementCards(MovementCard.Owner.PLAYER_BLUE).get(0))).start();
+        controller.stageLoop();
+
+        assertEquals(1, model.getIdPlayer());
+        assertEquals(5, ContainerElements.countElements(stageModel.getBlueMovementCardsSpread()));
+    }
+
+    @Test
+    void playerCantPlayEmptyHeroCardCell() throws GameException {
+        setupBoard(false, 1);
+        new ActionPlayer(model, null,
+                ActionFactory.generateRemoveFromContainer(model, stageModel.getMovementCards(MovementCard.Owner.PLAYER_BLUE).get(0))
+        ).start();
+
+        assertEquals(0, model.getIdPlayer());
+        assertEquals(1, stageModel.getTotalPawnOnBoard(Pawn.Status.BLUE_PAWN));
+        assertEquals(1, stageModel.getTotalPawnOnBoard(Pawn.Status.RED_PAWN));
+    }
+
     @Test
     void playerCantPlacePawnOutOfTheBoard() throws GameException {
         writeInput("D2", "D2");
@@ -71,17 +106,6 @@ class KoRControllerTest {
 
         assertEquals(1, model.getIdPlayer());
         assertEquals(0, stageModel.getTotalPawnOnBoard(Pawn.Status.RED_PAWN));
-    }
-
-    @Test
-    void playerCantPlayEmptyCard() throws GameException {
-        writeInput("D2", "D5", "D2");
-
-        setupBoard(1);
-
-        assertEquals(0, model.getIdPlayer());
-        assertEquals(1, stageModel.getTotalPawnOnBoard(Pawn.Status.BLUE_PAWN));
-        assertEquals(1, stageModel.getTotalPawnOnBoard(Pawn.Status.RED_PAWN));
     }
 
     @Test
@@ -100,15 +124,4 @@ class KoRControllerTest {
         System.setIn(new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8)));
     }
 
-    /*
-    private boolean nothingChange(int redPawnOnBoard, int bluePawnOnBoard, int movementCardInStack) {
-        return stageModel.getTotalPawnOnBoard(Pawn.Status.RED_PAWN) == redPawnOnBoard
-                && stageModel.getTotalPawnOnBoard(Pawn.Status.BLUE_PAWN) == bluePawnOnBoard
-                && stageModel.getMovementCards(MovementCard.Owner.STACK).size() == movementCardInStack;
-    }
-
-    private boolean nothingChange() {
-        return nothingChange(0, 0, 14);
-    }
-     */
 }
