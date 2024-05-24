@@ -68,13 +68,11 @@ public class KoRController extends Controller {
             if(sendStop || gameStage.gameIsStuck()) model.stopStage();
         }
 
-        if(!sendStop) {
-            update(true);
-        } else {
-            // Print winner and stats of the game
-            if(gameStage.gameIsStuck())
-                gameStage.computePartyResult(gameConfigurationModel.isRenderGame());
-        }
+        if(!sendStop) update(true);
+
+        // Print winner and stats of the game
+        if(gameStage.gameIsStuck())
+            gameStage.computePartyResult(gameConfigurationModel.isRenderGame());
 
         if (gameIsRender) endGame();
     }
@@ -87,6 +85,8 @@ public class KoRController extends Controller {
      * @param playerData the player data for the current player.
      */
     private void playTurn(KoRStageModel gameStage, PlayerData playerData) {
+        final boolean gameIsRender = gameConfigurationModel.isRenderGame();
+
         final ActionPlayer actionPlayer;
 
         // Retrieve the player who need to play
@@ -114,7 +114,7 @@ public class KoRController extends Controller {
 
                 ok = actionAnalyse(gameStage, playerData, line);
                 // If the input is invalid, loop again for new input
-                if (!ok) System.out.println("incorrect instruction. retry !");
+                if (!ok && gameIsRender) System.out.println("incorrect instruction. retry !");
             }
             // Retrieve the player's actions and create an ActionPlayer
             actionPlayer = new ActionPlayer(model, this, playerActionList);
@@ -127,7 +127,7 @@ public class KoRController extends Controller {
         if (gameStage.playerCanPlay(playerData.getNextPlayerData())) {
             endOfTurn();
         } else {
-            System.out.println("The next player can't play and skip his turn");
+            if(gameIsRender) System.out.println("The next player can't play and skip his turn");
         }
     }
 
@@ -159,6 +159,8 @@ public class KoRController extends Controller {
      * @return true if the action is valid and an action list is created, false otherwise.
      */
     private boolean actionAnalyse(KoRStageModel gameStage, PlayerData playerData, String line) {
+        final boolean gameIsRender = gameConfigurationModel.isRenderGame();
+
         if (line.isEmpty() || line.length() > 2) return false;
 
         final char action = line.charAt(0);
@@ -177,7 +179,7 @@ public class KoRController extends Controller {
 
             // If the hand of the player is full, do nothing
             if (coord2D == null) {
-                System.out.println("You already have more than 5 movement cards.");
+                if(gameIsRender) System.out.println("You already have more than 5 movement cards.");
                 return false;
             }
 
@@ -189,7 +191,7 @@ public class KoRController extends Controller {
             final int indexCard = Strings.parseInt(line.substring(1)) - 1;
             // If the indexCard is invalid, do nothing
             if (indexCard < 0 || indexCard > 4) {
-                System.out.println("Select a card that you own");
+                if(gameIsRender) System.out.println("Select a card that you own");
                 return false;
             }
 
@@ -205,12 +207,12 @@ public class KoRController extends Controller {
 
 
             if (movementCardSpread.isEmpty()) {
-                System.out.println("You don't have a movement card to play. Draw a card!");
+                if(gameIsRender) System.out.println("You don't have a movement card to play. Draw a card!");
                 return false;
             }
 
             if (movementCardSpread.isEmptyAt(0, indexCard)) {
-                System.out.println("Select a card that you own");
+                if(gameIsRender) System.out.println("Select a card that you own");
                 return false;
             }
 
@@ -228,12 +230,12 @@ public class KoRController extends Controller {
 
             // Validate the move
             if (!board.canReachCell(row, col)) {
-                System.out.println("Your pawn  is going outside the board.");
+                if(gameIsRender) System.out.println("Your pawn  is going outside the board.");
                 return false;
             }
 
             if(!board.isEmptyAt(row, col)) {
-                System.out.println("You need to used a hero card to play this movement card.");
+                if(gameIsRender) System.out.println("You need to used a hero card to play this movement card.");
                 return false;
             }
 
@@ -245,7 +247,7 @@ public class KoRController extends Controller {
             final int indexCard = Strings.parseInt(line.substring(1)) - 1;
             // If the indexCard is invalid, do nothing
             if (indexCard < 0 || indexCard > 4) {
-                System.out.println("Select a card that you own");
+                if(gameIsRender) System.out.println("Select a card that you own");
                 return false;
             }
 
@@ -260,17 +262,17 @@ public class KoRController extends Controller {
             }
 
             if (heroCardStack.isEmpty()) {
-                System.out.println("You no longer have any hero cards to play!");
+                if(gameIsRender) System.out.println("You no longer have any hero cards to play!");
                 return false;
             }
 
             if (movementCardSpread.isEmpty()) {
-                System.out.println("You no longer have any movement cards to play! Draw a card!");
+                if(gameIsRender) System.out.println("You no longer have any movement cards to play! Draw a card!");
                 return false;
             }
 
             if (movementCardSpread.isEmptyAt(0, indexCard)) {
-                System.out.println("Select a card that you own");
+                if(gameIsRender) System.out.println("Select a card that you own");
                 return false;
             }
 
@@ -289,19 +291,19 @@ public class KoRController extends Controller {
 
             // Validate the move
             if (!board.canReachCell(row, col)) {
-                System.out.println("Your pawn is going outside the board.");
+                if(gameIsRender) System.out.println("Your pawn is going outside the board.");
                 return false;
             }
 
             if (board.isEmptyAt(row, col)){
-                System.out.println("A hero card cannot be used on an empty cell.");
+                if(gameIsRender) System.out.println("A hero card cannot be used on an empty cell.");
                 return false;
             }
 
             // Get the pawn to be flipped and check its ownership
             final Pawn pawn = (Pawn) board.getElement(row, col);
             if (pawn.getStatus().isOwnedBy(playerData)) {
-                System.out.println("You cannot use a hero card on your own pawn.");
+                if(gameIsRender) System.out.println("You cannot use a hero card on your own pawn.");
                 return false;
             }
 
