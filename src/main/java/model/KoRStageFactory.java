@@ -48,7 +48,7 @@ public class KoRStageFactory extends StageElementsFactory {
         stageModel.setPlayerName(playerText);
 
         TextElement movementCardStackText = new TextElement("14", stageModel);
-        movementCardStackText.setLocation(2, 7);
+        movementCardStackText.setLocation(50, 230);
         stageModel.setMovementCardStackText(movementCardStackText);
 
         TextElement textBluePawn = new TextElement("26", stageModel);
@@ -64,7 +64,7 @@ public class KoRStageFactory extends StageElementsFactory {
         stageModel.setBlueHeroCardText(textBlueCardHero);
 
         TextElement textRedCardHero = new TextElement("4", stageModel);
-        textRedCardHero.setLocation(15, 1);
+        textRedCardHero.setLocation(210, 15);
         stageModel.setRedHeroCardText(textRedCardHero);
 
 
@@ -146,16 +146,16 @@ public class KoRStageFactory extends StageElementsFactory {
         // create red pawns
         Pawn[] redPawns = new Pawn[26];
         for (int i = 0; i < 26; i++) {
-            redPawns[i] = new Pawn(i, Pawn.Status.RED_PAWN, stageModel);
+            redPawns[i] = new Pawn(Pawn.Status.RED_PAWN, stageModel);
         }
         stageModel.setRedPawns(redPawns);
 
         // create blue pawns
         Pawn[] bluePawns = new Pawn[26];
         for (int i = 0; i < 26; i++) {
-            bluePawns[i] = new Pawn(i, Pawn.Status.BLUE_PAWN, stageModel);
+            bluePawns[i] = new Pawn(Pawn.Status.BLUE_PAWN, stageModel);
         }
-        stageModel.setBluePawns(bluePawns);
+       stageModel.setBluePawns(bluePawns);
 
         // put pawn in pot
         for (int i = 0; i < 26; i++) {
@@ -164,7 +164,7 @@ public class KoRStageFactory extends StageElementsFactory {
         }
 
         //create king pawn
-        Pawn kingPawn = new Pawn(0, Pawn.Status.KING_PAWN, stageModel);
+        Pawn kingPawn = new Pawn(Pawn.Status.KING_PAWN, stageModel);
         stageModel.setKingPawn(kingPawn);
         //put it in the middle of the board
         board.addElement(kingPawn, 4, 4);

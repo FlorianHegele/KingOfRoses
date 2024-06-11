@@ -14,14 +14,13 @@ public class Pawn extends GameElement {
 
 
     private Status status;
-    private int id;
     /**
      * Constructs a pawn with the specified status and game stage model.
      *
      * @param status         The status of the pawn.
      * @param gameStageModel The game stage model to which the pawn belongs.
      */
-    public Pawn(int id, Status status, GameStageModel gameStageModel) {
+    public Pawn(Status status, GameStageModel gameStageModel) {
         super(gameStageModel);
 
         // Register new element type
@@ -31,12 +30,6 @@ public class Pawn extends GameElement {
         this.type = ElementTypes.getType("pawn");
 
         this.status = status;
-
-        this.id = id;
-    }
-
-    public int getId() {
-        return id;
     }
 
     /**

@@ -59,10 +59,7 @@ public class KoRStageView extends GameStageView {
         addLook(new PawnPotLook(80, 80, model.getBluePot()));
         addLook(new PawnPotLook(80, 80, model.getRedPot()));
 
-        for (int i = 0; i < 4; i++) {
-            addLook(new PawnLook(25, model.getBluePawns()[i]));
-            addLook(new PawnLook(25, model.getRedPawns()[i]));
-        }
+
 
 
         /*
