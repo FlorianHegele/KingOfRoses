@@ -12,15 +12,16 @@ import model.data.PlayerData;
 
 public class Pawn extends GameElement {
 
-    private Status status;
 
+    private Status status;
+    private int id;
     /**
      * Constructs a pawn with the specified status and game stage model.
      *
      * @param status         The status of the pawn.
      * @param gameStageModel The game stage model to which the pawn belongs.
      */
-    public Pawn(Status status, GameStageModel gameStageModel) {
+    public Pawn(int id, Status status, GameStageModel gameStageModel) {
         super(gameStageModel);
 
         // Register new element type
@@ -30,6 +31,12 @@ public class Pawn extends GameElement {
         this.type = ElementTypes.getType("pawn");
 
         this.status = status;
+
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
     }
 
     /**
@@ -98,7 +105,7 @@ public class Pawn extends GameElement {
          * Constructs a status with the specified ID and background color.
          *
          * @param id              The ID associated with the status.
-         * @param backgroundColor The background color associated with the status.
+         * @param color The background color associated with the status.
          */
         Status(int id, Color color) {
             this.id = id;
