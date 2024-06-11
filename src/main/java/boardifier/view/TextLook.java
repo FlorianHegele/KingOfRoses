@@ -23,6 +23,10 @@ public class TextLook extends ElementLook {
         addShape(text);
     }
 
+    public TextLook(int fontSize, Color color, GameElement element) {
+        this(fontSize, color.toString(), element);
+    }
+
     public void render() {
         TextElement te = (TextElement) getElement();
         text.setText(te.getText());

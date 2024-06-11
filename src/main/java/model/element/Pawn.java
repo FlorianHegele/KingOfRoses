@@ -1,4 +1,4 @@
-package model;
+package model.element;
 
 import boardifier.control.Logger;
 import boardifier.model.ElementTypes;

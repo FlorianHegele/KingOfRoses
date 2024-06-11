@@ -1,4 +1,4 @@
-package view;
+package view.container;
 
 import boardifier.model.ContainerElement;
 import boardifier.view.TableLook;

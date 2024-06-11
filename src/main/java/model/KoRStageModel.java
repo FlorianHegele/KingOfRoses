@@ -2,8 +2,11 @@ package model;
 
 import boardifier.control.Logger;
 import boardifier.model.*;
+import model.container.KoRBoard;
+import model.container.KoRPawnPot;
+import model.element.Pawn;
 
-public class HoleStageModel extends GameStageModel {
+public class KoRStageModel extends GameStageModel {
 
     // states
     public final static int STATE_SELECTPAWN = 1; // the player must select a pawn
@@ -14,16 +17,16 @@ public class HoleStageModel extends GameStageModel {
     private int redPawnsToPlay;
 
     // stage elements
-    private HoleBoard board;
-    private HolePawnPot blackPot;
-    private HolePawnPot redPot;
+    private KoRBoard board;
+    private KoRPawnPot blackPot;
+    private KoRPawnPot redPot;
     private Pawn[] blackPawns;
     private Pawn[] redPawns;
     private TextElement playerName;
     // Uncomment next line if the example with a main container is used. see end of HoleStageFactory and HoleStageView
     //private ContainerElement mainContainer;
 
-    public HoleStageModel(String name, Model model) {
+    public KoRStageModel(String name, Model model) {
         super(name, model);
         state = STATE_SELECTPAWN;
         blackPawnsToPlay = 4;
@@ -42,26 +45,26 @@ public class HoleStageModel extends GameStageModel {
     }
     */
 
-    public HoleBoard getBoard() {
+    public KoRBoard getBoard() {
         return board;
     }
-    public void setBoard(HoleBoard board) {
+    public void setBoard(KoRBoard board) {
         this.board = board;
         addContainer(board);
     }
 
-    public HolePawnPot getBlackPot() {
+    public KoRPawnPot getBlackPot() {
         return blackPot;
     }
-    public void setBlackPot(HolePawnPot blackPot) {
+    public void setBlackPot(KoRPawnPot blackPot) {
         this.blackPot = blackPot;
         addContainer(blackPot);
     }
 
-    public HolePawnPot getRedPot() {
+    public KoRPawnPot getRedPot() {
         return redPot;
     }
-    public void setRedPot(HolePawnPot redPot) {
+    public void setRedPot(KoRPawnPot redPot) {
         this.redPot = redPot;
         addContainer(redPot);
     }
@@ -183,6 +186,6 @@ public class HoleStageModel extends GameStageModel {
 
     @Override
     public StageElementsFactory getDefaultElementFactory() {
-        return new HoleStageFactory(this);
+        return new KoRStageFactory(this);
     }
 }

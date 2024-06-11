@@ -1,25 +1,28 @@
 package model;
 
 import boardifier.model.*;
+import model.container.KoRBoard;
+import model.container.KoRPawnPot;
+import model.element.Pawn;
 
-public class HoleStageFactory extends StageElementsFactory {
-    private HoleStageModel stageModel;
+public class KoRStageFactory extends StageElementsFactory {
+    private KoRStageModel stageModel;
 
-    public HoleStageFactory(GameStageModel gameStageModel) {
+    public KoRStageFactory(GameStageModel gameStageModel) {
         super(gameStageModel);
-        stageModel = (HoleStageModel) gameStageModel;
+        stageModel = (KoRStageModel) gameStageModel;
     }
 
     @Override
     public void setup() {
 
         // create the board
-        HoleBoard board = new HoleBoard(10, 50, stageModel);
+        KoRBoard board = new KoRBoard(10, 50, stageModel);
         stageModel.setBoard(board);
         //create the pots
-        HolePawnPot blackPot = new HolePawnPot(400,10, stageModel);
+        KoRPawnPot blackPot = new KoRPawnPot(400,10, stageModel);
         stageModel.setBlackPot(blackPot);
-        HolePawnPot redPot = new HolePawnPot(500,10, stageModel);
+        KoRPawnPot redPot = new KoRPawnPot(500,10, stageModel);
         stageModel.setRedPot(redPot);
 
         // create the pawns

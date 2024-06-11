@@ -2,25 +2,27 @@ package control;
 
 import boardifier.control.Controller;
 import boardifier.control.ControllerAction;
-import boardifier.model.*;
+import boardifier.model.GameException;
+import boardifier.model.Model;
 import boardifier.view.View;
-import javafx.event.*;
-import view.HoleView;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import view.KoRView;
 
 /**
  * A basic action controller that only manages menu actions
  * Action events are mostly generated when there are user interactions with widgets like
  * buttons, checkboxes, menus, ...
  */
-public class ControllerHoleAction extends ControllerAction implements EventHandler<ActionEvent> {
+public class KoRControllerAction extends ControllerAction implements EventHandler<ActionEvent> {
 
     // to avoid lots of casts, create an attribute that matches the instance type.
-    private HoleView holeView;
+    private final KoRView koRView;
 
-    public ControllerHoleAction(Model model, View view, Controller control) {
+    public KoRControllerAction(Model model, View view, Controller control) {
         super(model, view, control);
         // take the view parameter ot define a local view attribute with the real instance type, i.e. BasicView.
-        holeView = (HoleView) view;
+        koRView = (KoRView) view;
 
         // set handlers dedicated to menu items
         setMenuHandlers();
@@ -37,22 +39,21 @@ public class ControllerHoleAction extends ControllerAction implements EventHandl
     private void setMenuHandlers() {
 
         // set event handler on the MenuStart item
-        holeView.getMenuStart().setOnAction(e -> {
+        koRView.getMenuStart().setOnAction(e -> {
             try {
                 control.startGame();
-            }
-            catch(GameException err) {
+            } catch (GameException err) {
                 System.err.println(err.getMessage());
                 System.exit(1);
             }
         });
         // set event handler on the MenuIntro item
-        holeView.getMenuIntro().setOnAction(e -> {
+        koRView.getMenuIntro().setOnAction(e -> {
             control.stopGame();
-            holeView.resetView();
+            koRView.resetView();
         });
         // set event handler on the MenuQuit item
-        holeView.getMenuQuit().setOnAction(e -> {
+        koRView.getMenuQuit().setOnAction(e -> {
             System.exit(0);
         });
     }
@@ -67,7 +68,8 @@ public class ControllerHoleAction extends ControllerAction implements EventHandl
      */
     public void handle(ActionEvent event) {
 
-        if (!model.isCaptureActionEvent()) return;
+        if (!model.isCaptureActionEvent()) {
+        }
     }
 }
 

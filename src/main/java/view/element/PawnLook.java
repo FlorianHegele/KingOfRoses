@@ -1,4 +1,4 @@
-package view;
+package view.element;
 
 import boardifier.model.GameElement;
 import boardifier.view.ElementLook;
@@ -8,11 +8,11 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import model.Pawn;
+import model.element.Pawn;
 
 public class PawnLook extends ElementLook {
     private Circle circle;
-    private int radius;
+    private final int radius;
 
     public PawnLook(int radius, GameElement element) {
         super(element);
@@ -23,30 +23,27 @@ public class PawnLook extends ElementLook {
 
     @Override
     public void onSelectionChange() {
-        Pawn pawn = (Pawn)getElement();
+        Pawn pawn = (Pawn) getElement();
         if (pawn.isSelected()) {
             circle.setStrokeWidth(3);
             circle.setStrokeMiterLimit(10);
             circle.setStrokeType(StrokeType.CENTERED);
-            circle.setStroke(Color.valueOf("0x333333"));
-        }
-        else {
+            circle.setStroke(Color.DARKGRAY);
+        } else {
             circle.setStrokeWidth(0);
         }
     }
 
     @Override
-    public void onFaceChange() {
-    }
+    public void onFaceChange() {}
 
     protected void render() {
-        Pawn pawn = (Pawn)element;
+        Pawn pawn = (Pawn) element;
         circle = new Circle();
         circle.setRadius(radius);
         if (pawn.getColor() == Pawn.PAWN_BLACK) {
             circle.setFill(Color.BLACK);
-        }
-        else {
+        } else {
             circle.setFill(Color.RED);
         }
 
@@ -55,15 +52,14 @@ public class PawnLook extends ElementLook {
         Text text = new Text(String.valueOf(pawn.getNumber()));
         text.setFont(new Font(24));
         if (pawn.getColor() == Pawn.PAWN_BLACK) {
-            text.setFill(Color.valueOf("0xFFFFFF"));
-        }
-        else {
-            text.setFill(Color.valueOf("0x000000"));
+            text.setFill(Color.WHITE);
+        } else {
+            text.setFill(Color.BLACK);
         }
         Bounds bt = text.getBoundsInLocal();
-        text.setX(-bt.getWidth()/2);
+        text.setX(-bt.getWidth() / 2);
         // since numbers are always above the baseline, relocate just using the part above baseline
-        text.setY(text.getBaselineOffset()/2-4);
+        text.setY(text.getBaselineOffset() / 2 - 4);
         addShape(text);
     }
 }

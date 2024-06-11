@@ -8,13 +8,13 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
 
-public class HoleView extends View {
+public class KoRView extends View {
 
     private MenuItem menuStart;
     private MenuItem menuIntro;
     private MenuItem menuQuit;
 
-    public HoleView(Model model, Stage stage, RootPane rootPane) {
+    public KoRView(Model model, Stage stage, RootPane rootPane) {
         super(model, stage, rootPane);
     }
 

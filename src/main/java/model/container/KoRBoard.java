@@ -1,14 +1,15 @@
-package model;
+package model.container;
 
 import boardifier.model.GameStageModel;
 import boardifier.model.ContainerElement;
+import model.element.Pawn;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.*;
 
-public class HoleBoard extends ContainerElement {
-    public HoleBoard(int x, int y, GameStageModel gameStageModel) {
+public class KoRBoard extends ContainerElement {
+    public KoRBoard(int x, int y, GameStageModel gameStageModel) {
         // call the super-constructor to create a 3x3 grid, named "holeboard", and in x,y in space
         super("holeboard", x, y, 3 , 3, gameStageModel);
         resetReachableCells(false);

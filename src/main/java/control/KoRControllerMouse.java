@@ -1,22 +1,20 @@
 package control;
 
 import boardifier.control.*;
-import boardifier.model.*;
+import boardifier.model.Coord2D;
+import boardifier.model.ElementTypes;
+import boardifier.model.GameElement;
+import boardifier.model.Model;
 import boardifier.model.action.ActionList;
-import boardifier.model.action.GameAction;
-import boardifier.model.action.PutInContainerAction;
-import boardifier.model.action.RemoveFromContainerAction;
 import boardifier.model.animation.AnimationTypes;
-import boardifier.view.ElementLook;
 import boardifier.view.GridLook;
 import boardifier.view.View;
-import javafx.event.*;
-import javafx.geometry.Point2D;
-import javafx.scene.input.*;
-import model.HoleBoard;
-import model.HolePawnPot;
-import model.HoleStageModel;
-import model.Pawn;
+import javafx.event.EventHandler;
+import javafx.scene.input.MouseEvent;
+import model.container.KoRBoard;
+import model.container.KoRPawnPot;
+import model.KoRStageModel;
+import model.element.Pawn;
 
 import java.util.List;
 
@@ -24,9 +22,9 @@ import java.util.List;
  * A basic mouse controller that just grabs the mouse clicks and prints out some informations.
  * It gets the elements of the scene that are at the clicked position and prints them.
  */
-public class ControllerHoleMouse extends ControllerMouse implements EventHandler<MouseEvent> {
+public class KoRControllerMouse extends ControllerMouse implements EventHandler<MouseEvent> {
 
-    public ControllerHoleMouse(Model model, View view, Controller control) {
+    public KoRControllerMouse(Model model, View view, Controller control) {
         super(model, view, control);
     }
 
@@ -35,7 +33,7 @@ public class ControllerHoleMouse extends ControllerMouse implements EventHandler
         if (!model.isCaptureMouseEvent()) return;
 
         // get the clic x,y in the whole scene (this includes the menu bar if it exists)
-        Coord2D clic = new Coord2D(event.getSceneX(),event.getSceneY());
+        Coord2D clic = new Coord2D(event.getSceneX(), event.getSceneY());
         // get elements at that position
         List<GameElement> list = control.elementsAt(clic);
         // for debug, uncomment next instructions to display x,y and elements at that postion
@@ -45,27 +43,26 @@ public class ControllerHoleMouse extends ControllerMouse implements EventHandler
             Logger.debug(element);
         }
          */
-        HoleStageModel stageModel = (HoleStageModel) model.getGameStage();
+        KoRStageModel stageModel = (KoRStageModel) model.getGameStage();
 
-        if (stageModel.getState() == HoleStageModel.STATE_SELECTPAWN) {
+        if (stageModel.getState() == KoRStageModel.STATE_SELECTPAWN) {
             for (GameElement element : list) {
                 if (element.getType() == ElementTypes.getType("pawn")) {
-                    Pawn pawn = (Pawn)element;
+                    Pawn pawn = (Pawn) element;
                     // check if color of the pawn corresponds to the current player id
                     if (pawn.getColor() == model.getIdPlayer()) {
                         element.toggleSelected();
-                        stageModel.setState(HoleStageModel.STATE_SELECTDEST);
+                        stageModel.setState(KoRStageModel.STATE_SELECTDEST);
                         return; // do not allow another element to be selected
                     }
                 }
             }
-        }
-        else if (stageModel.getState() == HoleStageModel.STATE_SELECTDEST) {
+        } else if (stageModel.getState() == KoRStageModel.STATE_SELECTDEST) {
             // first check if the click is on the current selected pawn. In this case, unselect it
             for (GameElement element : list) {
                 if (element.isSelected()) {
                     element.toggleSelected();
-                    stageModel.setState(HoleStageModel.STATE_SELECTPAWN);
+                    stageModel.setState(KoRStageModel.STATE_SELECTPAWN);
                     return;
                 }
             }
@@ -73,14 +70,15 @@ public class ControllerHoleMouse extends ControllerMouse implements EventHandler
             boolean boardClicked = false;
             for (GameElement element : list) {
                 if (element == stageModel.getBoard()) {
-                    boardClicked = true; break;
+                    boardClicked = true;
+                    break;
                 }
             }
             if (!boardClicked) return;
             // get the board, pot,  and the selected pawn to simplify code in the following
-            HoleBoard board = stageModel.getBoard();
+            KoRBoard board = stageModel.getBoard();
             // by default get black pot
-            HolePawnPot pot = stageModel.getBlackPot();
+            KoRPawnPot pot = stageModel.getBlackPot();
             // but if it's player2 that plays, get red pot
             if (model.getIdPlayer() == 1) {
                 pot = stageModel.getRedPot();
@@ -92,14 +90,14 @@ public class ControllerHoleMouse extends ControllerMouse implements EventHandler
             int[] dest = lookBoard.getCellFromSceneLocation(clic);
             // get the cell in the pot that owns the selected pawn
             int[] from = pot.getElementCell(pawn);
-            Logger.debug("try to move pawn from pot "+from[0]+","+from[1]+ " to board "+ dest[0]+","+dest[1]);
+            Logger.debug("try to move pawn from pot " + from[0] + "," + from[1] + " to board " + dest[0] + "," + dest[1]);
             // if the destination cell is valid for for the selected pawn
             if (board.canReachCell(dest[0], dest[1])) {
 
                 ActionList actions = ActionFactory.generatePutInContainer(control, model, pawn, "holeboard", dest[0], dest[1], AnimationTypes.MOVE_LINEARPROP, 10);
                 actions.setDoEndOfTurn(true); // after playing this action list, it will be the end of turn for current player.
                 stageModel.unselectAll();
-                stageModel.setState(HoleStageModel.STATE_SELECTPAWN);
+                stageModel.setState(KoRStageModel.STATE_SELECTPAWN);
                 ActionPlayer play = new ActionPlayer(model, control, actions);
                 play.start();
             }

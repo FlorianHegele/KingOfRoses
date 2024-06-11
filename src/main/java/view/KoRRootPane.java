@@ -6,9 +6,9 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-public class HoleRootPane extends RootPane {
+public class KoRRootPane extends RootPane {
 
-    public HoleRootPane() {
+    public KoRRootPane() {
         super();
     }
 

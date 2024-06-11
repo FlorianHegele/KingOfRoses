@@ -5,16 +5,16 @@ import boardifier.control.ControllerKey;
 import boardifier.control.Logger;
 import boardifier.model.Model;
 import boardifier.view.View;
-import javafx.event.*;
-import javafx.scene.input.*;
+import javafx.event.EventHandler;
+import javafx.scene.input.KeyEvent;
 
 /**
  * A basic keystrokes handler.
  * Generally useless for board games, but it can still be used if needed
  */
-public class ControllerHoleKey extends ControllerKey implements EventHandler<KeyEvent> {
+public class KoRControllerKey extends ControllerKey implements EventHandler<KeyEvent> {
 
-    public ControllerHoleKey(Model model, View view, Controller control) {
+    public KoRControllerKey(Model model, View view, Controller control) {
         super(model, view, control);
     }
 
