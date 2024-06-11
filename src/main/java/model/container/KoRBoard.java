@@ -9,9 +9,10 @@ import java.util.List;
 import java.awt.*;
 
 public class KoRBoard extends ContainerElement {
+
     public KoRBoard(int x, int y, GameStageModel gameStageModel) {
-        // call the super-constructor to create a 3x3 grid, named "holeboard", and in x,y in space
-        super("holeboard", x, y, 3 , 3, gameStageModel);
+        // call the super-constructor to create a 3x3 grid, named "KoRboard", and in x,y in space
+        super("KoRboard", x, y, 9 , 9, gameStageModel);
         resetReachableCells(false);
     }
 

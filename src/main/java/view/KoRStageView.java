@@ -7,6 +7,7 @@ import javafx.scene.paint.Color;
 import model.KoRStageModel;
 import view.container.BlackPawnPotLook;
 import view.container.KoRBoardLook;
+import view.container.PawnPotLook;
 import view.container.RedPawnPotLook;
 import view.element.PawnLook;
 
@@ -20,9 +21,9 @@ public class KoRStageView extends GameStageView {
     public void createLooks() {
         KoRStageModel model = (KoRStageModel) gameStageModel;
 
-        addLook(new KoRBoardLook(300, model.getBoard()));
-        addLook(new BlackPawnPotLook(model.getBlackPot()));
-        addLook(new RedPawnPotLook(320, 80, model.getRedPot()));
+        addLook(new KoRBoardLook(200, model.getBoard()));
+        addLook(new PawnPotLook(80, 80, model.getBlackPot()));
+        addLook(new PawnPotLook(80, 80, model.getRedPot()));
 
         for (int i = 0; i < 4; i++) {
             addLook(new PawnLook(25, model.getBlackPawns()[i]));

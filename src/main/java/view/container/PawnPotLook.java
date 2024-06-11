@@ -13,7 +13,7 @@ public class PawnPotLook extends GridLook {
     private Rectangle rectangle;
 
     public PawnPotLook(int height, int width, ContainerElement element) {
-        super(height / 4, width, element, -1, 1, Color.BLACK);
+        super(height, width, element, -1, 1, Color.BLACK);
 
     }
 
@@ -27,7 +27,7 @@ public class PawnPotLook extends GridLook {
         rectangle.setStrokeType(StrokeType.CENTERED);
         rectangle.setStroke(Color.DARKGRAY);
         rectangle.setX(borderWidth);
-        rectangle.setY((double)rowHeight + borderWidth);
+        rectangle.setY(borderWidth);
 
         addShape(rectangle);
     }

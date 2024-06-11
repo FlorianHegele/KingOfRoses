@@ -58,7 +58,7 @@ public class KoRDecider extends Decider {
             }
         }
 
-        ActionList actions = ActionFactory.generatePutInContainer(control, model, pawn, "holeboard", rowDest, colDest, AnimationTypes.MOVE_LINEARPROP, 10);
+        ActionList actions = ActionFactory.generatePutInContainer(control, model, pawn, "KoRboard", rowDest, colDest, AnimationTypes.MOVE_LINEARPROP, 10);
         actions.setDoEndOfTurn(true); // after playing this action list, it will be the end of turn for current player.
         return actions;
     }

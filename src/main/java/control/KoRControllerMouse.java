@@ -94,7 +94,7 @@ public class KoRControllerMouse extends ControllerMouse implements EventHandler<
             // if the destination cell is valid for for the selected pawn
             if (board.canReachCell(dest[0], dest[1])) {
 
-                ActionList actions = ActionFactory.generatePutInContainer(control, model, pawn, "holeboard", dest[0], dest[1], AnimationTypes.MOVE_LINEARPROP, 10);
+                ActionList actions = ActionFactory.generatePutInContainer(control, model, pawn, "KoRboard", dest[0], dest[1], AnimationTypes.MOVE_LINEARPROP, 10);
                 actions.setDoEndOfTurn(true); // after playing this action list, it will be the end of turn for current player.
                 stageModel.unselectAll();
                 stageModel.setState(KoRStageModel.STATE_SELECTPAWN);

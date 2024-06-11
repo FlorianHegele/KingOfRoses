@@ -20,9 +20,9 @@ public class KoRStageFactory extends StageElementsFactory {
         KoRBoard board = new KoRBoard(10, 50, stageModel);
         stageModel.setBoard(board);
         //create the pots
-        KoRPawnPot blackPot = new KoRPawnPot(400,10, stageModel);
+        KoRPawnPot blackPot = new KoRPawnPot(700,10, stageModel);
         stageModel.setBlackPot(blackPot);
-        KoRPawnPot redPot = new KoRPawnPot(500,10, stageModel);
+        KoRPawnPot redPot = new KoRPawnPot(800,10, stageModel);
         stageModel.setRedPot(redPot);
 
         // create the pawns
@@ -39,8 +39,8 @@ public class KoRStageFactory extends StageElementsFactory {
 
         // assign pawns to their pot
         for (int i=0;i<4;i++) {
-            blackPot.addElement(blackPawns[i], i,0);
-            redPot.addElement(redPawns[i], i,0);
+            blackPot.addElement(blackPawns[i], 0,0);
+            redPot.addElement(redPawns[i], 0,0);
         }
         // create the text
         TextElement text = new TextElement(stageModel.getCurrentPlayerName(), stageModel);
