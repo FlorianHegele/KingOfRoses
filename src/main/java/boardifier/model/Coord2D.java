@@ -50,7 +50,13 @@ public class Coord2D {
     public Coord2D subtract(double x, double y) {
         return new Coord2D(this.x-x, this.y-y);
     }
+
     public Coord2D subtract(Coord2D pos) {
         return new Coord2D(this.x-pos.x, this.y-pos.y);
     }
+
+    public Coord2D multiply (double scale) {
+        return new Coord2D(this.x * scale, this.y * scale);
+    }
+
 }
