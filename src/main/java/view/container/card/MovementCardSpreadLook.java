@@ -1,4 +1,4 @@
-package view.container;
+package view.container.card;
 
 import boardifier.model.ContainerElement;
 import boardifier.view.GridLook;
@@ -7,29 +7,30 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
 
 
-public class RedPawnPotLook extends GridLook {
+public class MovementCardSpreadLook extends GridLook {
 
     // the array of rectangle composing the grid
     private Rectangle[] cells;
 
-    public RedPawnPotLook(int height, int width, ContainerElement element) {
-        super(height / 4, width, element, -1, 1, Color.BLACK);
+    public MovementCardSpreadLook(int height, int width, ContainerElement containerElement) {
+        super(height, width / 5, containerElement, -1, 1, Color.BLACK);
 
     }
 
     protected void render() {
         setVerticalAlignment(ALIGN_MIDDLE);
         setHorizontalAlignment(ALIGN_CENTER);
-        cells = new Rectangle[4];
+        cells = new Rectangle[5];
         // create the rectangles.
-        for (int i = 0; i < 4; i++) {
-            cells[i] = new Rectangle(colWidth, rowHeight, Color.WHITE);
+        for (int i = 0; i < 5; i++) {
+            cells[i] = new Rectangle(colWidth, rowHeight, Color.GRAY);
             cells[i].setStrokeWidth(3);
             cells[i].setStrokeMiterLimit(10);
             cells[i].setStrokeType(StrokeType.CENTERED);
             cells[i].setStroke(Color.valueOf("0x333333"));
-            cells[i].setX(borderWidth);
-            cells[i].setY(i * rowHeight + borderWidth);
+            cells[i].setX(i * colWidth + (double)borderWidth);
+            cells[i].setY(borderWidth);
+            // cells[i].setY((double)i * rowHeight + borderWidth);
             addShape(cells[i]);
         }
     }

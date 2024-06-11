@@ -41,25 +41,8 @@ public class PawnLook extends ElementLook {
         Pawn pawn = (Pawn) element;
         circle = new Circle();
         circle.setRadius(radius);
-        if (pawn.getColor() == Pawn.PAWN_BLACK) {
-            circle.setFill(Color.BLACK);
-        } else {
-            circle.setFill(Color.RED);
-        }
+        circle.setFill(pawn.getStatus().getColor());
 
         addShape(circle);
-        // NB: text won't change so no need to put it as an attribute
-        Text text = new Text(String.valueOf(pawn.getNumber()));
-        text.setFont(new Font(24));
-        if (pawn.getColor() == Pawn.PAWN_BLACK) {
-            text.setFill(Color.WHITE);
-        } else {
-            text.setFill(Color.BLACK);
-        }
-        Bounds bt = text.getBoundsInLocal();
-        text.setX(-bt.getWidth() / 2);
-        // since numbers are always above the baseline, relocate just using the part above baseline
-        text.setY(text.getBaselineOffset() / 2 - 4);
-        addShape(text);
     }
 }

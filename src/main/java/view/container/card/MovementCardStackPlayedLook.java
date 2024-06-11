@@ -1,4 +1,4 @@
-package view.container;
+package view.container.card;
 
 import boardifier.model.ContainerElement;
 import boardifier.view.GridLook;
@@ -6,14 +6,24 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
 
-public class PawnPotLook extends GridLook {
+/**
+ * The MovementCardStackLook class represents the visual representation of a movement card stack using a look.
+ * It provides specific configurations for rendering the movement card stack.
+ */
+public class MovementCardStackPlayedLook extends GridLook {
 
     private Rectangle rectangle;
 
-    public PawnPotLook(int height, int width, ContainerElement containerElement) {
+    /**
+     * Constructs a new MovementCardStackLook with the specified container element.
+     *
+     * @param containerElement The container element associated with this movement card stack look.
+     */
+    public MovementCardStackPlayedLook(int height, int width, ContainerElement containerElement) {
         super(height, width, containerElement, -1, 1, Color.BLACK);
     }
 
+    @Override
     protected void render() {
         setVerticalAlignment(ALIGN_MIDDLE);
         setHorizontalAlignment(ALIGN_CENTER);
