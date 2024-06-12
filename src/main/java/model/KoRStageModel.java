@@ -538,7 +538,6 @@ public class KoRStageModel extends GameStageModel {
     private void setupCallbacks() {
 
         onSelectionChange(() -> {
-            Logger.info("new state : " + getGameState().name());
             // get the selected pawn if any
             if (selected.isEmpty()) {
                 board.resetReachableCells(false);
@@ -567,6 +566,7 @@ public class KoRStageModel extends GameStageModel {
                 final MovementCard.Owner owner = (containerDest == blueMovementCardsSpread)
                         ? MovementCard.Owner.PLAYER_BLUE : MovementCard.Owner.PLAYER_RED;
                 final MovementCard movementCard = (MovementCard) element;
+
                 movementCard.setOwner(owner);
 
                 // FIXME : NEED TO REWRITE THIS PART (because there is no implementation of SimpleActionList for the moment)

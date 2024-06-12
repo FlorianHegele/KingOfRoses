@@ -42,14 +42,12 @@ public class KoRControllerMouse extends ControllerMouse implements EventHandler<
 
         Logger.debug("click in "+event.getSceneX()+","+event.getSceneY());
         for(GameElement element : list) {
-            Logger.debug(element.toString());
+            Logger.debug("el : " + element.toString());
         }
 
         PlayerData currentPlayer = PlayerData.getCurrentPlayerData(model);
         KoRStageModel stageModel = (KoRStageModel) model.getGameStage();
         GameState currentState = stageModel.getGameState();
-
-        Logger.info("current state : " + currentState.name());
 
         ActionList actionList = null;
         final SimpleActionList simpleActionList = new SimpleActionList(model, control, currentPlayer);
@@ -148,11 +146,11 @@ public class KoRControllerMouse extends ControllerMouse implements EventHandler<
 
         // EXECUTE ACTIONS
         if(actionList == null) return;
-
-        stageModel.setState(GameState.SELECT_NONE);
-        stageModel.unselectAll();
-
         actionList.setDoEndOfTurn(true);
+
+        stageModel.unselectAll();
+        stageModel.setState(GameState.SELECT_NONE);
+
         final ActionPlayer actionPlayer = new ActionPlayer(model, control, actionList);
         actionPlayer.start();
     }
@@ -184,7 +182,6 @@ public class KoRControllerMouse extends ControllerMouse implements EventHandler<
         final int col = (int) pos.getX();
         final int row = (int) pos.getY();
 
-        Logger.info("col : " + col + ", row : " + row);
         // Validate the move
         if (!board.canReachCell(row, col)) return null;
 
@@ -204,7 +201,6 @@ public class KoRControllerMouse extends ControllerMouse implements EventHandler<
         final int col = (int) pos.getX();
         final int row = (int) pos.getY();
 
-        Logger.info("col : " + col + ", row : " + row);
         // Validate the move
         if (!board.canReachCell(row, col)) return null;
 

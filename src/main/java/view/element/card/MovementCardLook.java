@@ -32,7 +32,6 @@ public class MovementCardLook extends ElementLook {
         MovementCard.Owner owner = movementCard.getOwner();
 
         if (movementCard.isSelected()) {
-            Logger.info("is selected !!");
             text1.setStrokeWidth(3);
             text1.setStrokeMiterLimit(10);
             text1.setStrokeType(StrokeType.CENTERED);
@@ -45,8 +44,6 @@ public class MovementCardLook extends ElementLook {
                 text2.setStroke(Color.DARKGRAY);
             }
         } else {
-            Logger.info("isn't selected !!");
-
             text1.setStrokeWidth(0);
             if(owner.isPlayer()) {
                 text2.setStrokeWidth(0);

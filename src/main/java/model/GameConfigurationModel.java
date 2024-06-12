@@ -132,7 +132,7 @@ public class GameConfigurationModel {
      * @param loggerMode the logger mode to set.
      */
     public void setLoggerMode(int loggerMode) {
-        this.loggerMode = (loggerMode < 0) || (loggerMode > 1) ? DEFAULT_LOGGER_MODE : loggerMode;
+        this.loggerMode = (loggerMode < 0) || (loggerMode > 3) ? DEFAULT_LOGGER_MODE : loggerMode;
     }
 
     /**
@@ -189,8 +189,8 @@ public class GameConfigurationModel {
         if (loggerMode == 0) {
             Logger.setLevel(Logger.LOGGER_NONE);
             Logger.setVerbosity(Logger.VERBOSE_NONE);
-        } else if (loggerMode == 1) {
-            Logger.setLevel(Logger.LOGGER_DEBUG);
+        } else {
+            Logger.setLevel(loggerMode);
             Logger.setVerbosity(Logger.VERBOSE_HIGH);
         }
     }
