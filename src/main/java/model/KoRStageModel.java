@@ -1,5 +1,6 @@
 package model;
 
+import boardifier.control.Logger;
 import boardifier.model.*;
 import model.container.KoRBoard;
 import model.container.PawnPot;
@@ -535,7 +536,9 @@ public class KoRStageModel extends GameStageModel {
      * elements being removed from or placed into containers.
      */
     private void setupCallbacks() {
+
         onSelectionChange(() -> {
+            Logger.info("new state : " + getGameState().name());
             // get the selected pawn if any
             if (selected.isEmpty()) {
                 board.resetReachableCells(false);
@@ -543,6 +546,8 @@ public class KoRStageModel extends GameStageModel {
             }
             board.setValidCells();
         });
+
+
 
         onRemoveFromContainer((element, containerFrom, rowDest, colDest) -> {
             // ACTION: Play a hero card
