@@ -14,6 +14,7 @@ import model.element.card.MovementCard;
 
 public class MovementCardLook extends ElementLook {
 
+    private Rectangle rectangle;
     private Text text1;
     private Text text2;
     private int size;
@@ -32,6 +33,11 @@ public class MovementCardLook extends ElementLook {
         MovementCard.Owner owner = movementCard.getOwner();
 
         if (movementCard.isSelected()) {
+            rectangle.setStrokeWidth(3);
+            rectangle.setStrokeMiterLimit(10);
+            rectangle.setStrokeType(StrokeType.CENTERED);
+            rectangle.setStroke(Color.DARKGRAY);
+
             text1.setStrokeWidth(3);
             text1.setStrokeMiterLimit(10);
             text1.setStrokeType(StrokeType.CENTERED);
@@ -44,6 +50,7 @@ public class MovementCardLook extends ElementLook {
                 text2.setStroke(Color.DARKGRAY);
             }
         } else {
+            rectangle.setStrokeWidth(0);
             text1.setStrokeWidth(0);
             if(owner.isPlayer()) {
                 text2.setStrokeWidth(0);
@@ -51,11 +58,13 @@ public class MovementCardLook extends ElementLook {
         }
     }
 
-    @Override
-    public void onFaceChange() {}
-
     protected void render() {
         MovementCard movementCard = (MovementCard) element;
+
+        rectangle = new Rectangle(size*2, size*2);
+        rectangle.setFill(Color.ORANGE);
+
+        addShape(rectangle);
 
         if(movementCard.getOwner() == MovementCard.Owner.STACK) {
             text1 = new Text("Pioche");

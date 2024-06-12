@@ -1,6 +1,9 @@
 package model.element.card;
 
+import boardifier.control.Logger;
 import boardifier.model.*;
+import boardifier.model.animation.Animation;
+import boardifier.model.animation.AnimationStep;
 import javafx.scene.paint.Color;
 import model.data.ElementType;
 import model.data.PlayerData;
@@ -55,7 +58,9 @@ public class MovementCard extends GameElement {
     // FIXME BUG GENERATE WITH THIS FUNCTION ?!
     // BUG FOUND, WHEN I CAN ONE VARIABLE, THE LOOK OF THE ELEMENT DISAPPEAR
     public void setOwner(Owner owner) {
+        Logger.info("1) Setting owner to " + owner);
         this.owner = owner;
+        Logger.info("2) Setting owner to " + owner);
         if (owner == Owner.PLAYER_RED) toggleInverted();
     }
 
@@ -123,6 +128,24 @@ public class MovementCard extends GameElement {
      */
     public Coord2D getDirectionVector() {
         return direction.getVector().multiply(step);
+    }
+
+
+    public void update() {
+        // if must be animated, move the pawn
+        if (animation != null) {
+            AnimationStep step = animation.next();
+            if (step == null) {
+                animation = null;
+            }
+            else if (step == Animation.NOPStep) {
+                Logger.debug("nothing to do", this);
+            }
+            else {
+                Logger.debug("move animation", this);
+                setLocation(step.getInt(0), step.getInt(1));
+            }
+        }
     }
 
     /**

@@ -172,7 +172,7 @@ public class KoRControllerMouse extends ControllerMouse implements EventHandler<
     private ActionList playMovementCard(Coord2D clic, KoRStageModel gameStage, SimpleActionList simpleActionList) {
         // Get the necessary elements
         final KoRBoard board = gameStage.getBoard();
-        final MovementCard movementCard = (MovementCard) gameStage.getSelected().get(0);
+        final MovementCard movementCard = ContainerElements.getSelectedElement(gameStage, ElementType.MOVEMENT_CARD);
 
         GridLook lookBoard = (GridLook) control.getElementLook(board);
         final int[] ipos = lookBoard.getCellFromSceneLocation(clic);

@@ -46,14 +46,6 @@ public class Pawn extends GameElement {
         return status;
     }
 
-
-    public boolean isUnderKing() {
-        if (status == Status.KING_PAWN) return false;
-        if (!getContainer().getName().equals("KoRboard")) return false;
-
-        return ((KoRStageModel) gameStageModel).getKingPawn().getLocation().equals(getLocation());
-    }
-
     public void update() {
         // if must be animated, move the pawn
         if (animation != null) {

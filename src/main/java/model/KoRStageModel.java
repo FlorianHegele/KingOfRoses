@@ -567,6 +567,8 @@ public class KoRStageModel extends GameStageModel {
                         ? MovementCard.Owner.PLAYER_BLUE : MovementCard.Owner.PLAYER_RED;
                 final MovementCard movementCard = (MovementCard) element;
 
+                Logger.trace("put movement card in " + owner.name() + " hand ("+rowDest+  ","+colDest+")");
+
                 movementCard.setOwner(owner);
 
                 // FIXME : NEED TO REWRITE THIS PART (because there is no implementation of SimpleActionList for the moment)

@@ -2,6 +2,7 @@ package control;
 
 import boardifier.control.ActionFactory;
 import boardifier.control.Controller;
+import boardifier.control.Logger;
 import boardifier.model.ContainerElement;
 import boardifier.model.Coord2D;
 import boardifier.model.Model;
@@ -72,6 +73,7 @@ public class SimpleActionList {
      * @return the action list containing all the actions.
      */
     public ActionList useHeroCard(HeroCard heroCard, MovementCard movementCard, Pawn pawn, Coord2D newKingPos) {
+        Logger.trace("SimpleActionList::useHeroCard");
         final ActionList actionList = new ActionList();
 
         // Add flip pawn action
@@ -98,19 +100,22 @@ public class SimpleActionList {
      * @return the action list containing all the actions.
      */
     public ActionList useMovementCard(MovementCard movementCard, Coord2D newKingPos) {
+        Logger.trace("SimpleActionList::useMovementCard");
+
         final ActionList actionList = new ActionList();
 
         final int col = (int) newKingPos.getX();
         final int row = (int) newKingPos.getY();
 
-        // Add move king and remove movement card actions
-        useMovementCardOnKing(actionList, movementCard, newKingPos);
 
         final Pawn pawn = (Pawn) gameStage.getGeneralPot(playerData).getElement(0, 0);
         if (!pawn.getStatus().isOwnedBy(playerData)) actionList.addSingleAction(new FlipPawn(model, pawn));
 
         // Add move pawn action
         actionList.addAll(ActionFactory.generatePutInContainer(control, model, pawn, gameStage.getBoard().getName(), row, col));
+
+        // Add move king and remove movement card actions
+        useMovementCardOnKing(actionList, movementCard, newKingPos);
 
         return actionList;
     }
