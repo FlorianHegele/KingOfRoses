@@ -1,12 +1,10 @@
 package view;
 
-import boardifier.model.GameException;
 import boardifier.model.Model;
 import boardifier.view.RootPane;
 import boardifier.view.View;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import model.GameConfigurationModel;
 
 public class KoRView extends View {
 
@@ -16,6 +14,14 @@ public class KoRView extends View {
     private RadioMenuItem menuHumanVsHuman;
     private RadioMenuItem menuHumanVsAI;
     private RadioMenuItem menuAIVsAI;
+    private RadioMenuItem random1;
+    private RadioMenuItem random2;
+    private RadioMenuItem camarade1;
+    private RadioMenuItem camarade2;
+    private RadioMenuItem hate1;
+    private RadioMenuItem hate2;
+    private RadioMenuItem guide1;
+    private RadioMenuItem guide2;
 
     public KoRView(Model model, Stage stage, RootPane rootPane) {
         super(model, stage, rootPane);
@@ -33,16 +39,46 @@ public class KoRView extends View {
         menu1.getItems().addAll(menuStart, menuIntro, menuQuit);
 
         Menu menuConfig = new Menu("Configuration");
-        ToggleGroup group = new ToggleGroup();
+        Menu menuPlayers = new Menu("Choix des Joueurs");
+        Menu menuAI = new Menu("Choix des IA");
+        Menu menuAI1 = new Menu("IA pour le joueur 1");
+        Menu menuAI2 = new Menu("IA pour le joueur 2");
+
+        ToggleGroup groupPlayers = new ToggleGroup();
         menuHumanVsHuman = new RadioMenuItem("Humain vs Humain");
         menuHumanVsAI = new RadioMenuItem("Humain vs IA");
         menuAIVsAI = new RadioMenuItem("IA vs IA");
 
-        menuHumanVsHuman.setToggleGroup(group);
-        menuHumanVsAI.setToggleGroup(group);
-        menuAIVsAI.setToggleGroup(group);
+        ToggleGroup groupAI1 = new ToggleGroup();
+        random1 = new RadioMenuItem("Random");
+        camarade1 = new RadioMenuItem("Camarade");
+        hate1 = new RadioMenuItem("Hate");
+        guide1 = new RadioMenuItem("Guide");
 
-        menuConfig.getItems().addAll(menuHumanVsHuman, menuHumanVsAI, menuAIVsAI);
+        ToggleGroup groupAI2 = new ToggleGroup();
+        random2 = new RadioMenuItem("Random");
+        camarade2 = new RadioMenuItem("Camarade");
+        hate2 = new RadioMenuItem("Hate");
+        guide2 = new RadioMenuItem("Guide");
+
+        menuHumanVsHuman.setToggleGroup(groupPlayers);
+        menuHumanVsAI.setToggleGroup(groupPlayers);
+        menuAIVsAI.setToggleGroup(groupPlayers);
+
+        random1.setToggleGroup(groupAI1);
+        random2.setToggleGroup(groupAI2);
+        camarade1.setToggleGroup(groupAI1);
+        camarade2.setToggleGroup(groupAI2);
+        hate1.setToggleGroup(groupAI1);
+        hate2.setToggleGroup(groupAI2);
+        guide1.setToggleGroup(groupAI1);
+        guide2.setToggleGroup(groupAI2);
+
+        menuConfig.getItems().addAll(menuPlayers, menuAI);
+        menuPlayers.getItems().addAll(menuHumanVsHuman, menuHumanVsAI, menuAIVsAI);
+        menuAI.getItems().addAll(menuAI1, menuAI2);
+        menuAI1.getItems().addAll(random1, camarade1, hate1, guide1);
+        menuAI2.getItems().addAll(random2, camarade2, hate2, guide2);
 
         menuBar.getMenus().addAll(menu1, menuConfig);
     }
