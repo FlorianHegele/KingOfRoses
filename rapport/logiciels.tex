@@ -1,0 +1,198 @@
+\chapter{Description des choix logiciels possibles}
+
+\section{Choix effectués}
+
+Dans le cadre de la mise en production de l'application Meuuuhble, nous allons présenter les choix logiciels et les configurations à mettre en place pour assurer une sécurité et une fiabilité optimales.
+
+\subsection{Serveur web}
+
+Nous choisissons Nginx comme serveur web pour sa rapidité, sa stabilité et sa grande flexibilité. Pour la mise en production de l'application Flask, nous utiliserons Gunicorn comme serveur d'application WSGI. La configuration de Nginx sera faite pour qu'il serve comme reverse proxy, redirigeant les requêtes vers Gunicorn.
+
+\subsection{Sécurisation du service web}
+
+Pour sécuriser le service web, nous allons générer un certificat SSL/TLS avec Let's Encrypt. Cela nous permettra d'activer HTTPS et de chiffrer les communications entre le navigateur de l'utilisateur et le serveur web. Nous ajouterons également des en-têtes de sécurité pour protéger contre les attaques courantes (par exemple, les attaques XSS).
+
+\subsection{Service de bases de données}
+
+Nous choisissons mariaDB comme système de gestion de base de données (SGBD) pour sa popularité, sa stabilité et sa grande communauté. Nous configurerons mariaDB pour qu'il utilise des mécanismes de sécurité robustes, tels que les mots de passe chiffrés et les autorisations d'accès strictes.
+
+\subsection{Upload d'application}
+
+Pour permettre aux utilisateurs d'uploader leur application, nous allons utiliser SFTP (Secure File Transfer Protocol) via SSH. Cela nous permettra de sécuriser les transferts de fichiers et d'authentifier les utilisateurs.
+
+\subsection{Sécurisation de l'accès}
+
+Pour sécuriser l'accès au serveur, nous allons configurer Fail2Ban pour détecter et bloquer les tentatives d'accès malveillantes. Nous ajouterons également des règles de pare-feu pour limiter l'accès au serveur uniquement aux ports et aux adresses IP nécessaires. Enfin, nous configurerons SSH pour utiliser des clés publiques et des mots de passe forts pour authentifier les utilisateurs.
+
+\section{Ébauche de configuration}
+
+\subsection{Système d'exploitation}
+
+\textbf{Choix :} Debian (pour sa stabilité et sécurité)
+
+\subsection{Serveur Web et Déploiement}
+
+\textbf{Choix :} Nginx + Gunicorn
+
+\begin{itemize}
+	\item \textbf{Nginx :} Serveur web performant et léger, idéal pour le contenu statique et la gestion du trafic.
+	\item \textbf{Gunicorn :} Serveur d'applications Python, compatible avec Flask, pour gérer les requêtes dynamiques.
+\end{itemize}
+
+\subsubsection*{Configuration :}
+
+\begin{enumerate}
+	\item Installation : \texttt{apt install nginx gunicorn}
+	\item Configuration Nginx : 
+	\begin{itemize}
+		\item Fichier de configuration dans \texttt{/etc/nginx/sites-available/}.
+		\item Configuration pour servir le contenu statique et rediriger les requêtes dynamiques vers Gunicorn.
+	\end{itemize}
+\textit{\textbf{Fichier de configuration (/etc/nginx/sites-available/meuuuhble):}}
+	\begin{lstlisting}[style=tf]
+server {
+	listen 80;
+	server_name www.meuuuhble.com;  # Remplacer par le nom de domaine
+	
+	location /static {
+		alias /chemin/vers/meuuuhble/static;  # dossier static de l'application
+	}
+	
+	location / {
+		proxy_pass http://127.0.0.1:5000;  # Rediriger les requêtes vers Gunicorn
+		proxy_set_header Host $host;
+		proxy_set_header X-Real-IP $remote_addr;
+	}
+}
+	\end{lstlisting}
+	
+	\item Configuration Gunicorn :
+	\begin{itemize}
+		\item Fichier de configuration pour définir le nombre de workers, etc.
+		\item Démarrer Gunicorn avec le fichier de configuration spécifié.
+	\end{itemize}
+\textit{\textbf{Fichier de configuration (gunicorn.conf):}}
+	\begin{lstlisting}[style=tf]
+bind = "127.0.0.1:5000"
+workers = 3  # Ajuster en fonction des ressources du serveur
+user = meuuuhble_user  # Utilisateur dédié au déploiement
+group = meuuuhble_group  # Groupe de l'utilisateur
+chdir = /chemin/vers/meuuuhble  # Chemin vers le dossier de l'application
+	\end{lstlisting}
+\end{enumerate}
+
+\textbf{\textit{Activer le site et recharger Nginx :}}
+\begin{lstlisting}
+ln -s /etc/nginx/sites-available/meuuuhble /etc/nginx/sites-enabled/
+systemctl reload nginx
+\end{lstlisting}
+
+
+\subsection{Sécurisation du service web}
+
+\begin{itemize}
+	\item \textbf{Certificat SSL/TLS :} Utilisation de Let's Encrypt pour un certificat gratuit et automatisé.
+	\item \textbf{En-têtes de sécurité :} Configuration de divers en-têtes pour renforcer la sécurité, incluant HSTS, X-Frame-Options, X-XSS-Protection, et Content-Security-Policy.
+\end{itemize}
+
+\subsubsection*{Configuration :}
+
+\begin{enumerate}
+	\item Obtention du certificat Let's Encrypt : Utiliser Certbot.
+	
+\textbf{\textit{Obtenir et installer le certificat :}}
+	\begin{lstlisting}
+certbot certonly --webroot -w /chemin/vers/meuuuhble/static -d www.meuuuhble.com
+	\end{lstlisting}
+
+	\item Configuration Nginx : Activer HTTPS et ajouter les en-têtes de sécurité dans la configuration.
+	
+	
+\textbf{\textit{Configurer Nginx pour HTTPS :}}	
+	\begin{lstlisting}[style=tf]
+server {
+	listen 443 ssl;
+	server_name www.meuuuhble.com;
+	
+	ssl_certificate /etc/letsencrypt/live/www.meuuuhble.com/fullchain.pem;
+	ssl_certificate_key /etc/letsencrypt/live/www.meuuuhble.com/privkey.pem;
+	
+	# ... autres configurations ...
+}
+	\end{lstlisting}
+
+\textbf{\textit{Activer la redirection HTTP vers HTTPS :}}
+\begin{lstlisting}[style=tf]
+server {
+	listen 80;
+	server_name www.meuuuhble.com;
+	return 301 https://$host$request_uri;
+}
+\end{lstlisting}
+	
+\end{enumerate}
+
+\subsection{Service de bases de données}
+
+\textbf{Choix :} MariaDB (pour sa compatibilité avec l'application)
+
+\subsubsection*{Configuration :}
+
+\begin{enumerate}
+	\item Installation : \texttt{apt install mariadb-server}
+	\item Configuration initiale de la base de données et de l'utilisateur.
+	
+\textbf{\textit{Créer la base de données et l'utilisateur :}}
+\begin{lstlisting}
+CREATE DATABASE meuuuhble;
+CREATE USER 'meuuuhble_user'@'localhost' IDENTIFIED BY 'mot_de_passe';
+GRANT ALL PRIVILEGES ON meuuuhble.* TO 'meuuuhble_user'@'localhost';
+FLUSH PRIVILEGES;
+\end{lstlisting}
+
+
+	\item Configuration de l'application Flask pour utiliser MariaDB.
+\end{enumerate}
+
+\subsection{Upload de l'application}
+
+\textbf{Choix :} SSH (pour sa sécurité)
+
+\subsubsection*{Configuration :}
+
+\begin{enumerate}
+	\item Création d'un utilisateur dédié au déploiement avec des droits limités.
+	\item Configurer l'authentification par clé SSH pour une sécurité renforcée.
+	\item Utilisation de scripts de déploiement automatisés (ex: Fabric) pour faciliter les mises à jour.
+\end{enumerate}
+
+\subsection{Sécurisation de l'accès}
+
+\begin{itemize}
+	\item \textbf{Fail2ban :} Pour détecter et bloquer les tentatives de connexion suspectes.
+	\item \textbf{Configuration SSH :} Améliorer la sécurité SSH en désactivant l'authentification par mot de passe, limitant l'accès à des adresses IP spécifiques, et utilisant un port non standard.
+\end{itemize}
+
+\subsubsection*{Configuration :}
+
+\begin{enumerate}
+	\item Installation de Fail2ban : \texttt{apt install fail2ban}
+	\item Configuration de Fail2ban : Définir les règles de surveillance et de blocage.
+	\begin{lstlisting}
+[sshd]
+enabled = true
+port = ssh
+filter = sshd
+logpath = /var/log/auth.log
+maxretry = 5
+	\end{lstlisting}
+	\item Configuration SSH : Modifier le fichier \texttt{/etc/ssh/sshd\_config} pour appliquer les mesures de sécurité.
+	\begin{lstlisting}[style=tf]
+PasswordAuthentication no
+AllowUsers utilisateur@adresse_ip
+Port 2222  # Remplacer par le port souhaité
+	\end{lstlisting}
+	\begin{lstlisting}
+systemctl restart sshd
+	\end{lstlisting}
+\end{enumerate}
