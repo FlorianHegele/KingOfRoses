@@ -6,6 +6,7 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
+import utils.FileUtils;
 
 public class KoRBoardLook extends ClassicBoardLook {
 
@@ -19,7 +20,7 @@ public class KoRBoardLook extends ClassicBoardLook {
     @Override
     protected void render() {
         super.render();
-        Image cardBackground = new Image("file:src/main/ressources/rdr-plateau-vide.png");
+        Image cardBackground = new Image(FileUtils.getOuputStreamFromResources("rdr-plateau-vide.png"));
         Rectangle rectangle = new Rectangle(getWidth()+5, getHeight()+5);
         rectangle.setFill(new ImagePattern(cardBackground));
         addShape(rectangle);
