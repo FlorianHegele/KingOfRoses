@@ -4,6 +4,8 @@ import boardifier.control.Logger;
 import boardifier.model.ContainerElement;
 import boardifier.model.Coord2D;
 import boardifier.model.GameElement;
+import boardifier.model.GameStageModel;
+import model.data.ElementType;
 
 /**
  * The {@code ContainerElements} class provides utility methods for working with elements in a container.
@@ -64,5 +66,12 @@ public class ContainerElements {
     public static boolean isOutside(ContainerElement containerElement, int row, int col) {
         Logger.trace("isOutside(" + row + ", " + col + ")");
         return ((row >= 0) && (row < containerElement.getNbRows()) && (col >= 0) && (col < containerElement.getNbCols()));
+    }
+
+    public static <T extends GameElement> T getSelectedElement(GameStageModel gameStageModel, ElementType elementType) {
+        for (GameElement element : gameStageModel.getSelected()) {
+            if (elementType.isElement(element)) return (T) element;
+        }
+        throw new IllegalCallerException("Element not found");
     }
 }

@@ -1,10 +1,10 @@
 package view.element;
 
+import boardifier.control.Logger;
 import boardifier.model.GameElement;
 import boardifier.view.ElementLook;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.StrokeType;
 import model.element.Pawn;
 
 public class PawnLook extends ElementLook {
@@ -16,19 +16,6 @@ public class PawnLook extends ElementLook {
 
         this.radius = radius;
         render();
-    }
-
-    @Override
-    public void onSelectionChange() {
-        Pawn pawn = (Pawn) getElement();
-        if (pawn.isSelected()) {
-            circle.setStrokeWidth(3);
-            circle.setStrokeMiterLimit(10);
-            circle.setStrokeType(StrokeType.CENTERED);
-            circle.setStroke(Color.DARKGRAY);
-        } else {
-            circle.setStrokeWidth(0);
-        }
     }
 
     @Override

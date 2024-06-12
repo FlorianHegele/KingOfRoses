@@ -1,12 +1,8 @@
 package control;
 
 import boardifier.control.*;
-import boardifier.model.Coord2D;
-import boardifier.model.ElementTypes;
-import boardifier.model.GameElement;
-import boardifier.model.Model;
+import boardifier.model.*;
 import boardifier.model.action.ActionList;
-import boardifier.model.animation.AnimationTypes;
 import boardifier.view.GridLook;
 import boardifier.view.View;
 import javafx.event.EventHandler;
@@ -14,11 +10,12 @@ import javafx.scene.input.MouseEvent;
 import model.data.ElementType;
 import model.data.GameState;
 import model.container.KoRBoard;
-import model.container.PawnPot;
 import model.KoRStageModel;
 import model.data.PlayerData;
+import model.element.Pawn;
 import model.element.card.HeroCard;
 import model.element.card.MovementCard;
+import utils.ContainerElements;
 
 import java.util.List;
 
@@ -32,7 +29,6 @@ public class KoRControllerMouse extends ControllerMouse implements EventHandler<
         super(model, view, control);
     }
 
-    // TODO : REWRITE THIS FUNCTION
     @Override
     public void handle(MouseEvent event) {
         // if mouse event capture is disabled in the model, just return
@@ -55,6 +51,9 @@ public class KoRControllerMouse extends ControllerMouse implements EventHandler<
 
         Logger.info("current state : " + currentState.name());
 
+        ActionList actionList = null;
+        final SimpleActionList simpleActionList = new SimpleActionList(model, control, currentPlayer);
+
         // CAN SELECT A MOVEMENT CARD FROM THE STACK OR HIS HAND
         if (currentState == GameState.SELECT_NONE) {
             for (GameElement element : list) {
@@ -63,12 +62,11 @@ public class KoRControllerMouse extends ControllerMouse implements EventHandler<
 
                     // SELECT A MOVEMENT CARD FROM THE STACK
                     if(movementCard.getOwner() == MovementCard.Owner.STACK) {
-                        Logger.info("Movement card found");
-                        return;
+                        actionList = pickupFromStack(stageModel, simpleActionList, currentPlayer);
                     }
 
                     // SELECT A MOVEMENT CARD FROM HIS HAND
-                    if(movementCard.getOwner().isSpecificPlayer(currentPlayer)) {
+                    else if(movementCard.getOwner().isSpecificPlayer(currentPlayer)) {
                         stageModel.setState(GameState.SELECT_MOVEMENT_CARD);
                         element.toggleSelected();
                         return;
@@ -109,6 +107,9 @@ public class KoRControllerMouse extends ControllerMouse implements EventHandler<
                 }
             }
 
+            // CHECK IF CLICK ON THE BOARD
+            if(cliqueOnBoard(list, stageModel)) actionList = playMovementCard(clic, stageModel, simpleActionList);
+
         // CAN SELECT THE DEST OR UNSELECT THE HERO CARD OR UNSELECT MOVEMENT CARD (AND HERO CARD INDIRECTLY) OR CHANGE HIS MOVEMENT CARD
         } else if (stageModel.getGameState() == GameState.SELECT_MOVEMENT_CARD_HERO) {
             for (GameElement element : list) {
@@ -140,7 +141,86 @@ public class KoRControllerMouse extends ControllerMouse implements EventHandler<
                     return;
                 }
             }
+
+            // CHECK IF CLICK ON THE BOARD
+            if(cliqueOnBoard(list, stageModel)) actionList = playHeroCard(clic, stageModel, simpleActionList);
         }
+
+        // EXECUTE ACTIONS
+        if(actionList == null) return;
+
+        stageModel.setState(GameState.SELECT_NONE);
+        stageModel.unselectAll();
+
+        actionList.setDoEndOfTurn(true);
+        final ActionPlayer actionPlayer = new ActionPlayer(model, control, actionList);
+        actionPlayer.start();
+    }
+
+    private ActionList pickupFromStack(KoRStageModel gameStage, SimpleActionList simpleActionList, PlayerData playerData) {
+        final ContainerElement container = (playerData == PlayerData.PLAYER_BLUE)
+                ? gameStage.getBlueMovementCardsSpread()
+                : gameStage.getRedMovementCardsSpread();
+
+        // Get the first empty position in the player's movement card grid
+        final Coord2D coord2D = ContainerElements.getEmptyPosition(container);
+
+        // If the hand of the player is full, do nothing
+        if (coord2D == null) return null;
+
+        return simpleActionList.pickUpMovementCard(container, coord2D);
+    }
+
+    private ActionList playMovementCard(Coord2D clic, KoRStageModel gameStage, SimpleActionList simpleActionList) {
+        // Get the necessary elements
+        final KoRBoard board = gameStage.getBoard();
+        final MovementCard movementCard = (MovementCard) gameStage.getSelected().get(0);
+
+        GridLook lookBoard = (GridLook) control.getElementLook(board);
+        final int[] ipos = lookBoard.getCellFromSceneLocation(clic);
+        if(ipos == null) return null;
+
+        final Coord2D pos = new Coord2D(ipos);
+        final int col = (int) pos.getX();
+        final int row = (int) pos.getY();
+
+        Logger.info("col : " + col + ", row : " + row);
+        // Validate the move
+        if (!board.canReachCell(row, col)) return null;
+
+        return simpleActionList.useMovementCard(movementCard, pos);
+    }
+
+    private ActionList playHeroCard(Coord2D clic, KoRStageModel gameStage, SimpleActionList simpleActionList) {
+        // Get the necessary elements
+        final KoRBoard board = gameStage.getBoard();
+        final MovementCard movementCard = ContainerElements.getSelectedElement(gameStage, ElementType.MOVEMENT_CARD);
+
+        GridLook lookBoard = (GridLook) control.getElementLook(board);
+        final int[] ipos = lookBoard.getCellFromSceneLocation(clic);
+        if(ipos == null) return null;
+
+        final Coord2D pos = new Coord2D(ipos);
+        final int col = (int) pos.getX();
+        final int row = (int) pos.getY();
+
+        Logger.info("col : " + col + ", row : " + row);
+        // Validate the move
+        if (!board.canReachCell(row, col)) return null;
+
+        final HeroCard heroCard = ContainerElements.getSelectedElement(gameStage, ElementType.HERO_CARD);
+        final Pawn pawn = (Pawn) board.getElement(row, col);
+
+        return simpleActionList.useHeroCard(heroCard, movementCard, pawn, pos);
+    }
+
+    private boolean cliqueOnBoard(List<GameElement> list, KoRStageModel stageModel) {
+        for (GameElement element : list) {
+            if (element == stageModel.getBoard()) {
+                return true;
+            }
+        }
+        return false;
     }
 }
 
