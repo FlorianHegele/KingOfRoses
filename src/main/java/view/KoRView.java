@@ -11,17 +11,6 @@ public class KoRView extends View {
     private MenuItem menuStart;
     private MenuItem menuIntro;
     private MenuItem menuQuit;
-    private RadioMenuItem menuHumanVsHuman;
-    private RadioMenuItem menuHumanVsAI;
-    private RadioMenuItem menuAIVsAI;
-    private RadioMenuItem random1;
-    private RadioMenuItem random2;
-    private RadioMenuItem camarade1;
-    private RadioMenuItem camarade2;
-    private RadioMenuItem hate1;
-    private RadioMenuItem hate2;
-    private RadioMenuItem guide1;
-    private RadioMenuItem guide2;
 
     public KoRView(Model model, Stage stage, RootPane rootPane) {
         super(model, stage, rootPane);
@@ -45,21 +34,21 @@ public class KoRView extends View {
         Menu menuAI2 = new Menu("IA pour le joueur 2");
 
         ToggleGroup groupPlayers = new ToggleGroup();
-        menuHumanVsHuman = new RadioMenuItem("Humain vs Humain");
-        menuHumanVsAI = new RadioMenuItem("Humain vs IA");
-        menuAIVsAI = new RadioMenuItem("IA vs IA");
+        RadioMenuItem menuHumanVsHuman = new RadioMenuItem("Humain vs Humain");
+        RadioMenuItem menuHumanVsAI = new RadioMenuItem("Humain vs IA");
+        RadioMenuItem menuAIVsAI = new RadioMenuItem("IA vs IA");
 
         ToggleGroup groupAI1 = new ToggleGroup();
-        random1 = new RadioMenuItem("Random");
-        camarade1 = new RadioMenuItem("Camarade");
-        hate1 = new RadioMenuItem("Hate");
-        guide1 = new RadioMenuItem("Guide");
+        RadioMenuItem random1 = new RadioMenuItem("Random");
+        RadioMenuItem camarade1 = new RadioMenuItem("Camarade");
+        RadioMenuItem hate1 = new RadioMenuItem("Hate");
+        RadioMenuItem guide1 = new RadioMenuItem("Guide");
 
         ToggleGroup groupAI2 = new ToggleGroup();
-        random2 = new RadioMenuItem("Random");
-        camarade2 = new RadioMenuItem("Camarade");
-        hate2 = new RadioMenuItem("Hate");
-        guide2 = new RadioMenuItem("Guide");
+        RadioMenuItem random2 = new RadioMenuItem("Random");
+        RadioMenuItem camarade2 = new RadioMenuItem("Camarade");
+        RadioMenuItem hate2 = new RadioMenuItem("Hate");
+        RadioMenuItem guide2 = new RadioMenuItem("Guide");
 
         menuHumanVsHuman.setToggleGroup(groupPlayers);
         menuHumanVsAI.setToggleGroup(groupPlayers);
@@ -83,17 +72,9 @@ public class KoRView extends View {
         menuBar.getMenus().addAll(menu1, menuConfig);
     }
 
-    public RadioMenuItem getMenuHumanVsHuman() {
-        return menuHumanVsHuman;
-    }
 
-    public RadioMenuItem getMenuHumanVsAI() {
-        return menuHumanVsAI;
-    }
 
-    public RadioMenuItem getMenuAIVsAI() {
-        return menuAIVsAI;
-    }
+
 
     public MenuItem getMenuStart() {
         return menuStart;
