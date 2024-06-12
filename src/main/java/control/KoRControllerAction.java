@@ -7,6 +7,8 @@ import boardifier.model.Model;
 import boardifier.view.View;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import model.GameConfigurationModel;
+import model.KoRStageModel;
 import view.KoRView;
 
 /**
@@ -52,10 +54,18 @@ public class KoRControllerAction extends ControllerAction implements EventHandle
             control.stopGame();
             koRView.resetView();
         });
+
+        // set event handler on the Configuration menu item
+        koRView.getMenuConfig().setOnAction(e -> {
+            control.stopGame();
+            koRView.resetView();
+            koRView.createConfigMenu();
+        });
         // set event handler on the MenuQuit item
         koRView.getMenuQuit().setOnAction(e -> {
             System.exit(0);
         });
+
     }
 
     /**
