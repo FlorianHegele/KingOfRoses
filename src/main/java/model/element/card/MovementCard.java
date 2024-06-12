@@ -1,10 +1,9 @@
 package model.element.card;
 
-import boardifier.model.Coord2D;
-import boardifier.model.ElementTypes;
-import boardifier.model.GameElement;
-import boardifier.model.GameStageModel;
+import boardifier.model.*;
 import javafx.scene.paint.Color;
+import model.data.ElementType;
+import model.data.PlayerData;
 
 import java.util.Objects;
 
@@ -29,10 +28,7 @@ public class MovementCard extends GameElement {
         super(gameStageModel);
 
         // Register new element type
-        // Associate the word "direction_card" with the integer 51
-        ElementTypes.register("direction_card", 51);
-        // Retrieve the integer associated with the word "direction_card" and associate it with the type variable
-        this.type = ElementTypes.getType("direction_card");
+        this.type = ElementType.MOVEMENT_CARD.register();
 
         this.step = step;
         this.direction = direction;
@@ -221,6 +217,18 @@ public class MovementCard extends GameElement {
          */
         public Color getColor() {
             return (this == OUT) ? Color.YELLOW : Color.WHITE;
+        }
+
+        public boolean isCurrentPlayer(Model model) {
+            return isSpecificPlayer(PlayerData.getCurrentPlayerData(model));
+        }
+
+        public boolean isSpecificPlayer(PlayerData playerData) {
+            return (this == PLAYER_RED && playerData == PlayerData.PLAYER_RED) || (this == PLAYER_BLUE && playerData == PlayerData.PLAYER_BLUE);
+        }
+
+        public boolean isPlayer() {
+            return this == PLAYER_BLUE || this == PLAYER_RED;
         }
     }
 

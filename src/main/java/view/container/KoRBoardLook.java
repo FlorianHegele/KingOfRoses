@@ -12,4 +12,6 @@ public class KoRBoardLook extends ClassicBoardLook {
         // then, cells have a size of (size-20)/3
         super(size / 3, element, -1, Color.BEIGE, Color.DARKGRAY, 0, Color.BLACK, 5, Color.BLACK, false);
     }
+
+
 }

@@ -8,6 +8,7 @@ import boardifier.model.animation.Animation;
 import boardifier.model.animation.AnimationStep;
 import javafx.scene.paint.Color;
 import model.KoRStageModel;
+import model.data.ElementType;
 import model.data.PlayerData;
 
 public class Pawn extends GameElement {
@@ -24,10 +25,7 @@ public class Pawn extends GameElement {
         super(gameStageModel);
 
         // Register new element type
-        // Associate the word "pawn" with the integer 50
-        ElementTypes.register("pawn", 50);
-        // Retrieve the integer associated with the word "pawn" and associate it with the type variable
-        this.type = ElementTypes.getType("pawn");
+        this.type = ElementType.PAWN.register();
 
         this.status = status;
     }

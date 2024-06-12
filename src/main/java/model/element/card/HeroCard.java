@@ -4,6 +4,7 @@ import boardifier.model.ElementTypes;
 import boardifier.model.GameElement;
 import boardifier.model.GameStageModel;
 import javafx.scene.paint.Color;
+import model.data.ElementType;
 import model.data.PlayerData;
 
 /**
@@ -23,10 +24,7 @@ public class HeroCard extends GameElement {
         super(gameStageModel);
 
         // Register new element type
-        // Associate the word "hero_card" with the integer 52
-        ElementTypes.register("hero_card", 52);
-        // Retrieve the integer associated with the word "hero_card" and associate it with the type variable
-        this.type = ElementTypes.getType("hero_card");
+        this.type = ElementType.HERO_CARD.register();
 
         this.status = status;
     }
@@ -89,6 +87,9 @@ public class HeroCard extends GameElement {
             return color;
         }
 
+        public boolean isOwnedBy(PlayerData playerData) {
+            return playerData.getId() == id;
+        }
     }
 
 }

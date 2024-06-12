@@ -1,5 +1,6 @@
 package utils;
 
+import boardifier.control.Logger;
 import boardifier.model.ContainerElement;
 import boardifier.model.Coord2D;
 import boardifier.model.GameElement;
@@ -58,5 +59,10 @@ public class ContainerElements {
             }
         }
         return count;
+    }
+
+    public static boolean isOutside(ContainerElement containerElement, int row, int col) {
+        Logger.trace("isOutside(" + row + ", " + col + ")");
+        return ((row >= 0) && (row < containerElement.getNbRows()) && (col >= 0) && (col < containerElement.getNbCols()));
     }
 }

@@ -32,20 +32,23 @@ public class MovementCardLook extends ElementLook {
         MovementCard.Owner owner = movementCard.getOwner();
 
         if (movementCard.isSelected()) {
+            Logger.info("is selected !!");
             text1.setStrokeWidth(3);
             text1.setStrokeMiterLimit(10);
             text1.setStrokeType(StrokeType.CENTERED);
             text1.setStroke(Color.DARKGRAY);
 
-            if(owner != MovementCard.Owner.STACK && owner != MovementCard.Owner.OUT) {
+            if(owner.isPlayer()) {
                 text2.setStrokeWidth(3);
                 text2.setStrokeMiterLimit(10);
                 text2.setStrokeType(StrokeType.CENTERED);
                 text2.setStroke(Color.DARKGRAY);
             }
         } else {
+            Logger.info("isn't selected !!");
+
             text1.setStrokeWidth(0);
-            if(owner != MovementCard.Owner.STACK && owner != MovementCard.Owner.OUT) {
+            if(owner.isPlayer()) {
                 text2.setStrokeWidth(0);
             }
         }

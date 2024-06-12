@@ -7,6 +7,7 @@ import model.container.card.HeroCardStack;
 import model.container.card.MovementCardSpread;
 import model.container.card.MovementCardStack;
 import model.container.card.MovementCardStackPlayed;
+import model.data.GameState;
 import model.data.PlayerData;
 import model.element.Pawn;
 import model.element.card.HeroCard;
@@ -49,10 +50,6 @@ public class KoRStageModel extends GameStageModel {
     private static final int[] dx = {1, -1, 0, 0};
     private static final int[] dy = {0, 0, 1, -1};
 
-    // states
-    public static final int STATE_SELECTPAWN = 1; // the player must select a pawn
-    public static final int STATE_SELECTDEST = 2; // the player must select a destination
-
 
     // define stage game elements
     private KoRBoard board;
@@ -93,10 +90,18 @@ public class KoRStageModel extends GameStageModel {
         super(name, model);
 
         // Set the local state of the stage
-        state = STATE_SELECTPAWN;
+        setState(GameState.SELECT_NONE);
 
         // Sets up callbacks for game events
         setupCallbacks();
+    }
+
+    public GameState getGameState() {
+        return GameState.getState(getState());
+    }
+
+    public void setState(GameState gameState) {
+        setState(gameState.getValue());
     }
 
     /**
@@ -530,6 +535,15 @@ public class KoRStageModel extends GameStageModel {
      * elements being removed from or placed into containers.
      */
     private void setupCallbacks() {
+        onSelectionChange(() -> {
+            // get the selected pawn if any
+            if (selected.isEmpty()) {
+                board.resetReachableCells(false);
+                return;
+            }
+            board.setValidCells();
+        });
+
         onRemoveFromContainer((element, containerFrom, rowDest, colDest) -> {
             // ACTION: Play a hero card
             if (element instanceof HeroCard heroCard) {
