@@ -1,12 +1,13 @@
 package model.element.card;
 
-import boardifier.model.Coord2D;
-import boardifier.model.ElementTypes;
-import boardifier.model.GameElement;
-import boardifier.model.GameStageModel;
+import boardifier.control.Logger;
+import boardifier.model.*;
+import boardifier.model.animation.Animation;
+import boardifier.model.animation.AnimationStep;
 import javafx.scene.paint.Color;
+import model.data.ElementType;
+import model.data.PlayerData;
 
-import java.util.Objects;
 
 /**
  * Represents a movement card in the game.
@@ -29,10 +30,7 @@ public class MovementCard extends GameElement {
         super(gameStageModel);
 
         // Register new element type
-        // Associate the word "direction_card" with the integer 51
-        ElementTypes.register("direction_card", 51);
-        // Retrieve the integer associated with the word "direction_card" and associate it with the type variable
-        this.type = ElementTypes.getType("direction_card");
+        this.type = ElementType.MOVEMENT_CARD.register();
 
         this.step = step;
         this.direction = direction;
@@ -55,9 +53,13 @@ public class MovementCard extends GameElement {
      *
      * @param owner The owner to set.
      */
+
+    // FIXME BUG GENERATE WITH THIS FUNCTION ?!
+    // BUG FOUND, WHEN I CAN ONE VARIABLE, THE LOOK OF THE ELEMENT DISAPPEAR
     public void setOwner(Owner owner) {
         this.owner = owner;
         if (owner == Owner.PLAYER_RED) toggleInverted();
+        addChangeFaceEvent();
     }
 
     /**
@@ -222,17 +224,17 @@ public class MovementCard extends GameElement {
         public Color getColor() {
             return (this == OUT) ? Color.YELLOW : Color.WHITE;
         }
-    }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof MovementCard that)) return false;
-        return step == that.step && direction == that.direction;
-    }
+        public boolean isCurrentPlayer(Model model) {
+            return isSpecificPlayer(PlayerData.getCurrentPlayerData(model));
+        }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(step, inverted, owner, direction);
+        public boolean isSpecificPlayer(PlayerData playerData) {
+            return (this == PLAYER_RED && playerData == PlayerData.PLAYER_RED) || (this == PLAYER_BLUE && playerData == PlayerData.PLAYER_BLUE);
+        }
+
+        public boolean isPlayer() {
+            return this == PLAYER_BLUE || this == PLAYER_RED;
+        }
     }
 }

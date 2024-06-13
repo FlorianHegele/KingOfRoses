@@ -9,6 +9,10 @@ public class Coord2D {
         this.y = y;
     }
 
+    public Coord2D(int[] pos) {
+        this(pos[1], pos[0]);
+    }
+
     public Coord2D() {
         this(0.0, 0.0);
     }
