@@ -86,7 +86,6 @@ public class MovementCardLook extends ElementLook {
             imageView.setFitWidth(84);
             imageView.setFitHeight(100);
             if (movementCard.isInverted()) {
-
                 imageView.setRotate(180);
             } else {
                 text1.setText(direction);
