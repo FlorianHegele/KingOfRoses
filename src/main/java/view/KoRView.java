@@ -32,6 +32,8 @@ public class KoRView extends View {
     private MenuItem menuQuit;
     private Button bValider;
     private Button bRetour;
+    private ToggleGroup groupAI2;
+    private ToggleGroup groupAI1;
 
     public KoRView(Model model, Stage stage, RootPane rootPane) {
         super(model, stage, rootPane);
@@ -69,7 +71,7 @@ public class KoRView extends View {
         menuHumanVsAI.setToggleGroup(groupPlayers);
         menuAIVsAI.setToggleGroup(groupPlayers);
 
-        ToggleGroup groupAI1 = new ToggleGroup();
+        groupAI1 = new ToggleGroup();
         random1 = new RadioButton("Random");
         camarade1 = new RadioButton("Camarade");
         hate1 = new RadioButton("Hate Cards");
@@ -80,7 +82,7 @@ public class KoRView extends View {
         hate1.setToggleGroup(groupAI1);
         guide1.setToggleGroup(groupAI1);
 
-        ToggleGroup groupAI2 = new ToggleGroup();
+        groupAI2 = new ToggleGroup();
         random2 = new RadioButton("Random");
         camarade2 = new RadioButton("Camarade");
         hate2 = new RadioButton("Hate Cards");
@@ -129,10 +131,43 @@ public class KoRView extends View {
         // set the clipping area with the boundaries of root pane.
         Rectangle r = new Rectangle(rootPane.getWidth(), rootPane.getHeight());
         rootPane.setClip(r);
-
-
     }
 
+    public Button getbValider() {
+        return bValider;
+    }
+
+    public Button getbRetour() {
+        return bRetour;
+    }
+
+    public ToggleGroup getGroupAI2() {
+        return groupAI2;
+    }
+
+    public ToggleGroup getGroupAI1() {
+        return groupAI1;
+    }
+
+    public void setMenuStart(MenuItem menuStart) {
+        this.menuStart = menuStart;
+    }
+
+    public void setMenuIntro(MenuItem menuIntro) {
+        this.menuIntro = menuIntro;
+    }
+
+    public void setMenuQuit(MenuItem menuQuit) {
+        this.menuQuit = menuQuit;
+    }
+
+    public void setbValider(Button bValider) {
+        this.bValider = bValider;
+    }
+
+    public void setbRetour(Button bRetour) {
+        this.bRetour = bRetour;
+    }
 
     public RadioButton getGuide2() {
         return guide2;

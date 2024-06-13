@@ -6,15 +6,16 @@ import boardifier.control.Logger;
 import boardifier.model.Model;
 import boardifier.model.Player;
 import boardifier.view.View;
+import model.GameConfigurationModel;
 import model.KoRStageModel;
 
 public class KoRController extends Controller {
 
-    public KoRController(Model model, View view) {
+    public KoRController(Model model, View view, GameConfigurationModel gameConfigurationModel) {
         super(model, view);
         setControlKey(new KoRControllerKey(model, view, this));
         setControlMouse(new KoRControllerMouse(model, view, this));
-        setControlAction(new KoRControllerAction(model, view, this));
+        setControlAction(new KoRControllerAction(model, view, this, gameConfigurationModel));
     }
 
     public void endOfTurn() {
