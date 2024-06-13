@@ -145,6 +145,8 @@ Bien que le son ne soit pas nécessaire à l’usage du programme par l’utilis
 
 \section{Organisation du travail}
 
+\subsection{Vue Globale}
+
 \begin{figure}[!h]
     \begin{tabularx}{\textwidth}{|X|c|c|X|}
         \hline
@@ -194,6 +196,39 @@ Bien que le son ne soit pas nécessaire à l’usage du programme par l’utilis
     \caption{Diagramme de Gantt du Projet}
     \label{fig:gantt}
 \end{figure}
+
+\subsection{Commentaires quant à l'organisation de l'équipe}
+
+\subsubsection{Jusqu'au Jalon 1}
+
+La SAÉ nous a été présentée en janvier, et nous avons reçu les instructions nécessaires à son commencement courant mars.
+Cependant, nous avons décidé de débuter le projet début mai.
+Ce choix a été motivé par la nécessité de travailler en parallèle sur une autre SAÉ, et nous avons préféré ne pas nous disperser.
+Nous avons effectivement commencé le travail aux alentours du 1er mai.
+Nous avions décidé que toute l'équipe travaillerait d'abord à la compréhension du framework et à la mise en place d'un document constituant le plan initial de développement de notre application.
+Par la suite, l'équipe devait se diviser en deux : une partie s'occupant des tests et l'autre du développement de l'application proprement dite.
+
+Malheuresement, peu de choses se sont déroulées comme prévu.
+Bien que tout le monde ait suivi le tutoriel "The Hole", nous n'avons conçu ni maquette ni document pouvant nous guider dans la direction à prendre pour le projet.
+Nous avons également rencontré un problème de compréhension lors de l'implémentation de notre jeu.
+Nous n'avions pas une vision d'ensemble claire sur l'utilisation du boardifier, et avons dû produire un diagramme UML pour nous repérer plus facilement(\hyperref[fig:uml]{Voir Figure C.4}).
+
+Lorsqu'est venu le moment d'implémenter le programme, nous nous sommes souvent bloqués, ne sachant comment travailler sans empiéter sur le travail d'un autre.
+Cela a donné un mode de travail où nous étions plusieurs à réfléchir sur le même code avant de tous passer sur les tests, qui auraient dû être implémentés en parallèle du code.
+Nous avons tout de même finalement réussi à nous séparer sur différentes fonctions à implémenter, mais sans trop savoir précisément qui travaillait sur quoi.
+
+\subsubsection{Du Jalon 1 au Jalon 2}
+
+Nous avons décidé de mettre un membre de l'équipe à temps plein sur la question de droit tandis que les autres continueraient à travailler sur l'implémentation console dans le but d'avoir un code propre et fonctionnel pour l'implémentation graphique.
+
+\subsubsection{Du Jalon 2 au Jalon 3}
+
+Dès la réception du nouveau framework boardifier, nous avons décide d'une nouvelle façon de fonctionner.
+Nous avons travaillé ensemble pour obtenir un premier affichage avec la nouvelle interface graphique avant de nous répartir le travail.
+Une fois cette étape réalisé nous nous sommes répartis chacune des fonctions à implémenter (menu de configuration, implémentation des IA, son, etc.) et avons développé chacun de notre côté sur une branche différente du git.
+
+Cela s'est avéré être une façon bien plus efficace de travailler qui nous a permis de suivre un fil d'ariane vital à l'accomplissement de la tâche finale de cette SAÉ pour laquelle nous avions assez peu de temps.
+
 
 \chapter{Bilan}
 
@@ -336,7 +371,6 @@ Enfin, je me suis rendu compte que je ne suis pas encore très bon en gestion de
 
 \chapter{Figures}
 
-\section{Illustrations des IA}
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth,angle=0]{./images/Camarade.png}
@@ -357,6 +391,14 @@ Enfin, je me suis rendu compte que je ne suis pas encore très bon en gestion de
     \caption{Illustration de l'usage de cartes Héros de l'IA Guide}
     \label{fig:guide1}
 \end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=24cm,angle=270]{./images/UML_boardifier_console.png}
+    \caption{UML représentant les intéractions entre les classes du framework boardifier}
+    \label{fig:uml}
+\end{figure}
+
 
 
 
