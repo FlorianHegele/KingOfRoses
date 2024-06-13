@@ -35,6 +35,7 @@ public class Pawn extends GameElement {
      */
     public void flipStatus() {
         this.status = this.status.getOpposite();
+        addChangeFaceEvent();
     }
 
     /**

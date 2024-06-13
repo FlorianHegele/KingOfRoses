@@ -148,10 +148,12 @@ public class KoRControllerMouse extends ControllerMouse implements EventHandler<
         if(actionList == null) return;
         actionList.setDoEndOfTurn(true);
 
-        stageModel.unselectAll();
         stageModel.setState(GameState.SELECT_NONE);
+        stageModel.unselectAll();
 
         final ActionPlayer actionPlayer = new ActionPlayer(model, control, actionList);
+
+
         actionPlayer.start();
     }
 

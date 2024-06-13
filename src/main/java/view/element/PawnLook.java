@@ -18,6 +18,12 @@ public class PawnLook extends ElementLook {
         render();
     }
 
+    @Override
+    public void onFaceChange() {
+        Pawn pawn = (Pawn) element;
+        circle.setFill(pawn.getStatus().getColor());
+    }
+
     protected void render() {
         Pawn pawn = (Pawn) element;
         circle = new Circle();
