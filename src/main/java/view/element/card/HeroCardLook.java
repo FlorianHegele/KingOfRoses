@@ -14,6 +14,7 @@ import javafx.scene.text.Text;
 import model.data.PlayerData;
 import model.element.Pawn;
 import model.element.card.HeroCard;
+import model.element.card.MovementCard;
 import utils.FileUtils;
 import view.container.card.HeroCardStackLook;
 
@@ -45,28 +46,46 @@ public class HeroCardLook extends ElementLook {
     public void onFaceChange() {}
 
     protected void render() {
+        HeroCard heroCard = (HeroCard) element;
+
         text = new Text("Hero");
         text.setFont(new Font(size));
         text.setFill(Color.BLACK);
 
-        Image image = new Image(FileUtils.getOuputStreamFromResources("hero-card-blue.png"));
-        ImageView imageView = new ImageView();
-        imageView.setImage(image);
-        imageView.setFitWidth(90);
-        imageView.setFitHeight(110);
+        if (heroCard.getStatus() == HeroCard.Status.RED_CARD) {
+            Image image = new Image(FileUtils.getOuputStreamFromResources("hero-card-red.png"));
+            ImageView imageView = new ImageView();
+            imageView.setImage(image);
+            imageView.setFitWidth(93);
+            imageView.setFitHeight(115);
+
+            Bounds bt1 = imageView.getBoundsInLocal();
+            imageView.setX(-bt1.getWidth() + 49);
+            // since text are always above the baseline, relocate just using the part above baseline
+            imageView.setY(text.getBaselineOffset() - 78);
+
+            addNode(imageView);
+        } else {
+            Image image = new Image(FileUtils.getOuputStreamFromResources("hero-card-blue.png"));
+            ImageView imageView = new ImageView();
+            imageView.setImage(image);
+            imageView.setFitWidth(90);
+            imageView.setFitHeight(110);
 
 
-        Bounds bt = text.getBoundsInLocal();
-        text.setX(-bt.getWidth()/2);
-        // since text are always above the baseline, relocate just using the part above baseline
-        text.setY(text.getBaselineOffset()/2-4);
+            Bounds bt = text.getBoundsInLocal();
+            text.setX(-bt.getWidth() / 2);
+            // since text are always above the baseline, relocate just using the part above baseline
+            text.setY(text.getBaselineOffset() / 2 - 4);
 
-        Bounds bt1 = imageView.getBoundsInLocal();
-        imageView.setX(-bt1.getWidth() + 45);
-        // since text are always above the baseline, relocate just using the part above baseline
-        imageView.setY(text.getBaselineOffset() - 75);
+            Bounds bt1 = imageView.getBoundsInLocal();
+            imageView.setX(-bt1.getWidth() + 45);
+            // since text are always above the baseline, relocate just using the part above baseline
+            imageView.setY(text.getBaselineOffset() - 75);
 
-        addShape(text);
-        addNode(imageView);
+            addShape(text);
+            addNode(imageView);
+        }
+
     }
 }
