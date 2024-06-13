@@ -150,6 +150,10 @@ public class SimpleActionList {
         // Move the card from the stack to the specified position in the player's hand
         actionList.addAll(ActionFactory.generatePutInContainer(control, model, movementCard, container.getName(), row, col));
 
+        // Refill the movement card stack
+        if (gameStage.getMovementCards(MovementCard.Owner.STACK).size() == 1)
+                actionList.addAll(redoMovementCardStack());
+
         return actionList;
     }
 
