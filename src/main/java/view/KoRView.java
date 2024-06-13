@@ -31,8 +31,6 @@ public class KoRView extends View {
     private MenuItem menuIntro;
     private MenuItem menuQuit;
     private Button bValider;
-    private ToggleGroup groupAI2;
-    private ToggleGroup groupAI1;
 
     public KoRView(Model model, Stage stage, RootPane rootPane) {
         super(model, stage, rootPane);
@@ -70,7 +68,7 @@ public class KoRView extends View {
         menuHumanVsAI.setToggleGroup(groupPlayers);
         menuAIVsAI.setToggleGroup(groupPlayers);
 
-        groupAI1 = new ToggleGroup();
+        ToggleGroup groupAI1 = new ToggleGroup();
         random1 = new RadioButton("Random");
         camarade1 = new RadioButton("Camarade");
         hate1 = new RadioButton("Hate Cards");
@@ -81,7 +79,7 @@ public class KoRView extends View {
         hate1.setToggleGroup(groupAI1);
         guide1.setToggleGroup(groupAI1);
 
-        groupAI2 = new ToggleGroup();
+        ToggleGroup groupAI2 = new ToggleGroup();
         random2 = new RadioButton("Random");
         camarade2 = new RadioButton("Camarade");
         hate2 = new RadioButton("Hate Cards");
@@ -132,30 +130,6 @@ public class KoRView extends View {
 
     public Button getbValider() {
         return bValider;
-    }
-
-    public ToggleGroup getGroupAI2() {
-        return groupAI2;
-    }
-
-    public ToggleGroup getGroupAI1() {
-        return groupAI1;
-    }
-
-    public void setMenuStart(MenuItem menuStart) {
-        this.menuStart = menuStart;
-    }
-
-    public void setMenuIntro(MenuItem menuIntro) {
-        this.menuIntro = menuIntro;
-    }
-
-    public void setMenuQuit(MenuItem menuQuit) {
-        this.menuQuit = menuQuit;
-    }
-
-    public void setbValider(Button bValider) {
-        this.bValider = bValider;
     }
 
     public RadioButton getGuide2() {
