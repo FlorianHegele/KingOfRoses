@@ -406,10 +406,8 @@ public class SimpleActionList {
         final String containerName = gameStage.getMovementCardStack().getName();
 
         // Put the played cards back into the stack
-        for (MovementCard movementCard : movementCardList) {
-            if (movementCard.isInverted()) movementCard.toggleInverted();
+        for (MovementCard movementCard : movementCardList)
             actionList.addAll(ActionFactory.generatePutInContainer(control, model, movementCard, containerName, 0, 0));
-        }
 
         return actionList;
     }

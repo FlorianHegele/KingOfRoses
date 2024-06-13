@@ -588,6 +588,7 @@ public class KoRStageModel extends GameStageModel {
             else if (containerDest == movementCardStack) {
                 final MovementCard movementCard = (MovementCard) element;
                 movementCard.setOwner(MovementCard.Owner.STACK);
+                if (movementCard.isInverted()) movementCard.toggleInverted();
                 movementCardStackText.setText(String.valueOf(ContainerElements.countElements(movementCardStack)));
             }
 
