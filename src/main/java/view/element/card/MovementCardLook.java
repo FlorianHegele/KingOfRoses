@@ -4,6 +4,7 @@ import boardifier.model.GameElement;
 import boardifier.view.ElementLook;
 import javafx.geometry.Bounds;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
@@ -80,12 +81,13 @@ public class MovementCardLook extends ElementLook {
             String imagePath = movementCard.getDirection().getPath(movementCard.getStep());
 
             Image image = new Image(imagePath);
-            Rectangle rectangle = new Rectangle(100, 100);
-            rectangle.setFill(new ImagePattern(image));
-
+            ImageView imageView = new ImageView();
+            imageView.setImage(image);
+            imageView.setFitWidth(84);
+            imageView.setFitHeight(100);
             if (movementCard.isInverted()) {
-                text1.setText(step);
-                text2.setText(direction);
+
+                imageView.setRotate(180);
             } else {
                 text1.setText(direction);
                 text2.setText(step);
@@ -99,9 +101,11 @@ public class MovementCardLook extends ElementLook {
             text2.setX(-bt2.getWidth() / 2);
             text2.setY(text2.getBaselineOffset() / 2 + 20);
 
-            addShape(text1);
-            addShape(text2);
-            addShape(rectangle);
+            Bounds bt3 = imageView.getBoundsInLocal();
+            imageView.setX(-bt3.getWidth() / 2);
+            imageView.setY(imageView.getBaselineOffset() - 150);
+
+            addNode(imageView);
         }
     }
 }
