@@ -707,7 +707,7 @@ public class KoRStageModel extends GameStageModel {
         // Set the winner
         model.setIdWinner(idWinner);
         // Stop de the game
-        model.stopStage();
+        model.stopGame();
     }
 
     /**
