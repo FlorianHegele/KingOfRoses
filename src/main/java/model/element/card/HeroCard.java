@@ -11,7 +11,6 @@ import model.data.PlayerData;
  */
 public class HeroCard extends GameElement {
 
-    private boolean inverted;
     private final Status status;
 
     /**
@@ -28,12 +27,8 @@ public class HeroCard extends GameElement {
         ElementTypes.register("hero_card", 52);
         // Retrieve the integer associated with the word "hero_card" and associate it with the type variable
         this.type = ElementTypes.getType("hero_card");
-        this.inverted = false;
-        this.status = status;
-    }
 
-    public boolean isInverted() {
-        return inverted;
+        this.status = status;
     }
 
     /**

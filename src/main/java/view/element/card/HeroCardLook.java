@@ -6,17 +6,11 @@ import javafx.geometry.Bounds;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import model.data.PlayerData;
-import model.element.Pawn;
 import model.element.card.HeroCard;
-import model.element.card.MovementCard;
 import utils.FileUtils;
-import view.container.card.HeroCardStackLook;
 
 public class HeroCardLook extends ElementLook {
 
@@ -59,9 +53,7 @@ public class HeroCardLook extends ElementLook {
             imageView.setFitWidth(93);
             imageView.setFitHeight(115);
 
-            if (heroCard.isInverted()) {
-                imageView.setRotate(180);
-            }
+            imageView.setRotate(180);
 
             Bounds bt1 = imageView.getBoundsInLocal();
             imageView.setX(-bt1.getWidth() + 49);

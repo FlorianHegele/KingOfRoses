@@ -20,7 +20,7 @@ public class MovementCardStackLook extends GridLook {
      * @param containerElement The container element associated with this movement card stack look.
      */
     public MovementCardStackLook(int height, int width, ContainerElement containerElement) {
-        super(height, width, containerElement, -1, 1, Color.BLACK);
+        super(height, width, containerElement, -1, 1, Color.TRANSPARENT);
     }
 
     @Override
@@ -28,11 +28,11 @@ public class MovementCardStackLook extends GridLook {
         setVerticalAlignment(ALIGN_MIDDLE);
         setHorizontalAlignment(ALIGN_CENTER);
 
-        rectangle = new Rectangle(colWidth, rowHeight, Color.WHITE);
+        rectangle = new Rectangle(colWidth, rowHeight, Color.TRANSPARENT);
         rectangle.setStrokeWidth(3);
         rectangle.setStrokeMiterLimit(10);
         rectangle.setStrokeType(StrokeType.CENTERED);
-        rectangle.setStroke(Color.DARKGRAY);
+        rectangle.setStroke(Color.TRANSPARENT);
         rectangle.setX(borderWidth);
         rectangle.setY(borderWidth);
 
