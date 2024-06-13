@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class KoRView extends View {
@@ -71,7 +72,7 @@ public class KoRView extends View {
         ToggleGroup groupAI1 = new ToggleGroup();
         random1 = new RadioButton("Random");
         camarade1 = new RadioButton("Camarade");
-        hate1 = new RadioButton("Hate");
+        hate1 = new RadioButton("Hate Cards");
         guide1 = new RadioButton("Guide");
 
         random1.setToggleGroup(groupAI1);
@@ -82,7 +83,7 @@ public class KoRView extends View {
         ToggleGroup groupAI2 = new ToggleGroup();
         random2 = new RadioButton("Random");
         camarade2 = new RadioButton("Camarade");
-        hate2 = new RadioButton("Hate");
+        hate2 = new RadioButton("Hate Cards");
         guide2 = new RadioButton("Guide");
 
         random2.setToggleGroup(groupAI2);
@@ -94,27 +95,30 @@ public class KoRView extends View {
         bValider = new Button("Valider");
 
         // Ajout des éléments au GridPane
-        gridPane.add(menuHumanVsHuman, 0, 0);
-        gridPane.add(menuHumanVsAI, 1, 0);
-        gridPane.add(menuAIVsAI, 2, 0);
+        gridPane.add(new Text("Mode de Jeu"), 0, 0);
+        gridPane.add(menuHumanVsHuman, 0, 1);
+        gridPane.add(menuHumanVsAI, 1, 1);
+        gridPane.add(menuAIVsAI, 2, 1);
 
-        gridPane.add(random1, 0, 1);
-        gridPane.add(camarade1, 1, 1);
-        gridPane.add(hate1, 2, 1);
-        gridPane.add(guide1, 3, 1);
+        gridPane.add(new Text("IA pour le joueur 1"), 0, 3);
+        gridPane.add(random1, 0, 4);
+        gridPane.add(camarade1, 1, 4);
+        gridPane.add(hate1, 2, 4);
+        gridPane.add(guide1, 3, 4);
 
-        gridPane.add(random2, 0, 2);
-        gridPane.add(camarade2, 1, 2);
-        gridPane.add(hate2, 2, 2);
-        gridPane.add(guide2, 3, 2);
+        gridPane.add(new Text("IA pour le joueur 2"), 0, 6);
+        gridPane.add(random2, 0, 7);
+        gridPane.add(camarade2, 1, 7);
+        gridPane.add(hate2, 2, 7);
+        gridPane.add(guide2, 3, 7);
 
-        gridPane.add(bValider, 1, 3);
-        gridPane.add(bRetour,2,3);
+        gridPane.add(bValider, 1, 9);
+        gridPane.add(bRetour,2,9);
 
         // Configuring GridPane
         gridPane.setHgap(10);
         gridPane.setVgap(10);
-        gridPane.setPadding(new Insets(10, 100, 10, 10));
+        gridPane.setPadding(new Insets(10, 10, 10, 10));
 
         rootPane.getChildren().add(gridPane);
 
