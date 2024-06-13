@@ -31,7 +31,6 @@ public class KoRView extends View {
     private MenuItem menuIntro;
     private MenuItem menuQuit;
     private Button bValider;
-    private Button bRetour;
     private ToggleGroup groupAI2;
     private ToggleGroup groupAI1;
 
@@ -93,8 +92,7 @@ public class KoRView extends View {
         hate2.setToggleGroup(groupAI2);
         guide2.setToggleGroup(groupAI2);
 
-        bRetour = new Button("Retour");
-        bValider = new Button("Valider");
+        bValider = new Button("Lancer la partie");
 
         // Ajout des éléments au GridPane
         gridPane.add(new Text("Mode de Jeu"), 0, 0);
@@ -115,7 +113,6 @@ public class KoRView extends View {
         gridPane.add(guide2, 3, 7);
 
         gridPane.add(bValider, 1, 9);
-        gridPane.add(bRetour,2,9);
 
         // Configuring GridPane
         gridPane.setHgap(10);
@@ -135,10 +132,6 @@ public class KoRView extends View {
 
     public Button getbValider() {
         return bValider;
-    }
-
-    public Button getbRetour() {
-        return bRetour;
     }
 
     public ToggleGroup getGroupAI2() {
