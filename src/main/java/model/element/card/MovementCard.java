@@ -8,7 +8,6 @@ import javafx.scene.paint.Color;
 import model.data.ElementType;
 import model.data.PlayerData;
 
-import java.util.Objects;
 
 /**
  * Represents a movement card in the game.
@@ -58,10 +57,9 @@ public class MovementCard extends GameElement {
     // FIXME BUG GENERATE WITH THIS FUNCTION ?!
     // BUG FOUND, WHEN I CAN ONE VARIABLE, THE LOOK OF THE ELEMENT DISAPPEAR
     public void setOwner(Owner owner) {
-        Logger.info("1) Setting owner to " + owner);
         this.owner = owner;
-        Logger.info("2) Setting owner to " + owner);
         if (owner == Owner.PLAYER_RED) toggleInverted();
+        addChangeFaceEvent();
     }
 
     /**
@@ -256,17 +254,5 @@ public class MovementCard extends GameElement {
         public boolean isPlayer() {
             return this == PLAYER_BLUE || this == PLAYER_RED;
         }
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof MovementCard that)) return false;
-        return step == that.step && direction == that.direction;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(step, inverted, owner, direction);
     }
 }

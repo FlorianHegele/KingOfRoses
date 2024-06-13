@@ -547,7 +547,6 @@ public class KoRStageModel extends GameStageModel {
         });
 
 
-
         onRemoveFromContainer((element, containerFrom, rowDest, colDest) -> {
             // ACTION: Play a hero card
             if (element instanceof HeroCard heroCard) {
