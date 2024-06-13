@@ -112,7 +112,7 @@ public class KoRView extends View {
         gridPane.add(hate2, 2, 7);
         gridPane.add(guide2, 3, 7);
 
-        gridPane.add(bValider, 1, 9);
+        gridPane.add(bValider, 0, 9);
 
         // Configuring GridPane
         gridPane.setHgap(10);
@@ -156,10 +156,6 @@ public class KoRView extends View {
 
     public void setbValider(Button bValider) {
         this.bValider = bValider;
-    }
-
-    public void setbRetour(Button bRetour) {
-        this.bRetour = bRetour;
     }
 
     public RadioButton getGuide2() {
