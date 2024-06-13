@@ -172,6 +172,7 @@ public class GameConfigurationModel {
      * @param player2 the name of player 2.
      */
     public void addPlayers(String player1, String player2) {
+        model.getPlayers().clear();
         if (playerMode == 0) {
             model.addHumanPlayer(player1);
             model.addHumanPlayer(player2);

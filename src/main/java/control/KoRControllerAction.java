@@ -46,6 +46,7 @@ public class KoRControllerAction extends ControllerAction implements EventHandle
         // set event handler on the MenuStart item
         koRView.getMenuStart().setOnAction(e -> {
             try {
+                gameConfigurationModel.addPlayers("Player 1 - Blue","Player 2 - Red");
                 control.startGame();
             } catch (GameException err) {
                 System.err.println(err.getMessage());
@@ -128,6 +129,7 @@ public class KoRControllerAction extends ControllerAction implements EventHandle
 
             koRView.getbValider().setOnAction(f->{
                 try {
+                    gameConfigurationModel.addPlayers("Player 1 - Blue","Player 2 - Red");
                     control.startGame();
                 } catch (GameException err) {
                     System.err.println(err.getMessage());

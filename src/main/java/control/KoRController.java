@@ -55,11 +55,13 @@ public class KoRController extends Controller {
 
         if(model.isEndGame()) return;
 
-        if (p.getType() == Player.COMPUTER) {
-            Logger.debug("COMPUTER PLAYS");
+        final PlayerData playerData = PlayerData.getCurrentPlayerData(model);
+        final AIData ai = configurationModel.getPlayerDataAIDataMap().get(playerData);
 
-            final PlayerData playerData = PlayerData.getCurrentPlayerData(model);
-            final AIData ai = configurationModel.getPlayerDataAIDataMap().get(playerData);
+        if (p.getType() == Player.COMPUTER) {
+
+            Logger.debug("COMPUTER PLAYS USING :" + ai);
+
             final Decider decider = ai.getDecider(playerData, model, this);
 
             ActionPlayer play = new ActionPlayer(model, this, decider, null);
