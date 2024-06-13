@@ -7,10 +7,13 @@ import boardifier.model.Model;
 import boardifier.view.View;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.media.MediaPlayer;
 import model.GameConfigurationModel;
+import model.Sound;
 import model.data.AIData;
 import model.data.PlayerData;
 import view.KoRView;
+import utils.Boardifiers;
 
 /**
  * A basic action controller that only manages menu actions
@@ -22,6 +25,7 @@ public class KoRControllerAction extends ControllerAction implements EventHandle
     // to avoid lots of casts, create an attribute that matches the instance type.
     private final KoRView koRView;
     private final GameConfigurationModel gameConfigurationModel;
+    private MediaPlayer mediaPlayer;
 
     public KoRControllerAction(Model model, View view, Controller control,GameConfigurationModel gameConfigurationModel) {
         super(model, view, control);
@@ -46,6 +50,8 @@ public class KoRControllerAction extends ControllerAction implements EventHandle
         // set event handler on the MenuStart item
         koRView.getMenuStart().setOnAction(e -> {
             try {
+                Sound.playSound("assets/sword1.wav");
+                Sound.playMusic("assets/Daydream.mp3");
                 gameConfigurationModel.addPlayers("Player 1 - Blue","Player 2 - Red");
                 control.startGame();
             } catch (GameException err) {
@@ -56,12 +62,15 @@ public class KoRControllerAction extends ControllerAction implements EventHandle
 
         // set event handler on the MenuIntro item
         koRView.getMenuIntro().setOnAction(e -> {
+            Sound.playMusic("assets/main.mp3");
             control.stopGame();
             koRView.resetView();
         });
 
         // set event handler on the Configuration menu item
         koRView.getMenuConfig().setOnAction(e -> {
+
+            Sound.playMusic("assets/shop.mp3");
             System.out.println("KoR Config :" + gameConfigurationModel.getPlayerDataAIDataMap().toString());
             control.stopGame();
             koRView.resetView();
@@ -129,6 +138,8 @@ public class KoRControllerAction extends ControllerAction implements EventHandle
 
             koRView.getbValider().setOnAction(f->{
                 try {
+                    Sound.playSound("assets/sword1.wav");
+                    Sound.playMusic("assets/Daydream.mp3");
                     gameConfigurationModel.addPlayers("Player 1 - Blue","Player 2 - Red");
                     control.startGame();
                 } catch (GameException err) {

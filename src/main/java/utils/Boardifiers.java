@@ -3,6 +3,7 @@ package utils;
 import boardifier.control.StageFactory;
 import boardifier.model.Model;
 import control.KoRController;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import model.GameConfigurationModel;
 import model.KoRStageModel;
@@ -25,7 +26,7 @@ public class Boardifiers {
     }
 
     public void initGame() {
-        Sound.playSound("assets/main.mp3");
+        Sound.playMusic("assets/main.mp3");
         // register a single stage for the game, called hole
         StageFactory.registerModelAndView("kor", "model.KoRStageModel", "view.KoRStageView");
 
