@@ -59,6 +59,10 @@ public class HeroCardLook extends ElementLook {
             imageView.setFitWidth(93);
             imageView.setFitHeight(115);
 
+            if (heroCard.isInverted()) {
+                imageView.setRotate(180);
+            }
+
             Bounds bt1 = imageView.getBoundsInLocal();
             imageView.setX(-bt1.getWidth() + 49);
             // since text are always above the baseline, relocate just using the part above baseline

@@ -12,6 +12,7 @@ import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import model.element.card.MovementCard;
+import utils.FileUtils;
 
 public class MovementCardLook extends ElementLook {
 
@@ -67,6 +68,17 @@ public class MovementCardLook extends ElementLook {
             text1.setX(-bt.getWidth() / 2);
             text1.setY(text1.getBaselineOffset() / 2 - 4);
             addShape(text1);
+
+            Image image = new Image(FileUtils.getOuputStreamFromResources("stack.png"));
+            ImageView imageView = new ImageView();
+            imageView.setImage(image);
+            imageView.setFitHeight(155);
+            imageView.setFitWidth(160);
+
+            Bounds bt1 = imageView.getBoundsInLocal();
+            imageView.setX(-bt1.getWidth() + 81.5);
+            imageView.setY(imageView.getBaselineOffset() - 225);
+            addNode(imageView);
         } else {
             text1 = new Text();
             text1.setFont(new Font(size));
