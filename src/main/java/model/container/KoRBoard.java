@@ -71,7 +71,7 @@ public class KoRBoard extends ContainerElement {
             final int col = (int) newPos.getX();
             final int row = (int) newPos.getY();
             // IF THE CELL CAN BE REACH AND THERE ARE NO PAWNS
-            if(ContainerElements.isOutside(this, row, col) && isEmptyAt(row, col))
+            if(!ContainerElements.isOutside(this, row, col) && isEmptyAt(row, col))
                 return new Point(col, row);
         }
 
@@ -83,7 +83,7 @@ public class KoRBoard extends ContainerElement {
             final int col = (int) newPos.getX();
             final int row = (int) newPos.getY();
             // IF THE CELL CAN BE REACH AND THERE IS A PAWN OF THE OPPOSANT
-            if(ContainerElements.isOutside(this, row, col) && !isEmptyAt(row, col)
+            if(!ContainerElements.isOutside(this, row, col) && !isEmptyAt(row, col)
                     && ((Pawn) getElement(row, col)).getStatus().isOwnedBy(playerData.getNextPlayerData()))
                 return new Point(col, row);
         }

@@ -3,6 +3,10 @@ package model.data;
 import boardifier.control.Controller;
 import boardifier.control.Decider;
 import boardifier.model.Model;
+import control.ai.KoRDeciderCamarade;
+import control.ai.KoRDeciderGuide;
+import control.ai.KoRDeciderHateCards;
+import control.ai.KoRDeciderRandom;
 
 
 /**
@@ -50,7 +54,6 @@ public enum AIData {
         return id;
     }
 
-    // TODO : IMPLEMENT THIS METHOD
     /**
      * Returns a Decider object based on the AI strategy.
      *
@@ -64,14 +67,14 @@ public enum AIData {
 
         // Choose which AI should play for the current player
         switch (this) {
-            //case RANDOM -> decider = new KoRDeciderRandom(model, controller, playerData);
-            //case CAMARADE -> decider = new KoRDeciderCamarade(model, controller, playerData);
-            //case HATE_CARDS -> decider = new KoRDeciderHateCards(model, controller, playerData);
-            //case GUIDE -> decider = new KoRDeciderGuide(model, controller, playerData);
+            case RANDOM -> decider = new KoRDeciderRandom(model, controller, playerData);
+            case CAMARADE -> decider = new KoRDeciderCamarade(model, controller, playerData);
+            case HATE_CARDS -> decider = new KoRDeciderHateCards(model, controller, playerData);
+            case GUIDE -> decider = new KoRDeciderGuide(model, controller, playerData);
             // Technically impossible
             default ->
                     throw new IllegalCallerException("Impossible to reach this error, a condition must be added here to implement the correct AI");
         }
-        // return decider;
+         return decider;
     }
 }

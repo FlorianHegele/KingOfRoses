@@ -79,13 +79,14 @@ public class SimpleActionList {
         // Add flip pawn action
         actionList.addSingleAction(new FlipPawn(model, pawn));
 
-        // Add move king and remove movement card actions
-        useMovementCardOnKing(actionList, movementCard, newKingPos);
-
         // Add remove hero card actions
         actionList.addAll(ActionFactory.generateRemoveFromContainer(model, heroCard));
         actionList.addAll(ActionFactory.generateRemoveFromStage(model, heroCard));
 
+        // Add move king and remove movement card actions
+        useMovementCardOnKing(actionList, movementCard, newKingPos);
+
+        actionList.setDoEndOfTurn(true);
         return actionList;
     }
 
@@ -117,6 +118,7 @@ public class SimpleActionList {
         // Add move king and remove movement card actions
         useMovementCardOnKing(actionList, movementCard, newKingPos);
 
+        actionList.setDoEndOfTurn(true);
         return actionList;
     }
 
@@ -144,16 +146,17 @@ public class SimpleActionList {
         final int col = (int) position.getX();
         final int row = (int) position.getY();
 
+        // Refill the movement card stack
+        if (gameStage.getMovementCards(MovementCard.Owner.STACK).size() == 1)
+            actionList.addAll(redoMovementCardStack());
+
         // Get the first movement card from the stack
         final MovementCard movementCard = (MovementCard) gameStage.getMovementCardStack().getElement(0, 0);
 
         // Move the card from the stack to the specified position in the player's hand
         actionList.addAll(ActionFactory.generatePutInContainer(control, model, movementCard, container.getName(), row, col));
 
-        // Refill the movement card stack
-        if (gameStage.getMovementCards(MovementCard.Owner.STACK).size() == 1)
-                actionList.addAll(redoMovementCardStack());
-
+        actionList.setDoEndOfTurn(true);
         return actionList;
     }
 
@@ -216,7 +219,7 @@ public class SimpleActionList {
             final int row = (int) potentialPos.getY();
 
             // SI ON NE PEUT PAS ATTEINDRE LA POSITION POTENTIEL, ALORS ON PASSE À LA CARTE SUIVANTE
-            if (!board.canReachCell(row, col)) continue;
+            if (ContainerElements.isOutside(board, row, col)) continue;
 
             // SI L'EMPLACEMENT EST VIDE, ALORS RAJOUTER L'ACTION DU DÉPLACEMENT SIMPLE
             if (board.isEmptyAt(row, col)) {
@@ -275,7 +278,7 @@ public class SimpleActionList {
 
             // If the potential position can't be reached or there is no pawn
             // then move on to the next card
-            if (!board.canReachCell(row, col) || board.isEmptyAt(row, col)) continue;
+            if (ContainerElements.isOutside(board, row, col) || board.isEmptyAt(row, col)) continue;
 
             // If the pawn is not the player's pawn
             // then add the action from the movement and hero card
@@ -372,7 +375,7 @@ public class SimpleActionList {
             final int row = (int) potentialPos.getY();
 
             // If the potential position is out of bounds, skip this card.
-            if (!board.canReachCell(row, col)) continue;
+            if (ContainerElements.isOutside(board, row, col)) continue;
 
             // If the position is empty, add the simple movement action.
             // Otherwise, if the player has a hero card and the pawn at the position is not theirs,
@@ -384,6 +387,7 @@ public class SimpleActionList {
                         (Pawn) board.getElement(row, col), potentialPos));
             }
         }
+
         return actions;
     }
 

@@ -43,7 +43,7 @@ import java.util.List;
  * NB1: Callback functions MUST BE defined with a lambda expression (i.e. an arrow function).
  * NB2: There are other methods to define callbacks for other events ({@link #setupCallbacks()} methods)
  * In "The KoR", every time a pawn is put in the main board, we have to check if the party is ended and in this case, who is the winner.
- * This is the role of {@link #computePartyResult(boolean)} ()}, which is called by the callback function if there is no more pawn to play.
+ * This is the role of {@link #computePartyResult()} ()}, which is called by the callback function if there is no more pawn to play.
  */
 public class KoRStageModel extends GameStageModel {
 
@@ -561,22 +561,27 @@ public class KoRStageModel extends GameStageModel {
         onPutInContainer((element, containerDest, rowDest, colDest) -> {
             // ACTION: Draw a movement card from the stack
             if (containerDest instanceof MovementCardSpread) {
+
                 // Change the owner of the card
                 final MovementCard.Owner owner = (containerDest == blueMovementCardsSpread)
                         ? MovementCard.Owner.PLAYER_BLUE : MovementCard.Owner.PLAYER_RED;
                 final MovementCard movementCard = (MovementCard) element;
 
-                Logger.trace("put movement card in " + owner.name() + " hand ("+rowDest+  ","+colDest+")");
-
                 movementCard.setOwner(owner);
 
                 // Update the stack counter
                 movementCardStackText.setText(String.valueOf(ContainerElements.countElements(movementCardStack)));
+
+                Logger.trace("movement card spread played action");
+                if(gameIsStuck()) computePartyResult();
             }
 
             // ACTION: Add a card to the played stack
             else if (containerDest == movementCardStackPlayed) {
                 ((MovementCard) element).setOwner(MovementCard.Owner.OUT);
+
+                Logger.trace("movement card stack played action");
+                if(gameIsStuck()) computePartyResult();
             }
 
             // ACTION: Add a card to the stack
@@ -643,7 +648,7 @@ public class KoRStageModel extends GameStageModel {
             final int row = (int) potentialPos.getY();
 
             // If the potential position cannot be reached, move to the next card
-            if (!board.canReachCell(row, col)) continue;
+            if (ContainerElements.isOutside(board, row, col)) continue;
 
             // Return true if the player can play a movement card
             // or if they can play it with a hero card
@@ -667,7 +672,7 @@ public class KoRStageModel extends GameStageModel {
      * Computes the result of the game.
      * Determines the winner based on zone points and total pawns placed on the board.
      */
-    public int computePartyResult(boolean renderGame) {
+    public void computePartyResult() {
         final int idWinner;
         final int redZoneCounter = getTotalPlayerPoint(PlayerData.PLAYER_RED, false);
         final int blueZoneCounter = getTotalPlayerPoint(PlayerData.PLAYER_BLUE, false);
@@ -692,15 +697,16 @@ public class KoRStageModel extends GameStageModel {
             idWinner = winner.getId();
         }
 
-        if (renderGame) {
-            System.out.println("Blue points: " + blueZoneCounter + ", total pawn on the board: " + bluePawnPlaced);
-            System.out.println("Red points: " + redZoneCounter + ", total pawn on the board: " + redPawnPlaced);
-        }
+        board.resetReachableCells(false);
+
+
+        System.out.println("Blue points: " + blueZoneCounter + ", total pawn on the board: " + bluePawnPlaced);
+        System.out.println("Red points: " + redZoneCounter + ", total pawn on the board: " + redPawnPlaced);
+
         // Set the winner
         model.setIdWinner(idWinner);
         // Stop de the game
         model.stopStage();
-        return idWinner;
     }
 
     /**
@@ -726,8 +732,9 @@ public class KoRStageModel extends GameStageModel {
      * @return The zone points of the player for the specified cell.
      */
     public int getPlayerZonePawnSimple(PlayerData playerData, int row, int col) {
-        final int playerPoint = getPlayerZonePawn(playerData, row, col, true);
         board.resetReachableCells(true);
+        final int playerPoint = getPlayerZonePawn(playerData, row, col, true);
+        board.resetReachableCells(false);
         return playerPoint;
     }
 
@@ -739,6 +746,8 @@ public class KoRStageModel extends GameStageModel {
      * @return The total points of the player.
      */
     private int getTotalPlayerPoint(PlayerData playerData, boolean acceptEmptyBaseCell) {
+        board.resetReachableCells(true);
+
         int totalCounter = 0;
         for (int row = 0; row < board.getNbRows(); row++) {
             for (int col = 0; col < board.getNbCols(); col++) {
@@ -748,6 +757,8 @@ public class KoRStageModel extends GameStageModel {
                 totalCounter += total * total;
             }
         }
+
+        board.resetReachableCells(false);
         return totalCounter;
     }
 
@@ -814,7 +825,7 @@ public class KoRStageModel extends GameStageModel {
      * @param acceptEmptyBaseCell Flag indicating whether to accept empty base cells as a starting point.
      * @return The zone points for the player at the specified cell.
      */
-    private int getPlayerZonePawn(PlayerData playerData, int row, int col, boolean acceptEmptyBaseCell) {
+    public int getPlayerZonePawn(PlayerData playerData, int row, int col, boolean acceptEmptyBaseCell) {
         final Pawn.Status status = Pawn.Status.getPawnStatus(playerData);
         final Deque<PawnNode> pawnNodes = new LinkedList<>();
 
@@ -829,7 +840,7 @@ public class KoRStageModel extends GameStageModel {
 
         // If there is no pawn and empty base cells are not accepted as starting points,
         // make the cell unreachable and move to the next cell
-        if (!board.canReachCell(row, col) || (pawn != null && pawn.getStatus() != status)) return 0;
+        if (ContainerElements.isOutside(board, row, col) || (pawn != null && pawn.getStatus() != status)) return 0;
 
         // Make the pawn unreachable
         board.setCellReachable(row, col, false);

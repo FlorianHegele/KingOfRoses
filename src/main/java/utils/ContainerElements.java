@@ -64,8 +64,7 @@ public class ContainerElements {
     }
 
     public static boolean isOutside(ContainerElement containerElement, int row, int col) {
-        Logger.trace("isOutside(" + row + ", " + col + ")");
-        return ((row >= 0) && (row < containerElement.getNbRows()) && (col >= 0) && (col < containerElement.getNbCols()));
+        return ((row < 0) || (row >= containerElement.getNbRows()) || (col < 0) || (col >= containerElement.getNbCols()));
     }
 
     public static <T extends GameElement> T getSelectedElement(GameStageModel gameStageModel, ElementType elementType) {

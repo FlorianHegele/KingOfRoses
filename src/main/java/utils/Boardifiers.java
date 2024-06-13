@@ -32,7 +32,7 @@ public class Boardifiers {
         // create the global view.
         KoRView view = new KoRView(model, stage, rootPane);
         // create the controllers.
-        control = new KoRController(model, view);
+        control = new KoRController(model, view, gameConfigurationModel);
         // set the name of the first stage to create when the game is started
         control.setFirstStageName("kor");
         // set the stage title
@@ -46,7 +46,6 @@ public class Boardifiers {
     // TODO : REIMPLEMENT
     private void dirtyImplementation() {
         gameConfigurationModel.addPlayers("player1", "player2");
-        gameConfigurationModel.updateLogger();
     }
 
     public Model getModel() {

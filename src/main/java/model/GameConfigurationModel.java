@@ -47,9 +47,11 @@ public class GameConfigurationModel {
         this.model = model;
         this.playerDataAIDataMap = new EnumMap<>(PlayerData.class);
 
+        setLoggerMode(loggerMode);
+        updateLogger();
+
         setSeed(seed);
         setPlayerMode(playerMode);
-        setLoggerMode(loggerMode);
         setPlayerInteraction(playerInteraction);
         setRenderGame(renderGame);
     }
@@ -179,6 +181,7 @@ public class GameConfigurationModel {
         } else if (playerMode == 2) {
             model.addComputerPlayer(player1);
             model.addComputerPlayer(player2);
+            Logger.info("add computer");
         }
     }
 
