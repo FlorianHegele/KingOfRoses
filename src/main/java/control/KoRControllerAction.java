@@ -61,35 +61,55 @@ public class KoRControllerAction extends ControllerAction implements EventHandle
 
         // set event handler on the Configuration menu item
         koRView.getMenuConfig().setOnAction(e -> {
+            System.out.println("KoR Config :" + gameConfigurationModel.getPlayerDataAIDataMap().toString());
             control.stopGame();
             koRView.resetView();
             koRView.createConfigMenu();
 
-            // set event handler on the radio buttons
+            // set event handler on the radio buttons to select gamemode
             koRView.getMenuHumanVsHuman().setOnAction(f -> {
                 gameConfigurationModel.setPlayerMode(0);
+                gameConfigurationModel.getPlayerDataAIDataMap().clear();
                 activateGroup(0);
+                autoSelectAIButtons();
             });
+
             koRView.getMenuHumanVsAI().setOnAction(f -> {
                 gameConfigurationModel.setPlayerMode(1);
                 activateGroup(1);
+                // Put Random AI to the second player by default if it hasn't been selected before
+                gameConfigurationModel.getPlayerDataAIDataMap().remove(PlayerData.PLAYER_BLUE);
+                if(!gameConfigurationModel.getPlayerDataAIDataMap().containsKey(PlayerData.PLAYER_RED)) {
+                    gameConfigurationModel.getPlayerDataAIDataMap().put(PlayerData.PLAYER_RED, AIData.RANDOM);
+                }
+                autoSelectAIButtons();
+
             });
+
             koRView.getMenuAIVsAI().setOnAction(f -> {
                 gameConfigurationModel.setPlayerMode(2);
                 activateGroup(2);
+                // Put Random AI for both players if it hasn't been selected before
+                if(!gameConfigurationModel.getPlayerDataAIDataMap().containsKey(PlayerData.PLAYER_RED)) {
+                    gameConfigurationModel.getPlayerDataAIDataMap().put(PlayerData.PLAYER_RED, AIData.RANDOM);
+                }
+                if(!gameConfigurationModel.getPlayerDataAIDataMap().containsKey(PlayerData.PLAYER_BLUE)) {
+                    gameConfigurationModel.getPlayerDataAIDataMap().put(PlayerData.PLAYER_BLUE, AIData.RANDOM);
+                }
+                setP1AiButtonsHandlers();
+                setP2AiButtonsHandlers();
+                autoSelectAIButtons();
             });
 
-            koRView.getRandom1().setOnAction(f -> gameConfigurationModel.getPlayerDataAIDataMap().replace(PlayerData.PLAYER_RED, AIData.RANDOM));
-            koRView.getCamarade1().setOnAction(f -> gameConfigurationModel.getPlayerDataAIDataMap().replace(PlayerData.PLAYER_RED, AIData.CAMARADE));
-            koRView.getHate1().setOnAction(f -> gameConfigurationModel.getPlayerDataAIDataMap().replace(PlayerData.PLAYER_RED, AIData.HATE_CARDS));
-            koRView.getGuide1().setOnAction(f -> gameConfigurationModel.getPlayerDataAIDataMap().replace(PlayerData.PLAYER_RED, AIData.GUIDE));
+            if (gameConfigurationModel.getPlayerDataAIDataMap().get(PlayerData.PLAYER_BLUE) != null) {
+                setP1AiButtonsHandlers();
+            }
 
-            koRView.getRandom2().setOnAction(f -> gameConfigurationModel.getPlayerDataAIDataMap().replace(PlayerData.PLAYER_BLUE, AIData.RANDOM));
-            koRView.getCamarade2().setOnAction(f -> gameConfigurationModel.getPlayerDataAIDataMap().replace(PlayerData.PLAYER_BLUE, AIData.CAMARADE));
-            koRView.getHate2().setOnAction(f -> gameConfigurationModel.getPlayerDataAIDataMap().replace(PlayerData.PLAYER_BLUE, AIData.HATE_CARDS));
-            koRView.getGuide2().setOnAction(f -> gameConfigurationModel.getPlayerDataAIDataMap().replace(PlayerData.PLAYER_BLUE, AIData.GUIDE));
+            if (gameConfigurationModel.getPlayerDataAIDataMap().get(PlayerData.PLAYER_RED) != null) {
+                setP2AiButtonsHandlers();
+            }
 
-
+            // Look for models information to preselect
             switch (gameConfigurationModel.getPlayerMode()) {
                 case 0:
                     koRView.getMenuHumanVsHuman().setSelected(true);
@@ -105,22 +125,7 @@ public class KoRControllerAction extends ControllerAction implements EventHandle
                     break;
             }
 
-            if (gameConfigurationModel.getPlayerDataAIDataMap().get(PlayerData.PLAYER_RED) != null) {
-                switch (gameConfigurationModel.getPlayerDataAIDataMap().get(PlayerData.PLAYER_RED)) {
-                    case RANDOM -> koRView.getRandom1().setSelected(true);
-                    case CAMARADE -> koRView.getCamarade1().setSelected(true);
-                    case HATE_CARDS -> koRView.getHate1().setSelected(true);
-                    case GUIDE -> koRView.getGuide1().setSelected(true);
-                }
-            }
-            if (gameConfigurationModel.getPlayerDataAIDataMap().get(PlayerData.PLAYER_BLUE) != null) {
-                switch (gameConfigurationModel.getPlayerDataAIDataMap().get(PlayerData.PLAYER_BLUE)) {
-                    case RANDOM -> koRView.getRandom2().setSelected(true);
-                    case CAMARADE -> koRView.getCamarade2().setSelected(true);
-                    case HATE_CARDS -> koRView.getHate2().setSelected(true);
-                    case GUIDE -> koRView.getGuide2().setSelected(true);
-                }
-            }
+            autoSelectAIButtons();
         });
 
 
@@ -128,6 +133,39 @@ public class KoRControllerAction extends ControllerAction implements EventHandle
         // set event handler on the MenuQuit item
         koRView.getMenuQuit().setOnAction(e -> System.exit(0));
 
+    }
+
+    private void setP2AiButtonsHandlers() {
+        koRView.getRandom2().setOnAction(f -> gameConfigurationModel.getPlayerDataAIDataMap().replace(PlayerData.PLAYER_RED, AIData.RANDOM));
+        koRView.getCamarade2().setOnAction(f -> gameConfigurationModel.getPlayerDataAIDataMap().replace(PlayerData.PLAYER_RED, AIData.CAMARADE));
+        koRView.getHate2().setOnAction(f -> gameConfigurationModel.getPlayerDataAIDataMap().replace(PlayerData.PLAYER_RED, AIData.HATE_CARDS));
+        koRView.getGuide2().setOnAction(f -> gameConfigurationModel.getPlayerDataAIDataMap().replace(PlayerData.PLAYER_RED, AIData.GUIDE));
+    }
+
+    private void setP1AiButtonsHandlers() {
+        koRView.getRandom1().setOnAction(f -> gameConfigurationModel.getPlayerDataAIDataMap().replace(PlayerData.PLAYER_BLUE, AIData.RANDOM));
+        koRView.getCamarade1().setOnAction(f -> gameConfigurationModel.getPlayerDataAIDataMap().replace(PlayerData.PLAYER_BLUE, AIData.CAMARADE));
+        koRView.getHate1().setOnAction(f -> gameConfigurationModel.getPlayerDataAIDataMap().replace(PlayerData.PLAYER_BLUE, AIData.HATE_CARDS));
+        koRView.getGuide1().setOnAction(f -> gameConfigurationModel.getPlayerDataAIDataMap().replace(PlayerData.PLAYER_BLUE, AIData.GUIDE));
+    }
+
+    private void autoSelectAIButtons() {
+        if (gameConfigurationModel.getPlayerDataAIDataMap().get(PlayerData.PLAYER_BLUE) != null) {
+            switch (gameConfigurationModel.getPlayerDataAIDataMap().get(PlayerData.PLAYER_BLUE)) {
+                case RANDOM -> koRView.getRandom1().setSelected(true);
+                case CAMARADE -> koRView.getCamarade1().setSelected(true);
+                case HATE_CARDS -> koRView.getHate1().setSelected(true);
+                case GUIDE -> koRView.getGuide1().setSelected(true);
+            }
+        }
+        if (gameConfigurationModel.getPlayerDataAIDataMap().get(PlayerData.PLAYER_RED) != null) {
+            switch (gameConfigurationModel.getPlayerDataAIDataMap().get(PlayerData.PLAYER_RED)) {
+                case RANDOM -> koRView.getRandom2().setSelected(true);
+                case CAMARADE -> koRView.getCamarade2().setSelected(true);
+                case HATE_CARDS -> koRView.getHate2().setSelected(true);
+                case GUIDE -> koRView.getGuide2().setSelected(true);
+            }
+        }
     }
 
     public void activateGroup(int playerMode){
