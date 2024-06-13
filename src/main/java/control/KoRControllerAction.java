@@ -53,6 +53,7 @@ public class KoRControllerAction extends ControllerAction implements EventHandle
                 System.exit(1);
             }
         });
+
         // set event handler on the MenuIntro item
         koRView.getMenuIntro().setOnAction(e -> {
             control.stopGame();
@@ -82,6 +83,7 @@ public class KoRControllerAction extends ControllerAction implements EventHandle
                 if(!gameConfigurationModel.getPlayerDataAIDataMap().containsKey(PlayerData.PLAYER_RED)) {
                     gameConfigurationModel.getPlayerDataAIDataMap().put(PlayerData.PLAYER_RED, AIData.RANDOM);
                 }
+                setP2AiButtonsHandlers();
                 autoSelectAIButtons();
 
             });
@@ -126,6 +128,16 @@ public class KoRControllerAction extends ControllerAction implements EventHandle
             }
 
             autoSelectAIButtons();
+
+            koRView.getbValider().setOnAction(f->{
+                try {
+                    control.startGame();
+                } catch (GameException err) {
+                    System.err.println(err.getMessage());
+                    System.exit(1);
+                }
+            });
+
         });
 
 
