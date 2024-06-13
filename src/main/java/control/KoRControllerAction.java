@@ -8,7 +8,6 @@ import boardifier.view.View;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import model.GameConfigurationModel;
-import model.KoRStageModel;
 import model.data.AIData;
 import model.data.PlayerData;
 import view.KoRView;
@@ -85,7 +84,6 @@ public class KoRControllerAction extends ControllerAction implements EventHandle
                 }
                 setP2AiButtonsHandlers();
                 autoSelectAIButtons();
-
             });
 
             koRView.getMenuAIVsAI().setOnAction(f -> {
@@ -111,7 +109,6 @@ public class KoRControllerAction extends ControllerAction implements EventHandle
                 setP2AiButtonsHandlers();
             }
 
-            // Look for models information to preselect
             switch (gameConfigurationModel.getPlayerMode()) {
                 case 0:
                     koRView.getMenuHumanVsHuman().setSelected(true);
