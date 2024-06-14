@@ -93,8 +93,8 @@ public class MovementCardLook extends ElementLook {
             Image image = new Image(imagePath);
             ImageView imageView = new ImageView();
             imageView.setImage(image);
-            imageView.setFitWidth(84);
-            imageView.setFitHeight(100);
+            imageView.setFitWidth(76.5);
+            imageView.setFitHeight(95.5);
             if (movementCard.isInverted()) {
                 imageView.setRotate(180);
             } else {
@@ -111,8 +111,8 @@ public class MovementCardLook extends ElementLook {
             text2.setY(text2.getBaselineOffset() / 2 + 20);
 
             Bounds bt3 = imageView.getBoundsInLocal();
-            imageView.setX(-bt3.getWidth() / 2);
-            imageView.setY(imageView.getBaselineOffset() - 150);
+            imageView.setX(-bt3.getWidth() + 39);
+            imageView.setY(imageView.getBaselineOffset() - 141);
 
             addNode(imageView);
         }
