@@ -85,6 +85,9 @@ public class KoRControllerMouse extends ControllerMouse implements EventHandler<
 
                 // SELECT ANOTHER MOVEMENT CARD
                 if (ElementType.MOVEMENT_CARD.isElement(element)) {
+                    final MovementCard movementCard = (MovementCard) element;
+                    if(!movementCard.getOwner().isSpecificPlayer(currentPlayer)) return;
+
                     for(GameElement selected : stageModel.getElements()) {
                         if(selected.isSelected()) {
                             selected.toggleSelected();
@@ -124,13 +127,16 @@ public class KoRControllerMouse extends ControllerMouse implements EventHandler<
                     // UNSELECT MOVEMENT CARD AND HERO CARD
                     } else if (ElementType.MOVEMENT_CARD.isElement(element)) {
                         stageModel.setState(GameState.SELECT_NONE);
-                        stageModel.getSelected().forEach(GameElement::toggleSelected);
+                        for(GameElement selected : stageModel.getSelected()) {
+                            selected.toggleSelected();
+                        }
                     }
                     return;
                 }
 
                 // SELECT AN OTHER MOVEMENT CARD
                 if (ElementType.MOVEMENT_CARD.isElement(element)) {
+                    if(!((MovementCard)element).getOwner().isSpecificPlayer(currentPlayer)) return;
                     element.toggleSelected();
 
                     for(GameElement selected : stageModel.getSelected()) {
