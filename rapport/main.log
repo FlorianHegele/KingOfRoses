@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024/Arch Linux) (preloaded format=pdflatex 2024.5.28)  13 JUN 2024 17:54
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024/Arch Linux) (preloaded format=pdflatex 2024.5.28)  14 JUN 2024 11:49
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1285,18 +1285,18 @@ Chapitre 3.
 
 ] [14]
 Annexe A.
-[15
-
-] [16] [17]
-Annexe B.
 [1
 
-] [2]
+] [2] [3]
+Annexe B.
+[4
+
+] [5]
 Annexe C.
 <./images/Camarade.png, id=285, 238.64156pt x 319.1925pt>
 File: ./images/Camarade.png Graphic file (type png)
 <use ./images/Camarade.png>
-Package pdftex.def Info: ./images/Camarade.png  used on input line 405.
+Package pdftex.def Info: ./images/Camarade.png  used on input line 411.
 (pdftex.def)             Requested size: 483.69687pt x 647.00417pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
@@ -1304,7 +1304,7 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 <./images/HateCards.png, id=286, 248.42813pt x 291.33844pt>
 File: ./images/HateCards.png Graphic file (type png)
 <use ./images/HateCards.png>
-Package pdftex.def Info: ./images/HateCards.png  used on input line 412.
+Package pdftex.def Info: ./images/HateCards.png  used on input line 418.
 (pdftex.def)             Requested size: 483.69687pt x 567.2897pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
@@ -1312,7 +1312,7 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 <./images/Guide.png, id=287, 232.61906pt x 321.45094pt>
 File: ./images/Guide.png Graphic file (type png)
 <use ./images/Guide.png>
-Package pdftex.def Info: ./images/Guide.png  used on input line 419.
+Package pdftex.def Info: ./images/Guide.png  used on input line 425.
 (pdftex.def)             Requested size: 483.69687pt x 668.47955pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
@@ -1320,14 +1320,14 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 <./images/UML_boardifier_console.png, id=288, 8652.325pt x 2658.93375pt>
 File: ./images/UML_boardifier_console.png Graphic file (type png)
 <use ./images/UML_boardifier_console.png>
-Package pdftex.def Info: ./images/UML_boardifier_console.png  used on input line 426.
+Package pdftex.def Info: ./images/UML_boardifier_console.png  used on input line 432.
 (pdftex.def)             Requested size: 682.86613pt x 209.83842pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[3
+[6
 
-] [4 <./images/Camarade.png>] [5 <./images/HateCards.png>] [6 <./images/Guide.png>] [7 <./images/UML_boardifier_console.png>] (./main.aux)
+] [7 <./images/Camarade.png>] [8 <./images/HateCards.png>] [9 <./images/Guide.png>] [10 <./images/UML_boardifier_console.png>] (./main.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-02-20>
@@ -1337,12 +1337,12 @@ Package rerunfilecheck Info: File `main.out' has not changed.
  ) ) 
 Here is how much of TeX's memory you used:
  27039 strings out of 474116
- 494527 string characters out of 5750249
+ 494528 string characters out of 5750249
  1947187 words of memory out of 5000000
  48822 multiletter control sequences out of 15000+600000
  574642 words of font info for 66 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 95i,10n,133p,546b,557s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 95i,10n,133p,978b,555s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 pdfTeX warning (dest): name{Hfootnote.4} has been referenced but does not exist, replaced by a fixed one
 
@@ -1356,7 +1356,7 @@ pdfTeX warning (dest): name{Hfootnote.2} has been referenced but does not exist,
 pdfTeX warning (dest): name{Hfootnote.1} has been referenced but does not exist, replaced by a fixed one
 
 </usr/share/texmf-dist/fonts/type1/public/cm-super/sfbi1200.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfbx1440.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfbx1728.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfbx2488.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfcc1200.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfcc1440.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfcc2074.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm0800.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm1440.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfti1200.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfti1440.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfxc1440.pfb>
-Output written on main.pdf (24 pages, 1439490 bytes).
+Output written on main.pdf (24 pages, 1440085 bytes).
 PDF statistics:
  399 PDF objects out of 1000 (max. 8388607)
  328 compressed objects within 4 object streams

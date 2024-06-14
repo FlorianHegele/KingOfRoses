@@ -3,7 +3,6 @@ package utils;
 import boardifier.control.StageFactory;
 import boardifier.model.Model;
 import control.KoRController;
-import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import model.GameConfigurationModel;
 import model.KoRStageModel;

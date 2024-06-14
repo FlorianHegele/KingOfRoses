@@ -25,7 +25,6 @@ public class KoRControllerAction extends ControllerAction implements EventHandle
     // to avoid lots of casts, create an attribute that matches the instance type.
     private final KoRView koRView;
     private final GameConfigurationModel gameConfigurationModel;
-    private MediaPlayer mediaPlayer;
 
     public KoRControllerAction(Model model, View view, Controller control,GameConfigurationModel gameConfigurationModel) {
         super(model, view, control);
@@ -69,7 +68,7 @@ public class KoRControllerAction extends ControllerAction implements EventHandle
 
         // set event handler on the Configuration menu item
         koRView.getMenuConfig().setOnAction(e -> {
-
+            Sound.playSound("assets/Doorknob.wav");
             Sound.playMusic("assets/shop.mp3");
             System.out.println("KoR Config :" + gameConfigurationModel.getPlayerDataAIDataMap().toString());
             control.stopGame();
