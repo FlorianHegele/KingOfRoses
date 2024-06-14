@@ -55,9 +55,9 @@ public class MovementCardLook extends ElementLook {
             imageView.setFitWidth(84);
             imageView.setFitHeight(100);
 
-            if (movementCard.isInverted()) {
-                imageView.setRotate(180);
-            }
+            //if (movementCard.isInverted()) {
+            //    imageView.setRotate(180);
+            //}
 
             Bounds bt3 = imageView.getBoundsInLocal();
             imageView.setX(-bt3.getWidth() / 2);
