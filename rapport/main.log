@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024/Arch Linux) (preloaded format=pdflatex 2024.5.28)  13 JUN 2024 17:54
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024/Arch Linux) (preloaded format=pdflatex 2024.5.28)  13 JUN 2024 17:52
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1188,7 +1188,7 @@ Package caption Info: listings package is loaded.
 Package caption Info: End \AtBeginDocument code.
 \c@lstlisting=\count357
 (./title.tex
-<./images/InfoLogoQuadriH.png, id=103, 362.3136pt x 93.2283pt>
+<./images/InfoLogoQuadriH.png, id=87, 362.3136pt x 93.2283pt>
 File: ./images/InfoLogoQuadriH.png Graphic file (type png)
 <use ./images/InfoLogoQuadriH.png>
 Package pdftex.def Info: ./images/InfoLogoQuadriH.png  used on input line 5.
@@ -1255,94 +1255,86 @@ Underfull \hbox (badness 10000) in paragraph at lines 135--136
  []
 
 
-Underfull \hbox (badness 2020) in paragraph at lines 189--189
+Underfull \hbox (badness 2020) in paragraph at lines 187--187
 []|\T1/cmr/m/n/12 Peu de pré-pa-ra-tion car
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 189--189
+Underfull \hbox (badness 10000) in paragraph at lines 187--187
 []|\T1/cmr/m/n/12 Implémentation gra-
  []
 
 
-Underfull \hbox (badness 2213) in paragraph at lines 189--189
+Underfull \hbox (badness 2213) in paragraph at lines 187--187
 \T1/cmr/m/n/12 verte de "boar-di-fier ja-
  []
 
 [9]
-<./images/mermaid-diagram.png, id=219, 1257.69875pt x 1035.87pt>
+<./images/mermaid-diagram.png, id=199, 1257.69875pt x 1035.87pt>
 File: ./images/mermaid-diagram.png Graphic file (type png)
 <use ./images/mermaid-diagram.png>
-Package pdftex.def Info: ./images/mermaid-diagram.png  used on input line 195.
+Package pdftex.def Info: ./images/mermaid-diagram.png  used on input line 193.
 (pdftex.def)             Requested size: 483.69687pt x 398.37651pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[10] [11 <./images/mermaid-diagram.png>] [12]
+[10] [11 <./images/mermaid-diagram.png>]
 Chapitre 3.
-[13
+[12
 
-] [14]
+] [13]
 Annexe A.
-[15
+[14
 
-] [16] [17]
+] [15]
 Annexe B.
 [1
 
 ] [2]
 Annexe C.
-<./images/Camarade.png, id=285, 238.64156pt x 319.1925pt>
+<./images/Camarade.png, id=249, 238.64156pt x 319.1925pt>
 File: ./images/Camarade.png Graphic file (type png)
 <use ./images/Camarade.png>
-Package pdftex.def Info: ./images/Camarade.png  used on input line 405.
+Package pdftex.def Info: ./images/Camarade.png  used on input line 342.
 (pdftex.def)             Requested size: 483.69687pt x 647.00417pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<./images/HateCards.png, id=286, 248.42813pt x 291.33844pt>
+<./images/HateCards.png, id=250, 248.42813pt x 291.33844pt>
 File: ./images/HateCards.png Graphic file (type png)
 <use ./images/HateCards.png>
-Package pdftex.def Info: ./images/HateCards.png  used on input line 412.
+Package pdftex.def Info: ./images/HateCards.png  used on input line 349.
 (pdftex.def)             Requested size: 483.69687pt x 567.2897pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<./images/Guide.png, id=287, 232.61906pt x 321.45094pt>
+<./images/Guide.png, id=251, 232.61906pt x 321.45094pt>
 File: ./images/Guide.png Graphic file (type png)
 <use ./images/Guide.png>
-Package pdftex.def Info: ./images/Guide.png  used on input line 419.
+Package pdftex.def Info: ./images/Guide.png  used on input line 356.
 (pdftex.def)             Requested size: 483.69687pt x 668.47955pt.
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-<./images/UML_boardifier_console.png, id=288, 8652.325pt x 2658.93375pt>
-File: ./images/UML_boardifier_console.png Graphic file (type png)
-<use ./images/UML_boardifier_console.png>
-Package pdftex.def Info: ./images/UML_boardifier_console.png  used on input line 426.
-(pdftex.def)             Requested size: 682.86613pt x 209.83842pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 [3
 
-] [4 <./images/Camarade.png>] [5 <./images/HateCards.png>] [6 <./images/Guide.png>] [7 <./images/UML_boardifier_console.png>] (./main.aux)
+] [4 <./images/Camarade.png>] [5 <./images/HateCards.png>] [6 <./images/Guide.png>] (./main.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-02-20>
  ***********
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 8AF611BDDCDEE00F52F85607C425BBBD;3846.
+(rerunfilecheck)             Checksum: 2A91309E98D778AE9EAEBCDB61032052;3028.
  ) ) 
 Here is how much of TeX's memory you used:
- 27039 strings out of 474116
- 494527 string characters out of 5750249
+ 27015 strings out of 474116
+ 493966 string characters out of 5750249
  1947187 words of memory out of 5000000
- 48822 multiletter control sequences out of 15000+600000
+ 48810 multiletter control sequences out of 15000+600000
  574642 words of font info for 66 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 95i,10n,133p,546b,557s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 95i,10n,133p,537b,557s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 pdfTeX warning (dest): name{Hfootnote.4} has been referenced but does not exist, replaced by a fixed one
 
@@ -1356,10 +1348,10 @@ pdfTeX warning (dest): name{Hfootnote.2} has been referenced but does not exist,
 pdfTeX warning (dest): name{Hfootnote.1} has been referenced but does not exist, replaced by a fixed one
 
 </usr/share/texmf-dist/fonts/type1/public/cm-super/sfbi1200.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfbx1440.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfbx1728.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfbx2488.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfcc1200.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfcc1440.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfcc2074.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm0800.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm1440.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfti1200.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfti1440.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfxc1440.pfb>
-Output written on main.pdf (24 pages, 1439490 bytes).
+Output written on main.pdf (21 pages, 467644 bytes).
 PDF statistics:
- 399 PDF objects out of 1000 (max. 8388607)
- 328 compressed objects within 4 object streams
- 96 named destinations out of 1000 (max. 500000)
- 235 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 357 PDF objects out of 1000 (max. 8388607)
+ 291 compressed objects within 3 object streams
+ 84 named destinations out of 1000 (max. 500000)
+ 198 words of extra memory for PDF output out of 10000 (max. 10000000)
 
