@@ -30,6 +30,8 @@ public class KoRView extends View {
     private MenuItem menuStart;
     private MenuItem menuIntro;
     private MenuItem menuQuit;
+    private MenuItem menuMusique;
+    private MenuItem menuSFX;
     private Button bValider;
 
     public KoRView(Model model, Stage stage, RootPane rootPane) {
@@ -40,17 +42,23 @@ public class KoRView extends View {
     protected void createMenuBar(){
         menuBar = new MenuBar();
         Menu menu1 = new Menu("Jeu");
+        Menu menu2 = new Menu("Paramètres");
         menuStart = new MenuItem("Nouvelle partie");
         menuIntro = new MenuItem("Retour au menu principal");
         menuQuit = new MenuItem("Quitter");
-        menuConfig = new MenuItem("Configuration");
+        menuConfig = new MenuItem("Partie Personnalisée");
+        menuMusique = new MenuItem("Basculer la Musique");
+        menuSFX = new MenuItem("Basculer les Effets Sonores");
 
         menu1.getItems().add(menuStart);
         menu1.getItems().add(menuIntro);
         menu1.getItems().add(menuConfig);
         menu1.getItems().add(menuQuit);
 
-        menuBar.getMenus().addAll(menu1);
+        menu2.getItems().add(menuMusique);
+        menu2.getItems().add(menuSFX);
+
+        menuBar.getMenus().addAll(menu1,menu2);
 
     }
 
@@ -126,6 +134,14 @@ public class KoRView extends View {
         // set the clipping area with the boundaries of root pane.
         Rectangle r = new Rectangle(rootPane.getWidth(), rootPane.getHeight());
         rootPane.setClip(r);
+    }
+
+    public MenuItem getMenuMusique() {
+        return menuMusique;
+    }
+
+    public MenuItem getMenuSFX() {
+        return menuSFX;
     }
 
     public Button getbValider() {

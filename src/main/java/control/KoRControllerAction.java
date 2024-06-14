@@ -153,6 +153,10 @@ public class KoRControllerAction extends ControllerAction implements EventHandle
         // set event handler on the MenuQuit item
         koRView.getMenuQuit().setOnAction(e -> System.exit(0));
 
+        //set event handler on the paramètres menu
+        koRView.getMenuMusique().setOnAction(e -> Sound.musicSwitch());
+        koRView.getMenuSFX().setOnAction(e -> Sound.soundSwitch());
+
     }
 
     private void setP2AiButtonsHandlers() {
