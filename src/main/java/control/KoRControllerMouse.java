@@ -68,12 +68,12 @@ public class KoRControllerMouse extends ControllerMouse implements EventHandler<
                     else if(movementCard.getOwner().isSpecificPlayer(currentPlayer)) {
                         stageModel.setState(GameState.SELECT_MOVEMENT_CARD);
                         element.toggleSelected();
-                        Sound.playSound("assets/card.wav",0.8);
+                        Sound.playSound("src/main/resources/card.wav",0.8);
                         return;
                     }
                 }
             }
-            if(actionList != null) Sound.playSound("assets/card.wav",0.8);
+            if(actionList != null) Sound.playSound("src/main/resources/card.wav",0.8);
         // CAN SELECT THE DEST OR A HERO CARD OR UNSELECT HIS CARD OR CHANGE HIS MOVEMENT CARD
         } else if (stageModel.getGameState() == GameState.SELECT_MOVEMENT_CARD) {
             // first check if the click is on the current selected pawn. In this case, unselect it
@@ -93,7 +93,7 @@ public class KoRControllerMouse extends ControllerMouse implements EventHandler<
                         }
                     }
                     element.toggleSelected();
-                    Sound.playSound("assets/card.wav",0.8);
+                    Sound.playSound("src/main/resources/card.wav",0.8);
                     return;
 
                 // SELECT A HERO CARD
@@ -103,7 +103,7 @@ public class KoRControllerMouse extends ControllerMouse implements EventHandler<
                     if(heroCard.getStatus().isOwnedBy(currentPlayer)) {
                         stageModel.setState(GameState.SELECT_MOVEMENT_CARD_HERO);
                         element.toggleSelected();
-                        Sound.playSound("assets/card.wav",0.8);
+                        Sound.playSound("src/main/resources/card.wav",0.8);
                         return;
                     }
                 }
@@ -140,7 +140,7 @@ public class KoRControllerMouse extends ControllerMouse implements EventHandler<
                             break;
                         }
                     }
-                    Sound.playSound("assets/card.wav");
+                    Sound.playSound("src/main/resources/card.wav");
                     return;
                 }
             }
@@ -156,7 +156,6 @@ public class KoRControllerMouse extends ControllerMouse implements EventHandler<
         stageModel.unselectAll();
 
         final ActionPlayer actionPlayer = new ActionPlayer(model, control, actionList);
-
 
         actionPlayer.start();
     }
