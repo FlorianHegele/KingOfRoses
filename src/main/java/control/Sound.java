@@ -87,7 +87,7 @@ public class Sound {
     public static void musicSwitch(){
         if(musicOn){
             try {
-                final Media media = new Media(Paths.get("src/main/resources/p1.mp3").toUri().toString());
+                final Media media = new Media(Paths.get("src/main/resources/p1.wav").toUri().toString());
                 final MediaPlayer mediaPlayer = new MediaPlayer(media);
                 mediaPlayer.play();
             } catch (Exception e) {
@@ -97,7 +97,7 @@ public class Sound {
         }
         if(!musicOn){
             try {
-                final Media media = new Media(Paths.get("src/main/resources/p2.mp3").toUri().toString());
+                final Media media = new Media(Paths.get("src/main/resources/p2.wav").toUri().toString());
                 final MediaPlayer mediaPlayer = new MediaPlayer(media);
                 mediaPlayer.play();
             } catch (Exception e) {
@@ -116,7 +116,7 @@ public class Sound {
     public static void soundSwitch(){
         if(soundOn) {
             try {
-                final Media media = new Media(Paths.get("src/main/resources/p10.mp3").toUri().toString());
+                final Media media = new Media(Paths.get("src/main/resources/p10.wav").toUri().toString());
                 final MediaPlayer mediaPlayer = new MediaPlayer(media);
                 mediaPlayer.play();
             } catch (Exception e) {
@@ -124,7 +124,7 @@ public class Sound {
             }
         } else {
             try {
-                final Media media = new Media(Paths.get("src/main/resources/p9.mp3").toUri().toString());
+                final Media media = new Media(Paths.get("src/main/resources/p9.wav").toUri().toString());
                 final MediaPlayer mediaPlayer = new MediaPlayer(media);
                 mediaPlayer.play();
             } catch (Exception e) {
