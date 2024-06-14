@@ -47,7 +47,7 @@ public class KoRControllerAction extends ControllerAction implements EventHandle
         koRView.getMenuStart().setOnAction(e -> {
             try {
                 Sound.playSound("src/main/resources/sword1.wav",0.3);
-                Sound.playMusic("src/main/resources/Daydream.mp3");
+                Sound.playMusic("src/main/resources/Daydream.wav");
                 gameConfigurationModel.addPlayers("Player 1 - Blue","Player 2 - Red");
                 control.startGame();
             } catch (GameException err) {
@@ -59,7 +59,7 @@ public class KoRControllerAction extends ControllerAction implements EventHandle
         // set event handler on the MenuIntro item
         koRView.getMenuIntro().setOnAction(e -> {
             Sound.playSound("src/main/resources/Doorknob.wav",0.5);
-            Sound.playMusic("src/main/resources/main.mp3",1000);
+            Sound.playMusic("src/main/resources/main.wav",1000);
             control.stopGame();
             koRView.resetView();
         });
@@ -67,7 +67,7 @@ public class KoRControllerAction extends ControllerAction implements EventHandle
         // set event handler on the Configuration menu item
         koRView.getMenuConfig().setOnAction(e -> {
             Sound.playSound("src/main/resources/Doorknob.wav");
-            Sound.playMusic("src/main/resources/shop.mp3",650);
+            Sound.playMusic("src/main/resources/shop.wav",650);
             System.out.println("KoR Config :" + gameConfigurationModel.getPlayerDataAIDataMap().toString());
             control.stopGame();
             koRView.resetView();
@@ -137,7 +137,7 @@ public class KoRControllerAction extends ControllerAction implements EventHandle
             koRView.getbValider().setOnAction(f->{
                 try {
                     Sound.playSound("src/main/resources/sword1.wav",0.5);
-                    Sound.playMusic("src/main/resources/Daydream.mp3");
+                    Sound.playMusic("src/main/resources/Daydream.wav");
                     gameConfigurationModel.addPlayers("Player 1 - Blue","Player 2 - Red");
                     control.startGame();
                 } catch (GameException err) {
