@@ -7,13 +7,10 @@ import boardifier.model.Model;
 import boardifier.view.View;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.media.MediaPlayer;
 import model.GameConfigurationModel;
-import model.Sound;
 import model.data.AIData;
 import model.data.PlayerData;
 import view.KoRView;
-import utils.Boardifiers;
 
 /**
  * A basic action controller that only manages menu actions

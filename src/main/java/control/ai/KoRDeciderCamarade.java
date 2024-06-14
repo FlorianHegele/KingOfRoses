@@ -5,7 +5,6 @@ import boardifier.control.Logger;
 import boardifier.model.Model;
 import boardifier.model.action.ActionList;
 import control.ActionPoints;
-import model.Sound;
 import model.data.PlayerData;
 
 import java.util.Collections;

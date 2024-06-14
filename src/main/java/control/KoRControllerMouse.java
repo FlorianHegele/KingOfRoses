@@ -7,7 +7,6 @@ import boardifier.view.GridLook;
 import boardifier.view.View;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
-import model.Sound;
 import model.data.ElementType;
 import model.data.GameState;
 import model.container.KoRBoard;

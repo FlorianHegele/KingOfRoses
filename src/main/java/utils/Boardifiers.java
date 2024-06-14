@@ -6,7 +6,7 @@ import control.KoRController;
 import javafx.stage.Stage;
 import model.GameConfigurationModel;
 import model.KoRStageModel;
-import model.Sound;
+import control.Sound;
 import view.KoRRootPane;
 import view.KoRView;
 
