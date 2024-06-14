@@ -10,19 +10,29 @@ public class Sound {
     static MediaPlayer currentMusic;
 
     public static void playSound(String sound){
-        final Media media = new Media(Paths.get(sound).toUri().toString());
-        final MediaPlayer mediaPlayer = new MediaPlayer(media);
-        mediaPlayer.play();
+        try {
+            final Media media = new Media(Paths.get(sound).toUri().toString());
+            final MediaPlayer mediaPlayer = new MediaPlayer(media);
+            mediaPlayer.play();
+        } catch (Exception e) {
+            System.err.println("Error playing sound: " + e.getMessage());
+        }
     }
 
     public static void playMusic(String sound){
-        final Media media = new Media(Paths.get(sound).toUri().toString());
-        if(currentMusic != null){
-            if(currentMusic.getMedia().getSource().contains(sound)) return;
-            currentMusic.stop();
+        try {
+            String mediaPath = Paths.get(sound).toUri().toString();
+            System.out.println("Playing music from: " + mediaPath);
+            final Media media = new Media(mediaPath);
+            if(currentMusic != null){
+                if(currentMusic.getMedia().getSource().contains(sound)) return;
+                currentMusic.stop();
+            }
+            currentMusic = new MediaPlayer(media);
+            currentMusic.play();
+        } catch (Exception e) {
+            System.err.println("Error playing music: " + e.getMessage());
         }
-        currentMusic = new MediaPlayer(media);
-        currentMusic.play();
     }
 
 }
