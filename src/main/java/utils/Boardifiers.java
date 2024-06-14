@@ -25,7 +25,7 @@ public class Boardifiers {
     }
 
     public void initGame() {
-        Sound.playMusic("assets/main.mp3");
+        Sound.playMusic("assets/main.mp3",1000);
         // register a single stage for the game, called hole
         StageFactory.registerModelAndView("kor", "model.KoRStageModel", "view.KoRStageView");
 

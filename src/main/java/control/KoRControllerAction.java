@@ -69,7 +69,7 @@ public class KoRControllerAction extends ControllerAction implements EventHandle
         // set event handler on the Configuration menu item
         koRView.getMenuConfig().setOnAction(e -> {
             Sound.playSound("assets/Doorknob.wav");
-            Sound.playMusic("assets/shop.mp3");
+            Sound.playMusic("assets/shop.mp3",650);
             System.out.println("KoR Config :" + gameConfigurationModel.getPlayerDataAIDataMap().toString());
             control.stopGame();
             koRView.resetView();
