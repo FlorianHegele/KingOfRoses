@@ -1,9 +1,6 @@
 package model.element.card;
 
-import boardifier.control.Logger;
 import boardifier.model.*;
-import boardifier.model.animation.Animation;
-import boardifier.model.animation.AnimationStep;
 import javafx.scene.paint.Color;
 import model.data.ElementType;
 import model.data.PlayerData;
@@ -16,7 +13,8 @@ public class MovementCard extends GameElement {
 
     private boolean inverted;
     private final int step;
-    private Direction direction;
+    private Direction movementDirection;
+    private Direction visualDirection;
     private Owner owner;
 
     /**
@@ -33,7 +31,8 @@ public class MovementCard extends GameElement {
         this.type = ElementType.MOVEMENT_CARD.register();
 
         this.step = step;
-        this.direction = direction;
+        this.movementDirection = direction;
+        this.visualDirection = direction;
         this.inverted = false;
         this.owner = Owner.STACK;
     }
@@ -54,8 +53,6 @@ public class MovementCard extends GameElement {
      * @param owner The owner to set.
      */
 
-    // FIXME BUG GENERATE WITH THIS FUNCTION ?!
-    // BUG FOUND, WHEN I CAN ONE VARIABLE, THE LOOK OF THE ELEMENT DISAPPEAR
     public void setOwner(Owner owner) {
         this.owner = owner;
         if (owner == Owner.PLAYER_RED){
@@ -79,7 +76,7 @@ public class MovementCard extends GameElement {
      */
     public void toggleInverted() {
         this.inverted = !this.inverted;
-        this.direction = direction.getOpposite();
+        this.movementDirection = movementDirection.getOpposite();
         addChangeFaceEvent();
     }
 
@@ -108,20 +105,23 @@ public class MovementCard extends GameElement {
     @Override
     public String toString() {
         return "MovementCard{" +
-                "step=" + step +
-                ", direction=" + direction +
+                "inverted=" + inverted +
+                ", step=" + step +
+                ", movementDirection=" + movementDirection +
+                ", visualDirection=" + visualDirection +
                 ", owner=" + owner +
                 '}';
     }
 
     /**
-     * Gets the direction of the movement card.
+     * Gets the visual direction of the movement card.
      *
      * @return The direction of the movement card.
      */
-    public Direction getDirection() {
-        return direction;
+    public Direction getVisualDirection() {
+        return visualDirection;
     }
+
 
     /**
      * Gets the direction vector of the movement card.
@@ -129,7 +129,7 @@ public class MovementCard extends GameElement {
      * @return The direction vector of the movement card.
      */
     public Coord2D getDirectionVector() {
-        return direction.getVector().multiply(step);
+        return movementDirection.getVector().multiply(step);
     }
 
     /**

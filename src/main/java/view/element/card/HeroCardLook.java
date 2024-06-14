@@ -37,7 +37,7 @@ public class HeroCardLook extends ElementLook {
         imageView = new ImageView();
         if(heroCard.getStatus() == HeroCard.Status.RED_CARD) {
            image = new Image(FileUtils.getOuputStreamFromResources("hero-card-red.png"));
-           //imageView.setRotate(180);
+           imageView.setRotate(180);
         } else {
             image = new Image(FileUtils.getOuputStreamFromResources("hero-card-blue.png"));
         }

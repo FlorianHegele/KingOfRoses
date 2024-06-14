@@ -48,16 +48,16 @@ public class MovementCardLook extends ElementLook {
             imageView.setX(-bt1.getWidth() + 81.5);
             imageView.setY(imageView.getBaselineOffset() - 225);
         } else {
-            String imagePath = movementCard.getDirection().getPath(movementCard.getStep());
+            String imagePath = movementCard.getVisualDirection().getPath(movementCard.getStep());
 
             Image image = new Image(imagePath);
             imageView.setImage(image);
             imageView.setFitWidth(84);
             imageView.setFitHeight(100);
 
-            //if (movementCard.isInverted()) {
-            //    imageView.setRotate(180);
-            //}
+            if (movementCard.isInverted()) {
+               imageView.setRotate(180);
+            }
 
             Bounds bt3 = imageView.getBoundsInLocal();
             imageView.setX(-bt3.getWidth() / 2);
