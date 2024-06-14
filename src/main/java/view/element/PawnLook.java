@@ -15,7 +15,7 @@ public class PawnLook extends ElementLook {
     private final int radius;
 
     public PawnLook(int radius, GameElement element) {
-        super(element);
+        super(element, ((Pawn)element).getStatus() == Pawn.Status.KING_PAWN ? 10 : -1);
 
         this.radius = radius;
         render();
