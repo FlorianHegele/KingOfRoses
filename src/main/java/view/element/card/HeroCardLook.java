@@ -1,53 +1,55 @@
 package view.element.card;
 
+import boardifier.control.Logger;
 import boardifier.model.GameElement;
 import boardifier.view.ElementLook;
 import javafx.geometry.Bounds;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.StrokeType;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import model.element.Pawn;
+import javafx.scene.effect.BlendMode;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import model.element.card.HeroCard;
+import utils.FileUtils;
 
 public class HeroCardLook extends ElementLook {
 
-    private int size;
-    private Text text;
+    private ImageView imageView;
 
-    public HeroCardLook(int size, GameElement element) {
+    public HeroCardLook(GameElement element) {
         super(element);
-        this.size = size;
         render();
     }
 
     @Override
     public void onSelectionChange() {
-        HeroCard heroCard = (HeroCard) element;
-        if (heroCard.isSelected()) {
-            text.setStrokeWidth(3);
-            text.setStrokeMiterLimit(10);
-            text.setStrokeType(StrokeType.CENTERED);
-            text.setStroke(Color.DARKGRAY);
+        Logger.info("HeroCardLook onSelectionChange");
+
+        if(element.isSelected()) {
+            imageView.setBlendMode(BlendMode.DIFFERENCE);
         } else {
-            text.setStrokeWidth(0);
+            imageView.setBlendMode(BlendMode.SRC_OVER);
         }
     }
 
-    @Override
-    public void onFaceChange() {}
-
     protected void render() {
-        text = new Text("Hero");
-        text.setFont(new Font(size));
-        text.setFill(Color.BLACK);
+        final HeroCard heroCard = (HeroCard) element;
 
-        Bounds bt = text.getBoundsInLocal();
-        text.setX(-bt.getWidth()/2);
+        final Image image;
+        imageView = new ImageView();
+        if(heroCard.getStatus() == HeroCard.Status.RED_CARD) {
+           image = new Image(FileUtils.getOuputStreamFromResources("hero-card-red.png"));
+           imageView.setRotate(180);
+        } else {
+            image = new Image(FileUtils.getOuputStreamFromResources("hero-card-blue.png"));
+        }
+        imageView.setImage(image);
+        imageView.setFitWidth(93);
+        imageView.setFitHeight(115);
+
+        Bounds bt1 = imageView.getBoundsInLocal();
+        imageView.setX(-bt1.getWidth() + 49);
         // since text are always above the baseline, relocate just using the part above baseline
-        text.setY(text.getBaselineOffset()/2-4);
-        addShape(text);
+        imageView.setY(imageView.getBaselineOffset()-163);
+
+        addNode(imageView);
     }
 }

@@ -67,8 +67,8 @@ public class KoRStageView extends GameStageView {
 
         // create look for the hero cards
         for (int i = 0; i < 4; i++) {
-            addLook(new HeroCardLook(24, model.getRedHeroCards()[i]));
-            addLook(new HeroCardLook(24, model.getBlueHeroCards()[i]));
+            addLook(new HeroCardLook(model.getRedHeroCards()[i]));
+            addLook(new HeroCardLook(model.getBlueHeroCards()[i]));
         }
 
         // create look for the pawns
@@ -80,7 +80,7 @@ public class KoRStageView extends GameStageView {
 
         // create look for the movement card
         for (MovementCard movementCard : model.getMovementCards()) {
-            addLook(new MovementCardLook(25, movementCard));
+            addLook(new MovementCardLook(movementCard));
         }
 
         Logger.debug("finished creating game stage looks", this);

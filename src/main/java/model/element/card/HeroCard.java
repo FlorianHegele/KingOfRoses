@@ -62,7 +62,7 @@ public class HeroCard extends GameElement {
          * Constructs a new status with the specified ID and background color.
          *
          * @param id              The ID of the status.
-         * @param color The background color associated with this status.
+         * @param color The color associated with this status.
          */
         Status(int id, Color color) {
             this.id = id;

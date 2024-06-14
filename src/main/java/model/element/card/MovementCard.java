@@ -58,8 +58,11 @@ public class MovementCard extends GameElement {
     // BUG FOUND, WHEN I CAN ONE VARIABLE, THE LOOK OF THE ELEMENT DISAPPEAR
     public void setOwner(Owner owner) {
         this.owner = owner;
-        if (owner == Owner.PLAYER_RED) toggleInverted();
-        addChangeFaceEvent();
+        if (owner == Owner.PLAYER_RED){
+            toggleInverted();
+        } else {
+            addChangeFaceEvent();
+        }
     }
 
     /**
@@ -77,6 +80,7 @@ public class MovementCard extends GameElement {
     public void toggleInverted() {
         this.inverted = !this.inverted;
         this.direction = direction.getOpposite();
+        addChangeFaceEvent();
     }
 
     /**
@@ -132,37 +136,37 @@ public class MovementCard extends GameElement {
      * Represents the direction of the movement card.
      */
     public enum Direction {
-        NORTH(-1, 0, "N"),
-        NORTHEAST(-1, 1, "NE"),
-        EAST(0, 1, "E"),
-        SOUTHEAST(1, 1, "SE"),
-        SOUTH(1, 0, "S"),
-        SOUTHWEST(1, -1, "SW"),
-        WEST(0, -1, "W"),
-        NORTHWEST(-1, -1, "NW");
+        NORTH(-1, 0, "north"),
+        NORTHEAST(-1, 1, "northeast"),
+        EAST(0, 1, "east"),
+        SOUTHEAST(1, 1, "southeast"),
+        SOUTH(1, 0, "south"),
+        SOUTHWEST(1, -1, "southwest"),
+        WEST(0, -1, "west"),
+        NORTHWEST(-1, -1, "northwest");
 
         private final Coord2D vector;
-        private final String symbol;
+        private final String path;
 
         /**
          * Constructs a new direction with the specified column, row, and symbol.
          *
          * @param col    The column of the direction.
          * @param row    The row of the direction.
-         * @param symbol The symbol representing the direction.
+         * @param path The symbol representing the direction.
          */
-        Direction(int col, int row, String symbol) {
-            this(new Coord2D(row, col), symbol);
+        Direction(int col, int row, String path) {
+            this(new Coord2D(row, col), path);
         }
 
         /**
          * Constructs a new direction with the specified vector and symbol.
          *
          * @param vector The vector representing the direction.
-         * @param symbol The symbol representing the direction.
+         * @param path The symbol representing the direction.
          */
-        Direction(Coord2D vector, String symbol) {
-            this.symbol = symbol;
+        Direction(Coord2D vector, String path) {
+            this.path = path;
             this.vector = vector;
         }
 
@@ -180,8 +184,8 @@ public class MovementCard extends GameElement {
          *
          * @return The symbol representing the direction.
          */
-        public String getSymbol() {
-            return symbol;
+        public String getPath(int step) {
+            return "/movement_card/" + path + "_" + step + ".png";
         }
 
         /**
