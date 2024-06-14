@@ -7,6 +7,7 @@ import boardifier.view.GridLook;
 import boardifier.view.View;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
+import model.Sound;
 import model.data.ElementType;
 import model.data.GameState;
 import model.container.KoRBoard;
@@ -67,11 +68,12 @@ public class KoRControllerMouse extends ControllerMouse implements EventHandler<
                     else if(movementCard.getOwner().isSpecificPlayer(currentPlayer)) {
                         stageModel.setState(GameState.SELECT_MOVEMENT_CARD);
                         element.toggleSelected();
+                        Sound.playSound("assets/card.wav",0.8);
                         return;
                     }
                 }
             }
-
+            if(actionList != null) Sound.playSound("assets/card.wav",0.8);
         // CAN SELECT THE DEST OR A HERO CARD OR UNSELECT HIS CARD OR CHANGE HIS MOVEMENT CARD
         } else if (stageModel.getGameState() == GameState.SELECT_MOVEMENT_CARD) {
             // first check if the click is on the current selected pawn. In this case, unselect it
@@ -91,6 +93,7 @@ public class KoRControllerMouse extends ControllerMouse implements EventHandler<
                         }
                     }
                     element.toggleSelected();
+                    Sound.playSound("assets/card.wav",0.8);
                     return;
 
                 // SELECT A HERO CARD
@@ -100,6 +103,7 @@ public class KoRControllerMouse extends ControllerMouse implements EventHandler<
                     if(heroCard.getStatus().isOwnedBy(currentPlayer)) {
                         stageModel.setState(GameState.SELECT_MOVEMENT_CARD_HERO);
                         element.toggleSelected();
+                        Sound.playSound("assets/card.wav",0.8);
                         return;
                     }
                 }
@@ -136,6 +140,7 @@ public class KoRControllerMouse extends ControllerMouse implements EventHandler<
                             break;
                         }
                     }
+                    Sound.playSound("assets/card.wav");
                     return;
                 }
             }
@@ -207,6 +212,7 @@ public class KoRControllerMouse extends ControllerMouse implements EventHandler<
 
         final HeroCard heroCard = ContainerElements.getSelectedElement(gameStage, ElementType.HERO_CARD);
         final Pawn pawn = (Pawn) board.getElement(row, col);
+
 
         return simpleActionList.useHeroCard(heroCard, movementCard, pawn, pos);
     }
