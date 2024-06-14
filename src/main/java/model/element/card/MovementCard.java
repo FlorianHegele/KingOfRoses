@@ -58,8 +58,11 @@ public class MovementCard extends GameElement {
     // BUG FOUND, WHEN I CAN ONE VARIABLE, THE LOOK OF THE ELEMENT DISAPPEAR
     public void setOwner(Owner owner) {
         this.owner = owner;
-        if (owner == Owner.PLAYER_RED) toggleInverted();
-        addChangeFaceEvent();
+        if (owner == Owner.PLAYER_RED){
+            toggleInverted();
+        } else {
+            addChangeFaceEvent();
+        }
     }
 
     /**
@@ -77,6 +80,7 @@ public class MovementCard extends GameElement {
     public void toggleInverted() {
         this.inverted = !this.inverted;
         this.direction = direction.getOpposite();
+        addChangeFaceEvent();
     }
 
     /**
