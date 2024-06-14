@@ -13,7 +13,7 @@ public class MovementCardSpreadLook extends GridLook {
     private Rectangle[] cells;
 
     public MovementCardSpreadLook(int height, int width, ContainerElement containerElement) {
-        super(height, width / 5, containerElement, -1, 1, Color.BLACK);
+        super(height, width / 5, containerElement, -1, 1, Color.TRANSPARENT);
 
     }
 
@@ -23,7 +23,7 @@ public class MovementCardSpreadLook extends GridLook {
         cells = new Rectangle[5];
         // create the rectangles.
         for (int i = 0; i < 5; i++) {
-            cells[i] = new Rectangle(colWidth, rowHeight, Color.GRAY);
+            cells[i] = new Rectangle(colWidth, rowHeight, Color.TRANSPARENT);
             cells[i].setStrokeWidth(3);
             cells[i].setStrokeMiterLimit(10);
             cells[i].setStrokeType(StrokeType.CENTERED);
