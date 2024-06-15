@@ -13,6 +13,8 @@ public class Sound {
     static MediaPlayer currentMusic;
     static boolean musicOn = true;
     static boolean soundOn = true;
+    static double musicVolume = 0.5;
+    static double soundVolume = 0.5;
 
     public static void playSound(String sound){
         if(soundOn) {
@@ -20,20 +22,7 @@ public class Sound {
                 final Media media = new Media(Paths.get(sound).toUri().toString());
                 final MediaPlayer mediaPlayer = new MediaPlayer(media);
                 Logger.trace("Playing sound: " + sound);
-                mediaPlayer.play();
-            } catch (Exception e) {
-                System.err.println("Error playing sound: " + e.getMessage());
-            }
-        }
-    }
-
-    public static void playSound(String sound, double volume){
-        if(soundOn) {
-            try {
-                final Media media = new Media(Paths.get(sound).toUri().toString());
-                final MediaPlayer mediaPlayer = new MediaPlayer(media);
-                Logger.trace("Playing sound: " + sound);
-                mediaPlayer.setVolume(volume);
+                mediaPlayer.setVolume(soundVolume);
                 mediaPlayer.play();
             } catch (Exception e) {
                 System.err.println("Error playing sound: " + e.getMessage());
@@ -54,8 +43,10 @@ public class Sound {
                 if (!musicOn) return;
                 currentMusic.setOnEndOfMedia(() -> {
                     currentMusic.seek(Duration.millis(0));
+                    currentMusic.setVolume(musicVolume);
                     currentMusic.play();
                 });
+                currentMusic.setVolume(musicVolume);
                 currentMusic.play();
             } catch (Exception e) {
                 System.err.println("Error playing music: " + e.getMessage());
@@ -75,9 +66,11 @@ public class Sound {
                 if (!musicOn) return;
                 currentMusic.setOnEndOfMedia(() -> {
                     currentMusic.seek(Duration.millis(ms));
+                    currentMusic.setVolume(musicVolume);
                     currentMusic.play();
                 });
                 currentMusic.setStartTime(Duration.millis(ms));
+                currentMusic.setVolume(musicVolume);
                 currentMusic.play();
             } catch (Exception e) {
                 System.err.println("Error playing music: " + e.getMessage());
@@ -106,8 +99,10 @@ public class Sound {
             currentMusic.stop();
             currentMusic.setOnEndOfMedia(() -> {
                 currentMusic.seek(Duration.millis(0));
+                currentMusic.setVolume(musicVolume);
                 currentMusic.play();
             });
+            currentMusic.setVolume(musicVolume);
             currentMusic.play();
         }
         musicOn = !musicOn;
@@ -118,6 +113,7 @@ public class Sound {
             try {
                 final Media media = new Media(Paths.get("src/main/resources/p10.wav").toUri().toString());
                 final MediaPlayer mediaPlayer = new MediaPlayer(media);
+                mediaPlayer.setVolume(soundVolume);
                 mediaPlayer.play();
             } catch (Exception e) {
                 System.err.println("Error playing sound: " + e.getMessage());
@@ -126,12 +122,30 @@ public class Sound {
             try {
                 final Media media = new Media(Paths.get("src/main/resources/p9.wav").toUri().toString());
                 final MediaPlayer mediaPlayer = new MediaPlayer(media);
+                mediaPlayer.setVolume(soundVolume);
                 mediaPlayer.play();
             } catch (Exception e) {
                 System.err.println("Error playing sound: " + e.getMessage());
             }
         }
         soundOn = !soundOn;
+    }
+
+    public static void setSoundVolume(double volume){
+        soundVolume = volume;
+    }
+
+    public static void setMusicVolume(double volume){
+        musicVolume = volume;
+        currentMusic.setVolume(volume);
+    }
+
+    public static double getSoundVolume(){
+        return soundVolume;
+    }
+
+    public static double getMusicVolume(){
+        return musicVolume;
     }
 
 

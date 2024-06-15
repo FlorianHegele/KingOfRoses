@@ -3,6 +3,7 @@ package view;
 import boardifier.model.Model;
 import boardifier.view.RootPane;
 import boardifier.view.View;
+import control.Sound;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -32,7 +33,17 @@ public class KoRView extends View {
     private MenuItem menuQuit;
     private MenuItem menuMusique;
     private MenuItem menuSFX;
+    private MenuItem sLow;
+    private MenuItem sMedium;
+    private MenuItem sHigh;
+    private MenuItem sMax;
+    private MenuItem mLow;
+    private MenuItem mMedium;
+    private MenuItem mHigh;
+    private MenuItem mMax;
     private Button bValider;
+    private Menu menu3;
+    private Menu menu4;
 
     public KoRView(Model model, Stage stage, RootPane rootPane) {
         super(model, stage, rootPane);
@@ -43,12 +54,22 @@ public class KoRView extends View {
         menuBar = new MenuBar();
         Menu menu1 = new Menu("Jeu");
         Menu menu2 = new Menu("Paramètres");
+        menu3 = new Menu("Volume de la Musique : " + Sound.getMusicVolume());
+        menu4 = new Menu("Volume des Sons : " + Sound.getSoundVolume());
         menuStart = new MenuItem("Nouvelle partie");
         menuIntro = new MenuItem("Retour au menu principal");
         menuQuit = new MenuItem("Quitter");
         menuConfig = new MenuItem("Partie Personnalisée");
         menuMusique = new MenuItem("Basculer la Musique");
         menuSFX = new MenuItem("Basculer les Effets Sonores");
+        sLow = new MenuItem("Faible - 25%");
+        sMedium = new MenuItem("Moyen - 50%");
+        sHigh = new MenuItem("Fort - 75%");
+        sMax = new MenuItem("Max - 100%");
+        mLow = new MenuItem("Faible - 25%");
+        mMedium = new MenuItem("Moyen - 50%");
+        mHigh = new MenuItem("Fort - 75%");
+        mMax = new MenuItem("Max - 100%");
 
         menu1.getItems().add(menuStart);
         menu1.getItems().add(menuIntro);
@@ -57,6 +78,11 @@ public class KoRView extends View {
 
         menu2.getItems().add(menuMusique);
         menu2.getItems().add(menuSFX);
+        menu2.getItems().add(menu3);
+        menu2.getItems().add(menu4);
+
+        menu3.getItems().addAll(mLow, mMedium, mHigh, mMax);
+        menu4.getItems().addAll(sLow, sMedium, sHigh,sMax);
 
         menuBar.getMenus().addAll(menu1,menu2);
 
@@ -206,5 +232,45 @@ public class KoRView extends View {
 
     public MenuItem getMenuQuit() {
         return menuQuit;
+    }
+
+    public MenuItem getsLow() {
+        return sLow;
+    }
+
+    public MenuItem getsMedium() {
+        return sMedium;
+    }
+
+    public MenuItem getsHigh() {
+        return sHigh;
+    }
+
+    public MenuItem getsMax() {
+        return sMax;
+    }
+
+    public MenuItem getmLow() {
+        return mLow;
+    }
+
+    public MenuItem getmMedium() {
+        return mMedium;
+    }
+
+    public MenuItem getmHigh() {
+        return mHigh;
+    }
+
+    public MenuItem getmMax() {
+        return mMax;
+    }
+
+    public Menu getMenu3() {
+        return menu3;
+    }
+
+    public Menu getMenu4() {
+        return menu4;
     }
 }

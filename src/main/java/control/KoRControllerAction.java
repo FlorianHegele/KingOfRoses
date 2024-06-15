@@ -148,7 +148,40 @@ public class KoRControllerAction extends ControllerAction implements EventHandle
 
         });
 
+        // set event handler to configure sounds volume
+        koRView.getmLow().setOnAction(e -> {
+            Sound.setMusicVolume(0.25);
+            koRView.getMenu3().setText("Volume de la Musique : " + Sound.getMusicVolume());
+        });
+        koRView.getmMedium().setOnAction(e -> {
+            Sound.setMusicVolume(0.50);
+            koRView.getMenu3().setText("Volume de la Musique : " + Sound.getMusicVolume());
+        });
+        koRView.getmHigh().setOnAction(e -> {
+            Sound.setMusicVolume(0.75);
+            koRView.getMenu3().setText("Volume de la Musique : " + Sound.getMusicVolume());
+        });
+        koRView.getmMax().setOnAction(e -> {
+            Sound.setMusicVolume(1.0);
+            koRView.getMenu3().setText("Volume de la Musique : " + Sound.getMusicVolume());
+        });
 
+        koRView.getsLow().setOnAction(e -> {
+            Sound.setSoundVolume(0.25);
+            koRView.getMenu4().setText("Volume des Sons: " + Sound.getSoundVolume());
+        });
+        koRView.getsMedium().setOnAction(e -> {
+            Sound.setSoundVolume(0.50);
+            koRView.getMenu4().setText("Volume des Sons: " + Sound.getSoundVolume());
+        });
+        koRView.getsHigh().setOnAction(e -> {
+            Sound.setSoundVolume(0.75);
+            koRView.getMenu4().setText("Volume des Sons: " + Sound.getSoundVolume());
+        });
+        koRView.getsMax().setOnAction(e -> {
+            Sound.setSoundVolume(1.0);
+            koRView.getMenu4().setText("Volume des Sons: " + Sound.getSoundVolume());
+        });
 
         // set event handler on the MenuQuit item
         koRView.getMenuQuit().setOnAction(e -> System.exit(0));
