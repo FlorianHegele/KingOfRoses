@@ -37,7 +37,6 @@ public class KoRView extends View {
     private MenuItem mMedium;
     private MenuItem mHigh;
     private MenuItem mMax;
-    private Button bValider;
     private Menu menu3;
     private Menu menu4;
 
