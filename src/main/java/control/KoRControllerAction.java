@@ -46,7 +46,7 @@ public class KoRControllerAction extends ControllerAction implements EventHandle
         // set event handler on the MenuStart item
         koRView.getMenuStart().setOnAction(e -> {
             try {
-                Sound.playSound("src/main/resources/sword1.wav",0.3);
+                Sound.playSound("src/main/resources/sword1.wav");
                 Sound.playMusic("src/main/resources/Daydream.wav");
                 gameConfigurationModel.addPlayers("Player 1 - Blue","Player 2 - Red");
                 control.startGame();
@@ -58,7 +58,7 @@ public class KoRControllerAction extends ControllerAction implements EventHandle
 
         // set event handler on the MenuIntro item
         koRView.getMenuIntro().setOnAction(e -> {
-            Sound.playSound("src/main/resources/Doorknob.wav",0.5);
+            Sound.playSound("src/main/resources/Doorknob.wav");
             Sound.playMusic("src/main/resources/main.wav",1000);
             control.stopGame();
             koRView.resetView();
@@ -136,7 +136,7 @@ public class KoRControllerAction extends ControllerAction implements EventHandle
 
             koRView.getbValider().setOnAction(f->{
                 try {
-                    Sound.playSound("src/main/resources/sword1.wav",0.5);
+                    Sound.playSound("src/main/resources/sword1.wav");
                     Sound.playMusic("src/main/resources/Daydream.wav");
                     gameConfigurationModel.addPlayers("Player 1 - Blue","Player 2 - Red");
                     control.startGame();
