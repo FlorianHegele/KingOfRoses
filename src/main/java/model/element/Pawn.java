@@ -47,6 +47,7 @@ public class Pawn extends GameElement {
         return status;
     }
 
+    @Override
     public void update() {
         // if must be animated, move the pawn
         if (animation != null) {
@@ -63,6 +64,7 @@ public class Pawn extends GameElement {
             }
         }
     }
+
 
     /**
      * Enumerates the possible statuses of a pawn.

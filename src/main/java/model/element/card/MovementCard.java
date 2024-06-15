@@ -1,6 +1,9 @@
 package model.element.card;
 
+import boardifier.control.Logger;
 import boardifier.model.*;
+import boardifier.model.animation.Animation;
+import boardifier.model.animation.AnimationStep;
 import javafx.scene.paint.Color;
 import model.data.ElementType;
 import model.data.PlayerData;
@@ -100,6 +103,23 @@ public class MovementCard extends GameElement {
             throw new IllegalArgumentException("Invalid step");
         }
         return (char) (startPoint + step);
+    }
+
+    public void update() {
+        // if must be animated, move the pawn
+        if (animation != null) {
+            AnimationStep step = animation.next();
+            if (step == null) {
+                animation = null;
+            }
+            else if (step == Animation.NOPStep) {
+                Logger.debug("nothing to do", this);
+            }
+            else {
+                Logger.debug("move animation", this);
+                setLocation(step.getInt(0), step.getInt(1));
+            }
+        }
     }
 
     @Override

@@ -29,8 +29,6 @@ public class FlipPawn extends GameAction {
         onEndCallback.execute();
     }
 
-    // TODO : REWRITE THIS FUNCTION
     protected void createAnimation() {
-        animation = null;
     }
 }
