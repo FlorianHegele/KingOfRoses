@@ -1,38 +1,28 @@
 package view.element;
 
-import boardifier.control.Logger;
 import boardifier.model.GameElement;
 import boardifier.view.ElementLook;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import model.element.Pawn;
 import utils.FileUtils;
 
 public class PawnLook extends ElementLook {
-    private Circle circle;
-    private final int radius;
 
-    public PawnLook(int radius, GameElement element) {
+    public PawnLook(GameElement element) {
         super(element, ((Pawn)element).getStatus() == Pawn.Status.KING_PAWN ? 10 : -1);
 
-        this.radius = radius;
         render();
     }
 
     @Override
     public void onFaceChange() {
-        Pawn pawn = (Pawn) element;
-        circle.setFill(pawn.getStatus().getColor());
+        clearGroup();
+        render();
     }
 
     protected void render() {
         Pawn pawn = (Pawn) element;
-        circle = new Circle();
-        circle.setRadius(radius);
-        circle.setFill(Color.TRANSPARENT);
-        addShape(circle);
         if (pawn.getStatus() == Pawn.Status.KING_PAWN){
             Image image = new Image(FileUtils.getOuputStreamFromResources("king-pawn.png"));
             ImageView imageView = new ImageView();
