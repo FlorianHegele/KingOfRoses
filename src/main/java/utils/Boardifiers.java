@@ -24,15 +24,17 @@ public class Boardifiers {
         this.gameConfigurationModel = gameConfigurationModel;
     }
 
-    public void initGame() {
+    public void init() {
         Sound.playMusic("src/main/resources/main.wav",1000);
         // register a single stage for the game, called hole
         StageFactory.registerModelAndView("kor", "model.KoRStageModel", "view.KoRStageView");
 
         // create the root pane, using the subclass HoleRootPane
         KoRRootPane rootPane = new KoRRootPane();
+
         // create the global view.
         KoRView view = new KoRView(model, stage, rootPane);
+
         // create the controllers.
 
         control = new KoRController(model, view, gameConfigurationModel);

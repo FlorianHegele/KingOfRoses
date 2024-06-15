@@ -18,7 +18,6 @@ public class KoRRootPane extends RootPane {
 
     @Override
     public void createDefaultGroup() {
-
         Rectangle frame = new Rectangle(600, 100, Color.LIGHTGREY);
         Text text = new Text("Playing to The Hole");
         text.setFont(new Font(15));
