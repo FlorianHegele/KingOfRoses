@@ -2,6 +2,7 @@ package model;
 
 import boardifier.control.Logger;
 import boardifier.model.*;
+import control.Sound;
 import model.container.KoRBoard;
 import model.container.PawnPot;
 import model.container.card.HeroCardStack;
@@ -682,6 +683,8 @@ public class KoRStageModel extends GameStageModel {
 
         final int redPawnPlaced = getTotalPawnOnBoard(Pawn.Status.RED_PAWN);
         final int bluePawnPlaced = getTotalPawnOnBoard(Pawn.Status.BLUE_PAWN);
+
+        Sound.playSound("src/main/resources/sword1.wav");
 
         if (redZoneCounter == blueZoneCounter) {
             if (redPawnPlaced == bluePawnPlaced) {
