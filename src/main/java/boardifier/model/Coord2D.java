@@ -1,5 +1,7 @@
 package boardifier.model;
 
+import java.util.Objects;
+
 public class Coord2D {
     private double x;
     private double y;
@@ -63,4 +65,15 @@ public class Coord2D {
         return new Coord2D(this.x * scale, this.y * scale);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Coord2D coord2D)) return false;
+        return Double.compare(x, coord2D.x) == 0 && Double.compare(y, coord2D.y) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y);
+    }
 }

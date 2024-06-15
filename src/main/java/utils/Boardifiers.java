@@ -38,17 +38,13 @@ public class Boardifiers {
         control = new KoRController(model, view, gameConfigurationModel);
         // set the name of the first stage to create when the game is started
         control.setFirstStageName("kor");
-        // set the stage title
-        stage.setTitle("The King of Roses");
-        // show the scene
-        stage.show();
 
-        dirtyImplementation();
-    }
-
-    // TODO : REIMPLEMENT
-    private void dirtyImplementation() {
-        gameConfigurationModel.addPlayers("player1", "player2");
+        if(gameConfigurationModel.isRenderGame()) {
+            // set the stage title
+            stage.setTitle("The King of Roses");
+            // show the scene
+            stage.show();
+        }
     }
 
     public Model getModel() {
