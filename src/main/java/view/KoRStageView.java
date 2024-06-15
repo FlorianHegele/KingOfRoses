@@ -73,10 +73,10 @@ public class KoRStageView extends GameStageView {
 
         // create look for the pawns
         for (int i = 0; i < 26; i++) {
-            addLook(new PawnLook(25, model.getRedPawns()[i]));
-            addLook(new PawnLook(25, model.getBluePawns()[i]));
+            addLook(new PawnLook(model.getRedPawns()[i]));
+            addLook(new PawnLook(model.getBluePawns()[i]));
         }
-        addLook(new PawnLook(25, model.getKingPawn()));
+        addLook(new PawnLook(model.getKingPawn()));
 
         // create look for the movement card
         for (MovementCard movementCard : model.getMovementCards()) {

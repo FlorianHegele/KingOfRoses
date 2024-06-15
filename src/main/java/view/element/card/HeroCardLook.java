@@ -21,17 +21,20 @@ public class HeroCardLook extends ElementLook {
 
     @Override
     public void onSelectionChange() {
-        Logger.info("HeroCardLook onSelectionChange");
+        Logger.info("HeroCardLook onSelectionChange " + element.isSelected());
 
         if(element.isSelected()) {
             imageView.setBlendMode(BlendMode.DIFFERENCE);
         } else {
             imageView.setBlendMode(BlendMode.SRC_OVER);
         }
+
     }
 
     protected void render() {
         final HeroCard heroCard = (HeroCard) element;
+
+        Logger.info("render");
 
         final Image image;
         imageView = new ImageView();
