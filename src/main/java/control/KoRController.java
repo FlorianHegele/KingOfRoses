@@ -62,7 +62,9 @@ public class KoRController extends Controller {
         final AIData ai = configurationModel.getPlayerDataAIDataMap().get(playerData);
 
         if (p.getType() == Player.COMPUTER) {
+
             Logger.debug("COMPUTER PLAYS USING :" + ai);
+
             final Decider decider = ai.getDecider(playerData, model, this);
 
             ActionPlayer play = new ActionPlayer(model, this, decider, null);

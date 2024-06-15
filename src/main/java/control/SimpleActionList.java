@@ -8,7 +8,6 @@ import boardifier.model.Coord2D;
 import boardifier.model.Model;
 import boardifier.model.action.ActionList;
 import boardifier.model.action.FlipPawn;
-import boardifier.model.animation.AnimationTypes;
 import model.GameConfigurationModel;
 import model.KoRStageModel;
 import model.container.KoRBoard;
@@ -74,14 +73,15 @@ public class SimpleActionList {
      * @return the action list containing all the actions.
      */
     public ActionList useHeroCard(HeroCard heroCard, MovementCard movementCard, Pawn pawn, Coord2D newKingPos) {
+        Logger.trace("SimpleActionList::useHeroCard");
         final ActionList actionList = new ActionList();
+
+        // Add flip pawn action
+        actionList.addSingleAction(new FlipPawn(model, pawn));
 
         // Add remove hero card actions
         actionList.addAll(ActionFactory.generateRemoveFromContainer(model, heroCard));
         actionList.addAll(ActionFactory.generateRemoveFromStage(model, heroCard));
-
-        // Add flip pawn action
-        actionList.addSingleAction(new FlipPawn(model, pawn));
 
         // Add move king and remove movement card actions
         useMovementCardOnKing(actionList, movementCard, newKingPos);
@@ -101,6 +101,8 @@ public class SimpleActionList {
      * @return the action list containing all the actions.
      */
     public ActionList useMovementCard(MovementCard movementCard, Coord2D newKingPos) {
+        Logger.trace("SimpleActionList::useMovementCard");
+
         final ActionList actionList = new ActionList();
 
         final int col = (int) newKingPos.getX();
@@ -110,11 +112,11 @@ public class SimpleActionList {
         final Pawn pawn = (Pawn) gameStage.getGeneralPot(playerData).getElement(0, 0);
         if (!pawn.getStatus().isOwnedBy(playerData)) actionList.addSingleAction(new FlipPawn(model, pawn));
 
+        // Add move pawn action
+        actionList.addAll(ActionFactory.generatePutInContainer(control, model, pawn, gameStage.getBoard().getName(), row, col));
+
         // Add move king and remove movement card actions
         useMovementCardOnKing(actionList, movementCard, newKingPos);
-
-        // Add move pawn action
-        actionList.addAll(ActionFactory.generatePutInContainer(control, model, pawn, gameStage.getBoard().getName(), row, col, AnimationTypes.MOVE_LINEARPROP, 60));
 
         actionList.setDoEndOfTurn(true);
         return actionList;
@@ -152,7 +154,7 @@ public class SimpleActionList {
         final MovementCard movementCard = (MovementCard) gameStage.getMovementCardStack().getElement(0, 0);
 
         // Move the card from the stack to the specified position in the player's hand
-        actionList.addAll(ActionFactory.generatePutInContainer(control, model, movementCard, container.getName(), row, col, AnimationTypes.MOVE_LINEARPROP, 80));
+        actionList.addAll(ActionFactory.generatePutInContainer(control, model, movementCard, container.getName(), row, col));
 
         actionList.setDoEndOfTurn(true);
         return actionList;
@@ -169,11 +171,11 @@ public class SimpleActionList {
         final int col = (int) position.getX();
         final int row = (int) position.getY();
 
-        // Remove the movement card from the player hand and place it in the played stack
-        actionList.addAll(ActionFactory.generatePutInContainer(control, model, movementCard, gameStage.getMovementCardStackPlayed().getName(), 0, 0, AnimationTypes.MOVE_LINEARPROP, 80));
-
         // Move the king pawn on the board
-        actionList.addAll(ActionFactory.generateMoveWithinContainer(control, model, gameStage.getKingPawn(), row, col, AnimationTypes.MOVE_LINEARPROP, 20));
+        actionList.addAll(ActionFactory.generateMoveWithinContainer(control, model, gameStage.getKingPawn(), row, col));
+
+        // Remove the movement card from the player hand and place it in the played stack
+        actionList.addAll(ActionFactory.generatePutInContainer(control, model, movementCard, gameStage.getMovementCardStackPlayed().getName(), 0, 0));
     }
 
     /**
@@ -298,6 +300,8 @@ public class SimpleActionList {
         final List<ActionList> actions = new ArrayList<>();
         if (playerData == null) return actions;
 
+        final SimpleActionList simpleActionList = new SimpleActionList(model, control, playerData);
+
         final PawnPot pawnPot = gameStage.getGeneralPot(playerData);
         final MovementCardSpread movementCardSpread = (playerData == PlayerData.PLAYER_BLUE)
                 ? gameStage.getBlueMovementCardsSpread()
@@ -312,7 +316,7 @@ public class SimpleActionList {
         final int countMovementCards = ContainerElements.countElements(movementCardSpread);
         if (countMovementCards < 5) {
             // Add the action of picking
-            actions.add(pickUpMovementCard(movementCardSpread));
+            actions.add(simpleActionList.pickUpMovementCard(movementCardSpread));
         }
 
         return actions;
@@ -328,6 +332,7 @@ public class SimpleActionList {
         final List<ActionList> actions = new ArrayList<>();
         if (playerData == null) return actions;
 
+        final SimpleActionList simpleActionList = new SimpleActionList(model, control, playerData);
 
         final KoRBoard board = stage.getBoard();
         final PawnPot pawnPot = stage.getGeneralPot(playerData);
@@ -350,7 +355,7 @@ public class SimpleActionList {
         final int countMovementCards = ContainerElements.countElements(movementCardSpread);
         if (countMovementCards < 5) {
             // Add the action to pick up a movement card.
-            actions.add(pickUpMovementCard(movementCardSpread));
+            actions.add(simpleActionList.pickUpMovementCard(movementCardSpread));
         }
 
         // If the player has no movement cards, only return the action to pick up a card.
@@ -376,9 +381,9 @@ public class SimpleActionList {
             // Otherwise, if the player has a hero card and the pawn at the position is not theirs,
             // add the movement + hero action.
             if (board.isEmptyAt(row, col)) {
-                actions.add(useMovementCard(movementCard, potentialPos));
+                actions.add(simpleActionList.useMovementCard(movementCard, potentialPos));
             } else if (hasHeroCard && !((Pawn) board.getElement(row, col)).getStatus().isOwnedBy(playerData)) {
-                actions.add(useHeroCard((HeroCard) heroCardStack.getElement(0, 0), movementCard,
+                actions.add(simpleActionList.useHeroCard((HeroCard) heroCardStack.getElement(0, 0), movementCard,
                         (Pawn) board.getElement(row, col), potentialPos));
             }
         }
