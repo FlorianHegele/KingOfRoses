@@ -23,6 +23,6 @@ public class KoRGraphic extends Application {
 
         // Init Game
         final Boardifiers boardifiers = new Boardifiers(stage, model, gameConfigurationModel);
-        boardifiers.initGame();
+        boardifiers.init();
     }
 }
