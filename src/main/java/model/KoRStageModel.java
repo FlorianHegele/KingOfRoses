@@ -700,7 +700,6 @@ public class KoRStageModel extends GameStageModel {
 
         board.resetReachableCells(false);
 
-
         System.out.println("Blue points: " + blueZoneCounter + ", total pawn on the board: " + bluePawnPlaced);
         System.out.println("Red points: " + redZoneCounter + ", total pawn on the board: " + redPawnPlaced);
 
@@ -841,7 +840,7 @@ public class KoRStageModel extends GameStageModel {
 
         // If there is no pawn and empty base cells are not accepted as starting points,
         // make the cell unreachable and move to the next cell
-        if (ContainerElements.isOutside(board, row, col) || (pawn != null && pawn.getStatus() != status)) return 0;
+        if (!board.canReachCell(row, col) || (pawn != null && pawn.getStatus() != status)) return 0;
 
         // Make the pawn unreachable
         board.setCellReachable(row, col, false);
@@ -858,6 +857,8 @@ public class KoRStageModel extends GameStageModel {
             counter++;
             pawnNodes.addAll(getNeighbors(pawnNodes.poll()));
         }
+
+        Logger.info("zone : " + counter + " for : " + playerData.name());
 
         return counter;
     }
@@ -894,6 +895,10 @@ public class KoRStageModel extends GameStageModel {
             // Add the pawn to the list and make the cell unreachable
             neighbors.add(new PawnNode(pawnNode.status, row, col));
             board.setCellReachable(row, col, false);
+        }
+
+        for(PawnNode pawnNode1 : neighbors) {
+            Logger.info("neighbors : " + pawnNode1.toString());
         }
 
         return neighbors;
@@ -987,5 +992,14 @@ public class KoRStageModel extends GameStageModel {
      * Represents a node containing information about a pawn.
      */
     public record PawnNode(Pawn.Status status, int row, int col) {
+
+        @Override
+        public String toString() {
+            return "PawnNode{" +
+                    "status=" + status +
+                    ", row=" + row +
+                    ", col=" + col +
+                    '}';
+        }
     }
 }

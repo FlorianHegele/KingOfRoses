@@ -2,8 +2,12 @@ import boardifier.model.Model;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import model.GameConfigurationModel;
+import model.data.AIData;
+import model.data.PlayerData;
 import utils.Boardifiers;
 
+
+import java.util.Map;
 
 import static model.GameConfigurationModel.*;
 
@@ -20,8 +24,8 @@ public class KoRGraphic extends Application {
 
         // Set up game configuration
         final GameConfigurationModel gameConfigurationModel = new GameConfigurationModel(model, 1,
-                DEFAULT_PLAYER_MODE, 3, DEFAULT_PLAYER_INTERACTION, DEFAULT_RENDER_GAME);
-
+                2, 3, DEFAULT_PLAYER_INTERACTION, DEFAULT_RENDER_GAME);
+        gameConfigurationModel.addAI(Map.of(PlayerData.PLAYER_BLUE, AIData.RANDOM, PlayerData.PLAYER_RED, AIData.RANDOM));
 
         // Init Game
         final Boardifiers boardifiers = new Boardifiers(stage, model, gameConfigurationModel);
