@@ -30,7 +30,7 @@ public class KoRController extends Controller {
     public void startGame() throws GameException {
         super.startGame();
 
-        view.getStage().setWidth(1280);
+        view.getStage().setWidth(925);
         view.getStage().setHeight(1000);
 
         playerPlay();

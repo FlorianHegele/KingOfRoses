@@ -39,7 +39,7 @@ public class MovementCardLook extends ElementLook {
 
         imageView = new ImageView();
         if (movementCard.getOwner() == MovementCard.Owner.STACK) {
-            Image image = new Image(FileUtils.getOuputStreamFromResources("stack.png"));
+            Image image = new Image(FileUtils.getOuputStreamFromResources("assets/stack.png"));
             imageView.setImage(image);
             imageView.setFitHeight(155);
             imageView.setFitWidth(160);

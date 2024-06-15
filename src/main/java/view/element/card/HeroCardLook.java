@@ -39,10 +39,10 @@ public class HeroCardLook extends ElementLook {
         final Image image;
         imageView = new ImageView();
         if(heroCard.getStatus() == HeroCard.Status.RED_CARD) {
-           image = new Image(FileUtils.getOuputStreamFromResources("hero-card-red.png"));
+           image = new Image(FileUtils.getOuputStreamFromResources("assets/hero-card-red.png"));
            imageView.setRotate(180);
         } else {
-            image = new Image(FileUtils.getOuputStreamFromResources("hero-card-blue.png"));
+            image = new Image(FileUtils.getOuputStreamFromResources("assets/hero-card-blue.png"));
         }
         imageView.setImage(image);
         imageView.setFitWidth(93);

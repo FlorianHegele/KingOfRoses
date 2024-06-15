@@ -19,7 +19,7 @@ public class KoRBoardLook extends ClassicBoardLook {
 
     @Override
     protected void render() {
-        Image cardBackground = new Image(FileUtils.getOuputStreamFromResources("rdr-plateau-vide.png"));
+        Image cardBackground = new Image(FileUtils.getOuputStreamFromResources("assets/rdr-plateau-vide.png"));
         Rectangle rectangle = new Rectangle(getWidth()+5, getHeight()+5);
         rectangle.setFill(new ImagePattern(cardBackground));
         addShape(rectangle);

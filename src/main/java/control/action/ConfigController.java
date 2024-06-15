@@ -120,8 +120,8 @@ public class ConfigController extends WindowController {
 
         configView.getbValider().setOnAction(f->{
             try {
-                Sound.playSound("src/main/resources/sword1.wav");
-                Sound.playMusic("src/main/resources/Daydream.wav");
+                Sound.playSound("sword1.wav");
+                Sound.playMusic("Daydream.wav");
                 gameConfigurationModel.addPlayers("Player 1 - Blue","Player 2 - Red");
                 controller.startGame();
             } catch (GameException err) {

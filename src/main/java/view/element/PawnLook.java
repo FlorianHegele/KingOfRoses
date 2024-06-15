@@ -24,7 +24,7 @@ public class PawnLook extends ElementLook {
     protected void render() {
         Pawn pawn = (Pawn) element;
         if (pawn.getStatus() == Pawn.Status.KING_PAWN){
-            Image image = new Image(FileUtils.getOuputStreamFromResources("king-pawn.png"));
+            Image image = new Image(FileUtils.getOuputStreamFromResources("assets/king-pawn.png"));
             ImageView imageView = new ImageView();
             imageView.setImage(image);
             imageView.setFitWidth(70);
@@ -34,7 +34,7 @@ public class PawnLook extends ElementLook {
             addNode(imageView);
         }
         else if (pawn.getStatus() == Pawn.Status.BLUE_PAWN){
-            Image image = new Image(FileUtils.getOuputStreamFromResources("blue-pawn.png"));
+            Image image = new Image(FileUtils.getOuputStreamFromResources("assets/blue-pawn.png"));
             ImageView imageView = new ImageView();
             imageView.setImage(image);
             imageView.setFitWidth(53);
@@ -44,7 +44,7 @@ public class PawnLook extends ElementLook {
             addNode(imageView);
         }
         else if (pawn.getStatus() == Pawn.Status.RED_PAWN){
-            Image image = new Image(FileUtils.getOuputStreamFromResources("red-pawn.png"));
+            Image image = new Image(FileUtils.getOuputStreamFromResources("assets/red-pawn.png"));
             ImageView imageView = new ImageView();
             imageView.setImage(image);
             imageView.setFitWidth(54);

@@ -4,7 +4,9 @@ import boardifier.control.Logger;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
+import utils.FileUtils;
 
+import java.io.File;
 import java.nio.file.Paths;
 
 
@@ -19,9 +21,11 @@ public class Sound {
     public static void playSound(String sound){
         if(soundOn) {
             try {
-                final Media media = new Media(Paths.get(sound).toUri().toString());
-                final MediaPlayer mediaPlayer = new MediaPlayer(media);
+                final File audioFile = FileUtils.getFileFromResources("sounds/"+sound);
+                final String path = audioFile.toPath().toUri().toString();
                 Logger.trace("Playing sound: " + sound);
+                final Media media = new Media(path);
+                final MediaPlayer mediaPlayer = new MediaPlayer(media);
                 mediaPlayer.setVolume(soundVolume);
                 mediaPlayer.play();
             } catch (Exception e) {
@@ -32,9 +36,10 @@ public class Sound {
 
     public static void playMusic(String sound){
             try {
-                String mediaPath = Paths.get(sound).toUri().toString();
-                Logger.trace("Playing music from: " + mediaPath);
-                final Media media = new Media(mediaPath);
+                final File audioFile = FileUtils.getFileFromResources("sounds/"+sound);
+                final String path = audioFile.toPath().toUri().toString();
+                Logger.trace("Playing music from: " + path);
+                final Media media = new Media(path);
                 if (currentMusic != null) {
                     if (currentMusic.getMedia().getSource().contains(sound)) return;
                     currentMusic.stop();
@@ -55,9 +60,10 @@ public class Sound {
 
     public static void playMusic(String sound, long ms){
             try {
-                String mediaPath = Paths.get(sound).toUri().toString();
-                System.out.println("Playing music from: " + mediaPath);
-                final Media media = new Media(mediaPath);
+                final File audioFile = FileUtils.getFileFromResources("sounds/"+sound);
+                final String path = audioFile.toPath().toUri().toString();
+                Logger.trace("Playing music from: " + path);
+                final Media media = new Media(path);
                 if (currentMusic != null) {
                     if (currentMusic.getMedia().getSource().contains(sound)) return;
                     currentMusic.stop();
@@ -80,7 +86,9 @@ public class Sound {
     public static void musicSwitch(){
         if(musicOn){
             try {
-                final Media media = new Media(Paths.get("src/main/resources/p1.wav").toUri().toString());
+                final File audioFile = FileUtils.getFileFromResources("sounds/p1.wav");
+                final String path = audioFile.toPath().toUri().toString();
+                final Media media = new Media(path);
                 final MediaPlayer mediaPlayer = new MediaPlayer(media);
                 mediaPlayer.play();
             } catch (Exception e) {
@@ -90,7 +98,9 @@ public class Sound {
         }
         if(!musicOn){
             try {
-                final Media media = new Media(Paths.get("src/main/resources/p2.wav").toUri().toString());
+                final File audioFile = FileUtils.getFileFromResources("sounds/p2.wav");
+                final String path = audioFile.toPath().toUri().toString();
+                final Media media = new Media(path);
                 final MediaPlayer mediaPlayer = new MediaPlayer(media);
                 mediaPlayer.play();
             } catch (Exception e) {
@@ -111,7 +121,9 @@ public class Sound {
     public static void soundSwitch(){
         if(soundOn) {
             try {
-                final Media media = new Media(Paths.get("src/main/resources/p10.wav").toUri().toString());
+                final File audioFile = FileUtils.getFileFromResources("sounds/p10.wav");
+                final String path = audioFile.toPath().toUri().toString();
+                final Media media = new Media(path);
                 final MediaPlayer mediaPlayer = new MediaPlayer(media);
                 mediaPlayer.setVolume(soundVolume);
                 mediaPlayer.play();
@@ -120,7 +132,9 @@ public class Sound {
             }
         } else {
             try {
-                final Media media = new Media(Paths.get("src/main/resources/p9.wav").toUri().toString());
+                final File audioFile = FileUtils.getFileFromResources("sounds/p9.wav");
+                final String path = audioFile.toPath().toUri().toString();
+                final Media media = new Media(path);
                 final MediaPlayer mediaPlayer = new MediaPlayer(media);
                 mediaPlayer.setVolume(soundVolume);
                 mediaPlayer.play();

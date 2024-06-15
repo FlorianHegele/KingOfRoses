@@ -185,7 +185,7 @@ public class MovementCard extends GameElement {
          * @return The symbol representing the direction.
          */
         public String getPath(int step) {
-            return "/movement_card/" + path + "_" + step + ".png";
+            return "/assets/movement_card/" + path + "_" + step + ".png";
         }
 
         /**

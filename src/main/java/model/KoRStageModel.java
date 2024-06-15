@@ -684,7 +684,7 @@ public class KoRStageModel extends GameStageModel {
         final int redPawnPlaced = getTotalPawnOnBoard(Pawn.Status.RED_PAWN);
         final int bluePawnPlaced = getTotalPawnOnBoard(Pawn.Status.BLUE_PAWN);
 
-        Sound.playSound("src/main/resources/sword1.wav");
+        Sound.playSound("sword1.wav");
 
         if (redZoneCounter == blueZoneCounter) {
             if (redPawnPlaced == bluePawnPlaced) {

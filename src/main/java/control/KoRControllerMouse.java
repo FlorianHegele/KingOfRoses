@@ -67,12 +67,12 @@ public class KoRControllerMouse extends ControllerMouse implements EventHandler<
                     else if(movementCard.getOwner().isSpecificPlayer(currentPlayer)) {
                         stageModel.setState(GameState.SELECT_MOVEMENT_CARD);
                         element.toggleSelected();
-                        Sound.playSound("src/main/resources/card.wav");
+                        Sound.playSound("card.wav");
                         return;
                     }
                 }
             }
-            if(actionList != null) Sound.playSound("src/main/resources/card.wav");
+            if(actionList != null) Sound.playSound("card.wav");
         // CAN SELECT THE DEST OR A HERO CARD OR UNSELECT HIS CARD OR CHANGE HIS MOVEMENT CARD
         } else if (stageModel.getGameState() == GameState.SELECT_MOVEMENT_CARD) {
             // first check if the click is on the current selected pawn. In this case, unselect it
@@ -95,7 +95,7 @@ public class KoRControllerMouse extends ControllerMouse implements EventHandler<
                         }
                     }
                     element.toggleSelected();
-                    Sound.playSound("src/main/resources/card.wav");
+                    Sound.playSound("card.wav");
                     return;
 
                 // SELECT A HERO CARD
@@ -105,7 +105,7 @@ public class KoRControllerMouse extends ControllerMouse implements EventHandler<
                     if(heroCard.getStatus().isOwnedBy(currentPlayer)) {
                         stageModel.setState(GameState.SELECT_MOVEMENT_CARD_HERO);
                         element.toggleSelected();
-                        Sound.playSound("src/main/resources/card.wav");
+                        Sound.playSound("card.wav");
                         return;
                     }
                 }
@@ -143,7 +143,7 @@ public class KoRControllerMouse extends ControllerMouse implements EventHandler<
                             break;
                         }
                     }
-                    Sound.playSound("src/main/resources/card.wav");
+                    Sound.playSound("card.wav");
                     return;
                 }
             }
