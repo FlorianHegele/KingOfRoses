@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class KoRDeciderGuide extends KoRDecider {
 
-    private static final int THRESHOLD = 4;
+    private static final int THRESHOLD = 3;
 
     /**
      * Constructs a KoRDeciderGuide with the specified model, control, and player data.

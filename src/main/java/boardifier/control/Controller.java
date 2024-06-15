@@ -2,6 +2,7 @@ package boardifier.control;
 
 import boardifier.model.*;
 import boardifier.view.*;
+import control.Sound;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -213,6 +214,7 @@ public abstract class Controller {
 
         String message = "";
         if (model.getIdWinner() != -1) {
+            Sound.playSound("src/main/resources/sword1.wav");
             message = model.getPlayers().get(model.getIdWinner()).getName() + " wins";
         }
         else {

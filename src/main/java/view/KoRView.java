@@ -103,10 +103,10 @@ public class KoRView extends View {
         menuAIVsAI.setToggleGroup(groupPlayers);
 
         ToggleGroup groupAI1 = new ToggleGroup();
-        random1 = new RadioButton("Random");
-        camarade1 = new RadioButton("Camarade");
-        hate1 = new RadioButton("Hate Cards");
-        guide1 = new RadioButton("Guide");
+        random1 = new RadioButton("Random (Joue au pif)");
+        camarade1 = new RadioButton("Camarade (Amicale)");
+        hate1 = new RadioButton("Hate Cards (Rapide)");
+        guide1 = new RadioButton("Guide (Aggressive)");
 
         random1.setToggleGroup(groupAI1);
         camarade1.setToggleGroup(groupAI1);
@@ -114,10 +114,10 @@ public class KoRView extends View {
         guide1.setToggleGroup(groupAI1);
 
         ToggleGroup groupAI2 = new ToggleGroup();
-        random2 = new RadioButton("Random");
-        camarade2 = new RadioButton("Camarade");
-        hate2 = new RadioButton("Hate Cards");
-        guide2 = new RadioButton("Guide");
+        random2 = new RadioButton("Random (Joue au pif)");
+        camarade2 = new RadioButton("Camarade (Amicale)");
+        hate2 = new RadioButton("Hate Cards (Rapide)");
+        guide2 = new RadioButton("Guide (Aggressive)");
 
         random2.setToggleGroup(groupAI2);
         camarade2.setToggleGroup(groupAI2);

@@ -131,6 +131,10 @@ public class Sound {
         soundOn = !soundOn;
     }
 
+    public static void stopMusic(){
+        currentMusic.stop();
+    }
+
     public static void setSoundVolume(double volume){
         soundVolume = volume;
     }

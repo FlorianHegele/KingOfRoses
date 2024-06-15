@@ -1,6 +1,7 @@
 package model;
 
 import boardifier.model.Model;
+import control.Sound;
 import model.data.AIData;
 import model.data.PlayerData;
 import model.element.Pawn;
