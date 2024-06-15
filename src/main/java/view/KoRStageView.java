@@ -4,6 +4,8 @@ import boardifier.control.Logger;
 import boardifier.model.GameStageModel;
 import boardifier.view.GameStageView;
 import boardifier.view.TextLook;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import model.KoRStageModel;
 import model.element.card.MovementCard;
@@ -35,7 +37,6 @@ public class KoRStageView extends GameStageView {
         addLook(new TextLook(24, Color.BLACK, model.getRedPawnText()));
         addLook(new TextLook(24, Color.BLACK, model.getBluePawnText()));
 
-
          /*
           CREATE ELEMENT CONTAINERS LOOK
          */
@@ -60,16 +61,14 @@ public class KoRStageView extends GameStageView {
         addLook(new PawnPotLook(80, 80, model.getRedPot()));
 
 
-
-
         /*
          CREATE ELEMENT LOOK
          */
 
         // create look for the hero cards
         for (int i = 0; i < 4; i++) {
-            addLook(new HeroCardLook(24, model.getRedHeroCards()[i]));
-            addLook(new HeroCardLook(24, model.getBlueHeroCards()[i]));
+            addLook(new HeroCardLook(model.getRedHeroCards()[i]));
+            addLook(new HeroCardLook(model.getBlueHeroCards()[i]));
         }
 
         // create look for the pawns
@@ -81,7 +80,7 @@ public class KoRStageView extends GameStageView {
 
         // create look for the movement card
         for (MovementCard movementCard : model.getMovementCards()) {
-            addLook(new MovementCardLook(25, movementCard));
+            addLook(new MovementCardLook(movementCard));
         }
 
         Logger.debug("finished creating game stage looks", this);
