@@ -167,6 +167,13 @@ public abstract class Controller {
 
             for (int i=0;i<queue.getSize();i++) {
                 Event e = queue.getEvent(i);
+                if(e==null) {
+                    Logger.trace("Event "+i+" is null");
+                    queue.removeEvent(i--);
+                    continue;
+                }
+
+
                 if (e.isLocationEvent()) {
                     queue.removeEvent(i--);
                     v.onLocationChange();

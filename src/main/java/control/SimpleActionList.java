@@ -73,7 +73,7 @@ public class SimpleActionList {
      * @return the action list containing all the actions.
      */
     public ActionList useHeroCard(HeroCard heroCard, MovementCard movementCard, Pawn pawn, Coord2D newKingPos) {
-        Logger.trace("SimpleActionList::useHeroCard");
+        Logger.trace("SimpleActionList::useHeroCard "+ movementCard);
         final ActionList actionList = new ActionList();
 
         // Add flip pawn action
@@ -101,7 +101,7 @@ public class SimpleActionList {
      * @return the action list containing all the actions.
      */
     public ActionList useMovementCard(MovementCard movementCard, Coord2D newKingPos) {
-        Logger.trace("SimpleActionList::useMovementCard");
+        Logger.trace("SimpleActionList::useMovementCard " + movementCard);
 
         final ActionList actionList = new ActionList();
 
@@ -152,6 +152,9 @@ public class SimpleActionList {
 
         // Get the first movement card from the stack
         final MovementCard movementCard = (MovementCard) gameStage.getMovementCardStack().getElement(0, 0);
+
+        Logger.trace("SimpleActionList::pickUpMovementCard " + movementCard);
+
 
         // Move the card from the stack to the specified position in the player's hand
         actionList.addAll(ActionFactory.generatePutInContainer(control, model, movementCard, container.getName(), row, col));

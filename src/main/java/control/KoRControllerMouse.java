@@ -40,10 +40,10 @@ public class KoRControllerMouse extends ControllerMouse implements EventHandler<
         List<GameElement> list = control.elementsAt(clic);
         // for debug, uncomment next instructions to display x,y and elements at that postion
 
-        Logger.debug("click in "+event.getSceneX()+","+event.getSceneY());
-        for(GameElement element : list) {
-            Logger.debug("el : " + element.toString());
-        }
+        //Logger.debug("click in "+event.getSceneX()+","+event.getSceneY());
+        //for(GameElement element : list) {
+        //    Logger.debug("el : " + element.toString());
+        //}
 
         PlayerData currentPlayer = PlayerData.getCurrentPlayerData(model);
         KoRStageModel stageModel = (KoRStageModel) model.getGameStage();

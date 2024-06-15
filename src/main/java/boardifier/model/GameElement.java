@@ -276,7 +276,6 @@ public abstract class GameElement {
      * @return <code>true</code> if the element is selected, otherwise <code>false</code>
      */
     public boolean isSelected() {
-        Logger.debug(this + " is "+(selected ? "" : "not")+" selected");
         return selected;
     }
 
