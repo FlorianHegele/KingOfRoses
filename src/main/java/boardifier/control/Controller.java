@@ -214,7 +214,6 @@ public abstract class Controller {
 
         String message = "";
         if (model.getIdWinner() != -1) {
-            Sound.playSound("src/main/resources/sword1.wav");
             message = model.getPlayers().get(model.getIdWinner()).getName() + " wins";
         }
         else {
