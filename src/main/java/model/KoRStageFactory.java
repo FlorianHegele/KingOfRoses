@@ -44,27 +44,27 @@ public class KoRStageFactory extends StageElementsFactory {
 
         // create the text that displays the player name and put it in 0,1 in the virtual space
         TextElement playerText = new TextElement(stageModel.getCurrentPlayerName(), stageModel);
-        playerText.setLocation(10, 20);
+        playerText.setLocation(15, 31);
         stageModel.setPlayerName(playerText);
 
         TextElement movementCardStackText = new TextElement("14", stageModel);
-        movementCardStackText.setLocation(50, 230);
+        movementCardStackText.setLocation(72, 335);
         stageModel.setMovementCardStackText(movementCardStackText);
 
         TextElement textBluePawn = new TextElement("26", stageModel);
-        textBluePawn.setLocation(850, 675);
+        textBluePawn.setLocation(830, 650);
         stageModel.setBluePawnText(textBluePawn);
 
         TextElement textRedPawn = new TextElement("26", stageModel);
-        textRedPawn.setLocation(850, 225);
+        textRedPawn.setLocation(827, 327);
         stageModel.setRedPawnText(textRedPawn);
 
         TextElement textBlueCardHero = new TextElement("4", stageModel);
-        textBlueCardHero.setLocation(735, 945);
+        textBlueCardHero.setLocation(720, 878);
         stageModel.setBlueHeroCardText(textBlueCardHero);
 
         TextElement textRedCardHero = new TextElement("4", stageModel);
-        textRedCardHero.setLocation(210, 15);
+        textRedCardHero.setLocation(215, 95);
         stageModel.setRedHeroCardText(textRedCardHero);
 
 
@@ -74,45 +74,45 @@ public class KoRStageFactory extends StageElementsFactory {
 
         // BOARD
         // create the board, in 10, 5 in the virtual space
-        KoRBoard board = new KoRBoard(175, 150, stageModel);
+        KoRBoard board = new KoRBoard(175, 175, stageModel);
         stageModel.setBoard(board);
 
 
         // MOVEMENT CARD STACK
         // create the movement cards stack in 2, 8
-        MovementCardStack movementCardStack = new MovementCardStack(20, 250, stageModel);
+        MovementCardStack movementCardStack = new MovementCardStack(36, 350, stageModel);
         stageModel.setMovementCardStack(movementCardStack);
 
         // create the movement cards stack in 2, 15
-        MovementCardStackPlayed movementCardStackPlayed = new MovementCardStackPlayed(20, 400, stageModel);
+        MovementCardStackPlayed movementCardStackPlayed = new MovementCardStackPlayed(36, 485, stageModel);
         stageModel.setMovementCardStackPlayed(movementCardStackPlayed);
 
 
         // RED ELEMENT
         //create the red hero cards stack in 10,2 in the virtual space
-        HeroCardStack redHeroCardStack = new HeroCardStack(175, 20, stageModel);
+        HeroCardStack redHeroCardStack = new HeroCardStack(250, 27, stageModel);
         stageModel.setRedHeroCardStack(redHeroCardStack);
 
         //create the red movements cards spread in 16,1 in the virtual space
-        MovementCardSpread redMovementCardsSpread = new MovementCardSpread(PlayerData.PLAYER_RED, 300, 20, stageModel);
+        MovementCardSpread redMovementCardsSpread = new MovementCardSpread(PlayerData.PLAYER_RED, 376, 37, stageModel);
         stageModel.setRedMovementCardsSpread(redMovementCardsSpread);
 
         //create the red pot in 50,8 in the virtual space
-        PawnPot redPot = new PawnPot(825, 250, stageModel);
+        PawnPot redPot = new PawnPot(803, 340, stageModel);
         stageModel.setRedPot(redPot);
 
 
         // BLUE ELEMENT
         //create the blue hero cards stack in 35,24 in the virtual space
-        HeroCardStack blueHeroCardStack = new HeroCardStack(700, 800, stageModel);
+        HeroCardStack blueHeroCardStack = new HeroCardStack(616, 809, stageModel);
         stageModel.setBlueHeroCardStack(blueHeroCardStack);
 
         //create the blue movements cards spread in 10,24 in the virtual space
-        MovementCardSpread blueMovementCardsSpread = new MovementCardSpread(PlayerData.PLAYER_BLUE, 175, 800, stageModel);
+        MovementCardSpread blueMovementCardsSpread = new MovementCardSpread(PlayerData.PLAYER_BLUE, 176, 817, stageModel);
         stageModel.setBlueMovementCardsSpread(blueMovementCardsSpread);
 
         //create the blue pot in 50,18 in the virtual space
-        PawnPot bluePot = new PawnPot(825, 550, stageModel);
+        PawnPot bluePot = new PawnPot(803, 535, stageModel);
         stageModel.setBluePot(bluePot);
 
 
