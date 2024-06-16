@@ -5,6 +5,7 @@ boardifier.model.action
 boardifier.model.animation
 boardifier.view
 control
+control.action
 control.ai
 model
 model.container
@@ -18,3 +19,4 @@ view.container
 view.container.card
 view.element
 view.element.card
+view.window
