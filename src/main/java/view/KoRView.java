@@ -18,6 +18,9 @@ import view.window.WindowView;
 
 import java.util.*;
 
+/**
+ * The main view class for the King of Roses game, extending the abstract View class.
+ */
 public class KoRView extends View {
 
     private final Map<WindowType, WindowView> windows = new EnumMap<>(WindowType.class);
@@ -40,12 +43,22 @@ public class KoRView extends View {
     private Menu menu3;
     private Menu menu4;
 
+    /**
+     * Constructs a new KoRView with the specified model, stage, and root pane.
+     *
+     * @param model    the game model.
+     * @param stage    the primary stage.
+     * @param rootPane the root pane.
+     */
     public KoRView(Model model, Stage stage, RootPane rootPane) {
         super(model, stage, rootPane);
         currentWindow = WindowType.NONE;
         createWindows();
     }
 
+    /**
+     * Creates the menu bar with game and settings menus.
+     */
     @Override
     protected void createMenuBar(){
         menuBar = new MenuBar();
@@ -84,6 +97,12 @@ public class KoRView extends View {
         menuBar.getMenus().addAll(menu1,menu2);
     }
 
+    /**
+     * Sets the content of the main window to the specified window type.
+     *
+     * @param windowType the type of window to display.
+     * @return the WindowView of the specified type.
+     */
     public WindowView setContent(WindowType windowType) {
         if(this.currentWindow == windowType) return windows.get(currentWindow);
         resetView();
@@ -111,14 +130,27 @@ public class KoRView extends View {
         return windowView;
     }
 
+    /**
+     * Gets the current window view.
+     *
+     * @return the current window view.
+     */
     public WindowView getCurrentWindow() {
         return windows.get(currentWindow);
     }
 
+    /**
+     * Gets the type of the current window.
+     *
+     * @return the current window type.
+     */
     public WindowType getCurrentWindowType() {
         return currentWindow;
     }
 
+    /**
+     * Resets the view, setting the current window to NONE.
+     */
     @Override
     public void resetView() {
         super.resetView();
@@ -189,6 +221,9 @@ public class KoRView extends View {
         return menu4;
     }
 
+    /**
+     * Creates the windows for each window type and stores them in the windows map.
+     */
     private void createWindows() {
         for (WindowType windowType : WindowType.values()) {
             if(windowType == WindowType.NONE) continue;
@@ -202,6 +237,12 @@ public class KoRView extends View {
         }
     }
 
+    /**
+     * Gets the window view of the specified window type.
+     *
+     * @param windowType the type of window.
+     * @return the WindowView of the specified type.
+     */
     public WindowView getWindow(WindowType windowType) {
         return windows.get(windowType);
     }

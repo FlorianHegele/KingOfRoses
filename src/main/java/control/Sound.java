@@ -7,21 +7,37 @@ import javafx.util.Duration;
 import utils.FileUtils;
 
 import java.io.File;
-import java.nio.file.Paths;
 
-
+/**
+ * The {@code Sound} class provides methods to manage and play sound effects and music
+ * within the game "Le Roi des Roses".
+ */
 public class Sound {
 
+    /** The current background music player. */
     static MediaPlayer currentMusic;
+
+    /** Flag indicating if music is enabled. */
     static boolean musicOn = true;
+
+    /** Flag indicating if sound effects are enabled. */
     static boolean soundOn = true;
+
+    /** Volume level for music. */
     static double musicVolume = 0.5;
+
+    /** Volume level for sound effects. */
     static double soundVolume = 0.5;
 
-    public static void playSound(String sound){
-        if(soundOn) {
+    /**
+     * Plays a sound effect.
+     *
+     * @param sound the name of the sound file to play
+     */
+    public static void playSound(String sound) {
+        if (soundOn) {
             try {
-                final File audioFile = FileUtils.getFileFromResources("sounds/"+sound);
+                final File audioFile = FileUtils.getFileFromResources("sounds/" + sound);
                 final String path = audioFile.toPath().toUri().toString();
                 Logger.trace("Playing sound: " + sound);
                 final Media media = new Media(path);
@@ -34,57 +50,71 @@ public class Sound {
         }
     }
 
-    public static void playMusic(String sound){
-            try {
-                final File audioFile = FileUtils.getFileFromResources("sounds/"+sound);
-                final String path = audioFile.toPath().toUri().toString();
-                Logger.trace("Playing music from: " + path);
-                final Media media = new Media(path);
-                if (currentMusic != null) {
-                    if (currentMusic.getMedia().getSource().contains(sound)) return;
-                    currentMusic.stop();
-                }
-                currentMusic = new MediaPlayer(media);
-                if (!musicOn) return;
-                currentMusic.setOnEndOfMedia(() -> {
-                    currentMusic.seek(Duration.millis(0));
-                    currentMusic.setVolume(musicVolume);
-                    currentMusic.play();
-                });
+    /**
+     * Plays background music.
+     *
+     * @param sound the name of the music file to play
+     */
+    public static void playMusic(String sound) {
+        try {
+            final File audioFile = FileUtils.getFileFromResources("sounds/" + sound);
+            final String path = audioFile.toPath().toUri().toString();
+            Logger.trace("Playing music from: " + path);
+            final Media media = new Media(path);
+            if (currentMusic != null) {
+                if (currentMusic.getMedia().getSource().contains(sound)) return;
+                currentMusic.stop();
+            }
+            currentMusic = new MediaPlayer(media);
+            if (!musicOn) return;
+            currentMusic.setOnEndOfMedia(() -> {
+                currentMusic.seek(Duration.millis(0));
                 currentMusic.setVolume(musicVolume);
                 currentMusic.play();
-            } catch (Exception e) {
-                System.err.println("Error playing music: " + e.getMessage());
+            });
+            currentMusic.setVolume(musicVolume);
+            currentMusic.play();
+        } catch (Exception e) {
+            System.err.println("Error playing music: " + e.getMessage());
         }
     }
 
-    public static void playMusic(String sound, long ms){
-            try {
-                final File audioFile = FileUtils.getFileFromResources("sounds/"+sound);
-                final String path = audioFile.toPath().toUri().toString();
-                Logger.trace("Playing music from: " + path);
-                final Media media = new Media(path);
-                if (currentMusic != null) {
-                    if (currentMusic.getMedia().getSource().contains(sound)) return;
-                    currentMusic.stop();
-                }
-                currentMusic = new MediaPlayer(media);
-                if (!musicOn) return;
-                currentMusic.setOnEndOfMedia(() -> {
-                    currentMusic.seek(Duration.millis(ms));
-                    currentMusic.setVolume(musicVolume);
-                    currentMusic.play();
-                });
-                currentMusic.setStartTime(Duration.millis(ms));
+    /**
+     * Plays background music starting from a specified time.
+     *
+     * @param sound the name of the music file to play
+     * @param ms    the start time in milliseconds
+     */
+    public static void playMusic(String sound, long ms) {
+        try {
+            final File audioFile = FileUtils.getFileFromResources("sounds/" + sound);
+            final String path = audioFile.toPath().toUri().toString();
+            Logger.trace("Playing music from: " + path);
+            final Media media = new Media(path);
+            if (currentMusic != null) {
+                if (currentMusic.getMedia().getSource().contains(sound)) return;
+                currentMusic.stop();
+            }
+            currentMusic = new MediaPlayer(media);
+            if (!musicOn) return;
+            currentMusic.setOnEndOfMedia(() -> {
+                currentMusic.seek(Duration.millis(ms));
                 currentMusic.setVolume(musicVolume);
                 currentMusic.play();
-            } catch (Exception e) {
-                System.err.println("Error playing music: " + e.getMessage());
+            });
+            currentMusic.setStartTime(Duration.millis(ms));
+            currentMusic.setVolume(musicVolume);
+            currentMusic.play();
+        } catch (Exception e) {
+            System.err.println("Error playing music: " + e.getMessage());
         }
     }
 
-    public static void musicSwitch(){
-        if(musicOn){
+    /**
+     * Toggles the music on or off.
+     */
+    public static void musicSwitch() {
+        if (musicOn) {
             try {
                 final File audioFile = FileUtils.getFileFromResources("sounds/p1.wav");
                 final String path = audioFile.toPath().toUri().toString();
@@ -96,7 +126,7 @@ public class Sound {
             }
             currentMusic.stop();
         }
-        if(!musicOn){
+        if (!musicOn) {
             try {
                 final File audioFile = FileUtils.getFileFromResources("sounds/p2.wav");
                 final String path = audioFile.toPath().toUri().toString();
@@ -118,8 +148,11 @@ public class Sound {
         musicOn = !musicOn;
     }
 
-    public static void soundSwitch(){
-        if(soundOn) {
+    /**
+     * Toggles the sound effects on or off.
+     */
+    public static void soundSwitch() {
+        if (soundOn) {
             try {
                 final File audioFile = FileUtils.getFileFromResources("sounds/p10.wav");
                 final String path = audioFile.toPath().toUri().toString();
@@ -145,26 +178,47 @@ public class Sound {
         soundOn = !soundOn;
     }
 
-    public static void stopMusic(){
+    /**
+     * Stops the current background music.
+     */
+    public static void stopMusic() {
         currentMusic.stop();
     }
 
-    public static void setSoundVolume(double volume){
+    /**
+     * Sets the volume for sound effects.
+     *
+     * @param volume the volume level to set (0.0 to 1.0)
+     */
+    public static void setSoundVolume(double volume) {
         soundVolume = volume;
     }
 
-    public static void setMusicVolume(double volume){
+    /**
+     * Sets the volume for background music.
+     *
+     * @param volume the volume level to set (0.0 to 1.0)
+     */
+    public static void setMusicVolume(double volume) {
         musicVolume = volume;
         currentMusic.setVolume(volume);
     }
 
-    public static double getSoundVolume(){
+    /**
+     * Gets the current volume level for sound effects.
+     *
+     * @return the current volume level for sound effects
+     */
+    public static double getSoundVolume() {
         return soundVolume;
     }
 
-    public static double getMusicVolume(){
+    /**
+     * Gets the current volume level for background music.
+     *
+     * @return the current volume level for background music
+     */
+    public static double getMusicVolume() {
         return musicVolume;
     }
-
-
 }

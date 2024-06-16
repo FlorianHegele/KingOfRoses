@@ -10,7 +10,7 @@ import utils.FileUtils;
 public class PawnLook extends ElementLook {
 
     public PawnLook(GameElement element) {
-        super(element, ((Pawn)element).getStatus() == Pawn.Status.KING_PAWN ? 10 : -1);
+        super(element);
 
         render();
     }

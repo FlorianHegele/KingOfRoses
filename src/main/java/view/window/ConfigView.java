@@ -7,6 +7,9 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 
+/**
+ * View class for the configuration window, extending WindowView with a GridPane.
+ */
 public class ConfigView extends WindowView<GridPane> {
 
     private RadioButton guide2;
@@ -23,6 +26,9 @@ public class ConfigView extends WindowView<GridPane> {
 
     private Button bValider;
 
+    /**
+     * Constructs a ConfigView with a new GridPane.
+     */
     public ConfigView() {
         super(new GridPane());
 
@@ -32,6 +38,9 @@ public class ConfigView extends WindowView<GridPane> {
         pane.setPadding(new Insets(10, 10, 10, 10));
     }
 
+    /**
+     * Creates the default pane for the configuration view, adding all necessary components.
+     */
     @Override
     public void createDefaultPane() {
         ToggleGroup groupPlayers = new ToggleGroup();
@@ -135,6 +144,5 @@ public class ConfigView extends WindowView<GridPane> {
     public RadioButton getMenuHumanVsHuman() {
         return menuHumanVsHuman;
     }
-
 
 }

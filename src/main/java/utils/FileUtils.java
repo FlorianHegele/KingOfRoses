@@ -7,8 +7,25 @@ import java.io.FileOutputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 
+/**
+ * Utility class for file operations related to resource files.
+ */
 public class FileUtils {
 
+    /**
+     * Private constructor to prevent instantiation of this utility class.
+     */
+    private FileUtils() {
+        throw new IllegalStateException("Utility class");
+    }
+
+    /**
+     * Retrieves a file from the resources folder.
+     *
+     * @param path the relative path to the resource file.
+     * @return the File object representing the resource file.
+     * @throws IllegalArgumentException if the file is not found.
+     */
     public static File getFileFromResources(String path) {
         ClassLoader classLoader = FileUtils.class.getClassLoader();
         URL resource = classLoader.getResource(path);
@@ -23,7 +40,13 @@ public class FileUtils {
         }
     }
 
-
+    /**
+     * Retrieves a FileInputStream for a file from the resources folder.
+     *
+     * @param path the relative path to the resource file.
+     * @return the FileInputStream for the resource file.
+     * @throws RuntimeException if the file is not found or cannot be read.
+     */
     public static FileInputStream getOuputStreamFromResources(String path) {
         try {
             return new FileInputStream(getFileFromResources(path));

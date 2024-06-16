@@ -10,6 +10,9 @@ import control.Sound;
 import view.KoRRootPane;
 import view.KoRView;
 
+/**
+ * Initializes and manages the boardifier and its components.
+ */
 public class Boardifiers {
 
     private final Stage stage;
@@ -18,12 +21,22 @@ public class Boardifiers {
 
     private KoRController control;
 
+    /**
+     * Constructs a Boardifiers instance with the specified stage, model, and game configuration.
+     *
+     * @param stage the primary stage for the game.
+     * @param model the game model.
+     * @param gameConfigurationModel the game configuration model.
+     */
     public Boardifiers(Stage stage, Model model, GameConfigurationModel gameConfigurationModel) {
         this.stage = stage;
         this.model = model;
         this.gameConfigurationModel = gameConfigurationModel;
     }
 
+    /**
+     * Initializes the game by setting up the sound, registering the stage, creating the view, and controllers.
+     */
     public void init() {
         Sound.playMusic("main.wav",1000);
         // register a single stage for the game, called hole
@@ -49,14 +62,29 @@ public class Boardifiers {
         }
     }
 
+    /**
+     * Returns the game model.
+     *
+     * @return the game model.
+     */
     public Model getModel() {
         return model;
     }
 
+    /**
+     * Returns the current stage model.
+     *
+     * @return the KoRStageModel of the current game stage.
+     */
     public KoRStageModel getStageModel() {
         return (KoRStageModel) model.getGameStage();
     }
 
+    /**
+     * Returns the game controller.
+     *
+     * @return the KoRController.
+     */
     public KoRController getController() {
         return control;
     }

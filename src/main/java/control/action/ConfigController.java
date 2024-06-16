@@ -10,15 +10,29 @@ import model.data.WindowType;
 import view.KoRView;
 import view.window.ConfigView;
 
+/**
+ * Controller for the configuration window.
+ * Manages the interactions and settings within the configuration window.
+ */
 public class ConfigController extends WindowController {
 
     private final GameConfigurationModel gameConfigurationModel;
 
+    /**
+     * Constructs a ConfigController with the specified action controller and view.
+     *
+     * @param actionController the action controller managing the game actions.
+     * @param koRView the main view containing the windows.
+     */
     public ConfigController(KoRControllerAction actionController, KoRView koRView) {
         super(actionController, koRView, WindowType.CONFIG);
         this.gameConfigurationModel = actionController.getGameConfigurationModel();
     }
 
+    /**
+     * Sets the event handlers for the configuration window.
+     * Manages the behavior of radio buttons and validation button.
+     */
     @Override
     public void setHandler() {
         final ConfigView configView = (ConfigView) windowView;
