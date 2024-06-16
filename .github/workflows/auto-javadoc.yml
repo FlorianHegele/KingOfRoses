@@ -19,11 +19,21 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: Download JavaFX
+        run: |
+          curl -L -o openjfx.zip https://download2.gluonhq.com/openjfx/17.0.11/openjfx-17.0.11_linux-x64_bin-sdk.zip
+          unzip openjfx.zip -d $HOME/.openjfx
+          export JAVAFX_HOME=$HOME/.openjfx/javafx-sdk-17.0.11
+
       - name: Generate Javadoc
-        run: javadoc -d docs/ $(find src/main -name "*.java")
+        run: |
+          JAVAFX_MODULES="javafx.base,javafx.controls,javafx.fxml,javafx.graphics"
+          JAVAFX_PATH="$JAVAFX_HOME/lib"
+          javadoc -d docs/ -cp "$JAVAFX_PATH/*" --module-path "$JAVAFX_PATH" --add-modules $JAVAFX_MODULES $(find src/main -name "*.java")
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs
+          
