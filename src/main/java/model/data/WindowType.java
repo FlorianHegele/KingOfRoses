@@ -7,7 +7,8 @@ import view.window.WindowView;
 public enum WindowType {
 
     NONE(-1),
-    CONFIG(0, ConfigView.class), RULES(1, RuleView.class);
+    CONFIG(0, ConfigView.class),
+    RULES(1, RuleView.class);
 
     private final int type;
     private Class<? extends WindowView> windowClass;
