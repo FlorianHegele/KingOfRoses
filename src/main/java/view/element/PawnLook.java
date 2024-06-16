@@ -27,30 +27,30 @@ public class PawnLook extends ElementLook {
             Image image = new Image(FileUtils.getOuputStreamFromResources("assets/king-pawn.png"));
             ImageView imageView = new ImageView();
             imageView.setImage(image);
-            imageView.setFitWidth(60);
-            imageView.setFitHeight(60);
-            imageView.setX(-29);
-            imageView.setY(-32);
+            imageView.setFitWidth(56);
+            imageView.setFitHeight(56);
+            imageView.setX(-27);
+            imageView.setY(-30);
             addNode(imageView);
         }
         else if (pawn.getStatus() == Pawn.Status.BLUE_PAWN){
             Image image = new Image(FileUtils.getOuputStreamFromResources("assets/blue-pawn.png"));
             ImageView imageView = new ImageView();
             imageView.setImage(image);
-            imageView.setFitWidth(68);
-            imageView.setFitHeight(78);
-            imageView.setX(-32);
-            imageView.setY(-40);
+            imageView.setFitWidth(60);
+            imageView.setFitHeight(70);
+            imageView.setX(-28.5);
+            imageView.setY(-36);
             addNode(imageView);
         }
         else if (pawn.getStatus() == Pawn.Status.RED_PAWN){
             Image image = new Image(FileUtils.getOuputStreamFromResources("assets/red-pawn.png"));
             ImageView imageView = new ImageView();
             imageView.setImage(image);
-            imageView.setFitWidth(66);
-            imageView.setFitHeight(76);
-            imageView.setX(-32);
-            imageView.setY(-37);
+            imageView.setFitWidth(61);
+            imageView.setFitHeight(69);
+            imageView.setX(-29);
+            imageView.setY(-33);
             addNode(imageView);
         }
     }
