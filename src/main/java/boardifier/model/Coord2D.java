@@ -11,6 +11,10 @@ public class Coord2D {
         this.y = y;
     }
 
+    public Coord2D(int[] pos) {
+        this(pos[1], pos[0]);
+    }
+
     public Coord2D() {
         this(0.0, 0.0);
     }
@@ -31,32 +35,34 @@ public class Coord2D {
         this.y = y;
     }
 
-    public Coord2D add (double x, double y) {
+    public void relativeMove(Coord2D pos) {
+        this.x += pos.x;
+        this.y += pos.y;
+    }
+
+    public void relativeMove(double x, double y) {
+        this.x += x;
+        this.y += y;
+    }
+
+    public Coord2D add(double x, double y) {
         return new Coord2D(this.x+x, this.y+y);
     }
 
-    public Coord2D add (Coord2D other) {
-        return add(other.getX(), other.getY());
+    public Coord2D add(Coord2D pos) {
+        return new Coord2D(this.x+pos.x, this.y+pos.y);
+    }
+
+    public Coord2D subtract(double x, double y) {
+        return new Coord2D(this.x-x, this.y-y);
+    }
+
+    public Coord2D subtract(Coord2D pos) {
+        return new Coord2D(this.x-pos.x, this.y-pos.y);
     }
 
     public Coord2D multiply (double scale) {
         return new Coord2D(this.x * scale, this.y * scale);
-    }
-
-    public Coord2D add (Coord2D other, Coord2D scale) {
-        return add(other.getX() * scale.getX(), other.getY() * scale.getY());
-    }
-
-    public Coord2D subtract (double x, double y) {
-        return new Coord2D(this.x-x, this.y-y);
-    }
-
-    @Override
-    public String toString() {
-        return "Coord2D{" +
-                "x=" + x +
-                ", y=" + y +
-                '}';
     }
 
     @Override

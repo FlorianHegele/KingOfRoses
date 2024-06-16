@@ -1,7 +1,7 @@
 package model.data;
 
 import boardifier.model.Model;
-import boardifier.view.ConsoleColor;
+import javafx.scene.paint.Color;
 
 /**
  * Enumeration representing player data for the game.
@@ -10,21 +10,21 @@ import boardifier.view.ConsoleColor;
 public enum PlayerData {
 
     NONE(-1, null),
-    PLAYER_BLUE(0, ConsoleColor.BLUE_BACKGROUND),
-    PLAYER_RED(1, ConsoleColor.RED_BACKGROUND);
+    PLAYER_BLUE(0, Color.BLUE),
+    PLAYER_RED(1, Color.RED);
 
     private final int id;
-    private final String backgroundColor;
+    private final Color color;
 
     /**
      * Constructs a PlayerData enum with the specified ID and background color.
      *
      * @param id              the unique ID of the player.
-     * @param backgroundColor the background color associated with the player.
+     * @param color the color associated with the player.
      */
-    PlayerData(int id, String backgroundColor) {
+    PlayerData(int id, Color color) {
         this.id = id;
-        this.backgroundColor = backgroundColor;
+        this.color = color;
     }
 
     /**
@@ -41,8 +41,8 @@ public enum PlayerData {
      *
      * @return the background color.
      */
-    public String getBackgroundColor() {
-        return backgroundColor;
+    public Color getBackgroundColor() {
+        return color;
     }
 
     /**

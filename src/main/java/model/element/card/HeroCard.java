@@ -3,6 +3,8 @@ package model.element.card;
 import boardifier.model.ElementTypes;
 import boardifier.model.GameElement;
 import boardifier.model.GameStageModel;
+import javafx.scene.paint.Color;
+import model.data.ElementType;
 import model.data.PlayerData;
 
 /**
@@ -22,10 +24,7 @@ public class HeroCard extends GameElement {
         super(gameStageModel);
 
         // Register new element type
-        // Associate the word "hero_card" with the integer 52
-        ElementTypes.register("hero_card", 52);
-        // Retrieve the integer associated with the word "hero_card" and associate it with the type variable
-        this.type = ElementTypes.getType("hero_card");
+        this.type = ElementType.HERO_CARD.register();
 
         this.status = status;
     }
@@ -48,7 +47,7 @@ public class HeroCard extends GameElement {
         RED_CARD(PlayerData.PLAYER_RED);
 
         private final int id;
-        private final String backgroundColor;
+        private final Color color;
 
         /**
          * Constructs a new status with the specified player data.
@@ -63,11 +62,11 @@ public class HeroCard extends GameElement {
          * Constructs a new status with the specified ID and background color.
          *
          * @param id              The ID of the status.
-         * @param backgroundColor The background color associated with this status.
+         * @param color The color associated with this status.
          */
-        Status(int id, String backgroundColor) {
+        Status(int id, Color color) {
             this.id = id;
-            this.backgroundColor = backgroundColor;
+            this.color = color;
         }
 
         /**
@@ -84,10 +83,13 @@ public class HeroCard extends GameElement {
          *
          * @return The background color of the status.
          */
-        public String getBackgroundColor() {
-            return backgroundColor;
+        public Color getColor() {
+            return color;
         }
 
+        public boolean isOwnedBy(PlayerData playerData) {
+            return playerData.getId() == id;
+        }
     }
 
 }

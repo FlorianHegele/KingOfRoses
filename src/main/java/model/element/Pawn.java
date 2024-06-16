@@ -1,19 +1,20 @@
 package model.element;
 
+import boardifier.control.Logger;
 import boardifier.model.ElementTypes;
 import boardifier.model.GameElement;
 import boardifier.model.GameStageModel;
-import boardifier.view.ConsoleColor;
+import boardifier.model.animation.Animation;
+import boardifier.model.animation.AnimationStep;
+import javafx.scene.paint.Color;
 import model.KoRStageModel;
+import model.data.ElementType;
 import model.data.PlayerData;
 
-/**
- * Represents a pawn game element.
- */
 public class Pawn extends GameElement {
 
-    private Status status;
 
+    private Status status;
     /**
      * Constructs a pawn with the specified status and game stage model.
      *
@@ -24,10 +25,7 @@ public class Pawn extends GameElement {
         super(gameStageModel);
 
         // Register new element type
-        // Associate the word "pawn" with the integer 50
-        ElementTypes.register("pawn", 50);
-        // Retrieve the integer associated with the word "pawn" and associate it with the type variable
-        this.type = ElementTypes.getType("pawn");
+        this.type = ElementType.PAWN.register();
 
         this.status = status;
     }
@@ -37,6 +35,7 @@ public class Pawn extends GameElement {
      */
     public void flipStatus() {
         this.status = this.status.getOpposite();
+        addChangeFaceEvent();
     }
 
     /**
@@ -48,12 +47,21 @@ public class Pawn extends GameElement {
         return status;
     }
 
-
-    public boolean isUnderKing() {
-        if (status == Status.KING_PAWN) return false;
-        if (!getContainer().getName().equals("KoRboard")) return false;
-
-        return ((KoRStageModel) gameStageModel).getKingPawn().getLocation().equals(getLocation());
+    public void update() {
+        // if must be animated, move the pawn
+        if (animation != null) {
+            AnimationStep step = animation.next();
+            if (step == null) {
+                animation = null;
+            }
+            else if (step == Animation.NOPStep) {
+                Logger.debug("nothing to do", this);
+            }
+            else {
+                Logger.debug("move animation", this);
+                setLocation(step.getInt(0), step.getInt(1));
+            }
+        }
     }
 
     /**
@@ -63,10 +71,10 @@ public class Pawn extends GameElement {
 
         RED_PAWN(PlayerData.PLAYER_RED),
         BLUE_PAWN(PlayerData.PLAYER_BLUE),
-        KING_PAWN(2, ConsoleColor.YELLOW_BACKGROUND);
+        KING_PAWN(2, Color.YELLOW);
 
         private final int id;
-        private final String backgroundColor;
+        private final Color color;
 
         /**
          * Constructs a status with the specified player data.
@@ -81,11 +89,11 @@ public class Pawn extends GameElement {
          * Constructs a status with the specified ID and background color.
          *
          * @param id              The ID associated with the status.
-         * @param backgroundColor The background color associated with the status.
+         * @param color The background color associated with the status.
          */
-        Status(int id, String backgroundColor) {
+        Status(int id, Color color) {
             this.id = id;
-            this.backgroundColor = backgroundColor;
+            this.color = color;
         }
 
         /**
@@ -93,8 +101,8 @@ public class Pawn extends GameElement {
          *
          * @return The background color associated with the status.
          */
-        public String getBackgroundColor() {
-            return backgroundColor;
+        public Color getColor() {
+            return color;
         }
 
         /**
@@ -142,5 +150,4 @@ public class Pawn extends GameElement {
             return playerData.getId() == id;
         }
     }
-
 }

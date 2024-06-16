@@ -1,7 +1,7 @@
 package model.container;
 
-import boardifier.model.ContainerElement;
 import boardifier.model.GameStageModel;
+import boardifier.model.ContainerElement;
 
 /**
  * Represents a pot for storing pawns in the game.

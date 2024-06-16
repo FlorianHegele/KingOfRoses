@@ -37,8 +37,11 @@ public class KoRDeciderRandom extends KoRDecider {
         // Get all possible actions for the current player.
         final List<ActionList> actionListList = simpleActionList.getPossiblePlayerActions();
 
+        final int actions = actionListList.size();
+        if(actions == 0) throw new IllegalStateException("The player " + playerData.getName() + " can't play");
+
         // Return one randomly selected action list.
-        return actionListList.get(LOTO.nextInt(actionListList.size()));
+        return actionListList.get(LOTO.nextInt(actions));
     }
 
 }

@@ -1,37 +1,57 @@
 package view.element;
 
-import boardifier.view.ConsoleColor;
+import boardifier.model.GameElement;
 import boardifier.view.ElementLook;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import model.element.Pawn;
+import utils.FileUtils;
 
-/**
- * The PawnLook class represents the visual representation (look) of a pawn element in the game.
- * It renders the pawn as a single character on a 1x1 grid.
- */
 public class PawnLook extends ElementLook {
 
-    /**
-     * Constructs a new PawnLook for the specified pawn element.
-     *
-     * @param element The pawn element to render.
-     */
-    public PawnLook(Pawn element) {
-        // Pawn look is constituted of a single character, so shape size = 1x1
-        super(element, 1, 1, (element.getStatus() == Pawn.Status.KING_PAWN) ? 0 : 50);
+    public PawnLook(GameElement element) {
+        super(element);
+
+        render();
     }
 
-    /**
-     * Renders the visual representation of the pawn based on its status.
-     */
+    @Override
+    public void onFaceChange() {
+        clearGroup();
+        render();
+    }
+
     protected void render() {
         Pawn pawn = (Pawn) element;
-        Pawn.Status status = pawn.getStatus();
-
-        if (pawn.isUnderKing()) {
-            shape[0][0] = ConsoleColor.BLACK + Pawn.Status.KING_PAWN.getBackgroundColor() + " " + ConsoleColor.RESET;
-        } else {
-            // Set the shape character based on the pawn's status and background color
-            shape[0][0] = ConsoleColor.BLACK + status.getBackgroundColor() + " " + ConsoleColor.RESET;
+        if (pawn.getStatus() == Pawn.Status.KING_PAWN){
+            Image image = new Image(FileUtils.getOuputStreamFromResources("assets/king-pawn.png"));
+            ImageView imageView = new ImageView();
+            imageView.setImage(image);
+            imageView.setFitWidth(70);
+            imageView.setFitHeight(70);
+            imageView.setX(-35);
+            imageView.setY(-35);
+            addNode(imageView);
+        }
+        else if (pawn.getStatus() == Pawn.Status.BLUE_PAWN){
+            Image image = new Image(FileUtils.getOuputStreamFromResources("assets/blue-pawn.png"));
+            ImageView imageView = new ImageView();
+            imageView.setImage(image);
+            imageView.setFitWidth(53);
+            imageView.setFitHeight(63);
+            imageView.setX(-25);
+            imageView.setY(-30);
+            addNode(imageView);
+        }
+        else if (pawn.getStatus() == Pawn.Status.RED_PAWN){
+            Image image = new Image(FileUtils.getOuputStreamFromResources("assets/red-pawn.png"));
+            ImageView imageView = new ImageView();
+            imageView.setImage(image);
+            imageView.setFitWidth(54);
+            imageView.setFitHeight(60);
+            imageView.setX(-27);
+            imageView.setY(-28);
+            addNode(imageView);
         }
     }
 }

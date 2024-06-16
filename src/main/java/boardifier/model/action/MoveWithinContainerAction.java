@@ -1,10 +1,7 @@
 package boardifier.model.action;
 
 import boardifier.control.Logger;
-import boardifier.model.ContainerElement;
-import boardifier.model.Coord2D;
-import boardifier.model.GameElement;
-import boardifier.model.Model;
+import boardifier.model.*;
 import boardifier.model.animation.AnimationTypes;
 import boardifier.model.animation.LinearMoveAnimation;
 import boardifier.model.animation.MoveAnimation;
@@ -44,7 +41,7 @@ public class MoveWithinContainerAction extends GameAction {
     public void execute() {
         ContainerElement container = element.getContainer();
         if (container != null) {
-
+            element.waitForContainerOpEnd();
             container.moveElement(element, rowDest, colDest);
         }
         onEndCallback.execute();
@@ -68,10 +65,5 @@ public class MoveWithinContainerAction extends GameAction {
                 animation = new LinearMoveAnimation(model, element.getLocation(), endLoc, animationType, factor);
             }
         }
-    }
-
-    @Override
-    public String toString() {
-        return this.getClass().getSimpleName() + "{ " + element.getClass().getSimpleName() + " => "+((element.getContainer() == null) ? "null" : element.getContainer().getName())+" in rown "+ rowDest + ", col " + colDest + " }";
     }
 }

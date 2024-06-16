@@ -47,9 +47,11 @@ public class GameConfigurationModel {
         this.model = model;
         this.playerDataAIDataMap = new EnumMap<>(PlayerData.class);
 
+        setLoggerMode(loggerMode);
+        updateLogger();
+
         setSeed(seed);
         setPlayerMode(playerMode);
-        setLoggerMode(loggerMode);
         setPlayerInteraction(playerInteraction);
         setRenderGame(renderGame);
     }
@@ -132,7 +134,7 @@ public class GameConfigurationModel {
      * @param loggerMode the logger mode to set.
      */
     public void setLoggerMode(int loggerMode) {
-        this.loggerMode = (loggerMode < 0) || (loggerMode > 1) ? DEFAULT_LOGGER_MODE : loggerMode;
+        this.loggerMode = (loggerMode < 0) || (loggerMode > 3) ? DEFAULT_LOGGER_MODE : loggerMode;
     }
 
     /**
@@ -170,6 +172,7 @@ public class GameConfigurationModel {
      * @param player2 the name of player 2.
      */
     public void addPlayers(String player1, String player2) {
+        model.getPlayers().clear();
         if (playerMode == 0) {
             model.addHumanPlayer(player1);
             model.addHumanPlayer(player2);
@@ -179,6 +182,7 @@ public class GameConfigurationModel {
         } else if (playerMode == 2) {
             model.addComputerPlayer(player1);
             model.addComputerPlayer(player2);
+            Logger.info("add computer");
         }
     }
 
@@ -189,8 +193,8 @@ public class GameConfigurationModel {
         if (loggerMode == 0) {
             Logger.setLevel(Logger.LOGGER_NONE);
             Logger.setVerbosity(Logger.VERBOSE_NONE);
-        } else if (loggerMode == 1) {
-            Logger.setLevel(Logger.LOGGER_DEBUG);
+        } else {
+            Logger.setLevel(loggerMode);
             Logger.setVerbosity(Logger.VERBOSE_HIGH);
         }
     }

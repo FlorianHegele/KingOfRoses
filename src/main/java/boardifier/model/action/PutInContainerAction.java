@@ -53,7 +53,7 @@ public class PutInContainerAction extends GameAction {
         if (element.getContainer() != null) return;
         // if dsestination container exists, puts element within
         if (containerDest != null) {
-
+            element.waitForContainerOpEnd();
             containerDest.addElement(element, rowDest, colDest);
         }
         onEndCallback.execute();
@@ -77,10 +77,5 @@ public class PutInContainerAction extends GameAction {
                 animation = new LinearMoveAnimation(model, element.getLocation(), endLoc, animationType, factor);
             }
         }
-    }
-
-    @Override
-    public String toString() {
-        return this.getClass().getSimpleName() + "{ " + element.getClass().getSimpleName() + " => "+ containerDest.getName() +" in rown "+ rowDest + ", col " + colDest +" +  }";
     }
 }

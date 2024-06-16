@@ -75,6 +75,6 @@ public enum AIData {
             default ->
                     throw new IllegalCallerException("Impossible to reach this error, a condition must be added here to implement the correct AI");
         }
-        return decider;
+         return decider;
     }
 }

@@ -1,6 +1,8 @@
 package control;
 
 import boardifier.control.ActionFactory;
+import boardifier.control.Controller;
+import boardifier.control.Logger;
 import boardifier.model.ContainerElement;
 import boardifier.model.Coord2D;
 import boardifier.model.Model;
@@ -30,6 +32,7 @@ import java.util.List;
 public class SimpleActionList {
 
     private final Model model;
+    private final Controller control;
     private final KoRStageModel gameStage;
 
     private final PlayerData playerData;
@@ -40,8 +43,9 @@ public class SimpleActionList {
      * @param model      the game model.
      * @param playerData the player data used to generate the moves.
      */
-    public SimpleActionList(Model model, PlayerData playerData) {
+    public SimpleActionList(Model model, Controller control, PlayerData playerData) {
         this.model = model;
+        this.control = control;
         this.gameStage = (KoRStageModel) model.getGameStage();
         this.playerData = playerData;
 
@@ -54,8 +58,8 @@ public class SimpleActionList {
      *
      * @param model the game model.
      */
-    public SimpleActionList(Model model) {
-        this(model, PlayerData.getCurrentPlayerData(model));
+    public SimpleActionList(Model model, Controller control) {
+        this(model, control, PlayerData.getCurrentPlayerData(model));
     }
 
     /**
@@ -69,18 +73,20 @@ public class SimpleActionList {
      * @return the action list containing all the actions.
      */
     public ActionList useHeroCard(HeroCard heroCard, MovementCard movementCard, Pawn pawn, Coord2D newKingPos) {
+        Logger.trace("SimpleActionList::useHeroCard "+ movementCard);
         final ActionList actionList = new ActionList();
 
         // Add flip pawn action
         actionList.addSingleAction(new FlipPawn(model, pawn));
 
-        // Add move king and remove movement card actions
-        useMovementCardOnKing(actionList, movementCard, newKingPos);
-
         // Add remove hero card actions
         actionList.addAll(ActionFactory.generateRemoveFromContainer(model, heroCard));
         actionList.addAll(ActionFactory.generateRemoveFromStage(model, heroCard));
 
+        // Add move king and remove movement card actions
+        useMovementCardOnKing(actionList, movementCard, newKingPos);
+
+        actionList.setDoEndOfTurn(true);
         return actionList;
     }
 
@@ -95,20 +101,24 @@ public class SimpleActionList {
      * @return the action list containing all the actions.
      */
     public ActionList useMovementCard(MovementCard movementCard, Coord2D newKingPos) {
+        Logger.trace("SimpleActionList::useMovementCard " + movementCard);
+
         final ActionList actionList = new ActionList();
 
         final int col = (int) newKingPos.getX();
         final int row = (int) newKingPos.getY();
 
+
         final Pawn pawn = (Pawn) gameStage.getGeneralPot(playerData).getElement(0, 0);
         if (!pawn.getStatus().isOwnedBy(playerData)) actionList.addSingleAction(new FlipPawn(model, pawn));
 
         // Add move pawn action
-        actionList.addAll(ActionFactory.generatePutInContainer(model, pawn, gameStage.getBoard().getName(), row, col));
+        actionList.addAll(ActionFactory.generatePutInContainer(control, model, pawn, gameStage.getBoard().getName(), row, col));
 
         // Add move king and remove movement card actions
         useMovementCardOnKing(actionList, movementCard, newKingPos);
 
+        actionList.setDoEndOfTurn(true);
         return actionList;
     }
 
@@ -136,12 +146,20 @@ public class SimpleActionList {
         final int col = (int) position.getX();
         final int row = (int) position.getY();
 
+        // Refill the movement card stack
+        if (gameStage.getMovementCards(MovementCard.Owner.STACK).size() == 1)
+            actionList.addAll(redoMovementCardStack());
+
         // Get the first movement card from the stack
         final MovementCard movementCard = (MovementCard) gameStage.getMovementCardStack().getElement(0, 0);
 
-        // Move the card from the stack to the specified position in the player's hand
-        actionList.addAll(ActionFactory.generatePutInContainer(model, movementCard, container.getName(), row, col));
+        Logger.trace("SimpleActionList::pickUpMovementCard " + movementCard);
 
+
+        // Move the card from the stack to the specified position in the player's hand
+        actionList.addAll(ActionFactory.generatePutInContainer(control, model, movementCard, container.getName(), row, col));
+
+        actionList.setDoEndOfTurn(true);
         return actionList;
     }
 
@@ -157,10 +175,10 @@ public class SimpleActionList {
         final int row = (int) position.getY();
 
         // Move the king pawn on the board
-        actionList.addAll(ActionFactory.generateMoveWithinContainer(model, gameStage.getKingPawn(), row, col));
+        actionList.addAll(ActionFactory.generateMoveWithinContainer(control, model, gameStage.getKingPawn(), row, col));
 
         // Remove the movement card from the player hand and place it in the played stack
-        actionList.addAll(ActionFactory.generatePutInContainer(model, movementCard, gameStage.getMovementCardStackPlayed().getName(), 0, 0));
+        actionList.addAll(ActionFactory.generatePutInContainer(control, model, movementCard, gameStage.getMovementCardStackPlayed().getName(), 0, 0));
     }
 
     /**
@@ -204,7 +222,7 @@ public class SimpleActionList {
             final int row = (int) potentialPos.getY();
 
             // SI ON NE PEUT PAS ATTEINDRE LA POSITION POTENTIEL, ALORS ON PASSE À LA CARTE SUIVANTE
-            if (!board.canReachCell(row, col)) continue;
+            if (ContainerElements.isOutside(board, row, col)) continue;
 
             // SI L'EMPLACEMENT EST VIDE, ALORS RAJOUTER L'ACTION DU DÉPLACEMENT SIMPLE
             if (board.isEmptyAt(row, col)) {
@@ -263,7 +281,7 @@ public class SimpleActionList {
 
             // If the potential position can't be reached or there is no pawn
             // then move on to the next card
-            if (!board.canReachCell(row, col) || board.isEmptyAt(row, col)) continue;
+            if (ContainerElements.isOutside(board, row, col) || board.isEmptyAt(row, col)) continue;
 
             // If the pawn is not the player's pawn
             // then add the action from the movement and hero card
@@ -285,7 +303,7 @@ public class SimpleActionList {
         final List<ActionList> actions = new ArrayList<>();
         if (playerData == null) return actions;
 
-        final SimpleActionList simpleActionList = new SimpleActionList(model, playerData);
+        final SimpleActionList simpleActionList = new SimpleActionList(model, control, playerData);
 
         final PawnPot pawnPot = gameStage.getGeneralPot(playerData);
         final MovementCardSpread movementCardSpread = (playerData == PlayerData.PLAYER_BLUE)
@@ -317,7 +335,7 @@ public class SimpleActionList {
         final List<ActionList> actions = new ArrayList<>();
         if (playerData == null) return actions;
 
-        final SimpleActionList simpleActionList = new SimpleActionList(model, playerData);
+        final SimpleActionList simpleActionList = new SimpleActionList(model, control, playerData);
 
         final KoRBoard board = stage.getBoard();
         final PawnPot pawnPot = stage.getGeneralPot(playerData);
@@ -360,7 +378,7 @@ public class SimpleActionList {
             final int row = (int) potentialPos.getY();
 
             // If the potential position is out of bounds, skip this card.
-            if (!board.canReachCell(row, col)) continue;
+            if (ContainerElements.isOutside(board, row, col)) continue;
 
             // If the position is empty, add the simple movement action.
             // Otherwise, if the player has a hero card and the pawn at the position is not theirs,
@@ -372,6 +390,7 @@ public class SimpleActionList {
                         (Pawn) board.getElement(row, col), potentialPos));
             }
         }
+
         return actions;
     }
 
@@ -390,10 +409,8 @@ public class SimpleActionList {
         final String containerName = gameStage.getMovementCardStack().getName();
 
         // Put the played cards back into the stack
-        for (MovementCard movementCard : movementCardList) {
-            if (movementCard.isInverted()) movementCard.toggleInverted();
-            actionList.addAll(ActionFactory.generatePutInContainer(model, movementCard, containerName, 0, 0));
-        }
+        for (MovementCard movementCard : movementCardList)
+            actionList.addAll(ActionFactory.generatePutInContainer(control, model, movementCard, containerName, 0, 0));
 
         return actionList;
     }

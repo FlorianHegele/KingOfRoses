@@ -1,14 +1,15 @@
 package model;
 
-import boardifier.control.ActionPlayer;
+import boardifier.control.Logger;
 import boardifier.model.*;
-import control.SimpleActionList;
+import control.Sound;
 import model.container.KoRBoard;
 import model.container.PawnPot;
 import model.container.card.HeroCardStack;
 import model.container.card.MovementCardSpread;
 import model.container.card.MovementCardStack;
 import model.container.card.MovementCardStackPlayed;
+import model.data.GameState;
 import model.data.PlayerData;
 import model.element.Pawn;
 import model.element.card.HeroCard;
@@ -43,13 +44,14 @@ import java.util.List;
  * NB1: Callback functions MUST BE defined with a lambda expression (i.e. an arrow function).
  * NB2: There are other methods to define callbacks for other events ({@link #setupCallbacks()} methods)
  * In "The KoR", every time a pawn is put in the main board, we have to check if the party is ended and in this case, who is the winner.
- * This is the role of {@link #computePartyResult(boolean)} ()}, which is called by the callback function if there is no more pawn to play.
+ * This is the role of {@link #computePartyResult()} ()}, which is called by the callback function if there is no more pawn to play.
  */
 public class KoRStageModel extends GameStageModel {
 
     // XY-axis movement for pawns
     private static final int[] dx = {1, -1, 0, 0};
     private static final int[] dy = {0, 0, 1, -1};
+
 
     // define stage game elements
     private KoRBoard board;
@@ -74,10 +76,6 @@ public class KoRStageModel extends GameStageModel {
 
     // TEXT
     private TextElement playerName;
-    private TextElement actionDescription1;
-    private TextElement actionDescription2;
-    private TextElement actionDescription3;
-    private TextElement actionDescription4;
     private TextElement movementCardStackText;
     private TextElement bluePawnText;
     private TextElement redPawnText;
@@ -92,8 +90,20 @@ public class KoRStageModel extends GameStageModel {
      */
     public KoRStageModel(String name, Model model) {
         super(name, model);
+
+        // Set the local state of the stage
+        setState(GameState.SELECT_NONE);
+
         // Sets up callbacks for game events
         setupCallbacks();
+    }
+
+    public GameState getGameState() {
+        return GameState.getState(getState());
+    }
+
+    public void setState(GameState gameState) {
+        setState(gameState.getValue());
     }
 
     /**
@@ -425,82 +435,6 @@ public class KoRStageModel extends GameStageModel {
     }
 
     /**
-     * Get the action description 1 text.
-     *
-     * @return the action description 1 text.
-     */
-    public TextElement getActionDescription1() {
-        return actionDescription1;
-    }
-
-    /**
-     * Set the action description 1 text.
-     *
-     * @param actionDescription1 the action description 1 text.
-     */
-    public void setActionDescription1(TextElement actionDescription1) {
-        this.actionDescription1 = actionDescription1;
-        addElement(actionDescription1);
-    }
-
-    /**
-     * Get the action description 2 text.
-     *
-     * @return the action description 2 text.
-     */
-    public TextElement getActionDescription2() {
-        return actionDescription2;
-    }
-
-    /**
-     * Set the action description 2 text.
-     *
-     * @param actionDescription2 the action description 2 text.
-     */
-    public void setActionDescription2(TextElement actionDescription2) {
-        this.actionDescription2 = actionDescription2;
-        addElement(actionDescription2);
-    }
-
-    /**
-     * Get the action description 3 text.
-     *
-     * @return the action description 3 text.
-     */
-    public TextElement getActionDescription3() {
-        return actionDescription3;
-    }
-
-    /**
-     * Set the action description 3 text.
-     *
-     * @param actionDescription3 the action description 3 text.
-     */
-    public void setActionDescription3(TextElement actionDescription3) {
-        this.actionDescription3 = actionDescription3;
-        addElement(actionDescription3);
-    }
-
-    /**
-     * Get the action description 4 text.
-     *
-     * @return the action description 4 text.
-     */
-    public TextElement getActionDescription4() {
-        return actionDescription4;
-    }
-
-    /**
-     * Set the action description 4 text.
-     *
-     * @param actionDescription4 the action description 4 text.
-     */
-    public void setActionDescription4(TextElement actionDescription4) {
-        this.actionDescription4 = actionDescription4;
-        addElement(actionDescription4);
-    }
-
-    /**
      * Get the movement card container text.
      *
      * @return the movement card container text.
@@ -603,6 +537,17 @@ public class KoRStageModel extends GameStageModel {
      * elements being removed from or placed into containers.
      */
     private void setupCallbacks() {
+
+        onSelectionChange(() -> {
+            // get the selected pawn if any
+            if (selected.isEmpty()) {
+                board.resetReachableCells(false);
+                return;
+            }
+            board.setValidCells();
+        });
+
+
         onRemoveFromContainer((element, containerFrom, rowDest, colDest) -> {
             // ACTION: Play a hero card
             if (element instanceof HeroCard heroCard) {
@@ -617,29 +562,34 @@ public class KoRStageModel extends GameStageModel {
         onPutInContainer((element, containerDest, rowDest, colDest) -> {
             // ACTION: Draw a movement card from the stack
             if (containerDest instanceof MovementCardSpread) {
+
                 // Change the owner of the card
                 final MovementCard.Owner owner = (containerDest == blueMovementCardsSpread)
                         ? MovementCard.Owner.PLAYER_BLUE : MovementCard.Owner.PLAYER_RED;
                 final MovementCard movementCard = (MovementCard) element;
-                movementCard.setOwner(owner);
 
-                // If the stack is empty, replenish it
-                if (getMovementCards(MovementCard.Owner.STACK).isEmpty())
-                    new ActionPlayer(model, null, new SimpleActionList(model).redoMovementCardStack()).start();
+                movementCard.setOwner(owner);
 
                 // Update the stack counter
                 movementCardStackText.setText(String.valueOf(ContainerElements.countElements(movementCardStack)));
+
+                Logger.trace("movement card spread played action");
+                if(gameIsStuck()) computePartyResult();
             }
 
             // ACTION: Add a card to the played stack
             else if (containerDest == movementCardStackPlayed) {
                 ((MovementCard) element).setOwner(MovementCard.Owner.OUT);
+
+                Logger.trace("movement card stack played action");
+                if(gameIsStuck()) computePartyResult();
             }
 
             // ACTION: Add a card to the stack
             else if (containerDest == movementCardStack) {
                 final MovementCard movementCard = (MovementCard) element;
                 movementCard.setOwner(MovementCard.Owner.STACK);
+                if (movementCard.isInverted()) movementCard.toggleInverted();
                 movementCardStackText.setText(String.valueOf(ContainerElements.countElements(movementCardStack)));
             }
 
@@ -700,7 +650,7 @@ public class KoRStageModel extends GameStageModel {
             final int row = (int) potentialPos.getY();
 
             // If the potential position cannot be reached, move to the next card
-            if (!board.canReachCell(row, col)) continue;
+            if (ContainerElements.isOutside(board, row, col)) continue;
 
             // Return true if the player can play a movement card
             // or if they can play it with a hero card
@@ -724,7 +674,7 @@ public class KoRStageModel extends GameStageModel {
      * Computes the result of the game.
      * Determines the winner based on zone points and total pawns placed on the board.
      */
-    public int computePartyResult(boolean renderGame) {
+    public void computePartyResult() {
         final int idWinner;
         final int redZoneCounter = getTotalPlayerPoint(PlayerData.PLAYER_RED, false);
         final int blueZoneCounter = getTotalPlayerPoint(PlayerData.PLAYER_BLUE, false);
@@ -733,6 +683,8 @@ public class KoRStageModel extends GameStageModel {
 
         final int redPawnPlaced = getTotalPawnOnBoard(Pawn.Status.RED_PAWN);
         final int bluePawnPlaced = getTotalPawnOnBoard(Pawn.Status.BLUE_PAWN);
+
+        Sound.playSound("sword1.wav");
 
         if (redZoneCounter == blueZoneCounter) {
             if (redPawnPlaced == bluePawnPlaced) {
@@ -749,15 +701,15 @@ public class KoRStageModel extends GameStageModel {
             idWinner = winner.getId();
         }
 
-        if (renderGame) {
-            System.out.println("Blue points: " + blueZoneCounter + ", total pawn on the board: " + bluePawnPlaced);
-            System.out.println("Red points: " + redZoneCounter + ", total pawn on the board: " + redPawnPlaced);
-        }
+        board.resetReachableCells(false);
+
+        System.out.println("Blue points: " + blueZoneCounter + ", total pawn on the board: " + bluePawnPlaced);
+        System.out.println("Red points: " + redZoneCounter + ", total pawn on the board: " + redPawnPlaced);
+
         // Set the winner
         model.setIdWinner(idWinner);
         // Stop de the game
-        model.stopStage();
-        return idWinner;
+        model.stopGame();
     }
 
     /**
@@ -783,8 +735,9 @@ public class KoRStageModel extends GameStageModel {
      * @return The zone points of the player for the specified cell.
      */
     public int getPlayerZonePawnSimple(PlayerData playerData, int row, int col) {
-        final int playerPoint = getPlayerZonePawn(playerData, row, col, true);
         board.resetReachableCells(true);
+        final int playerPoint = getPlayerZonePawn(playerData, row, col, true);
+        board.resetReachableCells(false);
         return playerPoint;
     }
 
@@ -796,6 +749,8 @@ public class KoRStageModel extends GameStageModel {
      * @return The total points of the player.
      */
     private int getTotalPlayerPoint(PlayerData playerData, boolean acceptEmptyBaseCell) {
+        board.resetReachableCells(true);
+
         int totalCounter = 0;
         for (int row = 0; row < board.getNbRows(); row++) {
             for (int col = 0; col < board.getNbCols(); col++) {
@@ -805,6 +760,8 @@ public class KoRStageModel extends GameStageModel {
                 totalCounter += total * total;
             }
         }
+
+        board.resetReachableCells(false);
         return totalCounter;
     }
 
@@ -871,7 +828,7 @@ public class KoRStageModel extends GameStageModel {
      * @param acceptEmptyBaseCell Flag indicating whether to accept empty base cells as a starting point.
      * @return The zone points for the player at the specified cell.
      */
-    private int getPlayerZonePawn(PlayerData playerData, int row, int col, boolean acceptEmptyBaseCell) {
+    public int getPlayerZonePawn(PlayerData playerData, int row, int col, boolean acceptEmptyBaseCell) {
         final Pawn.Status status = Pawn.Status.getPawnStatus(playerData);
         final Deque<PawnNode> pawnNodes = new LinkedList<>();
 
@@ -903,6 +860,8 @@ public class KoRStageModel extends GameStageModel {
             counter++;
             pawnNodes.addAll(getNeighbors(pawnNodes.poll()));
         }
+
+        Logger.info("zone : " + counter + " for : " + playerData.name());
 
         return counter;
     }
@@ -939,6 +898,10 @@ public class KoRStageModel extends GameStageModel {
             // Add the pawn to the list and make the cell unreachable
             neighbors.add(new PawnNode(pawnNode.status, row, col));
             board.setCellReachable(row, col, false);
+        }
+
+        for(PawnNode pawnNode1 : neighbors) {
+            Logger.info("neighbors : " + pawnNode1.toString());
         }
 
         return neighbors;
@@ -1032,5 +995,14 @@ public class KoRStageModel extends GameStageModel {
      * Represents a node containing information about a pawn.
      */
     public record PawnNode(Pawn.Status status, int row, int col) {
+
+        @Override
+        public String toString() {
+            return "PawnNode{" +
+                    "status=" + status +
+                    ", row=" + row +
+                    ", col=" + col +
+                    '}';
+        }
     }
 }

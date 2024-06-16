@@ -10,6 +10,7 @@ public class TextElement extends GameElement {
     public TextElement(String text, GameStageModel gameStageModel) {
         super(gameStageModel);
         this.text = text;
+
     }
 
     public String getText() {

@@ -1,12 +1,10 @@
 package model.element.card;
 
-import boardifier.model.Coord2D;
-import boardifier.model.ElementTypes;
-import boardifier.model.GameElement;
-import boardifier.model.GameStageModel;
-import boardifier.view.ConsoleColor;
+import boardifier.model.*;
+import javafx.scene.paint.Color;
+import model.data.ElementType;
+import model.data.PlayerData;
 
-import java.util.Objects;
 
 /**
  * Represents a movement card in the game.
@@ -15,7 +13,8 @@ public class MovementCard extends GameElement {
 
     private boolean inverted;
     private final int step;
-    private Direction direction;
+    private Direction movementDirection;
+    private Direction visualDirection;
     private Owner owner;
 
     /**
@@ -29,13 +28,11 @@ public class MovementCard extends GameElement {
         super(gameStageModel);
 
         // Register new element type
-        // Associate the word "direction_card" with the integer 51
-        ElementTypes.register("direction_card", 51);
-        // Retrieve the integer associated with the word "direction_card" and associate it with the type variable
-        this.type = ElementTypes.getType("direction_card");
+        this.type = ElementType.MOVEMENT_CARD.register();
 
         this.step = step;
-        this.direction = direction;
+        this.movementDirection = direction;
+        this.visualDirection = direction;
         this.inverted = false;
         this.owner = Owner.STACK;
     }
@@ -55,9 +52,14 @@ public class MovementCard extends GameElement {
      *
      * @param owner The owner to set.
      */
+
     public void setOwner(Owner owner) {
         this.owner = owner;
-        if (owner == Owner.PLAYER_RED) toggleInverted();
+        if (owner == Owner.PLAYER_RED){
+            toggleInverted();
+        } else {
+            addChangeFaceEvent();
+        }
     }
 
     /**
@@ -74,7 +76,8 @@ public class MovementCard extends GameElement {
      */
     public void toggleInverted() {
         this.inverted = !this.inverted;
-        this.direction = direction.getOpposite();
+        this.movementDirection = movementDirection.getOpposite();
+        addChangeFaceEvent();
     }
 
     /**
@@ -102,20 +105,23 @@ public class MovementCard extends GameElement {
     @Override
     public String toString() {
         return "MovementCard{" +
-                "step=" + step +
-                ", direction=" + direction +
+                "inverted=" + inverted +
+                ", step=" + step +
+                ", movementDirection=" + movementDirection +
+                ", visualDirection=" + visualDirection +
                 ", owner=" + owner +
                 '}';
     }
 
     /**
-     * Gets the direction of the movement card.
+     * Gets the visual direction of the movement card.
      *
      * @return The direction of the movement card.
      */
-    public Direction getDirection() {
-        return direction;
+    public Direction getVisualDirection() {
+        return visualDirection;
     }
+
 
     /**
      * Gets the direction vector of the movement card.
@@ -123,44 +129,44 @@ public class MovementCard extends GameElement {
      * @return The direction vector of the movement card.
      */
     public Coord2D getDirectionVector() {
-        return direction.getVector().multiply(step);
+        return movementDirection.getVector().multiply(step);
     }
 
     /**
      * Represents the direction of the movement card.
      */
     public enum Direction {
-        NORTH(-1, 0, "\u2191"),
-        NORTHEAST(-1, 1, "\u2197"),
-        EAST(0, 1, "\u2192"),
-        SOUTHEAST(1, 1, "\u2198"),
-        SOUTH(1, 0, "\u2193"),
-        SOUTHWEST(1, -1, "\u2199"),
-        WEST(0, -1, "\u2190"),
-        NORTHWEST(-1, -1, "\u2196");
+        NORTH(-1, 0, "north"),
+        NORTHEAST(-1, 1, "northeast"),
+        EAST(0, 1, "east"),
+        SOUTHEAST(1, 1, "southeast"),
+        SOUTH(1, 0, "south"),
+        SOUTHWEST(1, -1, "southwest"),
+        WEST(0, -1, "west"),
+        NORTHWEST(-1, -1, "northwest");
 
         private final Coord2D vector;
-        private final String symbol;
+        private final String path;
 
         /**
          * Constructs a new direction with the specified column, row, and symbol.
          *
          * @param col    The column of the direction.
          * @param row    The row of the direction.
-         * @param symbol The symbol representing the direction.
+         * @param path The symbol representing the direction.
          */
-        Direction(int col, int row, String symbol) {
-            this(new Coord2D(row, col), symbol);
+        Direction(int col, int row, String path) {
+            this(new Coord2D(row, col), path);
         }
 
         /**
          * Constructs a new direction with the specified vector and symbol.
          *
          * @param vector The vector representing the direction.
-         * @param symbol The symbol representing the direction.
+         * @param path The symbol representing the direction.
          */
-        Direction(Coord2D vector, String symbol) {
-            this.symbol = symbol;
+        Direction(Coord2D vector, String path) {
+            this.path = path;
             this.vector = vector;
         }
 
@@ -178,8 +184,8 @@ public class MovementCard extends GameElement {
          *
          * @return The symbol representing the direction.
          */
-        public String getSymbol() {
-            return symbol;
+        public String getPath(int step) {
+            return "/assets/movement_card/" + path + "_" + step + ".png";
         }
 
         /**
@@ -219,20 +225,20 @@ public class MovementCard extends GameElement {
          *
          * @return The background color associated with the owner.
          */
-        public String getBackgroundColor() {
-            return (this == OUT) ? ConsoleColor.YELLOW_BACKGROUND : ConsoleColor.WHITE_BACKGROUND;
+        public Color getColor() {
+            return (this == OUT) ? Color.YELLOW : Color.WHITE;
         }
-    }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof MovementCard that)) return false;
-        return step == that.step && direction == that.direction;
-    }
+        public boolean isCurrentPlayer(Model model) {
+            return isSpecificPlayer(PlayerData.getCurrentPlayerData(model));
+        }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(step, inverted, owner, direction);
+        public boolean isSpecificPlayer(PlayerData playerData) {
+            return (this == PLAYER_RED && playerData == PlayerData.PLAYER_RED) || (this == PLAYER_BLUE && playerData == PlayerData.PLAYER_BLUE);
+        }
+
+        public boolean isPlayer() {
+            return this == PLAYER_BLUE || this == PLAYER_RED;
+        }
     }
 }

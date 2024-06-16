@@ -1,23 +1,42 @@
 package view.container.card;
 
 import boardifier.model.ContainerElement;
-import view.container.TinyGridLook;
+import boardifier.view.GridLook;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.StrokeType;
 
 /**
- * The MovementCardStackLook class represents the visual representation of a movement card stack using a tiny grid look.
+ * The MovementCardStackLook class represents the visual representation of a movement card stack using a look.
  * It provides specific configurations for rendering the movement card stack.
  */
-public class MovementCardStackLook extends TinyGridLook {
+public class MovementCardStackLook extends GridLook {
+
+    private Rectangle rectangle;
 
     /**
      * Constructs a new MovementCardStackLook with the specified container element.
      *
      * @param containerElement The container element associated with this movement card stack look.
      */
-    public MovementCardStackLook(ContainerElement containerElement) {
-        super(2, 2, containerElement); // Each cell size is 2x2
-        setVerticalAlignment(ALIGN_MIDDLE); // Aligns elements vertically at the middle of cells
-        setHorizontalAlignment(ALIGN_CENTER); // Aligns elements horizontally at the center of cells
+    public MovementCardStackLook(int height, int width, ContainerElement containerElement) {
+        super(height, width, containerElement, -1, 1, Color.TRANSPARENT);
+    }
+
+    @Override
+    protected void render() {
+        setVerticalAlignment(ALIGN_MIDDLE);
+        setHorizontalAlignment(ALIGN_CENTER);
+
+        rectangle = new Rectangle(colWidth, rowHeight, Color.TRANSPARENT);
+        rectangle.setStrokeWidth(3);
+        rectangle.setStrokeMiterLimit(10);
+        rectangle.setStrokeType(StrokeType.CENTERED);
+        rectangle.setStroke(Color.TRANSPARENT);
+        rectangle.setX(borderWidth);
+        rectangle.setY(borderWidth);
+
+        addShape(rectangle);
     }
 
 }

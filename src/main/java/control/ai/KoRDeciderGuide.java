@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class KoRDeciderGuide extends KoRDecider {
 
-    private static final int THRESHOLD = 4;
+    private static final int THRESHOLD = 3;
 
     /**
      * Constructs a KoRDeciderGuide with the specified model, control, and player data.
@@ -55,6 +55,8 @@ public class KoRDeciderGuide extends KoRDecider {
                 if (action.getPoint() >= THRESHOLD)
                     return action.getActionList();
             }
+        } else {
+            Logger.debug("No hero cards can be played for " + playerData);
         }
 
         // Get all possible actions for playing movement cards
@@ -69,6 +71,8 @@ public class KoRDeciderGuide extends KoRDecider {
                 Logger.debug("ActionCard : " + actionCard);
             }
             return actionCardList.get(0).getActionList();
+        } else {
+            Logger.debug("No movement cards can be played for " + playerData);
         }
 
         // Get all possible actions for taking new cards
@@ -77,10 +81,11 @@ public class KoRDeciderGuide extends KoRDecider {
         Logger.debug("A take card action is playable for : " + playerData);
         if (!actionTakeList.isEmpty()) {
             return actionTakeList.get(0);
+        } else {
+            Logger.debug("No take card action can be played for " + playerData);
         }
 
-        return actionHeroList.get(0).getActionList();
-
+        throw new IllegalStateException("The player " + playerData.getName() + " can't play");
     }
 
 }

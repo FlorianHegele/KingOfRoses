@@ -44,44 +44,27 @@ public class KoRStageFactory extends StageElementsFactory {
 
         // create the text that displays the player name and put it in 0,1 in the virtual space
         TextElement playerText = new TextElement(stageModel.getCurrentPlayerName(), stageModel);
-        playerText.setLocation(0, 1);
+        playerText.setLocation(15, 31);
         stageModel.setPlayerName(playerText);
 
-        // ACTION DESCRIPTION
-        TextElement actionDescriptionText1 = new TextElement("List of actions", stageModel);
-        actionDescriptionText1.setLocation(63, 6);
-        stageModel.setActionDescription1(actionDescriptionText1);
-
-        TextElement actionDescriptionText2 = new TextElement("Draw a movement card -> P", stageModel);
-        actionDescriptionText2.setLocation(63, 8);
-        stageModel.setActionDescription2(actionDescriptionText2);
-
-        TextElement actionDescriptionText3 = new TextElement("Use a Movement card -> D card (e.g. D1 for the 1st card)", stageModel);
-        actionDescriptionText3.setLocation(63, 10);
-        stageModel.setActionDescription3(actionDescriptionText3);
-
-        TextElement actionDescriptionText4 = new TextElement("Use a Hero & Displacement card -> H (e.g. H1 for the 1st card)", stageModel);
-        actionDescriptionText4.setLocation(63, 12);
-        stageModel.setActionDescription4(actionDescriptionText4);
-
         TextElement movementCardStackText = new TextElement("14", stageModel);
-        movementCardStackText.setLocation(2, 7);
+        movementCardStackText.setLocation(72, 335);
         stageModel.setMovementCardStackText(movementCardStackText);
 
         TextElement textBluePawn = new TextElement("26", stageModel);
-        textBluePawn.setLocation(51, 21);
+        textBluePawn.setLocation(830, 650);
         stageModel.setBluePawnText(textBluePawn);
 
         TextElement textRedPawn = new TextElement("26", stageModel);
-        textRedPawn.setLocation(51, 7);
+        textRedPawn.setLocation(827, 327);
         stageModel.setRedPawnText(textRedPawn);
 
         TextElement textBlueCardHero = new TextElement("4", stageModel);
-        textBlueCardHero.setLocation(41, 28);
+        textBlueCardHero.setLocation(720, 878);
         stageModel.setBlueHeroCardText(textBlueCardHero);
 
         TextElement textRedCardHero = new TextElement("4", stageModel);
-        textRedCardHero.setLocation(15, 1);
+        textRedCardHero.setLocation(215, 95);
         stageModel.setRedHeroCardText(textRedCardHero);
 
 
@@ -91,45 +74,45 @@ public class KoRStageFactory extends StageElementsFactory {
 
         // BOARD
         // create the board, in 10, 5 in the virtual space
-        KoRBoard board = new KoRBoard(10, 5, stageModel);
+        KoRBoard board = new KoRBoard(175, 175, stageModel);
         stageModel.setBoard(board);
 
 
         // MOVEMENT CARD STACK
         // create the movement cards stack in 2, 8
-        MovementCardStack movementCardStack = new MovementCardStack(2, 8, stageModel);
+        MovementCardStack movementCardStack = new MovementCardStack(36, 350, stageModel);
         stageModel.setMovementCardStack(movementCardStack);
 
         // create the movement cards stack in 2, 15
-        MovementCardStackPlayed movementCardStackPlayed = new MovementCardStackPlayed(2, 15, stageModel);
+        MovementCardStackPlayed movementCardStackPlayed = new MovementCardStackPlayed(36, 485, stageModel);
         stageModel.setMovementCardStackPlayed(movementCardStackPlayed);
 
 
         // RED ELEMENT
         //create the red hero cards stack in 10,2 in the virtual space
-        HeroCardStack redHeroCardStack = new HeroCardStack(14, 2, stageModel);
+        HeroCardStack redHeroCardStack = new HeroCardStack(250, 27, stageModel);
         stageModel.setRedHeroCardStack(redHeroCardStack);
 
         //create the red movements cards spread in 16,1 in the virtual space
-        MovementCardSpread redMovementCardsSpread = new MovementCardSpread(PlayerData.PLAYER_RED, 20, 0, stageModel);
+        MovementCardSpread redMovementCardsSpread = new MovementCardSpread(PlayerData.PLAYER_RED, 376, 37, stageModel);
         stageModel.setRedMovementCardsSpread(redMovementCardsSpread);
 
         //create the red pot in 50,8 in the virtual space
-        PawnPot redPot = new PawnPot(50, 8, stageModel);
+        PawnPot redPot = new PawnPot(803, 340, stageModel);
         stageModel.setRedPot(redPot);
 
 
         // BLUE ELEMENT
         //create the blue hero cards stack in 35,24 in the virtual space
-        HeroCardStack blueHeroCardStack = new HeroCardStack(40, 25, stageModel);
+        HeroCardStack blueHeroCardStack = new HeroCardStack(616, 809, stageModel);
         stageModel.setBlueHeroCardStack(blueHeroCardStack);
 
         //create the blue movements cards spread in 10,24 in the virtual space
-        MovementCardSpread blueMovementCardsSpread = new MovementCardSpread(PlayerData.PLAYER_BLUE, 14, 24, stageModel);
+        MovementCardSpread blueMovementCardsSpread = new MovementCardSpread(PlayerData.PLAYER_BLUE, 176, 817, stageModel);
         stageModel.setBlueMovementCardsSpread(blueMovementCardsSpread);
 
         //create the blue pot in 50,18 in the virtual space
-        PawnPot bluePot = new PawnPot(50, 18, stageModel);
+        PawnPot bluePot = new PawnPot(803, 535, stageModel);
         stageModel.setBluePot(bluePot);
 
 
@@ -172,7 +155,7 @@ public class KoRStageFactory extends StageElementsFactory {
         for (int i = 0; i < 26; i++) {
             bluePawns[i] = new Pawn(Pawn.Status.BLUE_PAWN, stageModel);
         }
-        stageModel.setBluePawns(bluePawns);
+       stageModel.setBluePawns(bluePawns);
 
         // put pawn in pot
         for (int i = 0; i < 26; i++) {

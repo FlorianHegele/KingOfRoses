@@ -31,7 +31,7 @@ public abstract class KoRDecider extends Decider {
     protected KoRDecider(Model model, Controller control, PlayerData playerData) {
         super(model, control);
         this.playerData = playerData;
-        this.simpleActionList = new SimpleActionList(model, playerData);
+        this.simpleActionList = new SimpleActionList(model, control, playerData);
     }
 
     /**

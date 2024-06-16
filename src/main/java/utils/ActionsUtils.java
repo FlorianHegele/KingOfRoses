@@ -47,7 +47,6 @@ public class ActionsUtils {
             }
         }
 
-        // TODO :
         /*
          * Creating an array to match with the current one
          * will determine which action is played
