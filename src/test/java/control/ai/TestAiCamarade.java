@@ -42,7 +42,6 @@ class TestAiCamarade{
 
         // Init and start the Game
         final Boardifiers boardifiers = new Boardifiers(stage, model, gameConfigurationModel);
-        boardifiers.initGame();
         boardifiers.getController().startGame();
 
         controller = boardifiers.getController();

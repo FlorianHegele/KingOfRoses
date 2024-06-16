@@ -775,6 +775,8 @@ public class KoRStageModel extends GameStageModel {
      * @return The total number of zones owned by the specified player.
      */
     public int getTotalPawnZone(PlayerData playerData) {
+        board.resetReachableCells(true);
+
         int totalCounter = 0;
         for (int row = 0; row < board.getNbRows(); row++) {
             for (int col = 0; col < board.getNbCols(); col++) {
@@ -783,7 +785,8 @@ public class KoRStageModel extends GameStageModel {
                 totalCounter += (total > 0) ? 1 : 0;
             }
         }
-        board.resetReachableCells(true);
+
+        board.resetReachableCells(false);
         return totalCounter;
     }
 
@@ -799,6 +802,8 @@ public class KoRStageModel extends GameStageModel {
      * If the player has no zones, the method returns 0.
      */
     public double getZoneAverage(PlayerData playerData) {
+        board.resetReachableCells(true);
+
         int totalCounter = 0;
         int zoneNumber = 0;
         for (int row = 0; row < board.getNbRows(); row++) {
@@ -811,7 +816,7 @@ public class KoRStageModel extends GameStageModel {
                 }
             }
         }
-        board.resetReachableCells(true);
+        board.resetReachableCells(false);
 
         // If there is no zone, then return 0
         if (zoneNumber == 0) return 0;

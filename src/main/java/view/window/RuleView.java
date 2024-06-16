@@ -33,7 +33,6 @@ public class RuleView extends WindowView<GridPane> {
      */
     @Override
     public void createDefaultPane() {
-        Rectangle frame = new Rectangle(600, 100, Color.LIGHTGREY);
         TextArea textArea = new TextArea();
         textArea.setText("""
                 2°/ Rules
