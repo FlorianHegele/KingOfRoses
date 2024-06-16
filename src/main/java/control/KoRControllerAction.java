@@ -119,6 +119,15 @@ public class KoRControllerAction extends ControllerAction implements EventHandle
             Sound.setSoundVolume(1.0);
             koRView.getMenu4().setText("Volume des Sons: " + Sound.getSoundVolume());
         });
+        koRView.getsRule().setOnAction(e -> {
+            Sound.playSound("Doorknob.wav");
+            Sound.playMusic("shop.wav",650);
+            System.out.println("KoR Rule :" + gameConfigurationModel.getPlayerDataAIDataMap().toString());
+            control.stopGame();
+            koRView.resetView();
+
+            koRView.setContent(WindowType.RULES);
+        });
 
         // set event handler on the MenuQuit item
         koRView.getMenuQuit().setOnAction(e -> System.exit(0));

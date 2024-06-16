@@ -42,6 +42,7 @@ public class KoRView extends View {
     private MenuItem mMax;
     private Menu menu3;
     private Menu menu4;
+    private MenuItem rule;
 
     /**
      * Constructs a new KoRView with the specified model, stage, and root pane.
@@ -80,11 +81,16 @@ public class KoRView extends View {
         mMedium = new MenuItem("Moyen - 50%");
         mHigh = new MenuItem("Fort - 75%");
         mMax = new MenuItem("Max - 100%");
+        rule = new MenuItem("Règles");
+
+
 
         menu1.getItems().add(menuStart);
         menu1.getItems().add(menuIntro);
         menu1.getItems().add(menuConfig);
+        menu1.getItems().add(rule);
         menu1.getItems().add(menuQuit);
+
 
         menu2.getItems().add(menuMusique);
         menu2.getItems().add(menuSFX);
@@ -195,6 +201,9 @@ public class KoRView extends View {
 
     public MenuItem getsMax() {
         return sMax;
+    }
+    public MenuItem getsRule() {
+        return rule;
     }
 
     public MenuItem getmLow() {
