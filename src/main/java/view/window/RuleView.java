@@ -8,6 +8,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 /**
@@ -33,7 +34,7 @@ public class RuleView extends WindowView<GridPane> {
      * Constructs a ConfigView with a new GridPane.
      */
     public RuleView() {
-        super(new GridPane(), 600, 300);
+        super(new GridPane());
 
         // Configuring pane
         pane.setHgap(10);
@@ -116,60 +117,14 @@ public class RuleView extends WindowView<GridPane> {
 
         textArea.setWrapText(true);
         textArea.setEditable(false);
+        textArea.setFont(new Font("Arial", 19));
+        textArea.setPrefSize(800, 600);
         pane.add(textArea, 0, 0);
         pane.setPadding(new Insets(30, 30, 30, 30));
         // Centrer le texte
 
 
 
-    }
-
-    public Button getbValider() {
-        return bValider;
-    }
-
-    public RadioButton getGuide2() {
-        return guide2;
-    }
-
-    public RadioButton getHate2() {
-        return hate2;
-    }
-
-    public RadioButton getCamarade2() {
-        return camarade2;
-    }
-
-    public RadioButton getRandom2() {
-        return random2;
-    }
-
-    public RadioButton getGuide1() {
-        return guide1;
-    }
-
-    public RadioButton getHate1() {
-        return hate1;
-    }
-
-    public RadioButton getCamarade1() {
-        return camarade1;
-    }
-
-    public RadioButton getRandom1() {
-        return random1;
-    }
-
-    public RadioButton getMenuAIVsAI() {
-        return menuAIVsAI;
-    }
-
-    public RadioButton getMenuHumanVsAI() {
-        return menuHumanVsAI;
-    }
-
-    public RadioButton getMenuHumanVsHuman() {
-        return menuHumanVsHuman;
     }
 
 }
