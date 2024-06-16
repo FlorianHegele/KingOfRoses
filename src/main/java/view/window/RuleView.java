@@ -46,58 +46,6 @@ public class RuleView extends WindowView<GridPane> {
      */
     @Override
     public void createDefaultPane() {
-        ToggleGroup groupPlayers = new ToggleGroup();
-        menuHumanVsHuman = new RadioButton("Humain vs Humain");
-        menuHumanVsAI = new RadioButton("Humain vs IA");
-        menuAIVsAI = new RadioButton("IA vs IA");
-
-        menuHumanVsHuman.setToggleGroup(groupPlayers);
-        menuHumanVsAI.setToggleGroup(groupPlayers);
-        menuAIVsAI.setToggleGroup(groupPlayers);
-
-        ToggleGroup groupAI1 = new ToggleGroup();
-        random1 = new RadioButton("Random (Joue au pif)");
-        camarade1 = new RadioButton("Camarade (Amicale)");
-        hate1 = new RadioButton("Hate Cards (Rapide)");
-        guide1 = new RadioButton("Guide (Aggressive)");
-
-        random1.setToggleGroup(groupAI1);
-        camarade1.setToggleGroup(groupAI1);
-        hate1.setToggleGroup(groupAI1);
-        guide1.setToggleGroup(groupAI1);
-
-        ToggleGroup groupAI2 = new ToggleGroup();
-        random2 = new RadioButton("Random (Joue au pif)");
-        camarade2 = new RadioButton("Camarade (Amicale)");
-        hate2 = new RadioButton("Hate Cards (Rapide)");
-        guide2 = new RadioButton("Guide (Aggressive)");
-
-        random2.setToggleGroup(groupAI2);
-        camarade2.setToggleGroup(groupAI2);
-        hate2.setToggleGroup(groupAI2);
-        guide2.setToggleGroup(groupAI2);
-
-        bValider = new Button("Lancer la partie");
-
-        // Ajout des éléments au GridPane
-        pane.add(new Text("Mode de Jeu"), 0, 0);
-        pane.add(menuHumanVsHuman, 0, 1);
-        pane.add(menuHumanVsAI, 1, 1);
-        pane.add(menuAIVsAI, 2, 1);
-
-        pane.add(new Text("IA pour le joueur 1"), 0, 3);
-        pane.add(random1, 0, 4);
-        pane.add(camarade1, 1, 4);
-        pane.add(hate1, 2, 4);
-        pane.add(guide1, 3, 4);
-
-        pane.add(new Text("IA pour le joueur 2"), 0, 6);
-        pane.add(random2, 0, 7);
-        pane.add(camarade2, 1, 7);
-        pane.add(hate2, 2, 7);
-        pane.add(guide2, 3, 7);
-
-        pane.add(bValider, 0, 9);
         Rectangle frame = new Rectangle(600, 100, Color.LIGHTGREY);
         TextArea textArea = new TextArea();
         textArea.setText("2°/ Rules\n" +
