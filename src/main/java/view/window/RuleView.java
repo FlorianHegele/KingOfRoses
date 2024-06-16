@@ -16,20 +16,6 @@ import javafx.scene.text.Text;
  */
 public class RuleView extends WindowView<GridPane> {
 
-    private RadioButton guide2;
-    private RadioButton hate2;
-    private RadioButton camarade2;
-    private RadioButton random2;
-    private RadioButton guide1;
-    private RadioButton hate1;
-    private RadioButton camarade1;
-    private RadioButton random1;
-    private RadioButton menuAIVsAI;
-    private RadioButton menuHumanVsAI;
-    private RadioButton menuHumanVsHuman;
-
-    private Button bValider;
-
     /**
      * Constructs a ConfigView with a new GridPane.
      */
@@ -113,18 +99,12 @@ public class RuleView extends WindowView<GridPane> {
                     In the event of a tie, the winner is the player with the most tokens of his or her color on the board,
                     If this number is equal, the game is drawn and there are no winners.
                     """);
-        // Bien centrer la fenêtre de texte
-
         textArea.setWrapText(true);
         textArea.setEditable(false);
         textArea.setFont(new Font("Arial", 19));
         textArea.setPrefSize(800, 600);
         pane.add(textArea, 0, 0);
         pane.setPadding(new Insets(30, 30, 30, 30));
-        // Centrer le texte
-
-
-
     }
 
 }
