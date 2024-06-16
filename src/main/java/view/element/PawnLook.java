@@ -49,8 +49,8 @@ public class PawnLook extends ElementLook {
             imageView.setImage(image);
             imageView.setFitWidth(66);
             imageView.setFitHeight(76);
-            imageView.setX(-33);
-            imageView.setY(-38);
+            imageView.setX(-32);
+            imageView.setY(-37);
             addNode(imageView);
         }
     }
