@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1718293922.66983 "main.tex" "main.pdf" "main" 1718293923.63132 0
+["pdflatex"] 1718624588.94891 "main.tex" "main.pdf" "main" 1718624590.47196 2
   "/usr/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc" 1716849630 2971 def0b6c1f0b107b3b936def894055589 ""
   "/usr/share/texmf-dist/fonts/map/fontname/texfonts.map" 1716849630 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texmf-dist/fonts/tfm/jknappen/ec/ecbi1200.tfm" 1716849630 3072 ccae1a240ab272417e4399fe942df546 ""
@@ -19,6 +19,7 @@
   "/usr/share/texmf-dist/fonts/tfm/jknappen/ec/ecrm2488.tfm" 1716849630 3584 406ad7b70d9a41f7833f92b6313150c8 ""
   "/usr/share/texmf-dist/fonts/tfm/jknappen/ec/ecti1200.tfm" 1716849630 3072 8b5a64dc91775463bc95e2d818524028 ""
   "/usr/share/texmf-dist/fonts/tfm/jknappen/ec/ecti1440.tfm" 1716849630 3072 9a80c2966d6c06d677719db0a9b772d0 ""
+  "/usr/share/texmf-dist/fonts/tfm/jknappen/ec/ectt1200.tfm" 1716849630 1536 487c9b46984a816c7ed238d0674595c7 ""
   "/usr/share/texmf-dist/fonts/tfm/jknappen/ec/ecxc1440.tfm" 1716849630 3072 3782a462db38356cbdd8c75f493aa82f ""
   "/usr/share/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1716849630 1004 54797486969f23fa377b128694d548df ""
   "/usr/share/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1716849630 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
@@ -46,6 +47,7 @@
   "/usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm1440.pfb" 1716849630 131078 d96015a2fa5c350129e933ca070b2484 ""
   "/usr/share/texmf-dist/fonts/type1/public/cm-super/sfti1200.pfb" 1716849630 198221 ca5aa71411090ef358a6cc78b7458365 ""
   "/usr/share/texmf-dist/fonts/type1/public/cm-super/sfti1440.pfb" 1716849630 187615 3df8b496c716586eebd1546cd4031312 ""
+  "/usr/share/texmf-dist/fonts/type1/public/cm-super/sftt1200.pfb" 1716849630 167085 68de377d2744a68a88fa40a1f610615a ""
   "/usr/share/texmf-dist/fonts/type1/public/cm-super/sfxc1440.pfb" 1716849630 110801 1c85642d201c0caf0b9cebd015b45741 ""
   "/usr/share/texmf-dist/tex/context/base/mkii/supp-pdf.mkii" 1716849630 71627 94eb9990bed73c364d7f53f960cc8c5b ""
   "/usr/share/texmf-dist/tex/generic/atbegshi/atbegshi.sty" 1716849630 24708 5584a51a7101caf7e6bbf1fc27d8f7b1 ""
@@ -140,6 +142,7 @@
   "/usr/share/texmf-dist/tex/latex/base/ot1enc.dfu" 1716849630 3534 21cf2feec11213325f554177a6688d28 ""
   "/usr/share/texmf-dist/tex/latex/base/report.cls" 1716849630 23203 f5d913095ece2233436f0e628619cd37 ""
   "/usr/share/texmf-dist/tex/latex/base/size12.clo" 1716849630 8449 f07039d8e4e89f21078d9b5137579bfc ""
+  "/usr/share/texmf-dist/tex/latex/base/t1cmtt.fd" 1716849630 2443 790016d75def8d3127df5c216a45abcc ""
   "/usr/share/texmf-dist/tex/latex/base/t1enc.dfu" 1716849630 12786 91ddb5d73fa5ed6298e58db3d8acaaaa ""
   "/usr/share/texmf-dist/tex/latex/base/ts1enc.dfu" 1716849630 5133 c0ec85d9ac1c4faf8fe7866c44734efe ""
   "/usr/share/texmf-dist/tex/latex/base/utf8.def" 1716849630 11506 12c6237a1109c903ebde9e1a6fe835d1 ""
@@ -211,28 +214,18 @@
   "/usr/share/texmf-dist/web2c/texmf.cnf" 1716849630 41588 b43d3e860a4f94167ee1e725ff526a72 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1716889608.87727 5467607 1f3b9843102088c2a7136e28f005c5e4 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1716889575 8555702 7203cac0a197d92aa9a47b4ad6c204b7 ""
-<<<<<<< HEAD
-  "hebergement.tex" 1718358542.96843 33563 765d153468f58b5bedb63d2ad8fd756d ""
-=======
-  "hebergement.tex" 1718293921.61266 25644 f20ab1136841208e79b8c3a19c70d552 ""
->>>>>>> dev
-  "images/Camarade.png" 1718284981.56247 38811 6443b3021ea2b246788fe6a05b916c22 ""
-  "images/Guide.png" 1718284981.56247 52779 d5fbd09b6b5bf1f2d31352ed7ce077cc ""
-  "images/HateCards.png" 1718284981.56247 65150 ec761925b024d94fd591c9fa02c7c195 ""
-  "images/InfoLogoQuadriH.png" 1718284981.56247 25546 9fd7faca39c650ec5db6dddd6422a115 ""
-  "images/mermaid-diagram.png" 1718284981.56247 72141 0fe504ac8f660d18e04c96dc243da91b ""
-<<<<<<< HEAD
-  "main.aux" 1718358545.83508 5613 7b16630e0f6ba7eb7f831333498ada31 "pdflatex"
-  "main.out" 1718358545.83508 3846 8af611bddcdee00f52f85607c425bbbd "pdflatex"
-  "main.tex" 1718289516.8119 3680 b57ac722906b83b26b001c9f12656a78 ""
-  "main.toc" 1718358545.83508 2071 b07fd139b1a3d7fcbd395ef7a458d684 "pdflatex"
-=======
-  "main.aux" 1718293923.51264 4693 ab2d4ad5db5613195678e6985d8dafb4 "pdflatex"
-  "main.out" 1718293923.51598 3028 2a91309e98d778ae9eaebcdb61032052 "pdflatex"
-  "main.tex" 1718289516.8119 3680 b57ac722906b83b26b001c9f12656a78 ""
-  "main.toc" 1718293923.51598 1652 d8448133972edc9b2b7e0d908b5d04f1 "pdflatex"
->>>>>>> dev
-  "title.tex" 1718284981.56913 1144 d80b678fcb5a8de0efc822bc0ecbe13f ""
+  "hebergement.tex" 1718455055.10302 33563 765d153468f58b5bedb63d2ad8fd756d ""
+  "images/Camarade.png" 1718455055.10635 38811 6443b3021ea2b246788fe6a05b916c22 ""
+  "images/Guide.png" 1718455055.10635 52779 d5fbd09b6b5bf1f2d31352ed7ce077cc ""
+  "images/HateCards.png" 1718455055.10968 65150 ec761925b024d94fd591c9fa02c7c195 ""
+  "images/InfoLogoQuadriH.png" 1718455055.11302 25546 9fd7faca39c650ec5db6dddd6422a115 ""
+  "images/UML_boardifier_console.png" 0 -1 0 ""
+  "images/mermaid-diagram.png" 1718455055.11302 72141 0fe504ac8f660d18e04c96dc243da91b ""
+  "main.aux" 1718624590.03514 5613 7b16630e0f6ba7eb7f831333498ada31 "pdflatex"
+  "main.out" 1718624590.03514 3846 8af611bddcdee00f52f85607c425bbbd "pdflatex"
+  "main.tex" 1718455055.12635 3680 b57ac722906b83b26b001c9f12656a78 ""
+  "main.toc" 1718624590.03514 2071 b07fd139b1a3d7fcbd395ef7a458d684 "pdflatex"
+  "title.tex" 1718455055.16302 1144 d80b678fcb5a8de0efc822bc0ecbe13f ""
   (generated)
   "main.aux"
   "main.log"
