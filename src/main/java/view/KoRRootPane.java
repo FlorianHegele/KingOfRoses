@@ -28,7 +28,7 @@ public class KoRRootPane extends RootPane {
         text.setFont(customFont);
         text.setFill(Color.LIGHTGREY);
         text.setStroke(Color.GREY);
-        text.setX(85);
+        text.setX(86);
         text.setY(805);
 
         Rectangle border = new Rectangle();
