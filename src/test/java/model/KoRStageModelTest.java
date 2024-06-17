@@ -25,7 +25,10 @@ class KoRStageModelTest {
         model.addHumanPlayer("player2");
 
         stageModel = new KoRStageModel("", model);
+
+        GameConfigurationModel.RANDOM.setSeed(3);
         stageModel.getDefaultElementFactory().setup();
+
         board = stageModel.getBoard();
     }
 
@@ -313,17 +316,18 @@ class KoRStageModelTest {
         assertTrue(stageModel.playerCanPlay(PlayerData.PLAYER_BLUE));
 
         for(int i=0; i<25; i++) {
-            board.addElement(stageModel.getRedPawns()[i], 0, 0);
-            board.addElement(stageModel.getBluePawns()[i], 0, 0);
+            stageModel.getRedPot().removeElement(stageModel.getRedPawns()[i]);
+            stageModel.getBluePot().removeElement(stageModel.getBluePawns()[i]);
         }
-        board.addElement(stageModel.getRedPawns()[25], 0, 0);
+        stageModel.getRedPot().removeElement(stageModel.getRedPawns()[25]);
 
         // if the red player has no pawn left in his pot but the blue player has at least 1 pawn left in his pot
         // returns true because the red player can draw from the blue pawn pot
         assertTrue(stageModel.playerCanPlay(PlayerData.PLAYER_RED));
         assertTrue(stageModel.playerCanPlay(PlayerData.PLAYER_BLUE));
 
-        board.addElement(stageModel.getBluePawns()[25], 0, 0);
+        stageModel.getBluePot().removeElement(stageModel.getBluePawns()[25]);
+
 
         // if both players have no pawn left in their pot
         assertFalse(stageModel.playerCanPlay(PlayerData.PLAYER_RED));
@@ -332,14 +336,19 @@ class KoRStageModelTest {
 
     @Test
     void testPlayerCanPlayHero() {
-        board.addElement(stageModel.getKingPawn(), 6, 8);
+        board.moveElement(stageModel.getKingPawn(), 6, 8);
+
         board.addElement(stageModel.getBluePawns()[0], 8, 8);
+        stageModel.getBluePot().removeElement(stageModel.getBluePawns()[0]);
+
         board.addElement(stageModel.getBluePawns()[1], 6, 5);
+        stageModel.getBluePot().removeElement(stageModel.getBluePawns()[1]);
 
         // representation of part of the board, O is the king and X is the blue pawns
         // X 0
         //
         //   X
+
 
         // With the random seed 3, and the king's pawn in 6, 8 + a blue pawn in 8,8 and 6,5.
         // Only the red player can use a hero card.
@@ -368,8 +377,12 @@ class KoRStageModelTest {
         assertFalse(stageModel.gameIsStuck());
 
         board.moveElement(stageModel.getKingPawn(), 6, 8);
+
         board.addElement(stageModel.getBluePawns()[0], 8, 8);
+        stageModel.getBluePot().removeElement(stageModel.getBluePawns()[0]);
+
         board.addElement(stageModel.getBluePawns()[1], 6, 5);
+        stageModel.getBluePot().removeElement(stageModel.getBluePawns()[1]);
 
         // representation of part of the board, O is the king and X is the blue pawns
         // X 0
@@ -383,7 +396,7 @@ class KoRStageModelTest {
         assertFalse(stageModel.gameIsStuck());
 
         for(int i=0; i<4; i++)
-            stageModel.getRedHeroCardStack().getElement(0, 0).removeFromStage();
+            stageModel.getRedHeroCards()[i].removeFromStage();
 
         assertTrue(stageModel.gameIsStuck());
     }

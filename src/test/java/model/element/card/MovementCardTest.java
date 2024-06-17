@@ -2,7 +2,6 @@ package model.element.card;
 
 import boardifier.model.GameStageModel;
 import model.KoRStageModel;
-import model.element.card.MovementCard;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

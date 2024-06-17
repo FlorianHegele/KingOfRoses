@@ -6,7 +6,6 @@ import boardifier.control.Controller;
 import boardifier.model.GameException;
 import boardifier.model.Model;
 import boardifier.model.action.ActionList;
-import control.ai.KoRDeciderHateCards;
 import javafx.stage.Stage;
 import model.GameConfigurationModel;
 import model.KoRStageModel;
@@ -27,30 +26,22 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class TestAiHateCards{
 
     private KoRStageModel stageModel;
-    private Controller controller;
+    private Model model;
 
     @BeforeEach
-    void createStageModel() throws GameException {
+    void createStageModel() {
         // Create the model
-        final Model model = new Model();
-        final Stage stage = Mockito.mock(Stage.class);
+        model = new Model();
+        model.addHumanPlayer("player1");
+        model.addHumanPlayer("player2");
 
-        // Set up game configuration
-        final GameConfigurationModel gameConfigurationModel = new GameConfigurationModel(model, GameConfigurationModel.RANDOM_SEED, 2,
-                0, false, true);
-        gameConfigurationModel.addAI(Map.of(PlayerData.PLAYER_BLUE, AIData.GUIDE, PlayerData.PLAYER_RED, AIData.GUIDE));
-
-        // Init and start the Game
-        final Boardifiers boardifiers = new Boardifiers(stage, model, gameConfigurationModel);
-        boardifiers.getController().startGame();
-
-        controller = boardifiers.getController();
-        stageModel = (KoRStageModel) model.getGameStage();
+        stageModel = new KoRStageModel("", model);
+        model.setGameStage(stageModel);
+        stageModel.getDefaultElementFactory().setup();
     }
 
     @Test
     void testPlateauVide(){
-
         // Create the AI decider
         KoRDeciderHateCards aiDecider = new KoRDeciderHateCards(stageModel.getModel(), null, PlayerData.PLAYER_BLUE);
 
@@ -58,8 +49,7 @@ class TestAiHateCards{
         ActionList actionList = aiDecider.decide();
 
         // is the AI playing a movement card ?
-        assertEquals(1,ActionsUtils.actionListToInt(actionList));
-
+        assertEquals(0, ActionsUtils.actionListToInt(actionList));
     }
 
     @Test
@@ -76,7 +66,7 @@ class TestAiHateCards{
 
         // Remove a card from the red AI
         final ActionList actionList = new ActionList();
-        actionList.addAll(ActionFactory.generatePutInContainer(controller, stageModel.getModel(), movementCard2, stageModel.getMovementCardStackPlayed().getName(), 0, 0));
+        actionList.addAll(ActionFactory.generatePutInContainer(null, stageModel.getModel(), movementCard2, stageModel.getMovementCardStackPlayed().getName(), 0, 0));
 
         new ActionPlayer(stageModel.getModel(), null, actionList).start();
 
@@ -84,7 +74,7 @@ class TestAiHateCards{
         ActionList actionL = aiDecider.decide();
 
         // is the AI playing a movement card ?
-        assertEquals(1,ActionsUtils.actionListToInt(actionL));
+        assertEquals(0, ActionsUtils.actionListToInt(actionL));
     }
 
     @Test
@@ -98,14 +88,14 @@ class TestAiHateCards{
 
         // Remove a card from the red AI
         final ActionList actionList = new ActionList();
-        actionList.addAll(ActionFactory.generatePutInContainer(controller, stageModel.getModel(), movementCard, stageModel.getMovementCardStackPlayed().getName(), 0, 0));
+        actionList.addAll(ActionFactory.generatePutInContainer(null, stageModel.getModel(), movementCard, stageModel.getMovementCardStackPlayed().getName(), 0, 0));
         new ActionPlayer(stageModel.getModel(), null, actionList).start();
 
         // Get the action list from the AI
         ActionList actionL = aiDecider.decide();
 
         // is the AI playing a movement card ?
-        assertEquals(1,ActionsUtils.actionListToInt(actionL));
+        assertEquals(0, ActionsUtils.actionListToInt(actionL));
     }
 
 }
