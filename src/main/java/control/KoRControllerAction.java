@@ -2,6 +2,7 @@ package control;
 
 import boardifier.control.Controller;
 import boardifier.control.ControllerAction;
+import boardifier.control.Logger;
 import boardifier.model.GameException;
 import boardifier.model.Model;
 import boardifier.view.View;
@@ -78,7 +79,7 @@ public class KoRControllerAction extends ControllerAction implements EventHandle
         koRView.getMenuConfig().setOnAction(e -> {
             Sound.playSound("Doorknob.wav");
             Sound.playMusic("shop.wav",650);
-            System.out.println("KoR Config :" + gameConfigurationModel.getPlayerDataAIDataMap().toString());
+            Logger.info("KoR Config :" + gameConfigurationModel.getPlayerDataAIDataMap().toString());
             control.stopGame();
             koRView.resetView();
 
@@ -122,7 +123,7 @@ public class KoRControllerAction extends ControllerAction implements EventHandle
         koRView.getsRule().setOnAction(e -> {
             Sound.playSound("Doorknob.wav");
             Sound.playMusic("shop.wav",650);
-            System.out.println("KoR Rule :" + gameConfigurationModel.getPlayerDataAIDataMap().toString());
+            Logger.info("KoR Rule :" + gameConfigurationModel.getPlayerDataAIDataMap().toString());
             control.stopGame();
             koRView.resetView();
 

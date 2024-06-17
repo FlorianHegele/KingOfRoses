@@ -18,8 +18,7 @@ public class KoRGraphic extends Application {
         Model model = new Model();
 
         // Set up game configuration
-        final GameConfigurationModel gameConfigurationModel = new GameConfigurationModel(model, 1,
-                0, 3, DEFAULT_PLAYER_INTERACTION, DEFAULT_RENDER_GAME);
+        final GameConfigurationModel gameConfigurationModel = new GameConfigurationModel(model);
 
         // Init Game
         final Boardifiers boardifiers = new Boardifiers(stage, model, gameConfigurationModel);
