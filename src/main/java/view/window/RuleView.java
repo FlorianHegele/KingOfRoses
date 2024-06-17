@@ -20,7 +20,7 @@ public class RuleView extends WindowView<GridPane> {
      * Constructs a ConfigView with a new GridPane.
      */
     public RuleView() {
-        super(new GridPane());
+        super(new GridPane(), 850, 715);
 
         // Configuring pane
         pane.setHgap(10);
