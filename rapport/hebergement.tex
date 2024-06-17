@@ -1,6 +1,6 @@
 \chapter{Objectif}
 
-L'objectif de ce rapport est de documenter le processus de développement de notre projet de jeu de plateau dans le cadre de la SAE-IHM \footnote{Voir glossaire :\hyperref[sae-ihm]{SAE-IHM}}, en mettant l'accent sur les méthodes et les étapes suivies, ainsi que sur les défis rencontrés et les solutions apportées, sans entrer dans les détails techniques du code.
+L'objectif de ce rapport est de documenter le processus de développement de notre projet de jeu de plateau dans le cadre de la SAE-IHM, en mettant l'accent sur les méthodes et les étapes suivies, ainsi que sur les défis rencontrés et les solutions apportées, sans entrer dans les détails techniques du code.
 
 \chapter{Structure et Contenu}
 
@@ -40,10 +40,10 @@ Le \textsc{Roi des Roses} est un jeu de plateau stratégique se jouant à deux j
 Le plateau est constitué d'une grille de 9x9 cases, avec un pion central nommé "\emph{roi}".
 Chaque joueur dispose de 26 pions bifaces, rouges d'un côté et bleus de l'autre, ainsi que de 4 cartes "\emph{Héros}" et de 5 cartes "\emph{Déplacement}" tirées d'une pioche de 24 cartes.
 
-Le but du jeu est de contrôler le plus de zones adjacentes de pions de sa couleur en déplaçant le roi sur le plateau selon les directions et distances indiquées par les cartes "\emph{Déplacement}".
+Le but du jeu est de contrôler le plus et les plus grandes zones adjacentes de pions de sa couleur en déplaçant le roi sur le plateau selon les directions et distances indiquées par les cartes "\emph{Déplacement}".
 Les cartes "\emph{Héros}" permettent de retourner les pions adverses, ajoutant une couche de stratégie supplémentaire.
 Le jeu se termine lorsqu'aucun des deux joueur ne peut plus jouer de cartes "\emph{Déplacement}" ou lorsque tous les pions ont été placés.
-Le gagnant est celui qui contrôle le plus de zones adjacentes de pions de sa couleur, avec des points calculés en fonction du nombre de pions dans chaque zone.
+Le gagnant est celui qui possède le plus de points calculés en fonction du nombre de pions adjacents dans chaque zone. (Plus la zone est grande plus elle rapporte de points)
 En cas d’égalité, le gagnant est celui qui a posé le plus de pions.
 
 \section{Implémentation et Challenges}
@@ -112,10 +112,10 @@ Voici comment fonctionne la boucle principale du jeu :
 
 
 \subsubsection*{Animation des cartes :}
-Les cartes "Déplacement" sont affichées avec leur face visible pour le joueur, et tournées en fonction de la position du roi sur le plateau. Les cartes jouées sont placées dans une fosse pour être re-mélangées et re-distribuées, sans duplication.
+Les cartes "Déplacement" sont affichées avec leur face visible pour le joueur, et tournées en fonction de la position du roi sur le plateau. Les cartes jouées sont placées dans une fosse pour être re-mélangées et re-distribuées, sans duplication. Ces dernières changent de couleur lorsqu'elles sont sélectionnées.
 
 \subsubsection*{Interaction des pions :}
-Les pions peuvent être retournés en utilisant des cartes "Héros". Cette action est animée pour montrer visuellement le changement de couleur des pions.
+Les pions peuvent être retournés en utilisant des cartes "Héros". Un pion ne peut être posé qu'après qu'une carte cohérente ait été sélectionné. S'il est nécessaire d'utiliser une carte héros pour retourner un pion adverse, il faudra que le joueur sélectionne la carte déplacement puis la carte héros pour que le coup soit jouable. Le fait d'obliger le joueur à cliquer sur le plateau après avoir sélectionner sa carte est un moyen d'éviter les coups accidentels.
 
 \subsubsection*{Intelligence Artificielle :}
 Les IA dans "Roi des Roses" sont conçues pour simuler des adversaires humains en utilisant différentes stratégies. Bien que les IA actuelles ne voient pas dans le futur, elles évitent ou engagent des situations avantageuses/désavantageuses. Voici un aperçu des différentes IA implémentées :\\
@@ -141,61 +141,13 @@ Les IA dans "Roi des Roses" sont conçues pour simuler des adversaires humains e
 
 
 \subsubsection*{Son :}
-Bien que le son ne soit pas nécessaire à l’usage du programme par l’utilisateur, ce dernier est un ajout appréciable pour le confort de jeu. Un coup joué donne un feedback auditif et une musique de fond permet d’ancrer l’ambiance du jeu dans l’imaginaire du joueur.
+Bien que le son ne soit pas nécessaire à l’usage du programme par l’utilisateur, ce dernier est un ajout appréciable pour le confort de jeu. Un coup joué donne un feedback auditif et une musique de fond permet d’ancrer l’ambiance du jeu dans l’imaginaire du joueur, en plus de lui confirmer une action correctement effectuée.
+
+Dans cette idée, des sons ont été ajoutés lors de la sélection des cartes, lors de la sélection des menus et des musiques différentes ont été intégrées selon s'il se trouve sur le menu principal, en jeu, ou dans le menu de configuration.
+
+Un menu de configuration a été ajouté pour permettre au joueur de réduire le volume des sons ou de la musique voir de les couper complètement.
 
 \section{Organisation du travail}
-
-\subsection{Vue Globale}
-
-\begin{figure}[!h]
-    \begin{tabularx}{\textwidth}{|X|c|c|X|}
-        \hline
-        \textbf{Phase} & \textbf{Planifié} & \textbf{Réel} & \textbf{Commentaires} \\
-        \hline
-        Analyse des besoins & 1er mai - 5 mai & 1er mai - 5 mai & \\
-        \hline
-        Conception & 6 mai - 8 mai & 6 mai - 12 mai & Retards dus à la découverte de "boardifier" \\
-        \hline
-        Implémentation & 9 mai - 19 mai & 13 mai - 23 mai & Retards dus au manque de documentation "boardifier" \\
-        \hline
-        Tests et intégration & 9 mai - 19 mai & 13 mai - 21 mai  & Avons fini plus tôt pour nous occuper du rapport \\
-        \hline
-        Rapport (EN) et démonstration & 20 mai - 24 mai & 22 mai - 24 mai & Avons sur-évaluer le temps nécessaire \\
-        \hline
-        \textbf{Jalon 1} & 24 mai & 24 mai & \\
-        \hline
-        Définition du sujet & 25 mai - 25 mai & 25 mai - 26 mai & \\
-        \hline
-        Recherche et analyse & 26 mai - 26 mai & 27 mai - 28 mai  & \\
-        \hline
-        Préparation de la présentation & 27 mai - 27 mai & 29 mai - 30 mai &  \\
-        \hline
-        Répétition et finalisation & 28 mai - 28 mai & 31 mai - 31 mai  & \\
-        \hline
-        \textbf{Jalon 2} & fin mai & 31 mai  & Aucun retard, aurions pu avancer sur la version graphique \\
-        \hline
-        Conception graphique & 29 mai - 2 Juin & 1 Juin - 2 Juin & Peu de préparation car rendu proche \\
-        \hline
-        Implémentation graphique & 3 juin - 13 juin & 3 juin - 15 juin  & Retards dus à la découverte de "boardifier javafx" \\
-        \hline
-        Tests et intégration & 3 juin - 13 juin & 3 juin - 13 juin  & \\
-        \hline
-        Préparation de la soutenance & 14 juin - 15 juin & 14 juin - 15 juin  & \\
-        \hline
-        Rapport (FR) & 16 juin - 17 juin & 16 juin - 17 juin & \\
-        \hline
-        \textbf{Jalon 3} & 17 juin & 17 juin &\\
-        \hline
-    \end{tabularx}
-    \caption{Tableau de Planification et Réalisation}
-\end{figure}
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=\textwidth,angle=0]{./images/mermaid-diagram}
-    \caption{Diagramme de Gantt du Projet}
-    \label{fig:gantt}
-\end{figure}
 
 \subsection{Commentaires quant à l'organisation de l'équipe}
 
@@ -229,6 +181,59 @@ Une fois cette étape réalisée, nous nous sommes répartis chacune des fonctio
 
 Cela s'est avéré être une façon bien plus efficace de travailler, qui nous a permis de suivre un fil d'Ariane vital à l'accomplissement de la tâche finale de cette SAÉ pour laquelle nous avions assez peu de temps.
 
+\subsection{Vue Globale}
+
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=\textwidth,angle=0]{./images/mermaid-diagram}
+	\caption{Diagramme de Gantt du Projet}
+	\label{fig:gantt}
+\end{figure}
+
+
+\begin{figure}[h]
+	\begin{tabularx}{\textwidth}{|X|c|c|X|}
+		\hline
+		\textbf{Phase} & \textbf{Planifié} & \textbf{Réel} & \textbf{Commentaires} \\
+		\hline
+		Analyse des besoins & 1er mai - 5 mai & 1er mai - 5 mai & \\
+		\hline
+		Conception & 6 mai - 8 mai & 6 mai - 12 mai & Retards dus à la découverte de "boardifier" \\
+		\hline
+		Implémentation & 9 mai - 19 mai & 13 mai - 23 mai & Retards dus au manque de documentation "boardifier" \\
+		\hline
+		Tests et intégration & 9 mai - 19 mai & 13 mai - 21 mai  & Avons fini plus tôt pour nous occuper du rapport \\
+		\hline
+		Rapport (EN) et démonstration & 20 mai - 24 mai & 22 mai - 24 mai & Avons sur-évaluer le temps nécessaire \\
+		\hline
+		\textbf{Jalon 1} & 24 mai & 24 mai & \\
+		\hline
+		Définition du sujet & 25 mai - 25 mai & 25 mai - 26 mai & \\
+		\hline
+		Recherche et analyse & 26 mai - 26 mai & 27 mai - 28 mai  & \\
+		\hline
+		Préparation de la présentation & 27 mai - 27 mai & 29 mai - 30 mai &  \\
+		\hline
+		Répétition et finalisation & 28 mai - 28 mai & 31 mai - 31 mai  & \\
+		\hline
+		\textbf{Jalon 2} & fin mai & 31 mai  & Aucun retard, aurions pu avancer sur la version graphique \\
+		\hline
+		Conception graphique & 29 mai - 2 Juin & 1 Juin - 2 Juin & Peu de préparation car rendu proche \\
+		\hline
+		Implémentation graphique & 3 juin - 13 juin & 3 juin - 15 juin  & Retards dus à la découverte de "boardifier javafx" \\
+		\hline
+		Tests et intégration & 3 juin - 13 juin & 3 juin - 13 juin  & \\
+		\hline
+		Préparation de la soutenance & 14 juin - 15 juin & 14 juin - 15 juin  & \\
+		\hline
+		Rapport (FR) & 16 juin - 17 juin & 16 juin - 17 juin & \\
+		\hline
+		\textbf{Jalon 3} & 17 juin & 17 juin &\\
+		\hline
+	\end{tabularx}
+	\caption{Tableau de Planification et Réalisation}
+\end{figure}
 
 \chapter{Bilan}
 
@@ -236,7 +241,7 @@ Cela s'est avéré être une façon bien plus efficace de travailler, qui nous a
 
 \subsection*{Mode Texte}
 
-Nous avons réussi à implémenter toutes les règles de base du jeu "\textsc{Roi des Roses}". Le jeu est jouable en mode texte et en mode graphique. Toutes les fonctionnalités principales, telles que le déplacement du roi, le retournement des pions avec les cartes "Héros", et la gestion des cartes "Déplacement", sont opérationnelles en mode texte et aucun bug ne nous est apparu.
+Nous avons réussi à implémenter toutes les règles de base du jeu "\textsc{Roi des Roses}". Toutes les fonctionnalités principales, telles que le déplacement du roi, le retournement des pions avec les cartes "Héros", et la gestion des cartes "Déplacement", sont opérationnelles en mode texte et aucun bug ne nous est apparu.
 
 Nous n'avons pas eu le temps de développer des IA complexes. Des améliorations sont nécessaires pour rendre les IA plus robustes et stratégiques comme leurs permettre de voir plusieurs coups en avance ou mettre en place un système d'apprentissage non supervisé.
 
@@ -244,7 +249,38 @@ Les tests ont été implémentés une fois le développement de l'application en
 
 \subsection*{Mode Graphique}
 
+Dans le cadre du développement de la version graphique du jeu "\textsc{Roi des Roses}", notre équipe a mis en œuvre plusieurs aspects techniques pour offrir une expérience utilisateur fluide et intuitive. En utilisant le framework "boardifier" fourni par notre professeur, nous avons réussi à créer une interface utilisateur claire et modulable. 
+
+La barre de menus, intégrant des options telles que le démarrage d'une nouvelle partie, l'accès aux paramètres et le réglage du volume de la musique et des effets sonores, a été conçue pour être facilement navigable. Les contrôles de volume ont été particulièrement soignés, permettant aux utilisateurs de régler précisément les niveaux sonores selon leurs préférences.
+
+La gestion des différentes fenêtres du jeu a été un autre point clé de notre implémentation. Nous avons développé un système permettant de changer facilement le contenu affiché en fonction des actions de l'utilisateur, assurant ainsi une transition harmonieuse entre les différentes vues du jeu. Chaque fenêtre est représentée par une classe spécifique, intégrée de manière fluide dans l'interface principale.
+
+Nous avons également intégré des fonctionnalités audio en utilisant la classe `Sound` pour gérer les niveaux de volume de la musique et des effets sonores. Les options de menu permettent de basculer et d'ajuster ces paramètres directement depuis l'interface, offrant une personnalisation sonore complète.
+
+Enfin, une attention particulière a été portée à la disposition et au style des éléments de l'interface. Nous avons structuré les éléments de manière esthétique et fonctionnelle, avec des marges et espacements appropriés pour une présentation soignée.
+
+
 \section{Connaissances et Compétences}
+
+\subsection{Compétence 1 : Réaliser un développement d’application}
+
+Au cours de ce projet, nous avons acquis des compétences essentielles en développement d'application. Nous avons appris à concevoir, coder, tester et intégrer une solution informatique en respectant les besoins décrits par le client. Nous avons appliqué les principes algorithmiques tout au long du processus de développement. En veillant à la qualité du code et à sa documentation, nous avons élaboré une application informatique robuste et maintenable.
+
+Nous avons développé des applications informatiques simples en implémentant et en élaborant des conceptions simples, en faisant des essais et en évaluant leurs résultats par rapport aux spécifications. Le développement d'interfaces utilisateurs a été un aspect clé de notre travail, nous permettant de partir des exigences pour aller jusqu'à une application complète. Nous avons élaboré et implémenté les spécifications fonctionnelles et non fonctionnelles, appliqué des principes d'accessibilité et d'ergonomie, adopté de bonnes pratiques de conception et de programmation, et vérifié la qualité de l'application par des tests rigoureux.
+
+\subsection{Compétence 2 : Optimiser des applications}
+
+Nous avons développé la capacité d'analyser un problème avec méthode, en le découpant en éléments algorithmiques simples et en choisissant des structures de données adaptées. Nous avons comparé différents algorithmes pour des problèmes classiques et mis en œuvre des outils mathématiques pour l'informatique.
+
+En ce qui concerne la conception des IA, bien que nous n'ayons pas eu le temps de développer des IA complexes, nous avons acquis des compétences de base en création d'algorithmes de décision pour les personnages non-joueurs (PNJ). Nous avons compris l'importance de la stratégie de jeu et avons commencé à implémenter des IA capables de prendre des décisions selon un paradigme simple.
+
+Nous avons également appris à justifier nos choix techniques et à valider les résultats obtenus. Cela impliquait de formuler et de modéliser des situations complexes, d'analyser les performances des algorithmes de jeu, et de choisir les structures de données les plus appropriées pour optimiser le temps d'exécution et la consommation de ressources.
+
+\subsection{Compétence 6 : Collaborer au sein d’une équipe informatique}
+
+Travailler sur ce projet nous a permis de développer et d'exploiter les aptitudes nécessaires pour collaborer efficacement au sein d'une équipe informatique. Nous avons appris à inscrire notre démarche au sein d'une équipe pluridisciplinaire, à accompagner la mise en œuvre des évolutions informatiques, et à nous poser certaines questions juridiques. Nous avons également développé une communication efficace et collaborative, essentielle pour le bon déroulement du projet.
+
+Nous avons identifié nos aptitudes à travailler dans une équipe en appréhendant l'écosystème numérique et en découvrant les aptitudes requises selon les différents livrables. Nous avons compris les statuts, les fonctions et les rôles de chaque membre de l'équipe.
 
 \section{Etude de cas juridique}
 
@@ -260,10 +296,60 @@ De ce fait, l'auteur d'un jeu est donc l'auteur de multiples œuvres qui compose
 
 \section{Auto-évaluation}
 
+Le projet "Le Roi des Roses" a été une expérience enrichissante pour notre équipe. En utilisant le framework "boardifier", nous avons pu développer un jeu de plateau complexe et engageant. Voici une auto-évaluation détaillée de notre travail.
+
+\subsection{Points forts}
+
+\begin{enumerate}
+	\item \textbf{Utilisation efficace du framework} :
+	\begin{itemize}
+		\item Nous avons réussi à intégrer correctement les composants fournis par le framework. Cela nous a permis de nous concentrer sur la logique spécifique du jeu "Le Roi des Roses" sans réinventer la roue pour les éléments de base.
+	\end{itemize}
+	
+	\item \textbf{Création d'interfaces utilisateur intuitives} :
+	\begin{itemize}
+		\item Nous avons conçu des interfaces utilisateur claires et intuitives. Les menus et les contrôles de volume (musique et effets sonores) sont bien structurés et faciles à naviguer. La gestion des différentes fenêtres de jeu est également bien implémentée, permettant une transition fluide entre les différentes vues.
+	\end{itemize}
+	
+	\item \textbf{Gestion des éléments de jeu} :
+	\begin{itemize}
+		\item Nous avons développé des représentations visuelles efficaces pour les différents éléments du jeu, tels que les pions, les cartes de mouvement et les cartes de héros. Chaque élément visuel est bien intégré et répond de manière appropriée aux changements d'état (sélection, changement de face, etc.).
+	\end{itemize}
+	
+	\item \textbf{Modularité et extensibilité} :
+	\begin{itemize}
+		\item La structure de notre code est modulaire, ce qui facilite l'ajout de nouvelles fonctionnalités ou la modification des existantes. Par exemple, les différentes classes de vue pour les cartes et les pions peuvent être facilement étendues pour inclure de nouveaux types d'éléments.
+	\end{itemize}
+\end{enumerate}
+
+\subsection{Points à améliorer}
+
+\begin{enumerate}
+	\item \textbf{Documentation et commentaires} :
+	\begin{itemize}
+		\item Bien que notre code soit fonctionnel, il manque parfois de commentaires explicatifs. Une meilleure documentation aiderait à la maintenance future et faciliterait la compréhension pour de nouveaux développeurs rejoignant le projet.
+	\end{itemize}
+	
+	\item \textbf{Gestion des erreurs} :
+	\begin{itemize}
+		\item La gestion des exceptions pourrait être améliorée. Actuellement, certaines parties du code se contentent d'imprimer les traces de pile en cas d'erreur. Une gestion plus robuste des erreurs avec des messages d'erreur utilisateur plus clairs améliorerait l'expérience utilisateur.
+	\end{itemize}
+	
+	\item \textbf{Optimisation des performances} :
+	\begin{itemize}
+		\item Certaines parties du code pourraient être optimisées pour améliorer les performances, notamment lors du rendu des éléments graphiques. La gestion des ressources (comme les images) pourrait être revue pour réduire la consommation de mémoire.
+	\end{itemize}
+	
+	\item \textbf{Tests unitaires} :
+	\begin{itemize}
+		\item L'intégration de tests unitaires parallèment a l'implémentation des fonctionnalités aurait permis d'assurer une meilleure qualité du code tout au long du développement.
+	\end{itemize}
+\end{enumerate}
 
 
 \section{Conclusion}
 
+Finalement, ce projet a été une excellente opportunité pour appliquer nos compétences en développement logiciel dans un contexte de jeu de plateau. Nous avons appris à utiliser un framework existant de manière efficace tout en développant des fonctionnalités spécifiques à notre jeu. Bien que certaines améliorations soient nécessaires, nous sommes fiers du travail accompli et des compétences acquises au cours de ce projet.
 
 \appendix
 
@@ -277,11 +363,23 @@ De ce fait, l'auteur d'un jeu est donc l'auteur de multiples œuvres qui compose
 
 \subsection*{Tim \textsc{Carrara}}
 
+Durant cette SAE, j'ai eu l'occasion de découvrir et d'apprendre à utiliser un nouveau framework de développement (boardifier), ce qui m'a permis de développer ma capacité à m'adapter et à maîtriser de nouveaux outils. Bien que je n'aie pas directement écrit le code de l'application console lors de la première partie, j'ai passé du temps à le lire et à le comprendre. Cela m'a aidé à progresser en programmation orientée objet. De plus, j'ai créé des fichiers de test en txt pour vérifier que toutes les issues du jeu avaient un rendu correct, une tâche importante pour s'assurer que l'application fonctionnait à 100%.
+
+Lors de la deuxième partie de la SAE, j'ai dû réapprendre un nouveau framework pour le développement graphique, ce qui a renforcé mes compétences en IHM. Je me suis principalement concentré sur le design du jeu, en plaçant les images et en créant une identité visuelle cohérente. J'ai également participé à d'autres petites tâches liées au développement graphique de l'application, ce qui m'a permis de diversifier mes compétences.
+
 \subsection*{Mathis \textsc{Courvoisier}}
 
 Au cours de ce projet, j'ai approfondi mes connaissances en programmation Java en travaillant avec une structure de code complexe préexistante, j'ai ainsi appris à naviguer et à comprendre un code existant. Sur le plan de la communication, j'ai amélioré mes compétences en rédaction technique en anglais en produisant un rapport détaillé sur les IA, structurant un rapport technique, présentant des analyses de données. J'ai également développé mes compétences en présentation orale et en droit en préparant et présentant la réponse à une question juridique posée à notre groupe. En gestion de projet, j'ai approfondi ma maîtrise dans l’utilisation de l’outils Git, le projet ayant une structure complexe nous avons dû le diviser en plusieurs branches. J'ai également renforcé mes compétences en travail d'équipe, en collaborant avec mes coéquipiers sur les différentes tâches du projet.
 
 \subsection*{Florian \textsc{Hegele}}
+
+Durant ce projet, j'ai été très impliqué dans la création du jeu "Le Roi des Roses" en version console, en me concentrant sur les fonctionnalités de base (visuel dans la console) et l'interaction clavier. J'ai également été impliqué, à 70\% dans la modélisation des IA, à 60\% sur les tests unitaires et à 90\% sur la documentation du code.
+Pour la version graphique, j'ai mis à jour le code console en une version graphique simplifiée avec toutes les interactions du jeu (pas d’image, ni de son, ni d’onglet supplémentaire). J'ai  été impliqué par cette tâche à 100\%, de plus pour optimiser le code à 80\% et pour documenter le code à 90\%. 
+
+J'ai également géré le dépôt Git à 80\% et créé un système de génération automatique de documentation sur GitHub à 100\%.
+Ce projet m'a permis d'améliorer mes compétences techniques en Java, notamment avec le framework 'boardifier'. J'ai appris à mieux gérer les tâches en équipe, à attribuer les tâches complexes aux plus expérimentés, et à avancer dans le projet en répartissant efficacement les tâches.
+En termes de compétences relationnelles, j'ai amélioré la communication et la collaboration avec mon équipe et d'autres groupes, découvrant différentes approches pour résoudre les problèmes.
+Les principaux défis techniques ont été l'apprentissage du framework 'boardifier', surmonté grâce à un diagramme UML, et la transition du code de la version console à graphique, nécessitant une révision approfondie. En termes d'organisation, nous avons commencé trop tard la création des tests, ce qui a limité notre capacité à réaliser des tests pertinents.
 
 \subsection*{Yahia \textsc{Kherza}}
 
@@ -319,11 +417,26 @@ Enfin, les compétences transversales que j'ai développées sont tout aussi imp
 
 \subsection*{Tim \textsc{Carrara}}
 
+En termes d'auto-évaluation, je suis satisfait de ma capacité à m'adapter rapidement et à apprendre de nouveaux frameworks, tant pour la programmation console que pour le développement graphique. J'ai également développé mes compétences en conception d'interfaces graphiques, en me concentrant sur le design et l'identité visuelle du jeu. Cependant, je regrette de ne pas m'être davantage impliqué dans la première partie de la SAE. Une implication plus active dès le début aurait enrichi encore plus mon apprentissage en programmation orientée objet.
+
 \subsection*{Mathis \textsc{Courvoisier}}
+
+Pour ma part je me suis majoritairement impliqué dans le rapport concernant les Intelligences Artificielles ainsi que sur la question de droit, où j'ai pu mettre en œuvre mes compétences de recherche, de communication et d'analyse. Je me suis cependant relâché concernant la partie développement, bien que j'aie beaucoup appris à propos de la gestion d'un projet complexe il me reste des progrès à faire dans la compréhension du code d'autres collaborateurs.
 
 \subsection*{Florian \textsc{Hegele}}
 
+Au début du projet, ce qui était contraignant c'est que je ne connaissais pas le framework 'boardifier'. Pour remédier à cela, j'ai créé un schéma UML détaillant son fonctionnement. Cette approche m'a permis de mieux comprendre le framework et de voir plus facilement comment les différentes parties s'articulent . Grâce à ce schéma, j'ai pu être plus productif et intégrer 'boardifier' de manière plus efficace dans notre projet.
+
+En ce qui concerne mes compétences en Java, je me suis bien débrouillé tout au long du projet. J'ai su me repérer dans le code et résoudre les problèmes rencontrés en débuggant efficacement. J'ai réalisé l'importance de prévoir du temps supplémentaire pour le développement, car certains problèmes imprévus peuvent prendre beaucoup de temps à résoudre. Cela a été particulièrement vrai pour nous : nous avons dû écrire les tests de dernière minute, ce qui a affecté leur qualité et leur pertinence. Je devrais donc mieux anticiper les taches qu'on ne voit pas arriver en leur réservant un temps dédié. 
+
+Je pense également avoir été efficace dans la répartition des tâches du projet. En attribuant les tâches en fonction des compétences de chaque membre de l'équipe, nous avons pu optimiser notre productivité et avancer de manière plus cohérente.
+
 \subsection*{Yahia \textsc{Kherza}}
+
+Dans le rapport des IA, je me suis chargé d'écrire la présentation du jeu et de chacune des quatre IA. De plus, j'ai réalisé les graphes de contrôles de certaines méthodes complexes pour permettre de trouver des tests pertinents. 
+J'ai également fais des tests sur certaines méthodes qui ont dû être modifié par la suite car ne fonctionnait pas parfaitement.
+J'ai donc approfondie mes connaissances en test, et ait pu apprendre à m'adapter à un framework et à développer avec d'autres collaborateurs.
+Cependant, je pense que mon investissement n'a pas été à la hauteur que ce qu'il aurait pû être comme je l'ai dis dans mon bilan de compétence.
 
 
 \subsection*{Olivier \textsc{Maraval}}
@@ -393,7 +506,7 @@ Enfin, je me suis rendu compte que je ne suis pas encore très bon en gestion de
 
     \item \textbf{Pion biface} : Un pion ayant deux faces de couleurs différentes, utilisé dans le jeu "Le Roi des Roses" pour indiquer le contrôle des zones par les joueurs.
 
-    \item \textbf{Zone adjacente} : Dans le jeu "Le Roi des Roses", une zone de pions de la même couleur qui sont connectés horizontalement, verticalement ou diagonalement.
+    \item \textbf{Zone adjacente} : Dans le jeu "Le Roi des Roses", une zone de pions de la même couleur qui sont connectés horizontalement ou verticalement.
 
     \item \textbf{Grille de 9x9 cases} : Le plateau de jeu de "Le Roi des Roses", constitué de 81 cases disposées en une grille de 9 lignes et 9 colonnes.
 
