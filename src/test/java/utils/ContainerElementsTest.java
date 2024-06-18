@@ -1,15 +1,16 @@
 package utils;
 
+import boardifier.model.ContainerElement;
 import boardifier.model.Coord2D;
 import boardifier.model.Model;
 import model.KoRStageModel;
 import model.container.card.MovementCardSpread;
+import model.data.ElementType;
 import model.element.card.MovementCard;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ContainerElementsTest {
 
@@ -31,6 +32,38 @@ class ContainerElementsTest {
     void testCountElements() {
         assertEquals(5, ContainerElements.countElements(stageModel.getBlueMovementCardsSpread()));
         assertEquals(26, ContainerElements.countElements(stageModel.getBluePot()));
+    }
+
+    @Test
+    void testOutside() {
+        final ContainerElement container = new ContainerElement("container", 0, 0, 3, 3, stageModel);
+        assertTrue(ContainerElements.isOutside(container, -1, 0));
+        assertTrue(ContainerElements.isOutside(container, 0, -1));
+        assertTrue(ContainerElements.isOutside(container, 3, 0));
+        assertTrue(ContainerElements.isOutside(container, 0, 3));
+    }
+
+    @Test
+    void testInside() {
+        final ContainerElement container = new ContainerElement("container", 0, 0, 3, 3, stageModel);
+        assertFalse(ContainerElements.isOutside(container, 0, 1));
+        assertFalse(ContainerElements.isOutside(container, 1, 0));
+        assertFalse(ContainerElements.isOutside(container, 2, 2));
+        assertFalse(ContainerElements.isOutside(container, 0, 0));
+    }
+
+    @Test
+    void testSelectedElement() {
+        MovementCard movementCard = stageModel.getMovementCards(MovementCard.Owner.PLAYER_BLUE).get(0);
+        movementCard.toggleSelected();
+
+        MovementCard movementCardSelected = ContainerElements.getSelectedElement(stageModel, ElementType.MOVEMENT_CARD);
+        assertEquals(movementCardSelected, movementCard);
+    }
+
+    @Test
+    void testNotSelectedElement() {
+        assertThrows(IllegalCallerException.class, () -> ContainerElements.getSelectedElement(stageModel, ElementType.MOVEMENT_CARD));
     }
 
     @Test
