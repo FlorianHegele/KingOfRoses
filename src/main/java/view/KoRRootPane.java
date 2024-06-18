@@ -26,8 +26,8 @@ public class KoRRootPane extends RootPane {
         Font customFont = Font.loadFont(FileUtils.getOuputStreamFromResources("fonts/The Centurion .ttf"), 100);
         Text text = new Text("The King Of Roses");
         text.setFont(customFont);
-        text.setFill(Color.LIGHTGREY);
-        text.setStroke(Color.GREY);
+        text.setFill(Color.ORANGE);
+        text.setStroke(Color.BLACK);
         text.setX(86);
         text.setY(805);
 
@@ -35,7 +35,7 @@ public class KoRRootPane extends RootPane {
         border.setWidth(text.getBoundsInLocal().getWidth() + 30);
         border.setHeight(text.getBoundsInLocal().getHeight());
         border.setFill(Color.rgb(0, 0, 0, 0.5));
-        border.setStroke(Color.LIGHTYELLOW);
+        border.setStroke(Color.ORANGE);
         border.setStrokeWidth(2);
         border.setArcWidth(100);
         border.setArcHeight(100);
