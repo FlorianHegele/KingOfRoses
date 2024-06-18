@@ -61,7 +61,6 @@ public class KoRBoard extends ContainerElement {
             } else if (gameElement instanceof MovementCard m) {
                 movementCard = m;
             }
-            System.out.println(gameElement + " elemento");
         }
 
         if (gameState == GameState.SELECT_MOVEMENT_CARD) {

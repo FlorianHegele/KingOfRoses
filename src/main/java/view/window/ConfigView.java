@@ -30,7 +30,7 @@ public class ConfigView extends WindowView<GridPane> {
      * Constructs a ConfigView with a new GridPane.
      */
     public ConfigView() {
-        super(new GridPane());
+        super(new GridPane(), 800, 300);
 
         // Configuring pane
         pane.setHgap(10);

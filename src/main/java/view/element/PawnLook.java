@@ -23,35 +23,35 @@ public class PawnLook extends ElementLook {
 
     protected void render() {
         Pawn pawn = (Pawn) element;
+        final Image image;
+        final ImageView imageView = new ImageView();
         if (pawn.getStatus() == Pawn.Status.KING_PAWN){
-            Image image = new Image(FileUtils.getOuputStreamFromResources("assets/king-pawn.png"));
-            ImageView imageView = new ImageView();
-            imageView.setImage(image);
-            imageView.setFitWidth(70);
-            imageView.setFitHeight(70);
-            imageView.setX(-35);
-            imageView.setY(-35);
-            addNode(imageView);
+            image = new Image(FileUtils.getOuputStreamFromResources("assets/king-pawn.png"));
+            imageView.setFitWidth(56);
+            imageView.setFitHeight(56);
+            imageView.setX(-27);
+            imageView.setY(-30);
         }
         else if (pawn.getStatus() == Pawn.Status.BLUE_PAWN){
-            Image image = new Image(FileUtils.getOuputStreamFromResources("assets/blue-pawn.png"));
-            ImageView imageView = new ImageView();
+            image = new Image(FileUtils.getOuputStreamFromResources("assets/blue-pawn.png"));
             imageView.setImage(image);
-            imageView.setFitWidth(53);
-            imageView.setFitHeight(63);
-            imageView.setX(-25);
-            imageView.setY(-30);
-            addNode(imageView);
+            imageView.setFitWidth(60);
+            imageView.setFitHeight(70);
+            imageView.setX(-28.5);
+            imageView.setY(-36);
         }
         else if (pawn.getStatus() == Pawn.Status.RED_PAWN){
-            Image image = new Image(FileUtils.getOuputStreamFromResources("assets/red-pawn.png"));
-            ImageView imageView = new ImageView();
+            image = new Image(FileUtils.getOuputStreamFromResources("assets/red-pawn.png"));
             imageView.setImage(image);
-            imageView.setFitWidth(54);
-            imageView.setFitHeight(60);
-            imageView.setX(-27);
-            imageView.setY(-28);
-            addNode(imageView);
+            imageView.setFitWidth(61);
+            imageView.setFitHeight(69);
+            imageView.setX(-29);
+            imageView.setY(-33);
+        } else {
+            throw new IllegalStateException("State not implemented yet (" + pawn.getStatus() + ")");
         }
+
+        imageView.setImage(image);
+        addNode(imageView);
     }
 }

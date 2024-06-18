@@ -1,6 +1,8 @@
 package model;
 
 import boardifier.model.Model;
+import model.GameStatistic;
+import model.KoRStageModel;
 import model.data.AIData;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;

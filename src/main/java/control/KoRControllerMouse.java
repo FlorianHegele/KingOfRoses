@@ -36,14 +36,28 @@ public class KoRControllerMouse extends ControllerMouse implements EventHandler<
 
         // get the clic x,y in the whole scene (this includes the menu bar if it exists)
         Coord2D clic = new Coord2D(event.getSceneX(), event.getSceneY());
+        final ActionList actionList = handleClickPos(clic);
+
+        // EXECUTE ACTIONS
+        if(actionList == null) return;
+
+        KoRStageModel stageModel = (KoRStageModel) model.getGameStage();
+        stageModel.setState(GameState.SELECT_NONE);
+        stageModel.unselectAll();
+
+        final ActionPlayer actionPlayer = new ActionPlayer(model, control, actionList);
+
+        actionPlayer.start();
+    }
+
+    public ActionList handleClickPos(Coord2D clic) {
         // get elements at that position
         List<GameElement> list = control.elementsAt(clic);
         // for debug, uncomment next instructions to display x,y and elements at that postion
 
-        //Logger.debug("click in "+event.getSceneX()+","+event.getSceneY());
-        //for(GameElement element : list) {
-        //    Logger.debug("el : " + element.toString());
-        //}
+//        for(GameElement element : list) {
+//            System.out.println("el : " + element.toString());
+//        }
 
         PlayerData currentPlayer = PlayerData.getCurrentPlayerData(model);
         KoRStageModel stageModel = (KoRStageModel) model.getGameStage();
@@ -68,25 +82,25 @@ public class KoRControllerMouse extends ControllerMouse implements EventHandler<
                         stageModel.setState(GameState.SELECT_MOVEMENT_CARD);
                         element.toggleSelected();
                         Sound.playSound("card.wav");
-                        return;
+                        return actionList;
                     }
                 }
             }
             if(actionList != null) Sound.playSound("card.wav");
-        // CAN SELECT THE DEST OR A HERO CARD OR UNSELECT HIS CARD OR CHANGE HIS MOVEMENT CARD
+            // CAN SELECT THE DEST OR A HERO CARD OR UNSELECT HIS CARD OR CHANGE HIS MOVEMENT CARD
         } else if (stageModel.getGameState() == GameState.SELECT_MOVEMENT_CARD) {
-            // first check if the click is on the current selected pawn. In this case, unselect it
+            // first check if the click is on the current selected card. In this case, unselect it
             for (GameElement element : list) {
                 if (element.isSelected()) {
                     stageModel.setState(GameState.SELECT_NONE);
                     element.toggleSelected();
-                    return;
+                    return actionList;
                 }
 
                 // SELECT ANOTHER MOVEMENT CARD
                 if (ElementType.MOVEMENT_CARD.isElement(element)) {
                     final MovementCard movementCard = (MovementCard) element;
-                    if(!movementCard.getOwner().isSpecificPlayer(currentPlayer)) return;
+                    if(!movementCard.getOwner().isSpecificPlayer(currentPlayer)) return actionList;
 
                     for(GameElement selected : stageModel.getElements()) {
                         if(selected.isSelected()) {
@@ -96,9 +110,9 @@ public class KoRControllerMouse extends ControllerMouse implements EventHandler<
                     }
                     element.toggleSelected();
                     Sound.playSound("card.wav");
-                    return;
+                    return actionList;
 
-                // SELECT A HERO CARD
+                    // SELECT A HERO CARD
                 } else if (ElementType.HERO_CARD.isElement(element)) {
                     HeroCard heroCard = (HeroCard) element;
                     // SELECT A HERO CARD FROM HIS HAND
@@ -106,7 +120,7 @@ public class KoRControllerMouse extends ControllerMouse implements EventHandler<
                         stageModel.setState(GameState.SELECT_MOVEMENT_CARD_HERO);
                         element.toggleSelected();
                         Sound.playSound("card.wav");
-                        return;
+                        return actionList;
                     }
                 }
             }
@@ -114,7 +128,7 @@ public class KoRControllerMouse extends ControllerMouse implements EventHandler<
             // CHECK IF CLICK ON THE BOARD
             if(cliqueOnBoard(list, stageModel)) actionList = playMovementCard(clic, stageModel, simpleActionList);
 
-        // CAN SELECT THE DEST OR UNSELECT THE HERO CARD OR UNSELECT MOVEMENT CARD (AND HERO CARD INDIRECTLY) OR CHANGE HIS MOVEMENT CARD
+            // CAN SELECT THE DEST OR UNSELECT THE HERO CARD OR UNSELECT MOVEMENT CARD (AND HERO CARD INDIRECTLY) OR CHANGE HIS MOVEMENT CARD
         } else if (stageModel.getGameState() == GameState.SELECT_MOVEMENT_CARD_HERO) {
             for (GameElement element : list) {
                 // UNSELECT
@@ -124,17 +138,17 @@ public class KoRControllerMouse extends ControllerMouse implements EventHandler<
                         stageModel.setState(GameState.SELECT_MOVEMENT_CARD);
                         element.toggleSelected();
 
-                    // UNSELECT MOVEMENT CARD AND HERO CARD
+                        // UNSELECT MOVEMENT CARD AND HERO CARD
                     } else if (ElementType.MOVEMENT_CARD.isElement(element)) {
                         stageModel.setState(GameState.SELECT_NONE);
                         stageModel.unselectAll();
                     }
-                    return;
+                    return actionList;
                 }
 
                 // SELECT AN OTHER MOVEMENT CARD
                 if (ElementType.MOVEMENT_CARD.isElement(element)) {
-                    if(!((MovementCard)element).getOwner().isSpecificPlayer(currentPlayer)) return;
+                    if(!((MovementCard)element).getOwner().isSpecificPlayer(currentPlayer)) return actionList;
                     element.toggleSelected();
 
                     for(GameElement selected : stageModel.getSelected()) {
@@ -144,7 +158,7 @@ public class KoRControllerMouse extends ControllerMouse implements EventHandler<
                         }
                     }
                     Sound.playSound("card.wav");
-                    return;
+                    return actionList;
                 }
             }
 
@@ -152,15 +166,7 @@ public class KoRControllerMouse extends ControllerMouse implements EventHandler<
             if(cliqueOnBoard(list, stageModel)) actionList = playHeroCard(clic, stageModel, simpleActionList);
         }
 
-        // EXECUTE ACTIONS
-        if(actionList == null) return;
-
-        stageModel.setState(GameState.SELECT_NONE);
-        stageModel.unselectAll();
-
-        final ActionPlayer actionPlayer = new ActionPlayer(model, control, actionList);
-
-        actionPlayer.start();
+        return actionList;
     }
 
     private ActionList pickupFromStack(KoRStageModel gameStage, SimpleActionList simpleActionList, PlayerData playerData) {
@@ -215,7 +221,6 @@ public class KoRControllerMouse extends ControllerMouse implements EventHandler<
         final HeroCard heroCard = ContainerElements.getSelectedElement(gameStage, ElementType.HERO_CARD);
         final Pawn pawn = (Pawn) board.getElement(row, col);
 
-
         return simpleActionList.useHeroCard(heroCard, movementCard, pawn, pos);
     }
 
@@ -227,5 +232,6 @@ public class KoRControllerMouse extends ControllerMouse implements EventHandler<
         }
         return false;
     }
+
 }
 

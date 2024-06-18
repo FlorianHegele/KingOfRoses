@@ -4,7 +4,8 @@ import boardifier.model.GameStageModel;
 import model.KoRStageModel;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class MovementCardTest {
 
@@ -32,7 +33,7 @@ class MovementCardTest {
 
         // CHECK IF THE MOVEMENT CARD IS INVERTED IN THE RIGHT DIRECTION
         assertTrue(movementCardInvert.isInverted());
-        assertEquals(movementCard.getDirection(), movementCardInvert.getDirection());
+        assertEquals(movementCard.getVisualDirection().getVector(), movementCardInvert.getDirectionVector());
     }
 
     @Test
@@ -46,8 +47,8 @@ class MovementCardTest {
         movementCardRed.setOwner(MovementCard.Owner.PLAYER_RED);
 
         // CHECK IF BLUE MOVEMENT CARD IS NOT INVERTED AND IF RED MOVEMENT CARD IS INVERTED
-        assertEquals(MovementCard.Direction.NORTH, movementCardBlue.getDirection());
-        assertEquals(MovementCard.Direction.NORTH, movementCardRed.getDirection());
+        assertEquals(MovementCard.Direction.NORTH.getVector(), movementCardBlue.getDirectionVector());
+        assertEquals(MovementCard.Direction.NORTH.getVector(), movementCardRed.getDirectionVector());
     }
 
     @Test

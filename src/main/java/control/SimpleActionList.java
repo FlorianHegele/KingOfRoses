@@ -174,11 +174,11 @@ public class SimpleActionList {
         final int col = (int) position.getX();
         final int row = (int) position.getY();
 
-        // Move the king pawn on the board
-        actionList.addAll(ActionFactory.generateMoveWithinContainer(control, model, gameStage.getKingPawn(), row, col));
-
         // Remove the movement card from the player hand and place it in the played stack
         actionList.addAll(ActionFactory.generatePutInContainer(control, model, movementCard, gameStage.getMovementCardStackPlayed().getName(), 0, 0));
+
+        // Move the king pawn on the board
+        actionList.addAll(ActionFactory.generatePutInContainer(control, model, gameStage.getKingPawn(), gameStage.getBoard().getName(), row, col));
     }
 
     /**

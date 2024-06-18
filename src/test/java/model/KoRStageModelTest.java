@@ -1,16 +1,13 @@
 package model;
 
-import boardifier.control.ActionFactory;
-import boardifier.control.ActionPlayer;
-import boardifier.model.GameException;
 import boardifier.model.Model;
-import boardifier.model.action.ActionList;
+import model.container.KoRBoard;
+import model.container.PawnPot;
 import model.data.PlayerData;
 import model.element.Pawn;
 import model.element.card.MovementCard;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import utils.Boardifiers;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -18,22 +15,21 @@ class KoRStageModelTest {
 
     private KoRStageModel stageModel;
     private Model model;
+    private KoRBoard board;
 
     @BeforeEach
-    void createStageModel() throws GameException {
+    void createStageModel() {
         // Create the model
         model = new Model();
+        model.addHumanPlayer("player1");
+        model.addHumanPlayer("player2");
 
-        // Set up game configuration
-        final GameConfigurationModel gameConfigurationModel = new GameConfigurationModel(model, 3, 2,
-                0, false, true);
+        stageModel = new KoRStageModel("", model);
 
-        // Init and start the Game
-        final Boardifiers boardifiers = new Boardifiers(model, gameConfigurationModel);
-        boardifiers.initGame();
-        boardifiers.startGame();
+        GameConfigurationModel.RANDOM.setSeed(3);
+        stageModel.getDefaultElementFactory().setup();
 
-        stageModel = (KoRStageModel) model.getGameStage();
+        board = stageModel.getBoard();
     }
 
     @Test
@@ -56,7 +52,7 @@ class KoRStageModelTest {
 
     @Test
     void testKingPawnCenter() {
-        assertEquals(stageModel.getKingPawn(), stageModel.getBoard().getElement(4, 4));
+        assertEquals(stageModel.getKingPawn(), board.getElement(4, 4));
     }
 
     @Test
@@ -91,11 +87,9 @@ class KoRStageModelTest {
     void testGetGeneralPawnPotWithItsEmptyPot() {
         final PlayerData playerData = PlayerData.PLAYER_BLUE;
 
-        final ActionList actionList = new ActionList();
-        for(Pawn pawn : stageModel.getBluePawns())
-            actionList.addAll(ActionFactory.generateRemoveFromStage(model, pawn));
+        final PawnPot bluePot = new PawnPot(0, 0, stageModel);
 
-        new ActionPlayer(model, null, actionList).start();
+        stageModel.setBluePot(bluePot);
 
         assertEquals(stageModel.getRedPot(), stageModel.getGeneralPot(playerData));
     }
@@ -104,13 +98,11 @@ class KoRStageModelTest {
     void testGetGeneralEmptyPawnPot() {
         final PlayerData playerData = PlayerData.PLAYER_BLUE;
 
-        final ActionList actionList = new ActionList();
-        for(Pawn pawn : stageModel.getBluePawns())
-            actionList.addAll(ActionFactory.generateRemoveFromStage(model, pawn));
-        for(Pawn pawn : stageModel.getRedPawns())
-            actionList.addAll(ActionFactory.generateRemoveFromStage(model, pawn));
+        final PawnPot bluePot = new PawnPot(0, 0, stageModel);
+        final PawnPot redPot = new PawnPot(0, 0, stageModel);
 
-        new ActionPlayer(model, null, actionList).start();
+        stageModel.setBluePot(bluePot);
+        stageModel.setRedPot(redPot);
 
         assertNull(stageModel.getGeneralPot(playerData));
     }
@@ -123,10 +115,9 @@ class KoRStageModelTest {
         assertNull(stageModel.getPlayedPawn(0, 0)); // i = 0
         assertNull(stageModel.getPlayedPawn(4, 4)); // i = 1
 
+
+        board.addElement(pawn, 4, 4);
         // PLACE
-        final ActionList actionList = new ActionList();
-        actionList.addAll(ActionFactory.generatePutInContainer(model, pawn, stageModel.getBoard().getName(), 4, 4));
-        new ActionPlayer(model, null, actionList).start();
 
         assertEquals(pawn, stageModel.getPlayedPawn(4, 4)); // i = 2
     }
@@ -134,25 +125,23 @@ class KoRStageModelTest {
     @Test
     void testTotalPlayerPoint() {
         final PlayerData playerData = PlayerData.PLAYER_BLUE;
-        final boolean[][] defaultCell = stageModel.getBoard().getReachableCells().clone();
+        final boolean[][] defaultCell = board.getReachableCells().clone();
 
         assertEquals(0, stageModel.getTotalPlayerPointSimple(playerData));
 
-        final ActionList actionList = new ActionList();
-        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getBluePawns()[0], stageModel.getBoard().getName(), 0, 0));
-        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getBluePawns()[1], stageModel.getBoard().getName(), 1, 0));
-        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getBluePawns()[2], stageModel.getBoard().getName(), 0, 1));
-        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getBluePawns()[3], stageModel.getBoard().getName(), 4, 4));
-        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getBluePawns()[4], stageModel.getBoard().getName(), 5, 5));
-        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[0], stageModel.getBoard().getName(), 4, 5));
-        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[1], stageModel.getBoard().getName(), 3, 5));
-        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[2], stageModel.getBoard().getName(), 6, 6));
-        new ActionPlayer(model, null, actionList).start();
+        board.addElement(stageModel.getBluePawns()[0], 0, 0);
+        board.addElement(stageModel.getBluePawns()[1], 1, 0);
+        board.addElement(stageModel.getBluePawns()[2], 0, 1);
+        board.addElement(stageModel.getBluePawns()[3], 4, 4);
+        board.addElement(stageModel.getBluePawns()[4], 5, 5);
+        board.addElement(stageModel.getRedPawns()[0], 4, 5);
+        board.addElement(stageModel.getRedPawns()[1], 3, 5);
+        board.addElement(stageModel.getRedPawns()[2], 6, 6);
 
         assertEquals(11, stageModel.getTotalPlayerPointSimple(playerData));
 
         // Check reset of reachable cells
-        assertArrayEquals(defaultCell, stageModel.getBoard().getReachableCells());
+        assertArrayEquals(defaultCell, board.getReachableCells());
 
         assertEquals(5, stageModel.getTotalPlayerPointSimple(playerData.getNextPlayerData()));
     }
@@ -160,14 +149,11 @@ class KoRStageModelTest {
     @Test
     void testGetTotalPawnOnBoard() {
         assertEquals(0, stageModel.getTotalPawnOnBoard(Pawn.Status.BLUE_PAWN));
-
-        final ActionList actionList = new ActionList();
-        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getBluePawns()[0], stageModel.getBoard().getName(), 0, 0));
-        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getBluePawns()[1], stageModel.getBoard().getName(), 1, 0));
-        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getBluePawns()[2], stageModel.getBoard().getName(), 1, 1));
-        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[0], stageModel.getBoard().getName(), 3, 4));
-        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[1], stageModel.getBoard().getName(), 4, 4));
-        new ActionPlayer(model, null, actionList).start();
+        board.addElement(stageModel.getBluePawns()[0], 0, 0);
+        board.addElement(stageModel.getBluePawns()[1], 1, 0);
+        board.addElement(stageModel.getBluePawns()[2], 1, 1);
+        board.addElement(stageModel.getRedPawns()[0], 3, 4);
+        board.addElement(stageModel.getRedPawns()[1], 4, 4);
 
         assertEquals(3, stageModel.getTotalPawnOnBoard(Pawn.Status.BLUE_PAWN));
         assertEquals(2, stageModel.getTotalPawnOnBoard(Pawn.Status.RED_PAWN));
@@ -176,32 +162,27 @@ class KoRStageModelTest {
     @Test
     void testGetNeighbor() {
         assertEquals(0, stageModel.getNeighbors(new KoRStageModel.PawnNode(Pawn.Status.RED_PAWN, 0, 0)).size());
-        stageModel.getBoard().resetReachableCells(true);
+        board.resetReachableCells(true);
 
-        new ActionPlayer(model, null, ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[0],
-                stageModel.getBoard().getName(), 1, 0)).start();
-        new ActionPlayer(model, null, ActionFactory.generatePutInContainer(model, stageModel.getBluePawns()[0],
-                stageModel.getBoard().getName(), 0, 0)).start();
+        board.addElement(stageModel.getRedPawns()[0], 1, 0);
+        board.addElement(stageModel.getBluePawns()[0], 0, 0);
 
         assertEquals(1, stageModel.getNeighbors(new KoRStageModel.PawnNode(Pawn.Status.RED_PAWN, 0, 0)).size());
-        stageModel.getBoard().resetReachableCells(true);
+        board.resetReachableCells(true);
         assertEquals(0, stageModel.getNeighbors(new KoRStageModel.PawnNode(Pawn.Status.BLUE_PAWN, 0, 0)).size());
-        stageModel.getBoard().resetReachableCells(true);
+        board.resetReachableCells(true);
         assertEquals(1, stageModel.getNeighbors(new KoRStageModel.PawnNode(Pawn.Status.BLUE_PAWN, 1, 0)).size());
-        stageModel.getBoard().resetReachableCells(true);
+        board.resetReachableCells(true);
 
-
-        final ActionList actionList = new ActionList();
-        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[0], stageModel.getBoard().getName(), 3, 3));
-        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[1], stageModel.getBoard().getName(), 4, 3));
-        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[2], stageModel.getBoard().getName(), 2, 3));
-        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[3], stageModel.getBoard().getName(), 3, 4));
-        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[4], stageModel.getBoard().getName(), 3, 2));
-        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[5], stageModel.getBoard().getName(), 4, 4));
-        new ActionPlayer(model, null, actionList).start();
+        board.addElement(stageModel.getRedPawns()[0], 3, 3);
+        board.addElement(stageModel.getRedPawns()[1], 4, 3);
+        board.addElement(stageModel.getRedPawns()[2], 2, 3);
+        board.addElement(stageModel.getRedPawns()[3], 3, 4);
+        board.addElement(stageModel.getRedPawns()[4], 3, 2);
+        board.addElement(stageModel.getRedPawns()[5], 4, 4);
 
         assertEquals(4, stageModel.getNeighbors(new KoRStageModel.PawnNode(Pawn.Status.RED_PAWN, 3, 3)).size());
-        stageModel.getBoard().resetReachableCells(true);
+        board.resetReachableCells(true);
         assertEquals(0, stageModel.getNeighbors(new KoRStageModel.PawnNode(Pawn.Status.BLUE_PAWN, 3, 3)).size());
     }
 
@@ -209,12 +190,9 @@ class KoRStageModelTest {
     void testGetZonePawn() {
         assertEquals(0, stageModel.getPlayerZonePawnSimple(PlayerData.PLAYER_RED, 0, 0));
 
-        new ActionPlayer(model, null, ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[0],
-                stageModel.getBoard().getName(), 0, 0)).start();
-        new ActionPlayer(model, null, ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[1],
-                stageModel.getBoard().getName(), 2, 0)).start();
-        new ActionPlayer(model, null, ActionFactory.generatePutInContainer(model, stageModel.getBluePawns()[0],
-                stageModel.getBoard().getName(), 1, 1)).start();
+        board.addElement(stageModel.getRedPawns()[0], 0, 0);
+        board.addElement(stageModel.getRedPawns()[1], 2, 0);
+        board.addElement(stageModel.getBluePawns()[0], 1, 1);
 
         assertEquals(0, stageModel.getPlayerZonePawnSimple(PlayerData.PLAYER_RED, 1, 1));
         assertEquals(1, stageModel.getPlayerZonePawnSimple(PlayerData.PLAYER_RED, 0, 0));
@@ -222,14 +200,13 @@ class KoRStageModelTest {
         assertEquals(2, stageModel.getPlayerZonePawnSimple(PlayerData.PLAYER_RED, 1, 0));
         assertEquals(1, stageModel.getPlayerZonePawnSimple(PlayerData.PLAYER_BLUE, 1, 0));
 
-        final ActionList actionList = new ActionList();
-        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[0], stageModel.getBoard().getName(), 3, 3));
-        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[1], stageModel.getBoard().getName(), 4, 3));
-        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[2], stageModel.getBoard().getName(), 2, 3));
-        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[3], stageModel.getBoard().getName(), 3, 4));
-        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[4], stageModel.getBoard().getName(), 3, 2));
-        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[5], stageModel.getBoard().getName(), 4, 4));
-        new ActionPlayer(model, null, actionList).start();
+
+        board.addElement(stageModel.getRedPawns()[0], 3, 3);
+        board.addElement(stageModel.getRedPawns()[1], 4, 3);
+        board.addElement(stageModel.getRedPawns()[2], 2, 3);
+        board.addElement(stageModel.getRedPawns()[3], 3, 4);
+        board.addElement(stageModel.getRedPawns()[4], 3, 2);
+        board.addElement(stageModel.getRedPawns()[5], 4, 4);
 
         // representation of part of the board, O is the 3,3 pawn
         //   X
@@ -244,30 +221,27 @@ class KoRStageModelTest {
     void testGetTotalPawnZone() {
         assertEquals(0, stageModel.getTotalPawnZone(PlayerData.PLAYER_RED));
 
-        new ActionPlayer(model, null, ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[0],
-                stageModel.getBoard().getName(), 0, 0)).start();
-        new ActionPlayer(model, null, ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[1],
-                stageModel.getBoard().getName(), 2, 0)).start();
-        new ActionPlayer(model, null, ActionFactory.generatePutInContainer(model, stageModel.getBluePawns()[0],
-                stageModel.getBoard().getName(), 1, 1)).start();
+        board.addElement(stageModel.getRedPawns()[0], 0, 0);
+        board.addElement(stageModel.getRedPawns()[1], 2, 0);
+        board.addElement(stageModel.getBluePawns()[0], 1, 1);
 
         assertEquals(2, stageModel.getTotalPawnZone(PlayerData.PLAYER_RED));
         assertEquals(1, stageModel.getTotalPawnZone(PlayerData.PLAYER_BLUE));
+    }
 
-        final ActionList actionList = new ActionList();
-        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[0], stageModel.getBoard().getName(), 3, 3));
-        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[1], stageModel.getBoard().getName(), 4, 3));
-        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[2], stageModel.getBoard().getName(), 2, 3));
-        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[3], stageModel.getBoard().getName(), 3, 4));
-        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[4], stageModel.getBoard().getName(), 3, 2));
-        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[5], stageModel.getBoard().getName(), 4, 4));
-        new ActionPlayer(model, null, actionList).start();
+    @Test
+    void testGetTotalPawnZone2() {
+        board.addElement(stageModel.getRedPawns()[0], 3, 3);
+        board.addElement(stageModel.getRedPawns()[1], 4, 3);
+        board.addElement(stageModel.getRedPawns()[2], 2, 3);
+        board.addElement(stageModel.getRedPawns()[3], 3, 4);
+        board.addElement(stageModel.getRedPawns()[4], 3, 2);
+        board.addElement(stageModel.getRedPawns()[5], 4, 4);
 
         // representation of part of the board, O is the 3,3 pawn
         //   X
         //  XOX
         //   XX
-
         assertEquals(1, stageModel.getTotalPawnZone(PlayerData.PLAYER_RED));
     }
 
@@ -275,26 +249,23 @@ class KoRStageModelTest {
     void testGetZoneAverage() {
         assertEquals(0, stageModel.getZoneAverage(PlayerData.PLAYER_RED));
 
-        new ActionPlayer(model, null, ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[0],
-                stageModel.getBoard().getName(), 0, 0)).start();
-        new ActionPlayer(model, null, ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[1],
-                stageModel.getBoard().getName(), 2, 0)).start();
-        new ActionPlayer(model, null, ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[2],
-                stageModel.getBoard().getName(), 3, 0)).start();
-        new ActionPlayer(model, null, ActionFactory.generatePutInContainer(model, stageModel.getBluePawns()[0],
-                stageModel.getBoard().getName(), 1, 1)).start();
+        board.addElement(stageModel.getRedPawns()[0], 0, 0);
+        board.addElement(stageModel.getRedPawns()[1], 2, 0);
+        board.addElement(stageModel.getRedPawns()[2], 3, 0);
+        board.addElement(stageModel.getBluePawns()[0], 1, 1);
 
         assertEquals(1.5, stageModel.getZoneAverage(PlayerData.PLAYER_RED));
         assertEquals(1, stageModel.getZoneAverage(PlayerData.PLAYER_BLUE));
+    }
 
-        final ActionList actionList = new ActionList();
-        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[0], stageModel.getBoard().getName(), 3, 3));
-        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[1], stageModel.getBoard().getName(), 4, 3));
-        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[2], stageModel.getBoard().getName(), 2, 3));
-        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[3], stageModel.getBoard().getName(), 3, 4));
-        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[4], stageModel.getBoard().getName(), 3, 2));
-        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[5], stageModel.getBoard().getName(), 4, 4));
-        new ActionPlayer(model, null, actionList).start();
+    @Test
+    void testGetZoneAverage2() {
+        board.addElement(stageModel.getRedPawns()[0], 3, 3);
+        board.addElement(stageModel.getRedPawns()[1], 4, 3);
+        board.addElement(stageModel.getRedPawns()[2], 2, 3);
+        board.addElement(stageModel.getRedPawns()[3], 3, 4);
+        board.addElement(stageModel.getRedPawns()[4], 3, 2);
+        board.addElement(stageModel.getRedPawns()[5], 4, 4);
 
         // representation of part of the board, O is the 3,3 pawn
         //   X
@@ -306,41 +277,35 @@ class KoRStageModelTest {
 
     @Test
     void testComputePartyResultTie() {
-        final ActionList actionList = new ActionList();
-        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[0], stageModel.getBoard().getName(), 3, 3));
-        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[1], stageModel.getBoard().getName(), 4, 3));
-        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getBluePawns()[0], stageModel.getBoard().getName(), 4, 4));
-        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getBluePawns()[1], stageModel.getBoard().getName(), 5, 4));
-        new ActionPlayer(model, null, actionList).start();
+        board.addElement(stageModel.getRedPawns()[0], 3, 3);
+        board.addElement(stageModel.getRedPawns()[1], 4, 3);
+        board.addElement(stageModel.getBluePawns()[0], 4, 4);
+        board.addElement(stageModel.getBluePawns()[1], 5, 4);
 
-        stageModel.computePartyResult(false);
+        stageModel.computePartyResult();
         assertEquals(PlayerData.NONE.getId(), model.getIdWinner());
     }
 
     @Test
     void testComputePartyResultSquarePoint() {
-        final ActionList actionList = new ActionList();
-        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[0], stageModel.getBoard().getName(), 3, 3));
-        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[1], stageModel.getBoard().getName(), 4, 3));
-        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getBluePawns()[0], stageModel.getBoard().getName(), 4, 4));
-        new ActionPlayer(model, null, actionList).start();
+        board.addElement(stageModel.getRedPawns()[0], 3, 3);
+        board.addElement(stageModel.getRedPawns()[1], 4, 3);
+        board.addElement(stageModel.getBluePawns()[0], 4, 4);
 
-        stageModel.computePartyResult(false);
+        stageModel.computePartyResult();
         assertEquals(PlayerData.PLAYER_RED.getId(), model.getIdWinner());
     }
 
     @Test
     void testComputePartyResultTotalPawn() {
-        final ActionList actionList = new ActionList();
-        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[0], stageModel.getBoard().getName(), 3, 3));
-        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[1], stageModel.getBoard().getName(), 4, 3));
-        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getBluePawns()[0], stageModel.getBoard().getName(), 4, 4));
-        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getBluePawns()[1], stageModel.getBoard().getName(), 5, 5));
-        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getBluePawns()[2], stageModel.getBoard().getName(), 6, 6));
-        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getBluePawns()[4], stageModel.getBoard().getName(), 7, 7));
-        new ActionPlayer(model, null, actionList).start();
+        board.addElement(stageModel.getRedPawns()[0], 3, 3);
+        board.addElement(stageModel.getRedPawns()[1], 4, 3);
+        board.addElement(stageModel.getBluePawns()[0], 4, 4);
+        board.addElement(stageModel.getBluePawns()[1], 5, 5);
+        board.addElement(stageModel.getBluePawns()[2], 6, 6);
+        board.addElement(stageModel.getBluePawns()[3], 7, 7);
 
-        stageModel.computePartyResult(false);
+        stageModel.computePartyResult();
         assertEquals(PlayerData.PLAYER_BLUE.getId(), model.getIdWinner());
     }
 
@@ -350,20 +315,19 @@ class KoRStageModelTest {
         assertTrue(stageModel.playerCanPlay(PlayerData.PLAYER_RED));
         assertTrue(stageModel.playerCanPlay(PlayerData.PLAYER_BLUE));
 
-        final ActionList actionList = new ActionList();
         for(int i=0; i<25; i++) {
-            actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[i], stageModel.getBoard().getName(), 0, 0));
-            actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getBluePawns()[i], stageModel.getBoard().getName(), 0, 0));
+            stageModel.getRedPot().removeElement(stageModel.getRedPawns()[i]);
+            stageModel.getBluePot().removeElement(stageModel.getBluePawns()[i]);
         }
-        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getRedPawns()[25], stageModel.getBoard().getName(), 0, 0));
-        new ActionPlayer(model, null, actionList).start();
+        stageModel.getRedPot().removeElement(stageModel.getRedPawns()[25]);
 
         // if the red player has no pawn left in his pot but the blue player has at least 1 pawn left in his pot
         // returns true because the red player can draw from the blue pawn pot
         assertTrue(stageModel.playerCanPlay(PlayerData.PLAYER_RED));
         assertTrue(stageModel.playerCanPlay(PlayerData.PLAYER_BLUE));
 
-        new ActionPlayer(model, null, ActionFactory.generatePutInContainer(model, stageModel.getBluePawns()[25], stageModel.getBoard().getName(), 0, 0)).start();
+        stageModel.getBluePot().removeElement(stageModel.getBluePawns()[25]);
+
 
         // if both players have no pawn left in their pot
         assertFalse(stageModel.playerCanPlay(PlayerData.PLAYER_RED));
@@ -372,16 +336,19 @@ class KoRStageModelTest {
 
     @Test
     void testPlayerCanPlayHero() {
-        final ActionList actionList = new ActionList();
-        actionList.addAll(ActionFactory.generateMoveWithinContainer(model, stageModel.getKingPawn(), 6, 8));
-        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getBluePawns()[0], stageModel.getBoard().getName(), 8, 8));
-        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getBluePawns()[1], stageModel.getBoard().getName(), 6, 5));
-        new ActionPlayer(model, null, actionList).start();
+        board.moveElement(stageModel.getKingPawn(), 6, 8);
+
+        board.addElement(stageModel.getBluePawns()[0], 8, 8);
+        stageModel.getBluePot().removeElement(stageModel.getBluePawns()[0]);
+
+        board.addElement(stageModel.getBluePawns()[1], 6, 5);
+        stageModel.getBluePot().removeElement(stageModel.getBluePawns()[1]);
 
         // representation of part of the board, O is the king and X is the blue pawns
         // X 0
         //
         //   X
+
 
         // With the random seed 3, and the king's pawn in 6, 8 + a blue pawn in 8,8 and 6,5.
         // Only the red player can use a hero card.
@@ -392,19 +359,15 @@ class KoRStageModelTest {
 
         // Deletes all the red player's hero cards
         for(int i=0; i<4; i++)
-            new ActionPlayer(model, null,
-                    ActionFactory.generateRemoveFromContainer(model, stageModel.getRedHeroCardStack().getElement(0, 0))
-            ).start();
+            stageModel.getRedHeroCardStack().getElement(0, 0).removeFromStage();
 
         assertFalse(stageModel.playerCanPlay(PlayerData.PLAYER_RED));
     }
 
     @Test
     void testPlayerCanPlayGetCardFromTheStack() {
-        final ActionList actionList = new ActionList();
         for(int i=0; i<4; i++)
-            actionList.addAll(ActionFactory.generateRemoveFromStage(model, stageModel.getMovementCards(MovementCard.Owner.PLAYER_RED).get(i)));
-        new ActionPlayer(model, null, actionList).start();
+            stageModel.getMovementCards(MovementCard.Owner.PLAYER_RED).get(i).removeFromStage();
 
         assertTrue(stageModel.playerCanPlay(PlayerData.PLAYER_RED));
     }
@@ -413,11 +376,13 @@ class KoRStageModelTest {
     void testGameIsStuck() {
         assertFalse(stageModel.gameIsStuck());
 
-        final ActionList actionList = new ActionList();
-        actionList.addAll(ActionFactory.generateMoveWithinContainer(model, stageModel.getKingPawn(), 6, 8));
-        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getBluePawns()[0], stageModel.getBoard().getName(), 8, 8));
-        actionList.addAll(ActionFactory.generatePutInContainer(model, stageModel.getBluePawns()[1], stageModel.getBoard().getName(), 6, 5));
-        new ActionPlayer(model, null, actionList).start();
+        board.moveElement(stageModel.getKingPawn(), 6, 8);
+
+        board.addElement(stageModel.getBluePawns()[0], 8, 8);
+        stageModel.getBluePot().removeElement(stageModel.getBluePawns()[0]);
+
+        board.addElement(stageModel.getBluePawns()[1], 6, 5);
+        stageModel.getBluePot().removeElement(stageModel.getBluePawns()[1]);
 
         // representation of part of the board, O is the king and X is the blue pawns
         // X 0
@@ -431,10 +396,7 @@ class KoRStageModelTest {
         assertFalse(stageModel.gameIsStuck());
 
         for(int i=0; i<4; i++)
-            // Deletes all the red player's hero cards
-            new ActionPlayer(model, null,
-                    ActionFactory.generateRemoveFromContainer(model, stageModel.getRedHeroCardStack().getElement(0, 0))
-            ).start();
+            stageModel.getRedHeroCards()[i].removeFromStage();
 
         assertTrue(stageModel.gameIsStuck());
     }
