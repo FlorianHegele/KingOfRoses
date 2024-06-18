@@ -20,10 +20,9 @@ class SoundTest {
     @Test
     void testPlaySound_withSoundOff() {
         Sound.soundOn = false;
-        Sound.playSound("test-sound.mp3");
+        assertDoesNotThrow(() -> Sound.playSound("test-sound.mp3"));
         // No exception should be thrown
     }
-
 
     @Test
     void testStopMusic() {
