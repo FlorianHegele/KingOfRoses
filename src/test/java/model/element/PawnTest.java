@@ -1,6 +1,5 @@
 package model.element;
 
-import model.element.Pawn;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

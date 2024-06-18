@@ -3,10 +3,11 @@ package control.ai;
 import boardifier.control.ActionFactory;
 import boardifier.control.ActionPlayer;
 import boardifier.control.Controller;
+import boardifier.model.GameElement;
 import boardifier.model.GameException;
 import boardifier.model.Model;
 import boardifier.model.action.ActionList;
-import control.ai.KoRDeciderHateCards;
+import control.KoRController;
 import javafx.stage.Stage;
 import model.GameConfigurationModel;
 import model.KoRStageModel;
@@ -27,30 +28,22 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class TestAiHateCards{
 
     private KoRStageModel stageModel;
-    private Controller controller;
+    private Model model;
 
     @BeforeEach
-    void createStageModel() throws GameException {
+    void createStageModel() {
         // Create the model
-        final Model model = new Model();
-        final Stage stage = Mockito.mock(Stage.class);
+        model = new Model();
+        model.addHumanPlayer("player1");
+        model.addHumanPlayer("player2");
 
-        // Set up game configuration
-        final GameConfigurationModel gameConfigurationModel = new GameConfigurationModel(model, GameConfigurationModel.RANDOM_SEED, 2,
-                0, false, true);
-        gameConfigurationModel.addAI(Map.of(PlayerData.PLAYER_BLUE, AIData.GUIDE, PlayerData.PLAYER_RED, AIData.GUIDE));
-
-        // Init and start the Game
-        final Boardifiers boardifiers = new Boardifiers(stage, model, gameConfigurationModel);
-        boardifiers.getController().startGame();
-
-        controller = boardifiers.getController();
-        stageModel = (KoRStageModel) model.getGameStage();
+        stageModel = new KoRStageModel("", model);
+        model.setGameStage(stageModel);
+        stageModel.getDefaultElementFactory().setup();
     }
 
     @Test
     void testPlateauVide(){
-
         // Create the AI decider
         KoRDeciderHateCards aiDecider = new KoRDeciderHateCards(stageModel.getModel(), null, PlayerData.PLAYER_BLUE);
 
@@ -58,8 +51,7 @@ class TestAiHateCards{
         ActionList actionList = aiDecider.decide();
 
         // is the AI playing a movement card ?
-        assertEquals(1,ActionsUtils.actionListToInt(actionList));
-
+        assertEquals(1, ActionsUtils.actionListToInt(actionList));
     }
 
     @Test
@@ -68,23 +60,15 @@ class TestAiHateCards{
         KoRDeciderHateCards aiDecider = new KoRDeciderHateCards(stageModel.getModel(), null, PlayerData.PLAYER_BLUE);
 
         // Get the AI cards
-        final MovementCard movementCard1 = stageModel.getMovementCards(MovementCard.Owner.PLAYER_BLUE).get(0);
-        final MovementCard movementCard2 = stageModel.getMovementCards(MovementCard.Owner.PLAYER_BLUE).get(1);
-        final MovementCard movementCard3 = stageModel.getMovementCards(MovementCard.Owner.PLAYER_BLUE).get(2);
-        final MovementCard movementCard4 = stageModel.getMovementCards(MovementCard.Owner.PLAYER_BLUE).get(3);
-        final MovementCard movementCard5 = stageModel.getMovementCards(MovementCard.Owner.PLAYER_BLUE).get(4);
-
+        final GameElement movementCard =  stageModel.getBlueMovementCardsSpread().getElement(0,0);
         // Remove a card from the red AI
-        final ActionList actionList = new ActionList();
-        actionList.addAll(ActionFactory.generatePutInContainer(controller, stageModel.getModel(), movementCard2, stageModel.getMovementCardStackPlayed().getName(), 0, 0));
-
-        new ActionPlayer(stageModel.getModel(), null, actionList).start();
+        movementCard.removeFromStage();
 
         // Get the action list from the AI
         ActionList actionL = aiDecider.decide();
 
         // is the AI playing a movement card ?
-        assertEquals(1,ActionsUtils.actionListToInt(actionL));
+        assertEquals(1, ActionsUtils.actionListToInt(actionL));
     }
 
     @Test
@@ -93,19 +77,44 @@ class TestAiHateCards{
         KoRDeciderHateCards aiDecider = new KoRDeciderHateCards(stageModel.getModel(), null, PlayerData.PLAYER_BLUE);
 
         // Get the AI cards
-        final MovementCardSpread redMoveCardsHand = stageModel.getRedMovementCardsSpread();
-        final MovementCard movementCard = stageModel.getMovementCards(MovementCard.Owner.PLAYER_RED).get(0);
+        final GameElement movementCard =  stageModel.getBlueMovementCardsSpread().getElement(0,0);
+
+        // Remove a card from the red AI
+        movementCard.removeFromStage();
+
+        // Get the action list from the AI
+        ActionList actionL = aiDecider.decide();
+
+        // is the AI playing a movement card ?
+        assertEquals(1, ActionsUtils.actionListToInt(actionL));
+    }
+
+    @Test
+    void testAucuneCarteEnMain(){
+        // Create the AI decider
+        KoRDeciderHateCards aiDecider = new KoRDeciderHateCards(stageModel.getModel(), null, PlayerData.PLAYER_BLUE);
+
+        // Get the AI cards
+        final GameElement movementCard =  stageModel.getBlueMovementCardsSpread().getElement(0,0);
+        final MovementCard movementCard2 = stageModel.getMovementCards(MovementCard.Owner.PLAYER_BLUE).get(1);
+        final MovementCard movementCard3 = stageModel.getMovementCards(MovementCard.Owner.PLAYER_BLUE).get(2);
+        final MovementCard movementCard4 = stageModel.getMovementCards(MovementCard.Owner.PLAYER_BLUE).get(3);
+        final MovementCard movementCard5 = stageModel.getMovementCards(MovementCard.Owner.PLAYER_BLUE).get(4);
 
         // Remove a card from the red AI
         final ActionList actionList = new ActionList();
-        actionList.addAll(ActionFactory.generatePutInContainer(controller, stageModel.getModel(), movementCard, stageModel.getMovementCardStackPlayed().getName(), 0, 0));
+        movementCard.removeFromStage();
+        movementCard2.removeFromStage();
+        movementCard3.removeFromStage();
+        movementCard4.removeFromStage();
+        movementCard5.removeFromStage();
         new ActionPlayer(stageModel.getModel(), null, actionList).start();
 
         // Get the action list from the AI
         ActionList actionL = aiDecider.decide();
 
         // is the AI playing a movement card ?
-        assertEquals(1,ActionsUtils.actionListToInt(actionL));
+        assertEquals(2, ActionsUtils.actionListToInt(actionL));
     }
 
 }
