@@ -637,7 +637,6 @@ public class KoRStageModel extends GameStageModel {
 
         // Can the player play a card? If so, which ones?
         final boolean hasHeroCard = ContainerElements.countElements(heroCardStack) > 0;
-        System.out.println("hasHerocard " + hasHeroCard);
         final Coord2D kingPos = ContainerElements.getElementPosition(kingPawn, board);
         final int cardRow = 0;
         for (int cardCol = 0; cardCol < countMovementCards; cardCol++) {
@@ -656,7 +655,6 @@ public class KoRStageModel extends GameStageModel {
             // Return true if the player can play a movement card
             // or if they can play it with a hero card
             if (board.isEmptyAt(row, col) || (hasHeroCard && !((Pawn) board.getElement(row, col)).getStatus().isOwnedBy(playerData))) {
-                System.out.println("empty at (r:"+row+", c:"+col+"): " + board.isEmptyAt(row, col));
                 return true;
             }
         }
