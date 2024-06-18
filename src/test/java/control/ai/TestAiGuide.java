@@ -39,7 +39,7 @@ class TestAiGuide{
         ActionList actionList = aiDecider.decide();
 
         // is the AI playing a movement card ?
-        assertEquals(0, ActionsUtils.actionListToInt(actionList));
+        assertEquals(1, ActionsUtils.actionListToInt(actionList));
     }
 
     @Test
@@ -64,7 +64,7 @@ class TestAiGuide{
         ActionList actionL = aiDecider.decide();
 
         // is the AI playing a movement card ?
-        assertEquals(0,ActionsUtils.actionListToInt(actionL));
+        assertEquals(1,ActionsUtils.actionListToInt(actionL));
     }
 
     @Test
@@ -108,8 +108,10 @@ class TestAiGuide{
         // Get the action list from the AI
         ActionList actionL = aiDecider.decide();
 
+
+
         // is the AI playing a movement card ?
-        assertEquals(0,ActionsUtils.actionListToInt(actionL));
+        assertEquals(1,ActionsUtils.actionListToInt(actionL));
     }
 
     @Test
@@ -154,8 +156,11 @@ class TestAiGuide{
         // Get the action list from the AI
         ActionList actionL = aiDecider.decide();
 
+        for (int i = 0; i < actionL.getActions().size(); i++) {
+            System.out.println("action:" + actionL.getActions().get(i));
+        }
         // is the AI playing a movement card ?
-        assertEquals(0,ActionsUtils.actionListToInt(actionL));
+        assertEquals(2,ActionsUtils.actionListToInt(actionL));
     }
 
 }

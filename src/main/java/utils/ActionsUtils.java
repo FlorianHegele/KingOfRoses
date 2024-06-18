@@ -17,7 +17,7 @@ public class ActionsUtils {
      * @return 1 : Playing a movement card
      */
     public static int actionListToInt(ActionList actionList) {
-        int[] playMovementCard = {1, 2, 3, 1, 2};
+        int[] playMovementCard = {1, 2, 1, 2, 1, 2};
         int[] playTakeCard = {1, 2};
         int[] playHeroCard = {0, 3, 1, 2, 1, 0};
 

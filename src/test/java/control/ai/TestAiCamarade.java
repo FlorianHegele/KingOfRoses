@@ -40,7 +40,7 @@ class TestAiCamarade{
         ActionList actionList = aiDecider.decide();
 
         // is the AI playing a movement card ?
-        assertEquals(0, ActionsUtils.actionListToInt(actionList));
+        assertEquals(1, ActionsUtils.actionListToInt(actionList));
     }
 
     @Test
@@ -65,7 +65,7 @@ class TestAiCamarade{
         ActionList actionL = aiDecider.decide();
 
         // is the AI playing a movement card ?
-        assertEquals(0, ActionsUtils.actionListToInt(actionL));
+        assertEquals(1, ActionsUtils.actionListToInt(actionL));
     }
 
     @Test
@@ -86,7 +86,7 @@ class TestAiCamarade{
         ActionList actionL = aiDecider.decide();
 
         // is the AI playing a movement card ?
-        assertEquals(0, ActionsUtils.actionListToInt(actionL));
+        assertEquals(1, ActionsUtils.actionListToInt(actionL));
     }
 
 }
